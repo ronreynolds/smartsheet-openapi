@@ -1,0 +1,528 @@
+> Task :openApiValidate FAILED
+Validating spec /home/ron/share/dev/smartsheet-openapi/src/main/resources/smartsheet-openapi-v2.json
+
+Spec has issues or recommendations.
+Issues:
+
+        Unused model: AccessLevel
+
+        Unused model: Account
+
+        Unused model: AlternateEmail
+
+        Unused model: Attachment
+
+        Unused model: AutomationAction
+
+        Unused model: AutomationRule
+
+        Unused model: AutoNumberFormat
+
+        Unused model: BulkItemFailure
+
+        Unused model: Callback
+
+        Unused model: CallbackEvent
+
+        Unused model: Cell
+
+        Unused model: CellDataItem
+
+        Unused model: CellHistory
+
+        Unused model: CellLink
+
+        Unused model: CellLinkWidgetContent
+
+        Unused model: ChartWidgetContent
+
+        Unused model: Column
+
+        Unused model: ColumnObject
+
+        Unused model: Comment
+
+        Unused model: Contact
+
+        Unused model: ContactOption
+
+        Unused model: ContainerDestination
+
+        Unused model: CopyOrMoveRowDestination
+
+        Unused model: CopyOrMoveRowDirective
+
+        Unused model: CopyOrMoveRowResult
+
+        Unused model: Criteria
+
+        Unused model: CrossSheetReference
+
+        Unused model: Currency
+
+        Unused model: Discussion
+
+        Unused model: Duration
+
+        Unused model: Email
+
+        Unused model: Error
+
+        Unused model: Event
+
+        Unused model: Favorite
+
+        Unused model: Filters
+
+        Unused model: Folder
+
+        Unused model: FontFamily
+
+        Unused model: FormatDetails
+
+        Unused model: FormatTables
+
+        Unused model: Group
+
+        Unused model: GroupMember
+
+        Unused model: Home
+
+        Unused model: Hyperlink
+
+        Unused model: Image
+
+        Unused model: ImageUrl
+
+        Unused model: ImageUrlMap
+
+        Unused model: ImageWidgetContent
+
+        Unused model: IndexResult
+
+        Unused model: IndexResultUnknownPages
+
+        Unused model: MiniUser
+
+        Unused model: MultiRowEmail
+
+        Unused model: ObjectValue
+
+        Unused model: Predecessor
+
+        Unused model: PredecessorList
+
+        Unused model: ProjectSettings
+
+        Unused model: Proof
+
+        Unused model: ProofRequest
+
+        Unused model: ProofRequestAction
+
+        Unused model: ProofRequestBody
+
+        Unused model: Recipient
+
+        Unused model: Report
+
+        Unused model: ReportCell
+
+        Unused model: ReportColumn
+
+        Unused model: ReportPublish
+
+        Unused model: ReportRow
+
+        Unused model: ReportWidgetContent
+
+        Unused model: Result
+
+        Unused model: RichTextWidgetContent
+
+        Unused model: Row
+
+        Unused model: RowEmail
+
+        Unused model: RowMapping
+
+        Unused model: Schedule
+
+        Unused model: Scope
+
+        Unused model: SearchResult
+
+        Unused model: SearchResultItem
+
+        Unused model: SelectionRange
+
+        Unused model: SentUpdateRequest
+
+        Unused model: ServerInfo
+
+        Unused model: Share
+
+        Unused model: SharedSecret
+
+        Unused model: Sheet
+
+        Unused model: SheetEmail
+
+        Unused model: SheetPublish
+
+        Unused model: SheetSummary
+
+        Unused model: SheetUserPermissions
+
+        Unused model: SheetUserSettings
+
+        Unused model: ShortcutDataItem
+
+        Unused model: ShortcutWidgetContent
+
+        Unused model: Sight
+
+        Unused model: SightPublish
+
+        Unused model: SortCriterion
+
+        Unused model: SortSpecifier
+
+        Unused model: Source
+
+        Unused model: StreamResult
+
+        Unused model: Subscope
+
+        Unused model: SummaryField
+
+        Unused model: Template
+
+        Unused model: Timestamp
+
+        Unused model: TitleWidgetContent
+
+        Unused model: Token
+
+        Unused model: UpdateProofStatusRequest
+
+        Unused model: UpdateRequest
+
+        Unused model: URLAttachmentRequest
+
+        Unused model: User
+
+        Unused model: UserProfile
+
+        Unused model: WebContentWidgetContent
+
+        Unused model: Webhook
+
+        Unused model: Widget
+
+        Unused model: WidgetHyperlink
+
+        Unused model: Workspace
+
+        Unused model: userPermissions
+
+        Unused model: scope
+
+        Unused model: labelFont
+
+        Unused model: titleInfo
+
+        Unused model: verticalGridLines
+
+        Unused model: 2
+
+        Unused model: 3
+
+        Unused model: 4
+
+        Unused model: 5
+
+        Unused model: 6
+
+        Unused model: 7
+
+        Unused model: lag
+
+        Schemas defining properties and oneOf are not clearly defined in the OpenAPI Specification. While our tooling supports this, it may cause issues with other tools.
+
+
+Spec is invalid.
+Issues:
+
+        paths.'/favorites'(get).parameters. There are duplicate parameter values
+
+        paths.'/favorites/{favoriteType}'. There are duplicate parameter values
+
+        paths.'/favorites/{favoriteType}/{favoriteId}'. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/copy'. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/folders'. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/folders'(get).parameters. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/folders'(post).parameters. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/move'. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/sheets'. There are duplicate parameter values
+
+        paths.'/folders/{folderId}/sheets/import'. There are duplicate parameter values
+
+        paths.'/groups'(get).parameters. There are duplicate parameter values
+
+        paths.'/groups/{groupId}/members'. There are duplicate parameter values
+
+        paths.'/groups/{groupId}/members/{userId}'. There are duplicate parameter values
+
+        paths.'/home/folders'(get).parameters. There are duplicate parameter values
+
+        paths.'/imageurls'. There are duplicate parameter values
+
+        paths.'/reports/{reportId}'(get).parameters. There are duplicate parameter values
+
+        paths.'/reports/{reportId}/emails'. There are duplicate parameter values
+
+        paths.'/reports/{reportId}/publish'. There are duplicate parameter values
+
+        paths.'/reports/{reportId}/shares'. There are duplicate parameter values
+
+        paths.'/reports/{reportId}/shares'(get).parameters. There are duplicate parameter values
+
+        paths.'/reports/{reportId}/shares/{shareId}'. There are duplicate parameter values
+
+        paths.'/sheets'. There are duplicate parameter values
+
+        paths.'/sheets'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets'(post).parameters. There are duplicate parameter values
+
+        paths.'/sheets/import'(post).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/attachments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/attachments'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/attachments/{attachmentId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/attachments/{attachmentId}/versions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/attachments/{attachmentId}/versions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/automationrules'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/automationrules'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/automationrules/{automationRuleId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/columns'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/columns'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/columns/{columnId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/comments/{commentId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/comments/{commentId}/attachments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/copy'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/crosssheetreferences'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/crosssheetreferences'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/crosssheetreferences/{crossSheetReferenceId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions/{discussionId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions/{discussionId}/attachments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions/{discussionId}/attachments'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/discussions/{discussionId}/comments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/emails'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/move'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/attachments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/attachments'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/discussions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/discussions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/requestactions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/requestactions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/requests'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/versions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/proofs/{proofId}/versions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/publish'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows'(put).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows'(post).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/emails'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/copy'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/move'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/attachments'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/attachments'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/cellimages'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/cellimages'(post).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/history'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/history'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/discussions'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/discussions'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/rows/{rowId}/proofs'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/sentupdaterequests'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/sentupdaterequests'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/sentupdaterequests/{sentUpdateRequestId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/summary'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/summary/fields'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/summary/fields'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/summary/fields/{fieldId}/images'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/summary/fields/{fieldId}/images'(post).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/updaterequests'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/updaterequests'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/updaterequests/{updateRequestId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/shares'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/shares'(get).parameters. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/shares/{shareId}'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/sort'. There are duplicate parameter values
+
+        paths.'/sheets/{sheetId}/version'. There are duplicate parameter values
+
+        paths.'/sights'(get).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}'(get).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}'(put).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/copy'(post).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/move'(post).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/publish'. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/shares'. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/shares'(get).parameters. There are duplicate parameter values
+
+        paths.'/sights/{sightId}/shares/{shareId}'. There are duplicate parameter values
+
+        paths.'/templates'(get).parameters. There are duplicate parameter values
+
+        paths.'/templates/public'(get).parameters. There are duplicate parameter values
+
+        paths.'/users'(get).parameters. There are duplicate parameter values
+
+        paths.'/users/sheets'(get).parameters. There are duplicate parameter values
+
+        paths.'/users/{userId}'. There are duplicate parameter values
+
+        paths.'/users/{userId}/alternateemails'. There are duplicate parameter values
+
+        paths.'/users/{userId}/alternateemails/{alternateEmailId}'. There are duplicate parameter values
+
+        paths.'/users/{userId}/alternateemails/{alternateEmailId}/makeprimary'. There are duplicate parameter values
+
+        paths.'/users/{userId}/deactivate'. There are duplicate parameter values
+
+        paths.'/users/{userId}/profileimage'. There are duplicate parameter values
+
+        paths.'/users/{userId}/reactivate'. There are duplicate parameter values
+
+        paths.'/webhooks'(get).parameters. There are duplicate parameter values
+
+        paths.'/webhooks/{webhookId}/resetSharedSecret'. There are duplicate parameter values
+
+        paths.'/workspaces'. There are duplicate parameter values
+
+        paths.'/workspaces'(get).parameters. There are duplicate parameter values
+
+        paths.'/workspaces'(post).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}'(get).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/copy'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/copy'(post).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/folders'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/folders'(get).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/shares'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/shares'(get).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/shares/{shareId}'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/sheets'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/sheets'(post).parameters. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/sheets/import'. There are duplicate parameter values
+
+        paths.'/workspaces/{workspaceId}/sheets/import'(post).parameters. There are duplicate parameter values
+
+
+FAILURE: Build failed with an exception.
