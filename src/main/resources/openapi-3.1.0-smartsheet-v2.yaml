@@ -1196,10 +1196,10 @@ tags:
 paths:
   /contacts:
     parameters:
+      # '#/paths/~1contacts/parameters/0'
       - name: Authorization
         in: header
-        description: |
-          API Access Token used to authenticate requests to Smartsheet APIs.
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
@@ -1871,6 +1871,7 @@ paths:
   /favorites:
     parameters:
       - $ref: '#/paths/~1contacts/parameters/0'
+      # '#/paths/~1favorites/parameters/1'
       - name: x-smar-sc-actor-id
         description: |
           UserId of the user
@@ -1889,9 +1890,30 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
-        - $ref: '#/paths/~1contacts/get/parameters/4'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
+#        - $ref: '#/paths/~1contacts/get/parameters/4'
+        - name: pageSize
+          in: query
+          required: false
+          description: The maximum number of items to return per page. Unless otherwise stated for a specific endpoint, defaults to 100. If only page is specified, defaults to a page size of 100. For reports, the default is 100 rows. If you need larger sets of data from your report, returns a maximum of 10,000 rows per request.
+          schema:
+            type: number
+            default: 100
         - name: include
           in: query
           required: false
@@ -2040,7 +2062,13 @@ paths:
             - workspace
         required: true
         description: The favorite type.
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/parameters/1'
     delete:
       summary: Delete Multiple Favorites
@@ -2083,8 +2111,21 @@ paths:
           type: number
         required: true
         description: Favorite Id, e.g., sheet Id, report Id.
-      - $ref: '#/paths/~1contacts/parameters/0'
-      - $ref: '#/paths/~1favorites/parameters/1'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
+#      - $ref: '#/paths/~1favorites/parameters/1'
+      - name: x-smar-sc-actor-id
+        description: |
+          UserId of the user
+        in: header
+        schema:
+          type: string
+          example: 100012
     delete:
       summary: Delete Favorite
       description: >-
@@ -2301,7 +2342,13 @@ paths:
                   #/paths/~1folders~1%7BfolderId%7D/get/responses/default/content/application~1json/schema
   /folders/{folderId}/copy:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1folders~1%7BfolderId%7D/parameters/1'
     post:
       summary: Copy Folder
@@ -2415,7 +2462,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /folders/{folderId}/folders:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1folders~1%7BfolderId%7D/parameters/1'
     get:
       summary: List Folders
@@ -2430,8 +2483,22 @@ paths:
             - READ_SHEETS
       operationId: list-folders
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -2503,7 +2570,13 @@ paths:
                   #/paths/~1folders~1%7BfolderId%7D~1folders/get/responses/default/content/application~1json/schema
   /folders/{folderId}/move:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1folders~1%7BfolderId%7D/parameters/1'
     post:
       summary: Move Folder
@@ -2544,7 +2617,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /folders/{folderId}/sheets:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1folders~1%7BfolderId%7D/parameters/1'
     post:
       summary: Create Sheet in Folder
@@ -2724,7 +2803,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /folders/{folderId}/sheets/import:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1folders~1%7BfolderId%7D/parameters/1'
     post:
       summary: Import Sheet into Folder
@@ -2918,10 +3003,24 @@ paths:
         - OAuth2:
             - READ_USERS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/paths/~1contacts/get/parameters/1'
         - $ref: '#/paths/~1contacts/get/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -3232,7 +3331,13 @@ paths:
           $ref: '#/paths/~1contacts/get/responses/404'
   /groups/{groupId}/members:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D/parameters/1'
     post:
       operationId: add-group-members
@@ -3316,7 +3421,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /groups/{groupId}/members/{userId}:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D/parameters/1'
       - name: userId
         description: User Id
@@ -3375,8 +3486,22 @@ paths:
             - READ_SHEETS
       operationId: home-list-folders
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -3445,7 +3570,13 @@ paths:
                   #/paths/~1home~1folders/get/responses/default/content/application~1json/schema
   /imageurls:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/post/parameters/0'
     post:
       operationId: listImageUrls
@@ -3596,7 +3727,14 @@ paths:
               - linkInFromCellDetails
               - linksOutToCellsDetails
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - name: level
           in: query
           required: false
@@ -3638,7 +3776,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /reports/{reportId}/emails:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/3'
     post:
       summary: Send report via email
@@ -3685,7 +3829,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /reports/{reportId}/publish:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/3'
     get:
       summary: Gets a Report's publish settings
@@ -3833,7 +3983,13 @@ paths:
                   #/paths/~1reports~1%7BreportId%7D~1publish/get/responses/default/content/application~1json/schema
   /reports/{reportId}/shares:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/3'
     post:
       summary: Share Report
@@ -4009,8 +4165,22 @@ paths:
             enum:
               - ITEM
               - WORKSPACE
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -4049,7 +4219,13 @@ paths:
         required: true
         description: Share Id.
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Report Share
       description: Gets the share specified in the URL.
@@ -4325,7 +4501,13 @@ paths:
   /sheets:
     parameters:
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Sheets
       description: >
@@ -4356,10 +4538,25 @@ paths:
             enum:
               - sheetVersion
               - source
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+
         - $ref: '#/paths/~1contacts/get/parameters/1'
         - $ref: '#/paths/~1contacts/get/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -4525,7 +4722,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /sheets/{sheetId}:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
     get:
       summary: Get Sheet
@@ -4643,7 +4846,14 @@ paths:
             type: integer
             default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - name: paperSize
           in: query
           required: false
@@ -4842,7 +5052,13 @@ paths:
   /sheets/{sheetId}/attachments:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Attachments
       description: >
@@ -4856,9 +5072,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+        #        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
       responses:
         '200':
           description: OK
@@ -4981,7 +5211,13 @@ paths:
         description: ID of the attachment
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Attachment
       description: >
@@ -5024,9 +5260,14 @@ paths:
   /sheets/{sheetId}/attachments/{attachmentId}/versions:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: >-
-          #/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1
-      - $ref: '#/paths/~1contacts/parameters/0'
+      - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Versions
       description: >
@@ -5040,9 +5281,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -5136,7 +5391,13 @@ paths:
   /sheets/{sheetId}/automationrules:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       operationId: automationrules-list
       summary: List All Automation Rules
@@ -5162,8 +5423,22 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -5289,7 +5564,13 @@ paths:
         description: The Id of an Automation Rule
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get an Automation Rule
       description: |
@@ -5369,7 +5650,13 @@ paths:
   /sheets/{sheetId}/columns:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Columns
       description: Gets a list of all columns belonging to the sheet specified in the URL.
@@ -5385,9 +5672,23 @@ paths:
           schema:
             type: integer
             default: 1
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       tags:
         - columns
       security:
@@ -5667,7 +5968,13 @@ paths:
           type: number
         required: true
         description: Column Id in the sheet being accessed.
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Column
       description: >-
@@ -5830,7 +6137,13 @@ paths:
         description: ID of the comment
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get a comment
       description: |
@@ -5926,7 +6239,13 @@ paths:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: >-
           #/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/parameters/1
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Attach File or URL to Comment
       description: >
@@ -6002,7 +6321,13 @@ paths:
   /sheets/{sheetId}/copy:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/post/parameters/0'
       - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/1'
       - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/2'
@@ -6060,7 +6385,13 @@ paths:
   /sheets/{sheetId}/crosssheetreferences:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Create Cross-sheet References
       description: >-
@@ -6203,8 +6534,22 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -6233,7 +6578,13 @@ paths:
                   #/paths/~1sheets~1%7BsheetId%7D~1crosssheetreferences/post/responses/default/content/application~1json/schema
   /sheets/{sheetId}/crosssheetreferences/{crossSheetReferenceId}:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - name: crossSheetReferenceId
         in: path
@@ -6268,7 +6619,13 @@ paths:
   /sheets/{sheetId}/discussions:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Discussions
       description: >
@@ -6298,9 +6655,23 @@ paths:
             enum:
               - attachments
               - comments
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -6400,7 +6771,13 @@ paths:
         description: ID of the discussion
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Discussion
       description: |
@@ -6442,9 +6819,14 @@ paths:
   /sheets/{sheetId}/discussions/{discussionId}/attachments:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: >-
-          #/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1
-      - $ref: '#/paths/~1contacts/parameters/0'
+      - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Discussion Attachments
       description: |
@@ -6457,9 +6839,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -6480,9 +6876,14 @@ paths:
   /sheets/{sheetId}/discussions/{discussionId}/comments:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: >-
-          #/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1
-      - $ref: '#/paths/~1contacts/parameters/0'
+      - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Create a comment
       description: >
@@ -6542,7 +6943,13 @@ paths:
   /sheets/{sheetId}/emails:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/post/parameters/0'
     post:
       summary: Send Sheet via Email
@@ -6577,7 +6984,13 @@ paths:
   /sheets/{sheetId}/move:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/post/parameters/0'
     post:
       summary: Move Sheet
@@ -6639,12 +7052,32 @@ paths:
   /sheets/{sheetId}/proofs:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       summary: List Proofs
       description: |
         Gets a list of all proofs for a given sheet.
@@ -6680,7 +7113,13 @@ paths:
         description: Proof Id of the original proof
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       parameters:
         - name: include
@@ -6765,7 +7204,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Proof Attachments
       description: >
@@ -6779,9 +7224,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -6843,7 +7302,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Proof Discussions
       description: |
@@ -6857,9 +7322,23 @@ paths:
             - READ_SHEETS
       parameters:
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -6930,7 +7409,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Proof Request Actions
       description: >
@@ -6944,9 +7429,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -6982,7 +7481,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     delete:
       summary: Delete Proof Requests
       description: |
@@ -7066,7 +7571,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Proof Versions
       description: >
@@ -7080,9 +7591,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -7174,7 +7699,13 @@ paths:
   /sheets/{sheetId}/publish:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Sheet Publish Status
       description: |
@@ -7468,7 +7999,13 @@ paths:
   /sheets/{sheetId}/rows:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Add Rows
       description: >
@@ -7977,7 +8514,13 @@ paths:
   /sheets/{sheetId}/rows/emails:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Send Rows via Email
       description: Sends one or more rows via email.
@@ -8022,7 +8565,13 @@ paths:
   /sheets/{sheetId}/rows/copy:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Copy Rows to Another Sheet
       description: >-
@@ -8104,7 +8653,13 @@ paths:
   /sheets/{sheetId}/rows/move:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Move Rows to Another Sheet
       description: >-
@@ -8165,7 +8720,13 @@ paths:
           type: number
         required: true
         description: Row Id in the sheet being accessed.
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Row
       description: Gets the row specified in the URL.
@@ -8242,7 +8803,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Row Attachments
       description: >
@@ -8256,9 +8823,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -8344,7 +8925,13 @@ paths:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Add Image to Cell
       description: Uploads an image to the specified cell within a sheet.
@@ -8401,7 +8988,13 @@ paths:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Cell History
       description: |
@@ -8422,7 +9015,14 @@ paths:
               - columnType
               - objectValue
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D/get/parameters/7'
       tags:
         - cells
@@ -8471,7 +9071,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Discussions with a Row
       description: >
@@ -8489,9 +9095,23 @@ paths:
             - READ_SHEETS
       parameters:
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: OK
@@ -8563,7 +9183,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Create Proof
       description: |
@@ -8606,7 +9232,13 @@ paths:
   /sheets/{sheetId}/sentupdaterequests:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Sent Update Requests
       description: |
@@ -8628,8 +9260,22 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -8754,7 +9400,13 @@ paths:
         description: ID of the sent update request
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Sent Update Request
       description: |
@@ -8804,7 +9456,13 @@ paths:
   /sheets/{sheetId}/summary:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Sheet Summary
       description: >-
@@ -8868,7 +9526,13 @@ paths:
   /sheets/{sheetId}/summary/fields:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Summary Fields
       description: >-
@@ -8882,8 +9546,22 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/0'
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/1'
@@ -9201,7 +9879,13 @@ paths:
           type: number
         required: true
         description: Summary Field Id of the sheet summary field being accessed.
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     post:
       summary: Add Image to Sheet Summary
       description: Adds an image to the summary field.
@@ -9300,7 +9984,13 @@ paths:
   /sheets/{sheetId}/updaterequests:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: List Update Requests
       description: >
@@ -9325,8 +10015,22 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -9446,7 +10150,13 @@ paths:
         description: ID of the Update Request
         schema:
           type: string
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get an Update Request
       description: >
@@ -9558,7 +10268,13 @@ paths:
                   #/paths/~1sheets~1%7BsheetId%7D~1updaterequests~1%7BupdateRequestId%7D/put/responses/200/content/application~1json/schema/allOf/0
   /sheets/{sheetId}/shares:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
     post:
@@ -9646,8 +10362,22 @@ paths:
             - READ_SHEETS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -9684,7 +10414,13 @@ paths:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1'
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Sheet Share.
       description: Gets the share specified in the URL.
@@ -9781,7 +10517,13 @@ paths:
   /sheets/{sheetId}/sort:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1favorites/post/parameters/0'
     post:
       summary: Sort Rows in Sheet
@@ -9835,7 +10577,13 @@ paths:
   /sheets/{sheetId}/version:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Sheet Version
       description: |
@@ -9883,10 +10631,25 @@ paths:
             - READ_SIGHTS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+
         - $ref: '#/paths/~1contacts/get/parameters/1'
         - $ref: '#/paths/~1contacts/get/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -10083,7 +10846,13 @@ paths:
         - OAuth2:
             - CREATE_SIGHTS
       parameters:
-        - $ref: '#/paths/~1contacts/parameters/0'
+#        - $ref: '#/paths/~1contacts/parameters/0'
+        - name: Authorization
+          in: header
+          description: API Access Token used to authenticate requests to Smartsheet APIs.
+          schema:
+            type: string
+            example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
         - $ref: '#/paths/~1favorites/post/parameters/0'
         - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
       requestBody:
@@ -10145,7 +10914,13 @@ paths:
         - OAuth2:
             - CREATE_SIGHTS
       parameters:
-        - $ref: '#/paths/~1contacts/parameters/0'
+#        - $ref: '#/paths/~1contacts/parameters/0'
+        - name: Authorization
+          in: header
+          description: API Access Token used to authenticate requests to Smartsheet APIs.
+          schema:
+            type: string
+            example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
         - $ref: '#/paths/~1favorites/post/parameters/0'
         - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
       requestBody:
@@ -10178,7 +10953,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /sights/{sightId}/publish:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
     get:
       summary: Get Dashboard Publish Status
@@ -10282,7 +11063,13 @@ paths:
                   #/paths/~1sights~1%7BsightId%7D~1publish/get/responses/default/content/application~1json/schema
   /sights/{sightId}/shares:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
       - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
     post:
@@ -10362,8 +11149,22 @@ paths:
             - READ_SIGHTS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -10399,7 +11200,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
       - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Dashboard Share
       description: >-
@@ -10514,8 +11321,22 @@ paths:
             - READ_SHEETS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -10549,7 +11370,14 @@ paths:
             - READ_SHEETS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
         - name: level
           in: query
           required: false
@@ -10562,7 +11390,14 @@ paths:
               - 0
               - 1
             default: 0
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -10783,10 +11618,25 @@ paths:
           required: false
           schema:
             type: string
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+
         - $ref: '#/paths/~1contacts/get/parameters/1'
         - $ref: '#/paths/~1contacts/get/parameters/2'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -11186,7 +12036,13 @@ paths:
         - OAuth2:
             - ADMIN_USERS
       parameters:
-        - $ref: '#/paths/~1contacts/parameters/0'
+#        - $ref: '#/paths/~1contacts/parameters/0'
+        - name: Authorization
+          in: header
+          description: API Access Token used to authenticate requests to Smartsheet APIs.
+          schema:
+            type: string
+            example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
         - $ref: '#/paths/~1contacts/get/parameters/1'
       responses:
         '200':
@@ -11275,7 +12131,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /users/{userId}:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
     get:
       operationId: get-user
@@ -11522,7 +12384,13 @@ paths:
                   #/paths/~1users~1%7BuserId%7D/get/responses/default/content/application~1json/schema
   /users/{userId}/alternateemails:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
     get:
       operationId: list-alternate-emails
@@ -11647,7 +12515,13 @@ paths:
                   #/paths/~1users~1%7BuserId%7D~1alternateemails/get/responses/default/content/application~1json/schema
   /users/{userId}/alternateemails/{alternateEmailId}:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
       - name: alternateEmailId
         description: Alternate Email Id
@@ -11707,10 +12581,15 @@ paths:
                   #/paths/~1users~1%7BuserId%7D~1alternateemails~1%7BalternateEmailId%7D/get/responses/default/content/application~1json/schema
   /users/{userId}/alternateemails/{alternateEmailId}/makeprimary:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
-      - $ref: >-
-          #/paths/~1users~1%7BuserId%7D~1alternateemails~1%7BalternateEmailId%7D/parameters/2
+      - $ref: '#/paths/~1users~1%7BuserId%7D~1alternateemails~1%7BalternateEmailId%7D/parameters/2'
     post:
       operationId: promote-alternate-email
       summary: Make Alternate Email Primary
@@ -11758,7 +12637,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /users/{userId}/deactivate:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
     post:
       operationId: deactivate-user
@@ -11808,7 +12693,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /users/{userId}/profileimage:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
     post:
       operationId: update-user-profile-image
@@ -11880,7 +12771,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /users/{userId}/reactivate:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2'
     post:
       operationId: reactivate-user
@@ -11947,8 +12844,22 @@ paths:
         - OAuth2:
             - ADMIN_WEBHOOKS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -12332,7 +13243,13 @@ paths:
                       #/paths/~1webhooks~1%7BwebhookId%7D/put/responses/200/content/application~1json/schema/allOf/0
   /webhooks/{webhookId}/resetSharedSecret:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1webhooks~1%7BwebhookId%7D/parameters/1'
     post:
       summary: Reset Shared Secret
@@ -12370,7 +13287,13 @@ paths:
                             type: string
   /workspaces:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
     get:
       summary: List Workspaces
@@ -12385,8 +13308,22 @@ paths:
             - READ_SHEETS
       operationId: list-workspaces
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -12594,7 +13531,13 @@ paths:
                   #/paths/~1workspaces~1%7BworkspaceId%7D/get/responses/default/content/application~1json/schema
   /workspaces/{workspaceId}/copy:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     post:
       summary: Copy Workspace
@@ -12637,7 +13580,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /workspaces/{workspaceId}/folders:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     get:
       summary: Get Workspace folders
@@ -12650,8 +13599,22 @@ paths:
             - READ_SHEETS
       operationId: get-workspace-folders
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
       responses:
         '200':
@@ -12728,7 +13691,13 @@ paths:
                   #/paths/~1workspaces~1%7BworkspaceId%7D~1folders/get/responses/default/content/application~1json/schema
   /workspaces/{workspaceId}/shares:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     post:
@@ -12815,9 +13784,23 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1contacts/get/parameters/3'
+#        - $ref: '#/paths/~1contacts/get/parameters/3'
+        - name: page
+          in: query
+          required: false
+          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
+          schema:
+            type: number
+            default: 1
         - $ref: '#/paths/~1contacts/get/parameters/4'
-        - $ref: '#/paths/~1contacts/get/parameters/0'
+#        - $ref: '#/paths/~1contacts/get/parameters/0'
+        - name: includeAll
+          in: query
+          required: false
+          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: IndexResult object containing an array of Share objects.
@@ -12845,7 +13828,13 @@ paths:
     parameters:
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
       - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1'
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
     get:
       summary: Get Workspace Share
       description: Gets the share specified in the URL.
@@ -12951,7 +13940,13 @@ paths:
                   #/paths/~1workspaces~1%7BworkspaceId%7D~1shares~1%7BshareId%7D/get/responses/default/content/application~1json/schema
   /workspaces/{workspaceId}/sheets:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     post:
       summary: Create Sheet in Workspace
@@ -13009,7 +14004,13 @@ paths:
                 $ref: '#/components/schemas/BulkItemFailure/properties/error'
   /workspaces/{workspaceId}/sheets/import:
     parameters:
-      - $ref: '#/paths/~1contacts/parameters/0'
+#      - $ref: '#/paths/~1contacts/parameters/0'
+      - name: Authorization
+        in: header
+        description: API Access Token used to authenticate requests to Smartsheet APIs.
+        schema:
+          type: string
+          example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     post:
       summary: Import Sheet into Workspace
