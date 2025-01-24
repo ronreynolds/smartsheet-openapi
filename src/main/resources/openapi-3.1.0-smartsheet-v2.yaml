@@ -1981,11 +1981,10 @@ paths:
         - OAuth2:
             - ADMIN_WORKSPACES
       parameters:
+        # #/paths/~1favorites/post/parameters/0
         - name: Content-Type
           in: header
-          description: >
-            Required for POST and PUT requests. Defines the structure for the
-            request body.
+          description: Required for POST and PUT requests. Defines the structure for the request body.
           schema:
             type: string
             default: application/json
@@ -2533,7 +2532,13 @@ paths:
         - OAuth2:
             - ADMIN_WORKSPACES
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/1'
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/2'
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/3'
@@ -3661,19 +3666,15 @@ paths:
       - $ref: '#/paths/~1contacts/parameters/0'
       - name: Accept
         in: header
-        description: >-
-          The Accept request-header field can be used to specify certain media
-          types which are acceptable for the response.
+        description: The Accept request-header field can be used to specify certain media types which are acceptable for the response.
         schema:
           type: string
         required: false
+      # #/paths/~1reports~1%7BreportId%7D/parameters/2
       - name: accessApiLevel
         in: query
         required: false
-        description: >
-          Allows COMMENTER access for inputs and return values. For
-          backwards-compatibility, VIEWER is the default. For example, to see
-          whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
         schema:
           type: number
           default: 0
@@ -4218,7 +4219,14 @@ paths:
           type: string
         required: true
         description: Share Id.
-      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+      - name: accessApiLevel
+        in: query
+        required: false
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        schema:
+          type: number
+          default: 0
 #      - $ref: '#/paths/~1contacts/parameters/0'
       - name: Authorization
         in: header
@@ -4619,7 +4627,13 @@ paths:
         - OAuth2:
             - CREATE_SHEETS
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets/post/parameters/1'
       requestBody:
         description: Sheet to create.
@@ -4736,7 +4750,14 @@ paths:
       operationId: getSheet
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/1'
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
         - name: include
           in: query
           required: false
@@ -6328,7 +6349,13 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1favorites/post/parameters/0'
+#      - $ref: '#/paths/~1favorites/post/parameters/0'
+      - name: Content-Type
+        in: header
+        description: Required for POST and PUT requests. Defines the structure for the request body.
+        schema:
+          type: string
+          default: application/json
       - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/1'
       - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/2'
     post:
@@ -6950,7 +6977,13 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1favorites/post/parameters/0'
+#      - $ref: '#/paths/~1favorites/post/parameters/0'
+      - name: Content-Type
+        in: header
+        description: Required for POST and PUT requests. Defines the structure for the request body.
+        schema:
+          type: string
+          default: application/json
     post:
       summary: Send Sheet via Email
       description: >-
@@ -6991,7 +7024,13 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1favorites/post/parameters/0'
+#      - $ref: '#/paths/~1favorites/post/parameters/0'
+      - name: Content-Type
+        in: header
+        description: Required for POST and PUT requests. Defines the structure for the request body.
+        schema:
+          type: string
+          default: application/json
     post:
       summary: Move Sheet
       description: >
@@ -8029,7 +8068,13 @@ paths:
             - WRITE_SHEETS
       parameters:
         - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - name: allowPartialSuccess
           in: query
           description: >-
@@ -8328,8 +8373,21 @@ paths:
         - OAuth2:
             - WRITE_SHEETS
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/2'
         - $ref: '#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3'
       requestBody:
@@ -8732,7 +8790,14 @@ paths:
       description: Gets the row specified in the URL.
       operationId: row-get
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
         - name: include
           in: query
           required: false
@@ -8943,7 +9008,13 @@ paths:
         - OAuth2:
             - WRITE_SHEETS
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0'
         - name: Content-Length
           in: header
@@ -9897,7 +9968,13 @@ paths:
         - OAuth2:
             - WRITE_SHEETS
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0'
         - $ref: >-
             #/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/2
@@ -10276,7 +10353,14 @@ paths:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
-      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+      - name: accessApiLevel
+        in: query
+        required: false
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        schema:
+          type: number
+          default: 0
     post:
       summary: Share Sheet
       description: Shares a sheet with the specified users and groups.
@@ -10413,7 +10497,14 @@ paths:
     parameters:
       - $ref: '#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0'
       - $ref: '#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1'
-      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+      - name: accessApiLevel
+        in: query
+        required: false
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        schema:
+          type: number
+          default: 0
 #      - $ref: '#/paths/~1contacts/parameters/0'
       - name: Authorization
         in: header
@@ -10524,7 +10615,13 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1favorites/post/parameters/0'
+#      - $ref: '#/paths/~1favorites/post/parameters/0'
+      - name: Content-Type
+        in: header
+        description: Required for POST and PUT requests. Defines the structure for the request body.
+        schema:
+          type: string
+          default: application/json
     post:
       summary: Sort Rows in Sheet
       description: Sorts the rows of a sheet, either in ascending or descending order.
@@ -10630,7 +10727,14 @@ paths:
         - OAuth2:
             - READ_SIGHTS
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
 #        - $ref: '#/paths/~1contacts/get/parameters/0'
         - name: includeAll
           in: query
@@ -10718,7 +10822,14 @@ paths:
       description: Gets the specified dashboard.
       operationId: get-sight
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
         - name: include
           in: query
           required: false
@@ -10771,7 +10882,13 @@ paths:
       operationId: update-sight
       parameters:
         - $ref: '#/paths/~1contacts/get/parameters/2'
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
       tags:
         - dashboards
       security:
@@ -10853,7 +10970,13 @@ paths:
           schema:
             type: string
             example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
       requestBody:
         content:
@@ -10921,7 +11044,13 @@ paths:
           schema:
             type: string
             example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
       requestBody:
         content:
@@ -11070,7 +11199,14 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+      - name: accessApiLevel
+        in: query
+        required: false
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        schema:
+          type: number
+          default: 0
       - $ref: '#/paths/~1sights~1%7BsightId%7D/parameters/1'
     post:
       summary: Share Dashboard
@@ -11320,7 +11456,14 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
 #        - $ref: '#/paths/~1contacts/get/parameters/0'
         - name: includeAll
           in: query
@@ -11369,7 +11512,14 @@ paths:
         - OAuth2:
             - READ_SHEETS
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
 #        - $ref: '#/paths/~1contacts/get/parameters/0'
         - name: includeAll
           in: query
@@ -13359,7 +13509,13 @@ paths:
         - OAuth2:
             - ADMIN_WORKSPACES
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - name: include
           in: query
           required: false
@@ -13446,7 +13602,14 @@ paths:
             - READ_SHEETS
       operationId: get-workspace
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
         - $ref: '#/paths/~1folders~1%7BfolderId%7D/get/parameters/0'
       responses:
         '200':
@@ -13550,7 +13713,13 @@ paths:
             - ADMIN_WORKSPACES
       operationId: copy-workspace
       parameters:
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1workspaces/post/parameters/1'
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/3'
       requestBody:
@@ -13698,7 +13867,14 @@ paths:
         schema:
           type: string
           example: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789
-      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+#      - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+      - name: accessApiLevel
+        in: query
+        required: false
+        description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+        schema:
+          type: number
+          default: 0
       - $ref: '#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1'
     post:
       summary: Share Workspace
@@ -13951,9 +14127,7 @@ paths:
     post:
       summary: Create Sheet in Workspace
       description: >
-        Creates a sheet from scratch or from the specified template at the
-        top-level of the specified workspace.
-
+        Creates a sheet from scratch or from the specified template at the top-level of the specified workspace.
         For subfolders, use Create Sheet in Folder.
       operationId: create-sheet-in-workspace
       tags:
@@ -13963,8 +14137,21 @@ paths:
         - OAuth2:
             - CREATE_SHEETS
       parameters:
-        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
-        - $ref: '#/paths/~1favorites/post/parameters/0'
+#        - $ref: '#/paths/~1reports~1%7BreportId%7D/parameters/2'
+        - name: accessApiLevel
+          in: query
+          required: false
+          description: Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
+          schema:
+            type: number
+            default: 0
+#        - $ref: '#/paths/~1favorites/post/parameters/0'
+        - name: Content-Type
+          in: header
+          description: Required for POST and PUT requests. Defines the structure for the request body.
+          schema:
+            type: string
+            default: application/json
         - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets/post/parameters/1'
       requestBody:
         description: Sheet to create.
@@ -13973,15 +14160,11 @@ paths:
           application/json:
             schema:
               oneOf:
-                - $ref: >-
-                    #/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0
-                - $ref: >-
-                    #/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1
+                - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0'
+                - $ref: '#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1'
       responses:
         '200':
-          description: >-
-            Result object containing a Sheet object for newly created sheet,
-            corresponding to what was specified in the request.
+          description: Result object containing a Sheet object for newly created sheet, corresponding to what was specified in the request.
           content:
             application/json:
               schema:

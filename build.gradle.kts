@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.openapi.generator").version("7.7.0")
+    id("org.openapi.generator").version("7.7.0") // latest as of 2024-07-02
     id("jacoco")
 }
 
