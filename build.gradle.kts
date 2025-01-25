@@ -14,8 +14,10 @@ val findBugsVersion         = "3.0.2"
 val guavaVersion            = "33.2.1-jre"
 val httpComponentsVersion   = "4.5.14"
 val jacocoVersion           = "0.8.10"
+val jacksonVersion          = "2.17.1"  // from build/generated/api/build.gradle
+val jakartaAnnotationVersion= "1.3.5"   // from build/generated/api/build.gradle
 val javaxAnnotationVersion  = "1.3.2"
-val jUnitJupiterVersion     = "5.9.2"
+val jUnitJupiterVersion     = "5.10.2"  // from build/generated/api/build.gradle
 val lombokVersion           = "1.18.32"
 val slf4jVersion            = "1.7.25"
 val buildDirectory          = layout.buildDirectory.get()
@@ -38,10 +40,18 @@ dependencies {
     // needed by openapi-generated code (javax.annotation.Generated, apache.http.*)
     implementation("javax.annotation:javax.annotation-api:$javaxAnnotationVersion")
     implementation("com.google.code.findbugs:jsr305:$findBugsVersion")    // javax.annotation.Nullable (not in javax-api)
+    implementation("org.apache.httpcomponents:httpmime:$httpComponentsVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion") {   // request-building (even with native client)
         exclude(group = "commons-logging", module = "commons-logging")
     }
-    implementation("org.apache.httpcomponents:httpmime:$httpComponentsVersion")
+    implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+//    // for com.fasterxml.jackson.dataformat.yaml.YAMLFactory
+//    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.1")
+    implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion")
 
     // Lombok dependencies
     compileOnly("org.projectlombok:lombok:$lombokVersion")
