@@ -1,0 +1,1304 @@
+    "/folders/{folderId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "name": "folderId",
+          "in": "path",
+          "schema": {
+            "type": "number"
+          },
+          "required": true,
+          "description": "Folder Id where you can create sheets, sights, reports, templates, and other folders."
+        }
+      ],
+      "get": {
+        "summary": "Get Folder",
+        "description": "Gets a Folder object.",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "operationId": "get-folder",
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "A comma-separated list of optional elements to include in the response:\n  * **source** - adds the Source object indicating which object the folder\nwas created from, if any\n  * **distributionLink**\n  * **ownerInfo**\n  * **sheetVersion**\n  * **permalinks**\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "source",
+                "distributionLink",
+                "ownerInfo",
+                "sheetVersion",
+                "permalinks"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single Folder object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder/properties/folders/items"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderId} \\\n-H \" Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Sample 1: Omit 'include' parameter\nFolder folder = smartsheet.FolderResources.GetFolder(\n  7116448184199044,           // long folderId\n  null                        // IEnumerable<FolderInclusion> include\n);\n\n// Sample 2: Specify 'include' parameter with value of \"SOURCE\"\nFolder folder = smartsheet.FolderResources.GetFolder(\n  7116448184199044,           // long folderId\n  new FolderInclusion[] {\n    FolderInclusion.SOURCE }\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Sample 1: Omit 'include' parameter\nFolder folder = smartsheet.folderResources().getFolder(\n        7116448184199044L,       // long folderId\n        null)                    // EnumSet<SourceInclusion> includes\n        );\n\n// Sample 2: Specify 'include' parameter with value of \"SOURCE\"\nFolder folder = smartsheet.folderResources().getFolder(\n        7116448184199044L,       // long folderId\n        EnumSet.of(SourceInclusion.SOURCE))\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  id: 7116448184199044 // Id of Folder\n};\n\n// Get folder\nsmartsheet.folders.getFolder(options)\n  .then(function(folder) {\n    console.log(folder);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: Get folder\nfolder = smartsheet_client.Folders.get_folder(\n  7116448184199044)       # folder_id\n\n# Sample 2: Include source\nresponse = smartsheet_client.Folders.get_folder(\n  7116448184199044,       # folder_id\n  include=source)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "folder = smartsheet.folders.get(\n  folder_id: 7116448184199044\n)\n"
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete Folder",
+        "description": "Deletes a folder.",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "operationId": "delete-folder",
+        "responses": {
+          "200": {
+            "description": "Returns Result object\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderId} \\\n-H \" Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-X DELETE\n"
+          },
+          {
+            "lang": "C#",
+            "source": "smartsheet.FolderResources.DeleteFolder(\n  965780272637828                 // long folderId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "smartsheet.folderResources().deleteFolder(\n        965780272637828L         // long folderId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  id: 965780272637828 // Id of Folder\n };\n\n// Delete folder\nsmartsheet.folders.deleteFolder(options)\n  .then(function(results) {\n    console.log(results);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "smartsheet_client.Folders.delete_folder(\n  7960873114331012)       # folder_id\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "smartsheet.folders.delete(\n  folder_id: 2252168947361668\n)\n"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update Folder",
+        "description": "Updates a folder.",
+        "operationId": "update-folder",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/paths/~1folders~1%7BfolderId%7D/get/responses/200/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing the modified Folder object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "allOf": [
+                        {
+                          "type": "object",
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "message": {
+                                  "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
+                                  "type": "string",
+                                  "enum": [
+                                    "PARTIAL_SUCCESS",
+                                    "SUCCESS"
+                                  ],
+                                  "example": "SUCCESS"
+                                },
+                                "resultCode": {
+                                  "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
+                                  "type": "number",
+                                  "enum": [
+                                    0,
+                                    3
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "properties": {
+                            "failedItems": {
+                              "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/Result/allOf/0/properties/failedItems/items"
+                              },
+                              "nullable": true
+                            }
+                          }
+                        }
+                      ],
+                      "properties": {
+                        "version": {
+                          "description": "New version of the sheet. Applicable only for operations which update sheet data.",
+                          "type": "number",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/paths/~1folders~1%7BfolderId%7D/get/responses/200/content/application~1json/schema"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderId} \\\n-H \" Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X PUT \\\n-d '{\"name\": \"New name for folder\"}'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Set folder name\nFolder folderSpecification = new Folder\n{\n  Id = 7960873114331012,\n  Name = \"New name for folder\"\n};\n\n// Update folder\nFolder updatedFolder = smartsheet.FolderResources.UpdateFolder(folderSpecification);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Set folder name and id of the folder to be updated\nFolder folderSpecification = new Folder(7960873114331012L);\nfolderSpecification.setName(\"New name for folder\");\n\n// Update folder\nFolder updatedFolder = smartsheet.folderResources().updateFolder(folderSpecification);\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set folder name\nvar folder = {\n  \"name\": \"New name for folder\"\n};\n\n// Set options\nvar options = {\n  id: 7960873114331012, // Id of Folder\n  body: folder\n};\n\n// Update folder\nsmartsheet.folders.updateFolder(options)\n  .then(function(updatedFolder) {\n    console.log(updatedFolder);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "updated_folder = smartsheet_client.Folders.update_folder(\n  7960873114331012,       # folder_id\n  'New name for folder')\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Set options\nbody = {\n  name: 'New name for folder'\n}\n\n# Update folder\nresponse = smartsheet.folders.update(\n  folder_id: 7960873114331012,\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/folders/{folderId}/copy": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1folders~1%7BfolderId%7D/parameters/1"
+        }
+      ],
+      "post": {
+        "summary": "Copy Folder",
+        "description": "Copies a folder.",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "operationId": "copy-folder",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "A comma-separated list of elements to copy:\n  * **attachments**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients** -- includes notification recipients, must also include\nrules when using this attribute\n  * **rules** -- includes notifications and workflow rules\n  * **shares** |\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "attachments",
+                "cellLinks",
+                "data",
+                "discussions",
+                "filters",
+                "forms",
+                "ruleRecipients",
+                "rules",
+                "shares"
+              ]
+            }
+          },
+          {
+            "name": "exclude",
+            "in": "query",
+            "required": false,
+            "description": "When specified with a value of **sheetHyperlinks**, excludes this category from the response",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "sheetHyperlinks"
+              ]
+            }
+          },
+          {
+            "name": "skipRemap",
+            "in": "query",
+            "description": "A comma-separated list of references to NOT re-map for the newly created folder.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "cellLinks",
+                "reports",
+                "sheetHyperlinks",
+                "sights"
+              ]
+            },
+            "required": false
+          }
+        ],
+        "requestBody": {
+          "description": "New folder name.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "destinationId": {
+                        "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
+                        "type": "number"
+                      },
+                      "destinationType": {
+                        "description": "Type of the destination container.",
+                        "type": "string",
+                        "nullable": true,
+                        "enum": [
+                          "folder",
+                          "home",
+                          "workspace"
+                        ]
+                      },
+                      "newName": {
+                        "description": "Name of the newly created object (when creating a copy of a dashboard, folder, sheet, or workspace). This attribute is not supported for \"move\" operations.",
+                        "type": "string"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Folder object for the new folder destination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl 'https://api.smartsheet.com/2.0/folders/{folderId}/copy?include=data' \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-d '{\n  \"destinationType\": \"folder\",\n  \"destinationId\": 7960873114331012,\n  \"newName\": \"newFolderName\"\n}' \\\n-X POST\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination {\n  DestinationId = 7960873114331012,\n  DestinationType = DestinationType.FOLDER,\n  NewName = \"newFolderName\"\n};\n\n// Sample 1: Omit 'include' and 'skipRemap' parameters\nFolder folder = smartsheet.FolderResources.CopyFolder(\n  2252168947361668,               // long folderId\n  destination,\n  null,                           // IEnumerable<FolderCopyInclusion> include\n  null                            // IEnumerable<FolderRemapExclusion> skipRemap\n );\n\n// Sample 2: Specify 'include' parameter with value of \"DATA\", and 'skipRemap' parameter with value of \"CELL_LINKS\"\nFolder folder = smartsheet.FolderResources.CopyFolder(\n  2252168947361668,               // long folderId\n  destination,\n  new FolderCopyInclusion[] {\n    FolderCopyInclusion.DATA },\n  new FolderRemapExclusion[] {\n    FolderRemapExclusion.CELL_LINKS }\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination()\n        .setDestinationType(DestinationType.FOLDER)\n        .setDestinationId(7960873114331012L)\n        .setNewName(\"newFolderName\");\n\n// Sample 1: Omit 'include' and 'skipRemap' parameters\nFolder folder = smartsheet.folderResources().copyFolder(\n        2252168947361668L,                      // long folderId\n        destination,\n        null,                                   // EnumSet<FolderCopyInclusion> includes\n        null                                    // EnumSet<FolderRemapExclusion> skipRemap\n        );\n\n// Sample 2: Specify 'include' parameter with value of \"DATA\", and 'skipRemap' parameter with value of \"CELLLINKS\"\nFolder folder = smartsheet.folderResources().copyFolder(\n        2252168947361668L,                      // long folderId\n        destination,\n        EnumSet.of(FolderCopyInclusion.DATA),\n        EnumSet.of(FolderRemapExclusion.CELLLINKS)\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Specify destination information\nvar body = {\n  destinationType: \"folder\",\n  destinationId: 7960873114331012,\n  newName: \"Folder Copy\"\n};\n\n// Specify elements to copy\nvar params = {\n  include: \"data,discussions\",\n  skipRemap: \"cellLinks\"\n};\n\n// Set options\nvar options = {\n  folderId: 2252168947361668,\n  body: body,\n  queryParameters: params\n };\n\n// Copy folder\nsmartsheet.folders.copyFolder(options)\n  .then(function(folder) {\n    console.log(folder);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: Copy folder\nresponse = smartsheet_client.Folders.copy_folder(\n  2252168947361668,                           # folder_id\n  smartsheet.models.ContainerDestination({\n    'destination_id': 7960873114331012,\n    'destination_type': 'folder',\n    'new_name': 'newFolderName'\n  })\n)\n\n# Sample 2: Include filters\n response = smartsheet_client.Folders.copy_folder(\n  2252168947361668,                           # folder_id\n  include=filters,\n  smartsheet.models.ContainerDestination({\n    'destination_id': 7960873114331012,\n    'destination_type': 'folder',\n    'new_name': 'newFolderName'\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify destination information\nbody = {\n  destination_type: 'folder',\n  destination_id: 7960873114331012,\n  new_name: 'newFolderName'\n }\n\n# Copy folder\nresponse = smartsheet.folders.copy(\n  folder_id: 2252168947361668,\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/folders/{folderId}/folders": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1folders~1%7BfolderId%7D/parameters/1"
+        }
+      ],
+      "get": {
+        "summary": "List Folders",
+        "description": "Gets a list of folders in a given folder. The list contains an abbreviated Folder object for each folder.\n",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "operationId": "list-folders",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/3"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IndexResult object containing an array of Folder objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Folder/properties/folders/items"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderId}/folders \\ \n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\ \n-H \"Content-Type: application/json\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Omit pagination parameters\nPaginatedResult<Folder> folders = smartsheet.FolderResources.ListFolders(\n  5107651446105988,           // long folderId\n  null                        // PaginationParameters\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Omit pagination parameters\nPagedResult<Folder> folders = smartsheet.folderResources().listFolders(\n        510765144610598L,               // long parentFolderId\n        null                             // PaginationParameters\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  folderId: 5107651446105988\n};\n \n// List folders in another folder\nsmartsheet.folders.listChildFolders(options)\n  .then(function(folderList) {\n    console.log(folderList);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: List all\nresponse = smartsheet_client.Folders.list_folders(\n  5107651446105988,       # folder_id\n  include_all=True)\nfolders = response.data\n \n# Sample 2: Paginate the list\nresponse = smartsheet_client.Folders.list_folders(\n  5107651446105988,       # folder_id\n  page_size=5,\n  page=1)\npages = response.total_pages\nfolders = response.data\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "response = smartsheet.folders.list_in_folder(\n  folder_id: 5107651446105988\n )\nfolders = response[:data]\n"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Create Folder",
+        "description": "Creates a new folder.\n",
+        "operationId": "create-folder-folder",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/1"
+          },
+          {
+            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/2"
+          },
+          {
+            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/3"
+          }
+        ],
+        "requestBody": {
+          "description": "Folder to create.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Folder object for newly created folder.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "oneOf": [
+                            {
+                              "$ref": "#/paths/~1folders~1%7BfolderId%7D~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D~1folders/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderid}/folders \\ \n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\ \n-H \"Content-Type: application/json\" \\\n-X POST \\\n-d '{\"name\": \"New folder\"}'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Set folder name\nFolder folderSpecification = new Folder { Name = \"New folder\" };\n\n// Create folder in another folder\nFolder newFolder = smartsheet.FolderResources.CreateFolder(\n  7960873114331012,               // long destinationFolderId\n  folderSpecification\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Set folder name\nFolder folderSpecification = new Folder();\nfolderSpecification.setName(\"New Folder\");\n\n// Create folder in another folder\nFolder newFolder = smartsheet.folderResources().createFolder(\n        7960873114331012L,       // long destinationFolderId\n        folderSpecification\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set folder name\nvar folder = {\n  \"name\": \"New folder\"\n };\n\n// Set options\nvar options = {\n  folderId: 7960873114331012,\n  body: folder\n  };\n\n// Create folder in another folder\nsmartsheet.folders.createChildFolder(options)\n  .then(function(newFolder) {\n    console.log(newFolder);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: Create folder\nresponse = smartsheet_client.Folders.create_folder_in_folder(\n  7960873114331012,       # folder_id\n  'New folder')\n\n# Sample 2: Include filters\nresponse = smartsheet_client.Folders.create_folder_in_folder(\n  7960873114331012,       # folder_id\n  include=filters,\n  'New folder')\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "body = {\n  name: 'New Folder'\n}\n\nnew_folder = smartsheet.folders.create_in_folder(\n  folder_id: 7960873114331012,\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/folders/{folderId}/move": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1folders~1%7BfolderId%7D/parameters/1"
+        }
+      ],
+      "post": {
+        "summary": "Move Folder",
+        "description": "Moves a folder.",
+        "tags": [
+          "folders"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "operationId": "move-folder",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "description": "New folder destination.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Folder object for the new folder destination.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D~1move/post/requestBody/content/application~1json/schema/oneOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/folders/{folderId}/move \\\n -H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n -H \"Content-Type: application/json\" \\\n-d '{\n  \"destinationType\": \"folder\",\n  \"destinationId\": 7960873114331012\n}' \\\n-X POST\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination {\n  DestinationId = 7960873114331012,       // long destinationFolderId\n  DestinationType = DestinationType.FOLDER,\n};\n\n// Move folder\nFolder folder = smartsheet.FolderResources.MoveFolder(\n  4509918431602564,               // long folderId\n  destination\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination()\n        .setDestinationType(DestinationType.FOLDER)\n        .setDestinationId(7960873114331012L);\n \n// Move folder\nFolder folder = smartsheet.folderResources().moveFolder(\n        4509918431602564L,                         // long folderId\n        destination\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set destination information\nvar body = {\n  destinationType: \"folder\",\n  destinationId: 7960873114331012\n};\n\n// Set options\nvar options = {\n  folderId: 4509918431602564,\n  body: body\n};\n\n// Move folder\nsmartsheet.folders.moveFolder(options)\n  .then(function(folder) {\n    console.log(folder);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "folder = smartsheet_client.Folders.move_folder(\n  4509918431602564,                           # folder_id to be moved\n  smartsheet.models.ContainerDestination({\n    'destination_id': 7960873114331012,     # destination folder_id\n    'destination_type': 'folder'\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify destination information\nbody = {\n  destination_type: 'workspace',\n  destination_id: 7960873114331012\n}\n\n# Move folder\nresponse = smartsheet.folders.move(\n  folder_id: 4509918431602564,\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/folders/{folderId}/sheets": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1folders~1%7BfolderId%7D/parameters/1"
+        }
+      ],
+      "post": {
+        "summary": "Create Sheet in Folder",
+        "description": "Creates a sheet from scratch or from the specified template in the specified folder.\n",
+        "operationId": "create-sheet-in-folder",
+        "tags": [
+          "sheets"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "CREATE_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "Additional parameter to create a sheet from template.\nA comma-separated list of elements to copy from the template.\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "attachments",
+                "cellLinks",
+                "data",
+                "discussions",
+                "filters",
+                "forms",
+                "ruleRecipients",
+                "rules"
+              ]
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Sheet to create.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "description": "Sheet to create from scratch using the specified columns.",
+                    "properties": {
+                      "columns": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "autoNumberFormat": {
+                              "$ref": "#/components/schemas/Column/properties/autoNumberFormat"
+                            },
+                            "contactOptions": {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/components/schemas/Column/properties/contactOptions/items"
+                              },
+                              "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
+                            },
+                            "options": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Array of the options available for the column."
+                            },
+                            "primary": {
+                              "type": "boolean",
+                              "description": "Returned only if the column is the Primary Column (value = **true**)."
+                            },
+                            "symbol": {
+                              "type": "string",
+                              "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+                            },
+                            "systemColumnType": {
+                              "type": "string",
+                              "enum": [
+                                "AUTO_NUMBER",
+                                "CREATED_BY",
+                                "CREATED_DATE",
+                                "MODIFIED_BY",
+                                "MODIFIED_DATE"
+                              ],
+                              "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
+                            },
+                            "title": {
+                              "type": "string",
+                              "description": "Column title."
+                            },
+                            "type": {
+                              "type": "string",
+                              "enum": [
+                                "ABSTRACT_DATETIME",
+                                "CHECKBOX",
+                                "CONTACT_LIST",
+                                "DATE",
+                                "DATETIME",
+                                "DURATION",
+                                "MULTI_CONTACT_LIST",
+                                "MULTI_PICKLIST",
+                                "PICKLIST",
+                                "PREDECESSOR",
+                                "TEXT_NUMBER"
+                              ],
+                              "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+                            },
+                            "width": {
+                              "type": "number",
+                              "description": "Display width of the column in pixels."
+                            }
+                          }
+                        }
+                      },
+                      "name": {
+                        "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/name"
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "description": "Sheet to create from template.",
+                    "properties": {
+                      "fromId": {
+                        "description": "Template Id from which to create the sheet.",
+                        "type": "number"
+                      },
+                      "name": {
+                        "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/name"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Sheet object for newly created sheet, corresponding to what was specified in the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "oneOf": [
+                            {
+                              "type": "object",
+                              "description": "Sheet created from scratch using the specified columns.",
+                              "properties": {
+                                "accessLevel": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/accessLevel"
+                                },
+                                "columns": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/columns"
+                                },
+                                "id": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/id"
+                                },
+                                "name": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/name"
+                                },
+                                "permalink": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/permalink"
+                                }
+                              }
+                            },
+                            {
+                              "type": "object",
+                              "description": "Sheet created from template.",
+                              "properties": {
+                                "accessLevel": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/accessLevel"
+                                },
+                                "id": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/id"
+                                },
+                                "name": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/name"
+                                },
+                                "permalink": {
+                                  "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/permalink"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "// Sample 1: Create sheet in folder\ncurl https://api.smartsheet.com/2.0/folders/{folderId}/sheets \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X POST \\\n-d '{\"name\":\"newsheet\",\"columns\":[{\"title\":\"Favorite\",\"type\":\"CHECKBOX\",\"symbol\":\"STAR\"}, {\"title\":\"Primary Column\", \"primary\":true,\"type\":\"TEXT_NUMBER\"}]}'\n\n// Sample 2: Create sheet in folder from template\n curl 'https://api.smartsheet.com/2.0/folders/{folderId}/sheets?include=data,attachments,discussions' \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X POST \\\n-d '{\"name\":\"newsheet\", \"fromId\": 7679398137620356}'\n\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Sample 1: Create sheet in folder\n// Specify properties of the first column\nColumn columnA = new Column\n{\n  Title = \"Favorite\",\n  Primary = false,\n  Type = ColumnType.CHECKBOX,\n  Symbol = Symbol.STAR\n };\n\n// Specify properties of the second column\nColumn columnB = new Column\n{\n  Title = \"Primary Column\",\n  Primary = true,\n  Type = ColumnType.TEXT_NUMBER\n };\n\n// Create sheet in folder (specifying the 2 columns to include in the sheet)\nSheet newSheet = smartsheet.FolderResources.SheetResources.CreateSheet(\n  3734419270854532,                   // long folderId\n  new Sheet\n    {\n      Name = \"new sheet title\",\n      Columns = new Column[] { columnA, columnB }\n    }\n);\n\n// Sample 2: Create sheet in folder from template\n// Specify name for the sheet and Id of the template\nSheet sheetSpecification = new Sheet\n{\n  Name = \"new sheet title\",\n  FromId = 7679398137620356     // template Id\n};\n\n// Option 1: Omit 'include' parameter\nSheet newSheet = smartsheet.FolderResources.SheetResources.CreateSheetFromTemplate(\n  3734419270854532,               // long folderId\n  sheetSpecification,\n  null                            // IEnumerable<TemplateInclusion> include\n );\n\n// Option 2: Include ATTACHMENTS, DATA, and DISCUSSIONS\nSheet newSheet = smartsheet.FolderResources.SheetResources.CreateSheetFromTemplate(\n  3734419270854532,               // long folderId\n  sheetSpecification,\n  new TemplateInclusion[] {\n    TemplateInclusion.ATTACHMENTS,\n    TemplateInclusion.DATA,\n    TemplateInclusion.DISCUSSIONS }\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Sample 1: Create sheet in folder\n// Specify properties of the first column\nColumn columnA = new Column()\n        .setTitle(\"Favorite\")\n        .setType(ColumnType.CHECKBOX)\n        .setSymbol(Symbol.STAR);\n \n// Specify properties of the second column\nColumn columnB = new Column()\n        .setTitle(\"Primary Column\")\n        .setType(ColumnType.TEXT_NUMBER)\n        .setPrimary(true);\n\n// Create sheet in folder (specifying the 2 columns to include in the sheet)\nSheet newSheet = new Sheet();\n        newSheet.setName(\"new sheet title\");\n        newSheet.setColumns(Arrays.asList(columnA, columnB));\n\nsmartsheet.sheetResources().createSheetInFolder(\n        3734419270854532L,  // long folderId\n        newSheet\n        );\n\n // Sample 2: Create sheet in folder from template\n// Specify name for the sheet and Id of the template\nSheet sheet = new Sheet();\nsheet.setFromId(7679398137620356L);     // long templateId\nsheet.setName(\"newsheet\");\n\n// Omit 'include' parameter\nSheet results = smartsheet.sheetResources().createSheetInFolderFromTemplate(\n        3734419270854532L,                  // long folderId\n        sheet,\n        null                                // EnumSet<SheetTemplateInclusion> includes\n        );\n\n// Include ATTACHMENTS, DATA, and DISCUSSIONS\n Sheet results = smartsheet.sheetResources().createSheetInFolderFromTemplate(\n        3734419270854532L,                 // long folderId\n        sheet,\n        EnumSet.of(\n            SheetTemplateInclusion.ATTACHMENTS,\n            SheetTemplateInclusion.DATA,\n            SheetTemplateInclusion.DISCUSSIONS)\n        );\n\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Sample 1: Create sheet in folder\n// Specify sheet properties\n var sheet = {\n  \"name\": \"newsheet\",\n  \"columns\": [\n    {\n      \"title\": \"Favorite\",\n      \"type\": \"CHECKBOX\",\n      \"symbol\": \"STAR\"\n    },\n    {\n      \"title\": \"Primary Column\",\n      \"primary\": true,\n      \"type\": \"TEXT_NUMBER\"\n    }\n  ]\n};\n\n// Set options\nvar options = {\n  folderId: 3734419270854532,\n  body: sheet\n  };\n\n// Create sheet in folder\nsmartsheet.sheets.createSheetInFolder(options)\n  .then(function(newSheet) {\n    console.log(newSheet);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n\n// Sample 2: Create sheet in folder from template\n// Specify the directive\nvar sheet = {\n  \"name\": \"newsheet\",\n  \"fromId\": 7679398137620356\n};\n\n// Set options\nvar options = {\n  body: sheet,\n  folderId: 3734419270854532\n};\n\n// Create sheet from template in the specified folder\nsmartsheet.sheets.createSheetFromExisting(options)\n  .then(function(data) {\n    console.log(data);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: Create sheet in folder\nsheet_spec = smartsheet.models.Sheet({\n  'name': 'newsheet',\n  'columns': [{\n        'title': 'Favorite',\n        'type': 'CHECKBOX',\n        'symbol': 'STAR'\n      }, {\n        'title': 'Primary Column',\n        'primary': True,\n        'type': 'TEXT_NUMBER'\n      }\n  ]\n})\nresponse = smartsheet_client.Folders.create_sheet_in_folder(\n  3734419270854532,       # folder_id\n  sheet_spec)\nnew_sheet = response.result\n \n# Sample 2: Create sheet in folder from template\nresponse = smartsheet_client.Folders.create_sheet_in_folder_from_template(\n  3734419270854532,                   # folder_id\n  smartsheet.models.Sheet({\n    'name': 'newsheet',\n    'from_id': 7679398137620356       # template_id\n  })\n)\n\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Sample 1: Create sheet in folder\nbody = {\n  name: 'newsheet',\n  columns: [\n    {\n      title: 'Favorite',\n      type: 'CHECKBOX',\n      symbol: 'STAR',\n      width: 10\n    },\n    {\n      title: 'Primary Column',\n      type: 'TEXT_NUMBER',\n      primary: true\n    }\n  ]\n }\n\nresponse = smartsheet.sheets.create_in_folder(\n  folder_id: 3734419270854532,\n  body: body\n)\nnew_sheet = response[:result]\n\n# Sample 2: Create sheet in folder from template\nbody = {\n  name: 'newsheet',\n  from_id: 7679398137620356\n }\n\nresponse = smartsheet.sheets.create_in_folder_from_template(\n  folder_id: 3734419270854532,\n  body: body\n)\nnew_sheet = response[:result]\n"
+          }
+        ]
+      }
+    },
+    "/folders/{folderId}/sheets/import": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1folders~1%7BfolderId%7D/parameters/1"
+        }
+      ],
+      "post": {
+        "summary": "Import Sheet into Folder",
+        "description": "Imports CSV or XLSX data into a new sheet in the specified folder.\n\nNote the following:\n* Both sheetName and the file name must use ASCII characters.\n* The source data must be basic text. To include rich formula data, import and create a sheet first, and then use Update Rows. To work with images, see Cell Images.\n* XLS is not supported. You must use XLSX.\n* Hierarchical relationships between rows in an external file won't import.\n",
+        "operationId": "import-sheet-into-folder",
+        "tags": [
+          "import"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "CREATE_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Disposition",
+            "in": "header",
+            "description": "Should be equal to \"attachment\" to tell the API that a file is in the body of the POST request, followed by a semicolon, followed by **filename=** and the URL-encoded filename in quotes\n",
+            "schema": {
+              "type": "string",
+              "example": "attachment; filename=\"ProgressReport.docx\""
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "text/csv",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+              ]
+            }
+          },
+          {
+            "name": "sheetName",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Desired name of the sheet."
+          },
+          {
+            "name": "headerRowIndex",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            },
+            "required": false,
+            "description": "A zero-based integer indicating the row number to use for column names. Rows before this are omitted.\nIf not specified, the default values are Column1, Column2, etc.\n"
+          },
+          {
+            "name": "primaryColumnIndex",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "default": 0
+            },
+            "required": false,
+            "description": "A zero-based integer indicating the column to designate as primary.\n"
+          }
+        ],
+        "requestBody": {
+          "description": "Binary content for the CSV / XLSX file.",
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Sheet object for imported sheet.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "description": "Sheet imported from CSV / XLSX file.",
+                          "properties": {
+                            "accessLevel": {
+                              "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/accessLevel"
+                            },
+                            "id": {
+                              "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/id"
+                            },
+                            "name": {
+                              "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/name"
+                            },
+                            "type": {
+                              "description": "Container type. Has 'sheet' value for the imported sheet.",
+                              "type": "string"
+                            },
+                            "permalink": {
+                              "$ref": "#/components/schemas/Folder/properties/sheets/items/properties/permalink"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl  https://api.smartsheet.com/2.0/folders/{folderId}/sheets/import?sheetName=MarketingProgressReport&headerRowIndex=0&primaryColumnIndex=0 \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Disposition: attachment\" \\\n-H \"Content-Type: text/csv\" \\\n-X POST \\\n--data-binary @ProgressReport.csv\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Sheet sheet = smartsheet.FolderResources.SheetResources.ImportXlsSheet(\n  8999900887877508,       // folderId\n  \"D:/ProgressReport.xlsx\",\n  null,                   // sheetName defaults to file name unless specified\n  0,                      // headerRowIndex\n  null                    // primaryColumnIndex\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "Sheet sheet = smartsheet.sheetResources().importXlsxInFolder(\n        8999900887877508L,           // long folderId\n        \"D:/ProgressReport.xlsx\",\n        \"MarketingProgressReport\",\n        0,                          // headerRowIndex\n        0                           // primaryColumnIndex\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Sample 1: Import CSV into folder\n// Set options\nvar options = {\n  folderId: 8999900887877508,\n  queryParameters: {\n    sheetName: 'MarketingProgressReport'\n  },\n  path: \"D:/ProgressReport.csv\"\n};\n \n// Import CSV as sheet into folder\nsmartsheet.sheets.importCsvSheetIntoFolder(options)\n  .then(function(attachment) {\n    console.log(attachment);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n\n//Sample 2: Import XLSX into folder\n // Set options\nvar options = {\n  folderId: 8999900887877508,\n  queryParameters: {\n    sheetName: 'MarketingProgressReport'\n  },\n  path: \"D:/ProgressReport.xlsx\"\n};\n\n// Import XLSX as sheet into Folder\nsmartsheet.sheets.importXlsxSheetIntoFolder(options)\n  .then(function(attachment) {\n    console.log(attachment);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "imported_sheet = smartsheet_client.Folders.import_xlsx_sheet(\n  8999900887877508,           # folder_id\n  'D:/ProgressReport.xlsx',\n  'MarketingProgressReport',  # sheet_name\n  header_row_index=0\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Sample 1: Import from file into folder\nsmartsheet.sheets.import_from_file_into_folder(\n  folder_id: 8999900887877508,\n  file: sample_csv,\n  file_type: :csv,\n  file_length: sample_csv.size,\n  params: {sheetName: 'MarketingProgressReport', headerRowIndex: 0, primaryColumnIndex: 0})\n\n# Sample 2: Import from file path into folder\nsmartsheet.sheets.import_from_file_path_into_folder(\n  folder_id: 89999300887877508,\n  path: 'D:\\sample.csv',\n  file_type: :csv,\n  params: {sheetName: 'MarketingProgressReport', headerRowIndex: 0, primaryColumnIndex: 0})\n"
+          }
+        ]
+      }
+    },
+    "/folders/personal": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        }
+      ],
+      "get": {
+        "summary": "List Contents",
+        "description": "Gets a nested list of all Home objects shared to the user, including dashboards, folders, reports, sheets, and templates, as shown on the \"Home\" tab.",
+        "tags": [
+          "home"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "operationId": "list-home-contents",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1folders~1%7BfolderId%7D/get/parameters/0"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A single Home object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "All objects a user has access to, including dashboards, folders, reports, sheets, and templates.",
+                  "type": "object",
+                  "properties": {
+                    "folders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Folder/properties/folders/items"
+                      }
+                    },
+                    "reports": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Folder/properties/reports/items"
+                      }
+                    },
+                    "sheets": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Folder/properties/sheets/items"
+                      }
+                    },
+                    "sights": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Folder/properties/sights/items"
+                      }
+                    },
+                    "templates": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Folder/properties/templates/items"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl 'https://api.smartsheet.com/2.0/folders/personal' \\\n-H \" Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\""
+          },
+          {
+            "lang": "C#",
+            "source": "// Not implemented yet in the SDK"
+          },
+          {
+            "lang": "Python",
+            "source": "# Not implemented yet in the SDK\n"
+          }
+        ]
+      }
+    },

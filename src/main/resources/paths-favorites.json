@@ -1,0 +1,532 @@
+    "/favorites": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "name": "x-smar-sc-actor-id",
+          "description": "UserId of the user\n",
+          "in": "header",
+          "schema": {
+            "type": "string",
+            "example": 100012
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Favorites",
+        "description": "Gets a list of all of the user's favorite items.",
+        "operationId": "get-favorites",
+        "tags": [
+          "favorites"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/3"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/4"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "A comma-separated list of optional elements to include in the response.\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "directId",
+                "name"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IndexResult object containing an array of Favorite objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "objectId": {
+                                "description": "The Id of the favorited item. If type is template, only private sheet-type template Id is allowed.",
+                                "type": "number"
+                              },
+                              "type": {
+                                "type": "string",
+                                "enum": [
+                                  "folder",
+                                  "report",
+                                  "sheet",
+                                  "sight",
+                                  "template",
+                                  "workspace"
+                                ]
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/favorites \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Omit pagination parameters\nPaginatedResult<Favorite> results = smartsheet.FavoriteResources.ListFavorites(\n  null                // PaginationParameters\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Omit pagination parameters\nPagedResult<Favorite> results = smartsheet.favoriteResources().listFavorites(\n        null        // PaginationParameters\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "smartsheet.favorites.listFavorites()\n  .then(function(favoritesList) {\n    console.log(favoritesList);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: List All\nresponse = smartsheet_client.Favorites.list_favorites(include_all=True)\n faves = response.data\n\n# Sample 2: Paginate the list of favorites\nresponse = smartsheet_client.Favorites.list_favorites(\n  page_size=10,\n  page=1)\n pages = response.total_pages\nfaves = response.data\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "response = smartsheet.favorites.list\nlist = response[:data]\n"
+          }
+        ]
+      },
+      "post": {
+        "summary": "Add Favorites",
+        "description": "Adds one or more favorite items for the current user. This operation supports both single-object and bulk semantics. For more information, see Optional Bulk Operations.\nIf called with a single Favorite object, and that favorite already exists, error code 1129 is returned. If called with an array of Favorite objects, any objects specified in the array that are already marked as favorites are ignored and omitted from the response.\n",
+        "operationId": "add-favorite",
+        "tags": [
+          "favorites"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Required for POST and PUT requests. Defines the structure for the request body.\n",
+            "schema": {
+              "type": "string",
+              "default": "application/json"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "A list of favorites to be added.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing either a single Favorite object or an array of Favorite objects.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "message": {
+                          "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
+                          "type": "string",
+                          "enum": [
+                            "PARTIAL_SUCCESS",
+                            "SUCCESS"
+                          ],
+                          "example": "SUCCESS"
+                        },
+                        "resultCode": {
+                          "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
+                          "type": "number",
+                          "enum": [
+                            0,
+                            3
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "oneOf": [
+                            {
+                              "$ref": "#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/favorites \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X POST \\\n-d '[{\"type\": \"sheet\", \"objectId\": 8400677765441412}]'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Specify favorites\nIList<Favorite> favoritesSpecification = new Favorite[]\n{\n  new Favorite\n  {\n    Type = ObjectType.SHEET,\n    ObjectId = 8400677765441412\n  }\n};\n\n// Add items to favorites\nIList<Favorite> newFavorite = smartsheet.FavoriteResources.AddFavorites(favoritesSpecification);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify favorites\nFavorite favoritesSpecification = new Favorite()\n        .setObjectId(8400677765441412L)\n        .setType(FavoriteType.SHEET);\n \n// Add items to favorites\nList<Favorite> newFavorite = smartsheet.favoriteResources().addFavorites(Arrays.asList(favoritesSpecification));\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Specify favorites\nvar favorites = [\n  {\n    \"type\": \"sheet\",\n    \"objectId\": 8400677765441412\n  }\n];\n\n// Set options\nvar options = {\n  body: favorites\n};\n\n// Add items to favorites\nsmartsheet.favorites.addItemsToFavorites(options)\n  .then(function(newFavorite) {\n    console.log(newFavorite);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "response = smartsheet_client.Favorites.add_favorites([\n  smartsheet.models.Favorite({\n    'type': 'sheet',\n    'object_id': 8400677765441412\n  })\n])\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify favorites\nbody = {\n  type: 'sheet',\n  object_id: 8400677765441412\n }\n\n# Add items to favorites\nresponse = smartsheet.favorites.add(\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/favorites/{favoriteType}": {
+      "parameters": [
+        {
+          "name": "favoriteType",
+          "in": "path",
+          "schema": {
+            "type": "string",
+            "enum": [
+              "folder",
+              "report",
+              "sheet",
+              "sight",
+              "template",
+              "workspace"
+            ]
+          },
+          "required": true,
+          "description": "The favorite type."
+        },
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1favorites/parameters/1"
+        }
+      ],
+      "delete": {
+        "summary": "Delete Multiple Favorites",
+        "description": "Deletes all favorites with the same type for the user.",
+        "operationId": "delete-favorites-by-type",
+        "tags": [
+          "favorites"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "name": "objectIds",
+            "in": "query",
+            "required": true,
+            "description": "A comma-separated list of Ids of the favorited item.\n",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Result object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl 'https://api.smartsheet.com/2.0/favorites/{favoriteType}?objectIds=favoriteId1,favoriteId2' \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-X DELETE\n"
+          },
+          {
+            "lang": "C#",
+            "source": "smartsheet.FavoriteResources.RemoveFavorites(\n  ObjectType.FOLDER,\n  new long[] { 2252168947361668, 2252168947361669 }     // folderIds\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "smartsheet.favoriteResources().removeFavorites(\n        FavoriteType.FOLDER,\n        new HashSet(Arrays.asList(2252168947361668L, 2252168947361669L))      // long folderIds\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  queryParameters: {\n    objectIds: \"2252168947361668,2252168947361669\"\n  }\n};\n\n// Remove favoriteType from list of favorites\nsmartsheet.favorites.remove{favoriteType}FromFavorites(options)\n  .then(function(results) {\n    console.log(results);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "smartsheet_client.Favorites.remove_favorites(\n  'folder',\n  [2252168947361668, 2252168947361669]        # folder_ids\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "smartsheet.favorites.remove_folders(\n  folder_ids: [2252168947361668, 2252168947361669]\n)\n"
+          }
+        ]
+      }
+    },
+    "/favorites/{favoriteType}/{favoriteId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1favorites~1%7BfavoriteType%7D/parameters/0"
+        },
+        {
+          "name": "favoriteId",
+          "in": "path",
+          "schema": {
+            "type": "number"
+          },
+          "required": true,
+          "description": "Favorite Id, e.g., sheet Id, report Id."
+        },
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1favorites/parameters/1"
+        }
+      ],
+      "delete": {
+        "summary": "Delete Favorite",
+        "description": "Deletes a single favorite from the user's list of favorite items by type and ID.",
+        "operationId": "delete-favorites-by-type-and-id",
+        "tags": [
+          "favorites"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_WORKSPACES"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Result object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/favorites/{favoriteType}/{folderId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-X DELETE\n"
+          },
+          {
+            "lang": "C#",
+            "source": "smartsheet.FavoriteResources.RemoveFavorites(\n  ObjectType.FOLDER,\n  new long[] { 2252168947361668 }   // folderId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "smartsheet.favoriteResources().removeFavorites(\n        FavoriteType.FOLDER,\n        new HashSet(Arrays.asList(2252168947361668L))      // long folderId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  objectId: 2252168947361668\n};\n \n// Remove folder from list of favorites\nsmartsheet.favorites.removeFolderFromFavorites(options)\n  .then(function(results) {\n    console.log(results);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "smartsheet_client.Favorites.remove_favorites(\n  'folder',\n  2252168947361668        # folder_id\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "smartsheet.favorites.remove_folder(\n  folder_id: 2252168947361668\n)\n"
+          }
+        ]
+      },
+      "get": {
+        "summary": "Is Favorite",
+        "description": "Checks whether an item has been tagged as a favorite for the current user by type and ID.",
+        "operationId": "is-favorite",
+        "tags": [
+          "favorites"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/get/parameters/3"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Result object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1favorites~1%7BfavoriteType%7D~1%7BfavoriteId%7D/delete/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl -i -X GET \\\n  'https://api.smartsheet.com/2.0/favorites/{favoriteType}/{favoriteId}?include={directId}' \\\n  -H 'Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789' \\\n  -H 'x-smar-sc-actor-id: 100012'"
+          },
+          {
+            "lang": "C#",
+            "source": "// Not implemented yet in the SDK"
+          },
+          {
+            "lang": "Python",
+            "source": "# Not implemented yet in the SDK"
+          }
+        ]
+      }
+    },
