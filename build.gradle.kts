@@ -20,7 +20,8 @@ val lombokVersion           = "1.18.32"
 val slf4jVersion            = "1.7.25"
 val buildDirectory          = layout.buildDirectory.get()
 
-val openapiSource           = "$rootDir/src/main/resources/openapi-3.1.0-smartsheet-v2.yaml"
+//val openapiSource           = "$rootDir/src/main/resources/openapi-3.1.0-smartsheet-v2.yaml"
+val openapiSource           = "$rootDir/src/main/resources/smartsheet-openapi-v2.json"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
