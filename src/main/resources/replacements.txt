@@ -18,6 +18,10 @@
 
 #/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/ResultPrefix
 
+#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items = #/components/schemas/EmailOrGroupId
+
+"$ref": "#/components/schemas/Int64"
+"$ref": "#/components/schemas/Int64Array"
 
 parameters
       "pageNumberReadonly": {

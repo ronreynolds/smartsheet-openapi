@@ -50,19 +50,23 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/includeAllBoolean"
+            "$ref": "#/components/parameters/includeAllBoolean",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/modifiedSince"
+            "$ref": "#/components/parameters/modifiedSince",
+            "required": false
           },
           {
             "$ref": "#/components/parameters/numericDates"
           },
           {
-            "$ref": "#/components/parameters/pageNumberOptional"
+            "$ref": "#/components/parameters/pageNumber",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageSizeOptional"
+            "$ref": "#/components/parameters/pageSize",
+            "required": false
           }
         ],
         "responses": {
@@ -101,13 +105,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "name": "contactId",
-          "in": "path",
-          "schema": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "required": true,
-          "description": "contactId of the contact being accessed."
+          "$ref": "#/components/parameters/contactIdInPath"
         }
       ],
       "get": {
@@ -184,33 +182,15 @@
             "$ref": "#/components/parameters/authorizationHeader"
           },
           {
-            "name": "since",
-            "in": "query",
-            "description": "The earliest time from which events are included in the response. Events before this time are excluded. This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nYou must pass in a value for either `since` or `streamPosition` and never both.",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            },
+            "$ref": "#/components/parameters/sinceDate",
             "required": false
           },
           {
-            "name": "to",
-            "in": "query",
-            "description": "The latest time up to which events are included in the response. Events after this time are excluded. The `to` parameter requires using the `since` query parameter (above). This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nIf `to` is a future time, the current time is used. If `to` equals the `since` time, an empty data value is returned. If `to` is before the `since` time, an error is returned.",
-            "schema": {
-              "type": "string",
-              "format": "date-time"
-            },
+            "$ref": "#/components/parameters/toDate",
             "required": false
           },
           {
-            "name": "streamPosition",
-            "in": "query",
-            "description": "Indicates next set of events to return. Use value of `nextStreamPosition` returned from the previous call.\nYou must pass in a value for either `since` or `streamPosition` and never both.",
-            "schema": {
-              "type": "string",
-              "example": "XyzAb1234cdefghijklmnofpq"
-            },
+            "$ref": "#/components/parameters/streamPosition",
             "required": false
           },
           {
@@ -253,31 +233,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "description": "StreamResult Object",
-                      "type": "object",
-                      "properties": {
-                        "nextStreamPosition": {
-                          "description": "This string should be passed back to the next GET events call to obtain subsequent events.",
-                          "type": "string",
-                          "example": "XyzAb1234cdefghijklmnofpq"
-                        },
-                        "moreAvailable": {
-                          "description": "True if more results are available. This is typically due to event counts exceeding the maxCount parameter passed in.",
-                          "type": "boolean",
-                          "example": true
-                        }
-                      }
+                      "$ref": "#/components/schemas/StreamResult"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "data": {
-                          "description": "List of Events",
-                          "type": "array",
-                          "items": {
-                            "description": "An Event object for event reporting.",
-                            "$ref": "#/components/schemas/Event"
-                          }
+                          "$ref": "#/components/schemas/EventArray"
                         }
                       }
                     }
@@ -287,141 +249,34 @@
             }
           },
           "400": {
-            "description": "Bad Request.  See Smartsheet Error Code and Message for details.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_400"
           },
           "401": {
             "$ref": "#/components/responses/Error_401"
           },
           "403": {
-            "description": "Forbidden.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_403"
           },
           "404": {
             "$ref": "#/components/responses/Error_404"
           },
           "405": {
-            "description": "Method Not Allowed.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "examples": {
-                  "1010Example": {
-                    "summary": "404 - 1010 - HTTP Method Not Supported",
-                    "value": {
-                      "errorCode": 1010,
-                      "message": "HTTP Method Not Supported",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  },
-                  "1122Example": {
-                    "summary": "404 - 1122 - Requested URL does not support this method: {0}",
-                    "value": {
-                      "errorCode": 1122,
-                      "message": "Requested URL does not support this method: {0}.",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_405"
           },
           "406": {
-            "description": "Not Acceptable.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "examples": {
-                  "1052Example": {
-                    "summary": "Invalid Accept header. Media type not supported.",
-                    "value": {
-                      "errorCode": 1052,
-                      "message": "Invalid Accept header. Media type not supported.",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_406"
           },
           "410": {
-            "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "examples": {
-                  "4005Example": {
-                    "summary": "API Version Retired.",
-                    "value": {
-                      "errorCode": 4005,
-                      "message": "API Version Retired.",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_410"
           },
           "415": {
-            "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "examples": {
-                  "1124Example": {
-                    "summary": "Invalid Content-Type header. Media type not supported.",
-                    "value": {
-                      "errorCode": 1124,
-                      "message": "Invalid Content-Type header. Media type not supported.",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_415"
           },
           "429": {
-            "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                },
-                "examples": {
-                  "4003Example": {
-                    "summary": "Rate limit exceeded.",
-                    "value": {
-                      "errorCode": 4003,
-                      "message": "Rate limit exceeded.",
-                      "refId": "exlxshtxlpl8"
-                    }
-                  }
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_429"
           },
           "500": {
-            "$ref": "#/paths/~1contacts/get/responses/500"
+            "$ref": "#/components/responses/Error_500"
           }
         }
       }
@@ -451,13 +306,16 @@
         "operationId": "home-list-folders",
         "parameters": [
           {
-            "$ref": "#/components/parameters/includeAllBoolean"
+            "$ref": "#/components/parameters/includeAllBoolean",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageNumberOptional"
+            "$ref": "#/components/parameters/pageNumber",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageSizeOptional"
+            "$ref": "#/components/parameters/pageSize",
+            "required": false
           }
         ],
         "responses": {
@@ -507,7 +365,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -556,7 +414,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader"
+          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -667,7 +525,8 @@
             "deprecated": true
           },
           {
-            "$ref": "#/parameters/modifiedSince"
+            "$ref": "#/parameters/modifiedSince",
+            "required": false
           },
           {
             "name": "include",
@@ -809,19 +668,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "formats": {
-                      "$ref": "#/components/schemas/ServerInfo/properties/formats"
-                    },
-                    "supportedLocales": {
-                      "description": "Array of strings representing all Smartsheet-supported locales.",
-                      "type": "array",
-                      "items": {
-                        "type": "string"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/ServerInfo"
                 }
               }
             }
@@ -854,16 +701,20 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/accessApiLevel"
+            "$ref": "#/components/parameters/accessApiLevel",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/includeAllBoolean"
+            "$ref": "#/components/parameters/includeAllBoolean",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageNumberOptional"
+            "$ref": "#/components/parameters/pageNumber",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageSizeOptional"
+            "$ref": "#/components/parameters/pageSize",
+            "required": false
           }
         ],
         "responses": {
@@ -912,19 +763,24 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/accessApiLevel"
+            "$ref": "#/components/parameters/accessApiLevel",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/includeAllBoolean"
+            "$ref": "#/components/parameters/includeAllBoolean",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/levelNumber"
+            "$ref": "#/components/parameters/levelNumber",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageNumberOptional"
+            "$ref": "#/components/parameters/pageNumber",
+            "required": false
           },
           {
-            "$ref": "#/components/parameters/pageSizeOptional"
+            "$ref": "#/components/parameters/pageSize",
+            "required": false
           }
         ],
         "responses": {
@@ -958,23 +814,10 @@
         ],
         "parameters": [
           {
-            "name": "Content-Type",
-            "in": "header",
-            "description": "Required for POST and PUT requests. Defines the structure for the response.\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "application/x-www-form-urlencoded"
-              ]
-            }
+            "$ref": "#/components/parameters/contentTypeHeader_FORM"
           },
           {
-            "in": "query",
-            "name": "client_id",
-            "schema": {
-              "type": "string"
-            },
-            "description": "The client Id you obtained when you registered your app.",
+            "$ref": "#/components/parameters/clientId",
             "required": true
           },
           {
@@ -1076,7 +919,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -1115,10 +958,9 @@
       "accessApiLevel": {
         "name": "accessApiLevel",
         "in": "query",
-        "required": false,
         "description": "Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.\n",
         "schema": {
-          "type": "number",
+          "type": "integer",
           "default": 0
         }
       },
@@ -1131,7 +973,35 @@
           "example": "Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789"
         }
       },
-      "contentTypeHeader": {
+      "clientId": {
+        "in": "query",
+        "name": "client_id",
+        "schema": {
+          "type": "string"
+        },
+        "description": "The client Id you obtained when you registered your app."
+      },
+      "contactIdInPath": {
+        "name": "contactId",
+        "in": "path",
+        "schema": {
+          "$ref": "#/components/schemas/Int64"
+        },
+        "description": "contactId of the contact being accessed.",
+        "required": true
+      },
+      "contentTypeHeader_FORM": {
+        "name": "Content-Type",
+        "in": "header",
+        "description": "Required for POST and PUT requests. Defines the structure for the response.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "application/x-www-form-urlencoded"
+          ]
+        }
+      },
+      "contentTypeHeader_JSON": {
         "name": "Content-Type",
         "in": "header",
         "description": "Required for POST and PUT requests. Defines the structure for the request body.\n",
@@ -1143,7 +1013,6 @@
       "includeAllBoolean": {
         "name": "includeAll",
         "in": "query",
-        "required": false,
         "description": "If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).",
         "schema": {
           "type": "boolean",
@@ -1153,10 +1022,9 @@
       "levelNumber": {
         "name": "level",
         "in": "query",
-        "required": false,
         "description": "Level of public template types. 0 refers to only Sheet types, 1 refers to all types.",
         "schema": {
-          "type": "number",
+          "type": "integer",
           "enum": [
             0,
             1
@@ -1167,7 +1035,6 @@
       "modifiedSince": {
         "name": "modifiedSince",
         "in": "query",
-        "required": false,
         "description": "When specified with a date and time value, response only includes the objects that are modified on or after the date and time specified. If you need to keep track of frequent changes, it may be more useful to use Get Sheet Version.",
         "schema": {
           "$ref": "#/components/schemas/Date"
@@ -1182,30 +1049,65 @@
         },
         "description": "You can optionally choose to receive and send dates/times in numeric format, as milliseconds since the UNIX epoch (midnight on January 1, 1970 in UTC time), using the query string parameter numericDates with a value of true. This query parameter works for any API request."
       },
-      "pageNumberOptional": {
+      "pageNumber": {
         "name": "page",
         "in": "query",
-        "required": false,
         "description": "Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, the last page of results is returned.",
         "schema": {
-          "type": "number",
+          "type": "integer",
           "default": 1
         }
       },
-      "pageSizeOptional": {
+      "pageSize": {
         "name": "pageSize",
         "in": "query",
-        "required": false,
         "description": "The maximum number of items to return per page. Unless otherwise stated for a specific endpoint, defaults to 100. If only page is specified, defaults to a page size of 100. For reports, the default is 100 rows. If you need larger sets of data from your report, returns a maximum of 10,000 rows per request.",
         "schema": {
-          "type": "number",
+          "type": "integer",
           "default": 100
+        }
+      },
+      "sinceDate": {
+        "name": "since",
+        "in": "query",
+        "description": "The earliest time from which events are included in the response. Events before this time are excluded. This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nYou must pass in a value for either `since` or `streamPosition` and never both.",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "streamPosition": {
+        "name": "streamPosition",
+        "in": "query",
+        "description": "Indicates next set of events to return. Use value of `nextStreamPosition` returned from the previous call.\nYou must pass in a value for either `since` or `streamPosition` and never both.",
+        "schema": {
+          "type": "string",
+          "example": "XyzAb1234cdefghijklmnofpq"
+        }
+      },
+      "toDate": {
+        "name": "to",
+        "in": "query",
+        "description": "The latest time up to which events are included in the response. Events after this time are excluded. The `to` parameter requires using the `since` query parameter (above). This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nIf `to` is a future time, the current time is used. If `to` equals the `since` time, an empty data value is returned. If `to` is before the `since` time, an error is returned.",
+        "schema": {
+          "type": "string",
+          "format": "date-time"
         }
       }
     },
     "responses": {
       "Error_Generic": {
         "description": "Generic Error Payload",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error_400": {
+        "description": "Bad Request.  See Smartsheet Error Code and Message for details.",
         "content": {
           "application/json": {
             "schema": {
@@ -1224,12 +1126,131 @@
           }
         }
       },
+      "Error_403": {
+        "$ref": "#/components/responses/",
+        "description": "Forbidden.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
       "Error_404": {
         "description": "Not Found.  See Smartsheet Error Code and Message for details.\n",
         "content": {
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error_405": {
+        "description": "Method Not Allowed.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "1010Example": {
+                "summary": "404 - 1010 - HTTP Method Not Supported",
+                "value": {
+                  "errorCode": 1010,
+                  "message": "HTTP Method Not Supported",
+                  "refId": "exlxshtxlpl8"
+                }
+              },
+              "1122Example": {
+                "summary": "404 - 1122 - Requested URL does not support this method: {0}",
+                "value": {
+                  "errorCode": 1122,
+                  "message": "Requested URL does not support this method: {0}.",
+                  "refId": "exlxshtxlpl8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error_406": {
+        "description": "Not Acceptable.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "1052Example": {
+                "summary": "Invalid Accept header. Media type not supported.",
+                "value": {
+                  "errorCode": 1052,
+                  "message": "Invalid Accept header. Media type not supported.",
+                  "refId": "exlxshtxlpl8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error_410": {
+        "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "4005Example": {
+                "summary": "API Version Retired.",
+                "value": {
+                  "errorCode": 4005,
+                  "message": "API Version Retired.",
+                  "refId": "exlxshtxlpl8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error_415": {
+        "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "1124Example": {
+                "summary": "Invalid Content-Type header. Media type not supported.",
+                "value": {
+                  "errorCode": 1124,
+                  "message": "Invalid Content-Type header. Media type not supported.",
+                  "refId": "exlxshtxlpl8"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Error_429": {
+        "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "4003Example": {
+                "summary": "Rate limit exceeded.",
+                "value": {
+                  "errorCode": 4003,
+                  "message": "Rate limit exceeded.",
+                  "refId": "exlxshtxlpl8"
+                }
+              }
             }
           }
         }
@@ -1283,19 +1304,16 @@
             }
           },
           "createdAt": {
-            "type": "date",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "modifiedAt": {
-            "type": "date",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "expanded": {
             "type": "boolean"
           },
           "version": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
@@ -1339,12 +1357,10 @@
             "type": "boolean"
           },
           "indent": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "outdent": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "createdBy": {
             "$ref": "#/components/schemas/User"
@@ -1370,7 +1386,7 @@
         "properties": {
           "id": {
             "description": "Account Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "description": "Account name.",
@@ -1383,7 +1399,7 @@
         "properties": {
           "id": {
             "description": "AlternateEmail Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "confirmed": {
             "description": "Indicates whether the alternate email address has been confirmed.",
@@ -1647,7 +1663,7 @@
           },
           "startingNumber": {
             "description": "The starting number for the auto-id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "suffix": {
             "description": "The suffix. Can include the date tokens:\n  * {DD}\n  * {MM}\n  * {YY}\n  * {YYYY}\n",
@@ -1673,7 +1689,7 @@
               },
               "errorCode": {
                 "description": "Custom error code from Smartsheet. See the complete [Error Code List](../#section/Error-Code-List).",
-                "type": "number"
+                "type": "integer"
               },
               "message": {
                 "description": "Descriptive error message.",
@@ -1683,7 +1699,7 @@
           },
           "index": {
             "description": "The index of the failed item in the bulk request array.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -1966,14 +1982,14 @@
           },
           "order": {
             "description": "The display order for the CellDataItem.",
-            "type": "number"
+            "type": "integer"
           },
           "profileField": {
             "type": "object",
             "properties": {
               "id": {
                 "description": "SummaryField Id.",
-                "type": "number"
+                "$ref": "#/components/schemas/Int64"
               },
               "contactOptions": {
                 "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
@@ -2014,7 +2030,7 @@
               },
               "index": {
                 "description": "Field index or position. This number is zero-based.",
-                "type": "number"
+                "type": "integer"
               },
               "locked": {
                 "description": "Indicates whether the field is locked.",
@@ -2107,18 +2123,15 @@
         "type": "object",
         "properties": {
           "columnId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Column Id of the linked cell."
           },
           "rowId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Row Id of the linked cell."
           },
           "sheetId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Sheet Id of the sheet that the linked cell belongs to."
           },
           "sheetName": {
@@ -2154,62 +2167,16 @@
           },
           "sheetId": {
             "description": "Sheet Id from which the cell data originates.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "cellData": {
             "$ref": "#/components/schemas/CellDataItem"
           },
           "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Column"
-            }
+            "$ref": "#/components/schemas/ColumnArray"
           },
           "hyperlink": {
-            "type": "object",
-            "properties": {
-              "interactionType": {
-                "description": "Specifies what happens when a user clicks the widget. The type will determine what other properties are needed.\n * DISTI_COPY - a distribution link, only available if org has distribution\nlinks enabled.\n * NONE - do nothing, no other attribute required.\n * SMARTSHEET_ITEM - open a Smartsheet item that is not the SOURCE_SHEET,\nmust also have one of the following attributes:\n    * dashboardId\n    * folderId\n    * reportId\n    * sheetId\n    * workspaceId\n * SOURCE_SHEET - open the container where the widget data comes from,\nno other attribute required.\n * WEB -  launch the URL, must also have url attribute.\n",
-                "type": "string",
-                "enum": [
-                  "DISTI_COPY",
-                  "NONE",
-                  "SMARTSHEET_ITEM",
-                  "SOURCE_SHEET",
-                  "WEB"
-                ]
-              },
-              "folderId": {
-                "description": "If interactionType = SMARTSHEET_ITEM this is the folder to open.",
-                "type": "integer",
-                "format": "int64"
-              },
-              "reportId": {
-                "description": "If interactionType = SMARTSHEET_ITEM this is the report to open.",
-                "type": "integer",
-                "format": "int64"
-              },
-              "sheetId": {
-                "description": "If interactionType = SMARTSHEET_ITEM this is the sheet to open.",
-                "type": "integer",
-                "format": "int64"
-              },
-              "sightId": {
-                "description": "If interactionType = SMARTSHEET_ITEM this is the dashboard to open.",
-                "type": "integer",
-                "format": "int64"
-              },
-              "url": {
-                "description": "If interactionType = WEB this is the URL to launch.",
-                "type": "string"
-              },
-              "workspaceId": {
-                "description": "If interactionType = SMARTSHEET_ITEM this is the workspace to open.",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+            "$ref": "#/components/schemas/WidgetHyperlink"
           }
         }
       },
@@ -2493,11 +2460,7 @@
           },
           "includedColumnIds": {
             "description": "Array of column Ids if the range was selected through the UI.",
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "legend": {
             "type": "object",
@@ -2530,23 +2493,19 @@
               "properties": {
                 "sourceColumnId1": {
                   "description": "Defines beginning edge of range when specifying one or more columns.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "sourceColumnId2": {
                   "description": "Defines ending edge of range when specifying one or more columns.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "sourceRowId1": {
                   "description": "Defines beginning edge of range when specifying one or more rows.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "sourceRowId2": {
                   "description": "Defines ending edge of range when specifying one or more rows.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 }
               }
             }
@@ -2678,10 +2637,10 @@
                     "type": "object",
                     "properties": {
                       "x": {
-                        "type": "number"
+                        "type": "integer"
                       },
                       "y": {
-                        "type": "number"
+                        "type": "integer"
                       },
                       "xFormat": {
                         "type": "string",
@@ -2747,7 +2706,7 @@
               },
               "startingNumber": {
                 "description": "The starting number for the auto-id.",
-                "type": "number"
+                "$ref": "#/components/schemas/Int64"
               },
               "suffix": {
                 "description": "The suffix. Can include the date tokens:\n  * {DD}\n  * {MM}\n  * {YY}\n  * {YYYY}\n",
@@ -2789,11 +2748,11 @@
             "description": "Indicates whether the column is hidden."
           },
           "id": {
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "description": "Column Id."
           },
           "index": {
-            "type": "number",
+            "type": "integer",
             "description": "Column index or position. This number is zero-based."
           },
           "locked": {
@@ -2879,7 +2838,7 @@
             "description": "Indicates whether validation has been enabled for the column (value = **true**)."
           },
           "version": {
-            "type": "number",
+            "type": "integer",
             "enum": [
               0,
               1,
@@ -2888,7 +2847,7 @@
             "description": "* `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.\n* `1`: MULTI_CONTACT_LIST.\n* `2`: MULTI_PICKLIST.\n"
           },
           "width": {
-            "type": "number",
+            "type": "integer",
             "description": "Display width of the column in pixels."
           }
         }
@@ -2925,14 +2884,14 @@
             "description": "Indicates whether the column is hidden."
           },
           "index": {
-            "type": "number",
+            "type": "integer",
             "description": "Column index or position. This number is zero-based."
           },
           "autoNumberFormat": {
-            "$ref": "#/components/schemas/Column/properties/autoNumberFormat"
+            "$ref": "#/components/schemas/AutoNumberFormat"
           },
           "contactOptions": {
-            "$ref": "#/components/schemas/Column/properties/contactOptions/items"
+            "$ref": "#/components/schemas/ContactOption"
           },
           "description": {
             "type": "string",
@@ -2977,11 +2936,11 @@
             "description": "Indicates whether validation has been enabled for the column (value = **true**)"
           },
           "version": {
-            "type": "number",
+            "type": "integer",
             "description": "Read only. The level of the column type. Each element in the array is set to one of the following values:\n * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST\n * **1**: MULTI_CONTACT_LIST\n * **2**: MULTI_PICKLIST\n\nSee [Versioning and Changes](#section/API-Basics/Versioning-and-Changes).\n"
           },
           "width": {
-            "type": "number",
+            "type": "integer",
             "description": "Display width of the column in pixels."
           }
         }
@@ -3006,12 +2965,11 @@
           },
           "discussionId": {
             "description": "Discussion Id of discussion that contains comment.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "id": {
             "description": "Comment Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "modifiedAt": {
             "$ref": "#/components/schemas/Date"
@@ -3066,12 +3024,18 @@
           }
         }
       },
+      "ContactOptionArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ContactOption"
+        }
+      },
       "ContainerDestination": {
         "type": "object",
         "properties": {
           "destinationId": {
             "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "destinationType": {
             "description": "Type of the destination container.",
@@ -3094,7 +3058,7 @@
         "properties": {
           "sheetId": {
             "description": "The Id of the destination sheet.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           }
         }
       },
@@ -3103,17 +3067,14 @@
         "properties": {
           "rowIds": {
             "description": "The Ids of the rows to move or copy from the source sheet.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "to": {
             "type": "object",
             "properties": {
               "sheetId": {
                 "description": "The Id of the destination sheet.",
-                "type": "number"
+                "$ref": "#/components/schemas/Int64"
               }
             }
           }
@@ -3124,8 +3085,7 @@
         "properties": {
           "destinationSheetId": {
             "description": "The Id of the destination sheet.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "rowMappings": {
             "description": "Array of rowMapping objects.",
@@ -3135,13 +3095,11 @@
               "properties": {
                 "from": {
                   "description": "Row Id in the source sheet.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "to": {
                   "description": "Row Id in the destination sheet.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 }
               }
             }
@@ -3153,8 +3111,7 @@
         "properties": {
           "columnId": {
             "description": "Column Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "operator": {
             "description": "Operator used to filter column values.",
@@ -3208,18 +3165,15 @@
         "properties": {
           "endColumnId": {
             "description": "Defines ending edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "endRowId": {
             "description": "Defines ending edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "id": {
             "description": "Cross-sheet reference Id, guaranteed unique within referencing sheet.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -3227,13 +3181,11 @@
           },
           "startColumnId": {
             "description": "Defines beginning edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "startRowId": {
             "description": "Defines beginning edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "status": {
             "description": "Status of request:\n * 'BLOCKED' - A reference is downstream of a circular issue.\n * 'BROKEN' - The data source location (column, row or sheet) was deleted.\n * 'CIRCULAR' - The formula reference is self referencing and cannot be\nresolved.\n * 'DISABLED' - Updating the reference is temporarily disabled due to\nmaintenance.\n * 'INVALID/UNKNOWN' - The reference is new and had not been validated.\n * 'NOT_SHARED' - No common shared users.\n * 'OK' - The reference is in a good state.\n",
@@ -3250,8 +3202,7 @@
           },
           "sourceSheetId": {
             "description": "Sheet Id of source sheet.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           }
         }
       },
@@ -3279,8 +3230,7 @@
             "format": "date-time"
           },
           {
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           }
         ],
         "readOnly": true
@@ -3307,8 +3257,7 @@
           },
           "id": {
             "description": "Discussion Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "comments": {
             "description": "Array of comments in discussion. Only returned if the include query string parameter contains comments.",
@@ -3331,13 +3280,11 @@
                 },
                 "discussionId": {
                   "description": "Discussion Id of discussion that contains comment.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "id": {
                   "description": "Comment Id.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 },
                 "modifiedAt": {
                   "$ref": "#/components/schemas/Date"
@@ -3358,7 +3305,7 @@
           },
           "commentCount": {
             "description": "Number of comments in the discussion.",
-            "type": "number"
+            "type": "integer"
           },
           "createdBy": {
             "description": "`User` object containing `name` and `email` of the user who created the discussion.\n",
@@ -3381,8 +3328,7 @@
           },
           "parentId": {
             "description": "The Id of the associated row or sheet.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "parentType": {
             "description": "Type of parent object.",
@@ -3460,15 +3406,18 @@
           },
           "sendTo": {
             "description": "Array of recipients.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
-            }
+            "$ref": "#/components/schemas/EmailOrGroupIdArray"
           },
           "subject": {
             "description": "The subject of the email.",
             "type": "string"
           }
+        }
+      },
+      "EmailOrGroupIdArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EmailOrGroupId"
         }
       },
       "EmailOrGroupId": {
@@ -3490,8 +3439,7 @@
             "properties": {
               "groupId": {
                 "description": "The Id of a group recipient.",
-                "type": "integer",
-                "format": "int64"
+                "$ref": "#/components/schemas/Int64"
               }
             }
           }
@@ -3507,12 +3455,20 @@
           },
           "errorCode": {
             "description": "Custom error code from Smartsheet. See the complete [Error Code List](../#section/Error-Code-List).",
-            "type": "number"
+            "type": "integer"
           },
           "message": {
             "description": "Descriptive error message.",
             "type": "string"
           }
+        }
+      },
+      "EventArray": {
+        "description": "List of Events",
+        "type": "array",
+        "items": {
+          "description": "An Event object for event reporting.",
+          "$ref": "#/components/schemas/Event"
         }
       },
       "Event": {
@@ -3549,14 +3505,12 @@
           },
           "userId": {
             "description": "User assumed as the one who initiated the event. Usually the userId property and the requestUserId property (below) have the same value. However, if the request is an API call with Assume-User header then the userId property identifies the user whose email matches the value in the Assume-User header.",
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "example": 123457654321
           },
           "requestUserId": {
             "description": "User whose authentication credential is embedded in the request that initiated the event. For example, if the request is an API call with an access token then requestUserId identifies the user whose data can be accessed via the access token (i.e., the user who authorized the creation of the access token). On the other hand, if the request comes from a UI session, then requestUserId identifies the user logged-in to the UI.",
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "example": 133445566778
           },
           "accessTokenName": {
@@ -3581,7 +3535,7 @@
         "properties": {
           "objectId": {
             "description": "The Id of the favorited item. If type is template, only private sheet-type template Id is allowed.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "type": "string",
@@ -3602,8 +3556,7 @@
         "properties": {
           "id": {
             "description": "Filters Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "excludeSelected": {
             "description": "If true, rows containing cells matching the values or criteria items are excluded instead of included.",
@@ -3634,8 +3587,7 @@
                   "properties": {
                     "columnId": {
                       "description": "Column Id.",
-                      "type": "integer",
-                      "format": "int64"
+                      "$ref": "#/components/schemas/Int64"
                     },
                     "operator": {
                       "description": "Operator used to filter column values.",
@@ -3717,8 +3669,7 @@
         "properties": {
           "id": {
             "description": "Folder Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked the folder as a favorite in their \"Home\" tab (value = true).",
@@ -3905,8 +3856,7 @@
         "properties": {
           "id": {
             "description": "Group Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "description": "Group name.",
@@ -3923,8 +3873,7 @@
           },
           "ownerId": {
             "description": "Group owner's user Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "createdAt": {
             "$ref": "#/components/schemas/Date"
@@ -3939,8 +3888,7 @@
         "properties": {
           "id": {
             "description": "Group member's user Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "email": {
             "description": "Group member's email address.",
@@ -3986,18 +3934,15 @@
         "type": "object",
         "properties": {
           "reportId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "If non-null, this hyperlink is a link to the report with this Id."
           },
           "sheetId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "If non-null, this hyperlink is a link to the sheet with this Id."
           },
           "sightId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "If non-null, this hyperlink is a link to the dashboard with this Id."
           },
           "url": {
@@ -4038,8 +3983,7 @@
           },
           "height": {
             "description": "Image height in pixels.",
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "url": {
             "description": "Temporary URL that can be used to retrieve the image. This attribute can be present in a response but is never specified in a request.",
@@ -4047,8 +3991,7 @@
           },
           "width": {
             "description": "Image width in pixels.",
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         }
       },
@@ -4063,8 +4006,7 @@
           },
           "urlExpiresInMillis": {
             "description": "Milliseconds before the URLs within imageUrls expire.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           }
         }
       },
@@ -4101,8 +4043,7 @@
             "example": ",7,1,,,,2,2,1,3,,,,,,1,"
           },
           "height": {
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           },
           "hyperlink": {
             "$ref": "#/components/schemas/Hyperlink"
@@ -4117,8 +4058,7 @@
           },
           "width": {
             "description": "Original width of the image in pixels.",
-            "type": "integer",
-            "format": "int32"
+            "type": "integer"
           }
         }
       },
@@ -4127,26 +4067,26 @@
         "properties": {
           "pageNumber": {
             "description": "The current page in the full result set that the data array represents. NOTE when a page number greater than totalPages is requested, the last page is instead returned.",
-            "type": "number",
+            "type": "integer",
             "example": 1,
             "readOnly": true
           },
           "pageSize": {
             "description": "The number of items in a page. Omitted if there is no limit to page size (and hence, all results are included). Unless otherwise specified, this defaults to 100 for most endpoints.",
-            "type": "number",
+            "type": "integer",
             "example": 50,
             "nullable": true,
             "readOnly": true
           },
           "totalPages": {
             "description": "The total number of pages in the full result set.",
-            "type": "number",
+            "type": "integer",
             "example": 25,
             "readOnly": true
           },
           "totalCount": {
             "description": "The total number of items in the full result set.",
-            "type": "number",
+            "type": "integer",
             "example": 136,
             "readOnly": true
           }
@@ -4157,26 +4097,26 @@
         "properties": {
           "pageNumber": {
             "description": "The current page in the full result set that the data array represents. NOTE when a page number greater than totalPages is requested, the last page is instead returned.",
-            "type": "number",
+            "type": "integer",
             "example": 1,
             "readOnly": true
           },
           "pageSize": {
             "description": "The number of items in a page. Omitted if there is no limit to page size (and hence, all results are included). Unless otherwise specified, this defaults to 100 for most endpoints.",
-            "type": "number",
+            "type": "integer",
             "example": 50,
             "nullable": true,
             "readOnly": true
           },
           "totalPages": {
             "description": "If the data field value is not empty, returns a static value of -1. When you reach the first empty page after the end of the result set, then all four fields are set with a static value of 0.",
-            "type": "number",
+            "type": "integer",
             "example": -1,
             "readOnly": true
           },
           "totalCount": {
             "description": "If the data field value is not empty, returns a static value of -1. When you reach the first empty page after the end of the result set, then all four fields are set with a static value of 0.",
-            "type": "number",
+            "type": "integer",
             "example": -1,
             "readOnly": true
           }
@@ -4234,11 +4174,7 @@
             "properties": {
               "columnIds": {
                 "description": "The Id of the columns to be included.",
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "int64"
-                }
+                "$ref": "#/components/schemas/Int64Array"
               },
               "includeAttachments": {
                 "description": "Indicates whether to include attachments in the email.",
@@ -4259,10 +4195,7 @@
         "properties": {
           "rowIds": {
             "description": "The Ids of rows to be included.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           }
         }
       },
@@ -4489,23 +4422,23 @@
         "properties": {
           "pageNumber": {
             "description": "The current page in the full result set that the data array represents. NOTE when a page number greater than totalPages is requested, the last page is instead returned.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true
           },
           "pageSize": {
             "description": "The number of items in a page. Omitted if there is no limit to page size (and hence, all results are included). Unless otherwise specified, this defaults to 100 for most endpoints.",
-            "type": "number",
+            "type": "integer",
             "nullable": true,
             "readOnly": true
           },
           "totalPages": {
             "description": "The total number of pages in the full result set.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true
           },
           "totalCount": {
             "description": "The total number of items in the full result set.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true
           }
         }
@@ -4515,7 +4448,7 @@
         "properties": {
           "rowId": {
             "description": "The Id of the predecessor row.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "description": "Type of the predecessor:\n * FF (Finish-to-Finish) - finish at the same time the predecessor finishes.\n * FS (Finish-to-Start) - start after the predecessor finishes.\n * SF (Start-to-Finish) - finish before the predecessor starts.\n * SS (Start-to-Start) - start at the same time the predecessor starts.\n",
@@ -4912,10 +4845,7 @@
               },
               "sendTo": {
                 "description": "Array of recipients.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
-                }
+                "$ref": "#/components/schemas/EmailOrGroupIdArray"
               },
               "subject": {
                 "description": "The subject of the email.",
@@ -5198,7 +5128,7 @@
             "type": "string"
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
+            "$ref": "#/components/schemas/WidgetHyperlink"
           }
         }
       },
@@ -5217,21 +5147,7 @@
                 "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
                 "type": "array",
                 "items": {
-                  "type": "object",
-                  "properties": {
-                    "rowId": {
-                      "description": "The Id of the row that failed. Applicable only to bulk row operations.",
-                      "type": "number",
-                      "nullable": true
-                    },
-                    "error": {
-                      "$ref": "#/components/schemas/Error"
-                    },
-                    "index": {
-                      "description": "The index of the failed item in the bulk request array.",
-                      "type": "number"
-                    }
-                  }
+                  "$ref": "#/components/schemas/BulkItemFailure"
                 },
                 "nullable": true
               }
@@ -5632,7 +5548,7 @@
           },
           "sentTo": {
             "description": "Recipient object.",
-            "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
+            "$ref": "#/components/schemas/EmailOrGroupId"
           },
           "status": {
             "description": "The status of the sent update request.",
@@ -5653,108 +5569,7 @@
         "type": "object",
         "properties": {
           "formats": {
-            "description": "Contains all of the lookup tables that the format descriptor indexes refer to. Here the examples show the formatting options, the default value is used to denote each option. NOTE -- Indexes and their values are guaranteed never to change or be removed for a given major API version.  However, new values could potentially be added to the ends of lookup tables. Because of this possibility, your code should handle the case where a cell might contain a format index value greater than the size of a lookup table your app has loaded. Your application should check for that case and reload the format tables if necessary.",
-            "type": "object",
-            "properties": {
-              "defaults": {
-                "description": "A format descriptor where each element describes the formats the Smartsheet Web app displays for format values that have not been set. Each value refers to an index of the following options.",
-                "type": "string",
-                "example": ",,1,1,,,,,,,,,,,,,"
-              },
-              "bold": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "color": {
-                "description": "The default setting is \"none\". Typically this is black text and a white background.",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "currency": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Currency"
-                }
-              },
-              "dateFormat": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "decimalCount": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "fontFamily": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/FontFamily"
-                }
-              },
-              "fontSize": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "horizontalAlign": {
-                "description": "The default setting is \"default\" which is equivalent to \"left\".",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "italic": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "numberFormat": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "strikethrough": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "textWrap": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "thousandsSeparator": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "underline": {
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "verticalAlign": {
-                "description": "The default setting is \"default\" which is equivalent to \"top\".",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/FormatTables"
           },
           "supportedLocales": {
             "description": "Array of strings representing all Smartsheet-supported locales.",
@@ -6537,10 +6352,7 @@
           },
           "contactOptions": {
             "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-            }
+            "$ref": "#/components/schemas/ContactOptionArray"
           },
           "createdAt": {
             "$ref": "#/components/schemas/Date"
@@ -6597,7 +6409,7 @@
             ]
           },
           "objectValue": {
-            "$ref": "#/components/schemas/Cell/properties/objectValue"
+            "$ref": "#/components/schemas/CellObjectValue"
           },
           "options": {
             "description": "When applicable for PICKLIST column type. Array of the options available for the field.",
@@ -7576,80 +7388,7 @@
             "type": "string"
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
-          }
-        }
-      },
-      "Widget_RichText": {
-        "type": "object",
-        "title": "Rich Text",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "RICHTEXT"
-            ]
-          },
-          "htmlContent": {
-            "description": "The widget contents as HTML. The Rich Text widget supports the following subset of HTML tags and CSS Styles:\n\nHTML\n  * a - hyperlink\n  * br - line break\n  * li - list item\n  * ol - ordered list\n  * p - paragraph\n  * span - section of the document\n  * ul - unordered list\n\nCSS\n  * color\n  * font-family\n  * font-size\n  * font-style\n  * font-weight\n  * text-align\n  * text-decoration\n",
-            "type": "string"
-          }
-        }
-      },
-      "Widget_Shortcut": {
-        "type": "object",
-        "title": "Shortcut",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "SHORTCUT",
-              "SHORTCUTICON",
-              "SHORTCUTLIST"
-            ]
-          },
-          "shortcutData": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ShortcutWidgetContent/properties/shortcutData/items"
-            }
-          }
-        }
-      },
-      "Widget_Title": {
-        "type": "object",
-        "title": "Title",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "RICHTEXT"
-            ]
-          },
-          "backgroundColor": {
-            "type": "string"
-          },
-          "htmlContent": {
-            "type": "string",
-            "description": "The widget contents as HTML. The Title widget supports the following subset of HTML tags and CSS Styles:\n\nHTML\n  * br - line break\n  * p - paragraph\n  * span - section of the document\n\nCSS\n  * color\n  * font-family\n  * font-size\n  * font-style\n  * font-weight\n  * text-align\n  * text-decoration\n",
-            "example": "<p style=\"text-align:center\"><span class=\"clsDbFt\">HI!</span></p>"
-          }
-        }
-      },
-      "Widget_WebContent": {
-        "type": "object",
-        "title": "Web Content",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "WidgetWebContent"
-            ]
-          },
-          "url": {
-            "description": "The URL for the web content.",
-            "type": "string",
-            "example": "https://www.youtube.com/embed/quGpnXiCUms"
+            "$ref": "#/components/schemas/WidgetHyperlink"
           }
         }
       },
@@ -7691,25 +7430,25 @@
                 "$ref": "#/components/schemas/ImageWidgetContent"
               },
               {
-                "$ref": "#/components/schemas/Widget_Report"
+                "$ref": "#/components/schemas/ReportWidgetContent"
               },
               {
-                "$ref": "#/components/schemas/Widget_RichText"
+                "$ref": "#/components/schemas/RichTextWidgetContent"
               },
               {
-                "$ref": "#/components/schemas/Widget_Shortcut"
+                "$ref": "#/components/schemas/ShortcutWidgetContent"
               },
               {
-                "$ref": "#/components/schemas/Widget_Title"
+                "$ref": "#/components/schemas/TitleWidgetContent"
               },
               {
-                "$ref": "#/components/schemas/Widget_WebContent"
+                "$ref": "#/components/schemas/WebContentWidgetContent"
               }
             ]
           },
           "height": {
             "description": "Number of rows that the widget occupies on the dashboard.",
-            "type": "number"
+            "type": "integer"
           },
           "showTitle": {
             "description": "True indicates that the client should display the widget title. This is independent of the title string which may be null or empty.",
@@ -7733,11 +7472,11 @@
           },
           "version": {
             "description": "Widget version number.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "viewMode": {
             "description": "Indicates the content layout. Must use a query parameter of level=2 to see this information.\n * 1 - centered\n * 2 - left aligned\n",
-            "type": "number",
+            "type": "integer",
             "enum": [
               1,
               2
@@ -7745,15 +7484,15 @@
           },
           "width": {
             "description": "Number of columns that the widget occupies on the dashboard.",
-            "type": "number"
+            "type": "integer"
           },
           "xPosition": {
             "description": "X-coordinate of widget's position on the dashboard.",
-            "type": "number"
+            "type": "integer"
           },
           "yPosition": {
             "description": "Y-coordinate of widget's position on the dashboard.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
