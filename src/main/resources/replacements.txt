@@ -16,7 +16,7 @@
 #/components/schemas/Discussion/properties/accessLevel  = #/components/schemas/AccessLevel
 #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
 
-
+#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/ResultPrefix
 
 
 parameters

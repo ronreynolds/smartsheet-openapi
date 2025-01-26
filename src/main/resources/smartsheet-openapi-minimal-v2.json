@@ -84,34 +84,13 @@
             }
           },
           "401": {
-            "description": "Unauthorized.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_401"
           },
           "404": {
-            "description": "Not Found.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_404"
           },
           "500": {
-            "description": "Internal Server Error.  See Smartsheet Error Code and Message for details.\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_500"
           }
         }
       }
@@ -125,8 +104,7 @@
           "name": "contactId",
           "in": "path",
           "schema": {
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "required": true,
           "description": "contactId of the contact being accessed."
@@ -175,14 +153,7 @@
             }
           },
           "default": {
-            "description": "Generic Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -269,7 +240,7 @@
             "in": "query",
             "description": "The target managed plan for which to list events. Authorized if the caller is a system administrator on either the target managed plan or the main plan in EPM hierarchy.",
             "schema": {
-              "type": "number"
+              "$ref": "#/components/schemas/Int64"
             },
             "required": false
           }
@@ -305,63 +276,7 @@
                           "type": "array",
                           "items": {
                             "description": "An Event object for event reporting.",
-                            "type": "object",
-                            "properties": {
-                              "eventId": {
-                                "description": "Unique event identifier.",
-                                "type": "string",
-                                "example": "4b12345abc444def333g149he2b15b3j"
-                              },
-                              "objectType": {
-                                "description": "The Smartsheet resource impacted by the event, such as, SHEET or WORKSPACE.",
-                                "type": "string",
-                                "enum": [
-                                  "SHEET",
-                                  "WORKSPACE"
-                                ],
-                                "example": "sheet"
-                              },
-                              "action": {
-                                "description": "The action applied to the specified object, such as CREATE or DELETE.",
-                                "type": "string",
-                                "example": "CREATE"
-                              },
-                              "objectId": {
-                                "description": "The identifier of the object impacted by the event.",
-                                "type": "string",
-                                "example": 345678901234
-                              },
-                              "eventTimeStamp": {
-                                "description": "Date and time of the event. Defaults to ISO-8601 format. See dates and times for more information.",
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "userId": {
-                                "description": "User assumed as the one who initiated the event. Usually the userId property and the requestUserId property (below) have the same value. However, if the request is an API call with Assume-User header then the userId property identifies the user whose email matches the value in the Assume-User header.",
-                                "type": "number",
-                                "example": 123457654321
-                              },
-                              "requestUserId": {
-                                "description": "User whose authentication credential is embedded in the request that initiated the event. For example, if the request is an API call with an access token then requestUserId identifies the user whose data can be accessed via the access token (i.e., the user who authorized the creation of the access token). On the other hand, if the request comes from a UI session, then requestUserId identifies the user logged-in to the UI.",
-                                "type": "number",
-                                "example": 133445566778
-                              },
-                              "accessTokenName": {
-                                "description": "Name of the access token embedded in the request. This property is omitted if there's no access token in the request (i.e., it isn't an API call) or if the access token wasn't given a name when created (only access tokens generated via the Smartsheet desktop UI can be given a name at creation time).",
-                                "type": "string",
-                                "nullable": false
-                              },
-                              "source": {
-                                "description": "Identifies the type of action that triggered the event.",
-                                "type": "string",
-                                "example": "WEB_APP"
-                              },
-                              "additionalDetails": {
-                                "description": "Container object for additional event-specific properties. Properties depend upon the event type. See [Event Reporting](https://smartsheet-platform.github.io/event-reporting-docs/) reference documentation for details on each event type.",
-                                "type": "object",
-                                "additionalProperties": true
-                              }
-                            }
+                            "$ref": "#/components/schemas/Event"
                           }
                         }
                       }
@@ -382,7 +297,7 @@
             }
           },
           "401": {
-            "$ref": "#/paths/~1contacts/get/responses/401"
+            "$ref": "#/components/responses/Error_401"
           },
           "403": {
             "description": "Forbidden.  See Smartsheet Error Code and Message for details.\n",
@@ -395,7 +310,7 @@
             }
           },
           "404": {
-            "$ref": "#/paths/~1contacts/get/responses/404"
+            "$ref": "#/components/responses/Error_404"
           },
           "405": {
             "description": "Method Not Allowed.  See Smartsheet Error Code and Message for details.\n",
@@ -559,10 +474,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Folder/properties/folders/items"
-                          }
+                          "$ref": "#/components/schemas/FolderArray"
                         }
                       }
                     }
@@ -572,14 +484,7 @@
             }
           },
           "default": {
-            "description": "Generic Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       },
@@ -611,11 +516,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Folder/properties/folders/items"
-                  }
-                ]
+                "$ref": "#/components/schemas/Folder"
               }
             }
           }
@@ -628,17 +529,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/FolderArray"
                         }
                       }
                     }
@@ -648,14 +545,7 @@
             }
           },
           "default": {
-            "description": "Generic Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/paths/~1home~1folders/get/responses/default/content/application~1json/schema"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -694,7 +584,7 @@
                 "items": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/ImageUrlMap/properties/imageUrls/items"
+                      "$ref": "#/components/schemas/ImageUrl"
                     }
                   ]
                 }
@@ -715,12 +605,12 @@
                         "imageUrls": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/ImageUrlMap/properties/imageUrls/items"
+                            "$ref": "#/components/schemas/ImageUrl"
                           }
                         },
                         "urlExpiresInMillis": {
                           "description": "Milliseconds before the URLs within imageUrls expire.",
-                          "type": "number"
+                          "$ref": "#/components/schemas/Int64"
                         }
                       }
                     }
@@ -777,7 +667,7 @@
             "deprecated": true
           },
           {
-            "$ref": "#/paths/~1contacts/get/parameters/1"
+            "$ref": "#/parameters/modifiedSince"
           },
           {
             "name": "include",
@@ -822,20 +712,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "type": "object",
-                      "properties": {
-                        "results": {
-                          "description": "Array of SearchResultItem objects.",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/SearchResult/properties/results/items"
-                          }
-                        },
-                        "totalCount": {
-                          "description": "Total number of search results.",
-                          "type": "number"
-                        }
-                      }
+                      "$ref": "#/components/schemas/SearchResult"
                     },
                     {
                       "type": "object"
@@ -846,14 +723,7 @@
             }
           },
           "default": {
-            "description": "Generic Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -864,7 +734,7 @@
           "name": "sheetId",
           "in": "path",
           "schema": {
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "required": true,
           "description": "Sheet Id of the sheet being accessed."
@@ -909,18 +779,10 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1search/get/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/SearchResult"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/SearchResult/properties/results/items"
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/SearchResultItemArray"
                     }
                   ]
                 }
@@ -928,14 +790,7 @@
             }
           },
           "default": {
-            "description": "Generic Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -1022,16 +877,7 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "description": "list of Templates",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Folder/properties/templates/items"
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/TemplateArray"
                     }
                   ]
                 }
@@ -1092,16 +938,7 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "description": "list of Templates",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Folder/properties/templates/items"
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/TemplateArray"
                     }
                   ]
                 }
@@ -1191,7 +1028,8 @@
             "schema": {
               "type": "string"
             },
-            "description": "Deprecated. If supplied, must match the redirect URI you registered for your app."
+            "description": "Deprecated. If supplied, must match the redirect URI you registered for your app.",
+            "deprecated": true
           }
         ],
         "responses": {
@@ -1200,43 +1038,13 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "access_token": {
-                      "description": "A credential that can be used by a client to access the Smartsheet API.",
-                      "type": "string",
-                      "readOnly": true
-                    },
-                    "token_type": {
-                      "description": "How an access token will be generated and presented. Smartsheet uses the bearer parameter, which means essentially give access to the bearer of this token.",
-                      "type": "string",
-                      "readOnly": true
-                    },
-                    "expires_in": {
-                      "description": "Number of seconds token is valid once issued.",
-                      "type": "number",
-                      "default": 604799,
-                      "readOnly": true
-                    },
-                    "refresh_token": {
-                      "description": "A credential tied to the access token that can be used to obtain a fresh access token with the same permissions, without further involvement from a user.",
-                      "type": "string",
-                      "readOnly": true
-                    }
-                  }
+                  "$ref": "#/components/schemas/Token"
                 }
               }
             }
           },
           "default": {
-            "description": "Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       },
@@ -1274,14 +1082,7 @@
             }
           },
           "default": {
-            "description": "Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/paths/~1token/post/responses/default/content/application~1json/schema"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -1402,21 +1203,60 @@
         }
       }
     },
+    "responses": {
+      "Error_Generic": {
+        "description": "Generic Error Payload",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error_401": {
+        "description": "Unauthorized.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error_404": {
+        "description": "Not Found.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "Error_500": {
+        "description": "Internal Server Error.  See Smartsheet Error Code and Message for details.\n",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
     "schemas": {
       "AbstractRow": {
         "type": "object",
         "properties": {
           "sheetId": {
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "rowNumber": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/Int64"
           },
           "parentRowNumber": {
-            "type": "integer",
-            "format": "int32"
+            "$ref": "#/components/schemas/Int64"
           },
           "cells": {
             "type": "array",
@@ -1472,12 +1312,10 @@
             "$ref": "#/components/schemas/Format"
           },
           "parentId": {
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "siblingId": {
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "permalink": {
             "type": "string"
@@ -1557,19 +1395,23 @@
           }
         }
       },
+      "AttachmentArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Attachment"
+        }
+      },
       "Attachment": {
         "description": "Attachment Object",
         "type": "object",
         "properties": {
           "id": {
             "description": "Attachment Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "parentId": {
             "description": "The Id of the parent.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "attachmentType": {
             "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
@@ -1655,10 +1497,7 @@
         "properties": {
           "includedColumnIds": {
             "description": "Specifies which columns to include in message.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "type": {
             "type": "string",
@@ -1714,30 +1553,7 @@
                 "type": "array",
                 "items": {
                   "description": "Specifies the recipient of an email. The recipient may be either an individual or a group. To specify an individual, set the email attribute; to specify a group, set the groupId attribute. Either email and groupId may be set, but not both.\n",
-                  "oneOf": [
-                    {
-                      "type": "object",
-                      "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-                      "properties": {
-                        "email": {
-                          "description": "The email address of an individual recipient.",
-                          "type": "string",
-                          "format": "email"
-                        }
-                      }
-                    },
-                    {
-                      "type": "object",
-                      "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-                      "properties": {
-                        "groupId": {
-                          "description": "The Id of a group recipient.",
-                          "type": "integer",
-                          "format": "int64"
-                        }
-                      }
-                    }
-                  ]
+                  "$ref": "#/components/schemas/EmailOrGroupId"
                 }
               }
             }
@@ -1746,11 +1562,7 @@
             "properties": {
               "recipientColumnIds": {
                 "description": "Array of column Ids from which to collect email recipients.",
-                "type": "array",
-                "items": {
-                  "type": "integer",
-                  "format": "int64"
-                }
+                "$ref": "#/components/schemas/Int64Array"
               }
             }
           }
@@ -1761,8 +1573,7 @@
         "properties": {
           "id": {
             "description": "AutomationRule Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "action": {
             "description": "An [AutomationAction object](#section/AutomationAction-Object) containing information for this rule, such as type, recipients, and frequency."
@@ -1849,7 +1660,7 @@
         "properties": {
           "rowId": {
             "description": "The Id of the row that failed. Applicable only to bulk row operations.",
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "nullable": true
           },
           "error": {
@@ -1880,14 +1691,12 @@
         "type": "object",
         "properties": {
           "scopeObjectId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Id of the object that corresponds to scope.",
             "readOnly": true
           },
           "webhookId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Id of the corresponding webhook."
           },
           "events": {
@@ -1897,25 +1706,21 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "integer",
-                  "format": "int64",
+                  "$ref": "#/components/schemas/Int64",
                   "description": "Id of the object that corresponds to objectType. Omitted if objectType is cell."
                 },
                 "columnId": {
-                  "type": "integer",
-                  "format": "int64",
+                  "$ref": "#/components/schemas/Int64",
                   "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
                   "nullable": true
                 },
                 "rowid": {
-                  "type": "integer",
-                  "format": "int64",
+                  "$ref": "#/components/schemas/Int64",
                   "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
                   "nullable": true
                 },
                 "userid": {
-                  "type": "integer",
-                  "format": "int64",
+                  "$ref": "#/components/schemas/Int64",
                   "description": "The user Id of the person who caused this event."
                 },
                 "objectType": {
@@ -1979,23 +1784,21 @@
         "type": "object",
         "properties": {
           "id": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "Id of the object that corresponds to objectType. Omitted if objectType is cell."
           },
           "columnId": {
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
             "nullable": true
           },
           "rowid": {
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
             "nullable": true
           },
           "userid": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "The user Id of the person who caused this event."
           },
           "objectType": {
@@ -2031,12 +1834,17 @@
           }
         }
       },
+      "CellArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Cell"
+        }
+      },
       "Cell": {
         "type": "object",
         "properties": {
           "columnId": {
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
@@ -2106,18 +1914,15 @@
         "properties": {
           "columnId": {
             "description": "Column Id for each item.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "rowId": {
             "description": "Row Id for each item.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "sheetId": {
             "description": "Sheet Id for each item.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "objectValue": {
             "description": "The type of data returned depends on the cell type and the data in the cell.",
@@ -2283,11 +2088,6 @@
       },
       "CellHistory": {
         "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/CellDataItem/properties/cell"
-          }
-        ],
         "properties": {
           "modifiedAt": {
             "$ref": "#/components/schemas/Date"
@@ -2363,139 +2163,7 @@
           "columns": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "autoNumberFormat": {
-                  "$ref": "#/components/schemas/Column/properties/autoNumberFormat"
-                },
-                "contactOptions": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-                  },
-                  "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
-                },
-                "description": {
-                  "type": "string",
-                  "description": "Column description."
-                },
-                "format": {
-                  "type": "string",
-                  "description": "The format descriptor (see [Formatting](../../#section/API-Basics/Formatting)). Only returned if the **include** query string parameter contains **format** and this column has a non-default format applied to it."
-                },
-                "formula": {
-                  "description": "The formula for the column, if set.",
-                  "type": "string"
-                },
-                "hidden": {
-                  "type": "boolean",
-                  "description": "Indicates whether the column is hidden."
-                },
-                "id": {
-                  "type": "integer",
-                  "format": "int64",
-                  "description": "Column Id."
-                },
-                "index": {
-                  "type": "number",
-                  "description": "Column index or position. This number is zero-based."
-                },
-                "locked": {
-                  "type": "boolean",
-                  "description": "Indicates whether the column is locked. In a response, a value of **true** indicates that the column has been locked by the sheet owner or the admin."
-                },
-                "lockedForUser": {
-                  "type": "boolean",
-                  "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
-                },
-                "options": {
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
-                  "description": "Array of the options available for the column."
-                },
-                "primary": {
-                  "type": "boolean",
-                  "description": "Returned only if the column is the Primary Column (value = **true**)."
-                },
-                "symbol": {
-                  "type": "string",
-                  "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                },
-                "systemColumnType": {
-                  "type": "string",
-                  "enum": [
-                    "AUTO_NUMBER",
-                    "CREATED_BY",
-                    "CREATED_DATE",
-                    "MODIFIED_BY",
-                    "MODIFIED_DATE"
-                  ],
-                  "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
-                },
-                "tags": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "enum": [
-                      "CALENDAR_END_DATE",
-                      "CALENDAR_START_DATE",
-                      "CARD_DONE",
-                      "GANTT_ALLOCATION",
-                      "GANTT_ASSIGNED_RESOURCE",
-                      "GANTT_DISPLAY_LABEL",
-                      "GANTT_DURATION",
-                      "GANTT_END_DATE",
-                      "GANTT_PERCENT_COMPLETE",
-                      "GANTT_PREDECESSOR",
-                      "GANTT_START_DATE",
-                      "BASELINE_START_DATE",
-                      "BASELINE_END_DATE",
-                      "BASELINE_VARIANCE"
-                    ]
-                  },
-                  "description": "Set of tags to indicate special columns. Each element in the array is set to one of the listed enum values."
-                },
-                "title": {
-                  "type": "string",
-                  "description": "Column title."
-                },
-                "type": {
-                  "type": "string",
-                  "enum": [
-                    "ABSTRACT_DATETIME",
-                    "CHECKBOX",
-                    "CONTACT_LIST",
-                    "DATE",
-                    "DATETIME",
-                    "DURATION",
-                    "MULTI_CONTACT_LIST",
-                    "MULTI_PICKLIST",
-                    "PICKLIST",
-                    "PREDECESSOR",
-                    "TEXT_NUMBER"
-                  ],
-                  "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
-                },
-                "validation": {
-                  "type": "boolean",
-                  "description": "Indicates whether validation has been enabled for the column (value = **true**)."
-                },
-                "version": {
-                  "type": "number",
-                  "enum": [
-                    0,
-                    1,
-                    2
-                  ],
-                  "description": "* `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.\n* `1`: MULTI_CONTACT_LIST.\n* `2`: MULTI_PICKLIST.\n"
-                },
-                "width": {
-                  "type": "number",
-                  "description": "Display width of the column in pixels."
-                }
-              }
+              "$ref": "#/components/schemas/Column"
             }
           },
           "hyperlink": {
@@ -2740,6 +2408,27 @@
           }
         }
       },
+      "ChartWidgetTitleInfo": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "ABSTRACT_DATE_TIME",
+              "CHECKBOX",
+              "CONTACT_LIST",
+              "DATE",
+              "DATE_TIME",
+              "DURATION",
+              "MULTI_CONTACT_LIST",
+              "MULTI_PICKLIST",
+              "PICKLIST",
+              "PREDECESSOR",
+              "TEXT_NUMBER"
+            ]
+          }
+        }
+      },
       "ChartWidgetContent": {
         "type": "object",
         "title": "Chart",
@@ -2752,13 +2441,11 @@
           },
           "reportId": {
             "description": "Report Id denoting container source, if applicable.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "sheetId": {
             "description": "Sheet Id denoting container source, if applicable.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "axes": {
             "type": "array",
@@ -2781,25 +2468,7 @@
                   "type": "string"
                 },
                 "titleInfo": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "ABSTRACT_DATE_TIME",
-                        "CHECKBOX",
-                        "CONTACT_LIST",
-                        "DATE",
-                        "DATE_TIME",
-                        "DURATION",
-                        "MULTI_CONTACT_LIST",
-                        "MULTI_PICKLIST",
-                        "PICKLIST",
-                        "PREDECESSOR",
-                        "TEXT_NUMBER"
-                      ]
-                    }
-                  }
+                  "$ref": "#/components/schemas/ChartWidgetTitleInfo"
                 },
                 "axisTitleFont": {
                   "$ref": "#/components/schemas/LabelFont"
@@ -2820,7 +2489,7 @@
             }
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
+            "$ref": "#/components/schemas/Hyperlink"
           },
           "includedColumnIds": {
             "description": "Array of column Ids if the range was selected through the UI.",
@@ -2891,7 +2560,7 @@
                   "type": "string"
                 },
                 "titleInfo": {
-                  "$ref": "#/components/schemas/ChartWidgetContent/properties/axes/items/properties/titleInfo"
+                  "$ref": "#/components/schemas/ChartWidgetTitleInfo"
                 },
                 "seriesTitleFormat": {
                   "type": "string",
@@ -2991,10 +2660,10 @@
                   ]
                 },
                 "yColumnInfo": {
-                  "$ref": "#/components/schemas/ChartWidgetContent/properties/axes/items/properties/titleInfo"
+                  "$ref": "#/components/schemas/ChartWidgetTitleInfo"
                 },
                 "xColumnInfo": {
-                  "$ref": "#/components/schemas/ChartWidgetContent/properties/axes/items/properties/titleInfo"
+                  "$ref": "#/components/schemas/ChartWidgetTitleInfo"
                 },
                 "seriesSelectionOrder": {
                   "type": "string",
@@ -3053,6 +2722,12 @@
           "horizontalGridLines": {
             "$ref": "#/components/schemas/ChartWidgetContent/properties/verticalGridLines"
           }
+        }
+      },
+      "ColumnArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Column"
         }
       },
       "Column": {
@@ -3796,6 +3471,32 @@
           }
         }
       },
+      "EmailOrGroupId": {
+        "oneOf": [
+          {
+            "type": "object",
+            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
+            "properties": {
+              "email": {
+                "description": "The email address of an individual recipient.",
+                "type": "string",
+                "format": "email"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
+            "properties": {
+              "groupId": {
+                "description": "The Id of a group recipient.",
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        ]
+      },
       "Error": {
         "description": "The error caused by the failed item.",
         "type": "object",
@@ -4016,7 +3717,8 @@
         "properties": {
           "id": {
             "description": "Folder Id.",
-            "type": "integer", "format": "int64"
+            "type": "integer",
+            "format": "int64"
           },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked the folder as a favorite in their \"Home\" tab (value = true).",
@@ -4480,6 +4182,16 @@
           }
         }
       },
+      "Int64": {
+        "type": "integer",
+        "format": "int64"
+      },
+      "Int64Array": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Int64"
+        }
+      },
       "LabelFont": {
         "description": "List of supported fonts in Dashboards",
         "type": "string",
@@ -4515,7 +4227,7 @@
           {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ProofRequestBody/allOf/0"
+                "$ref": "#/components/schemas/Email"
               }
             ],
             "type": "object",
@@ -5115,7 +4827,7 @@
           {
             "allOf": [
               {
-                "$ref": "#/components/schemas/ProofRequestBody/allOf/0"
+                "$ref": "#/components/schemas/Email"
               }
             ],
             "type": "object",
@@ -5297,7 +5009,7 @@
         "type": "object",
         "properties": {
           "virtualColumnId": {
-            "type": "integer", "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet."
           }
         }
@@ -5305,14 +5017,14 @@
       "ReportColumn": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/columns/items"
+            "$ref": "#/components/schemas/Column"
           }
         ],
         "type": "object",
         "properties": {
           "virtualId": {
             "description": "The virtual Id of this report column.",
-            "type": "integer", "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "sheetNameColumn": {
             "description": "Returns true only for the special \"Sheet Name\" report column.",
@@ -5375,17 +5087,11 @@
               },
               "cells": {
                 "description": "Cells belonging to the row.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CellDataItem/properties/cell"
-                }
+                "$ref": "#/components/schemas/CellArray"
               },
               "columns": {
                 "description": "Columns of row. Only returned if the include query string parameter contains columns.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CellLinkWidgetContent/properties/columns/items"
-                }
+                "$ref": "#/components/schemas/ColumnArray"
               },
               "conditionalFormat": {
                 "description": "Describes this row's conditional format. Only returned if the include query string parameter contains format and this row has a conditional format applied.",
@@ -5398,21 +5104,14 @@
               "createdBy": {
                 "description": "User object containing name and email of the creator of this row.",
                 "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
+                "$ref": "#/components/schemas/NameAndEmail"
               },
               "discussions": {
                 "description": "Discussions on the row. Only returned if the include query string parameter contains discussions.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Proof/properties/discussions/items"
-                }
+                "$ref": "#/components/schemas/DiscussionArray"
               },
               "proof": {
-                "$ref": "#/components/schemas/Row/properties/proof"
+                "$ref": "#/components/schemas/Proof"
               },
               "expanded": {
                 "description": "Indicates whether the row is expanded or collapsed.",
@@ -5510,26 +5209,7 @@
             "type": "object",
             "allOf": [
               {
-                "type": "object",
-                "properties": {
-                  "message": {
-                    "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
-                    "type": "string",
-                    "enum": [
-                      "PARTIAL_SUCCESS",
-                      "SUCCESS"
-                    ],
-                    "example": "SUCCESS"
-                  },
-                  "resultCode": {
-                    "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
-                    "type": "number",
-                    "enum": [
-                      0,
-                      3
-                    ]
-                  }
-                }
+                "$ref": "#/components/schemas/ResultPrefix"
               }
             ],
             "properties": {
@@ -5566,6 +5246,28 @@
           }
         }
       },
+      "ResultPrefix": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
+            "type": "string",
+            "enum": [
+              "PARTIAL_SUCCESS",
+              "SUCCESS"
+            ],
+            "example": "SUCCESS"
+          },
+          "resultCode": {
+            "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
+            "type": "number",
+            "enum": [
+              0,
+              3
+            ]
+          }
+        }
+      },
       "RichTextWidgetContent": {
         "type": "object",
         "title": "Rich Text",
@@ -5587,39 +5289,30 @@
         "properties": {
           "id": {
             "description": "Row Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "sheetId": {
             "description": "Parent sheet Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "siblingId": {
             "description": "Sibling Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
           },
           "attachments": {
             "description": "Attachments on row. Only returned if the include query string parameter contains attachments.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "cells": {
             "description": "Cells belonging to the row.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CellDataItem/properties/cell"
-            }
+            "$ref": "#/components/schemas/CellArray"
           },
           "columns": {
             "description": "Columns of row. Only returned if the include query string parameter contains columns.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CellLinkWidgetContent/properties/columns/items"
-            }
+            "$ref": "#/components/schemas/ColumnArray"
           },
           "conditionalFormat": {
             "description": "Describes this row's conditional format. Only returned if the include query string parameter contains format and this row has a conditional format applied.",
@@ -5631,85 +5324,15 @@
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this row.",
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "discussions": {
             "description": "Discussions on the row. Only returned if the include query string parameter contains discussions.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Proof/properties/discussions/items"
-            }
+            "$ref": "#/components/schemas/DiscussionArray"
           },
           "proof": {
             "description": "Object containing zero or more media items, including images, videos, and documents, for review, editing, or approval.",
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Proof Id of the proof version.",
-                "type": "number"
-              },
-              "originalId": {
-                "description": "Proof Id of the original proof version.",
-                "type": "number"
-              },
-              "name": {
-                "description": "Proof name. This is the same as primary column value. If the primary column value is empty, name is empty.",
-                "type": "string"
-              },
-              "proofType": {
-                "description": "File type for the proof version.",
-                "type": "string",
-                "enum": [
-                  "DOCUMENT",
-                  "IMAGE",
-                  "MIXED",
-                  "NONE",
-                  "VIDEO"
-                ]
-              },
-              "proofRequestUrl": {
-                "description": "URL to review a proofing request.",
-                "type": "string"
-              },
-              "version": {
-                "description": "The version number of the proof.",
-                "type": "number"
-              },
-              "lastUpdatedAt": {
-                "$ref": "#/components/schemas/Date"
-              },
-              "lastUpdatedBy": {
-                "description": "`User` object containing `name` and `email` of the user who last updated the proof.\n",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
-              },
-              "isCompleted": {
-                "description": "Indicates whether the proof is completed.",
-                "type": "boolean"
-              },
-              "attachments": {
-                "description": "Array of Attachment objects. Only returned if the include query string parameter contains attachments.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Attachment"
-                }
-              },
-              "discussions": {
-                "description": "Array of Discussion objects. Only returned if the include query string parameter contains discussions.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Proof/properties/discussions/items"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/Proof"
           },
           "expanded": {
             "description": "Indicates whether the row is expanded or collapsed.",
@@ -5741,12 +5364,7 @@
           },
           "modifiedBy": {
             "description": "User object containing name and email of the last person to modify this row.",
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "permaLink": {
             "description": "URL that represents a direct link to the row in Smartsheet. Only returned if the include query string parameter contains rowPermalink.",
@@ -5766,7 +5384,7 @@
       "RowEmail": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ProofRequestBody/allOf/0"
+            "$ref": "#/components/schemas/Email"
           }
         ],
         "type": "object",
@@ -5797,11 +5415,11 @@
         "properties": {
           "from": {
             "description": "Row Id in the source sheet.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "to": {
             "description": "Row Id in the destination sheet.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           }
         }
       },
@@ -5862,52 +5480,20 @@
             "maximum": 99
           },
           "endAt": {
-            "allOf": [
-              {
-                "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n"
-              },
-              {
-                "oneOf": [
-                  {
-                    "type": "string",
-                    "format": "date-time"
-                  },
-                  {
-                    "type": "number"
-                  }
-                ]
-              }
-            ]
+            "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
+            "$ref": "#/components/schemas/Date"
           },
           "lastSentAt": {
-            "allOf": [
-              {
-                "description": "The date and time for when the last request was sent."
-              },
-              {
-                "$ref": "#/components/schemas/Date"
-              }
-            ]
+            "description": "The date and time for when the last request was sent.",
+            "$ref": "#/components/schemas/Date"
           },
           "nextSendAt": {
-            "allOf": [
-              {
-                "description": "The date and time for when the next request is scheduled to send."
-              },
-              {
-                "$ref": "#/components/schemas/Date"
-              }
-            ]
+            "description": "The date and time for when the next request is scheduled to send.",
+            "$ref": "#/components/schemas/Date"
           },
           "startAt": {
-            "allOf": [
-              {
-                "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601 date and\ntime with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time with\nno offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n"
-              },
-              {
-                "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
-              }
-            ]
+            "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601 date and\ntime with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time with\nno offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
+            "$ref": "#/components/schemas/Date"
           }
         }
       },
@@ -5916,17 +5502,11 @@
         "properties": {
           "sheets": {
             "description": "Array of Sheet objects (containing just the sheet Id) of any sheets that the requester has access to that make up the report.\n",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Folder/properties/sheets/items"
-            }
+            "$ref": "#/components/schemas/SheetArray"
           },
           "workspaces": {
             "description": "Array of Workspace objects (containing just the workspace Id) that the requester has access to that make up the report.\n",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Workspace"
-            }
+            "$ref": "#/components/schemas/WorkspaceArray"
           }
         }
       },
@@ -5934,53 +5514,19 @@
         "type": "object",
         "properties": {
           "results": {
-            "description": "Array of SearchResultItem objects.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "objectId": {
-                  "description": "Search result object Id.",
-                  "type": "number"
-                },
-                "parentObjectId": {
-                  "description": "Search result parent object Id.",
-                  "type": "number"
-                },
-                "contextData": {
-                  "description": "Additional info on search result context.",
-                  "type": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "objectType": {
-                  "description": "Search result object type (attachment, dashboard, discussion, folder, report, row, sheet, summaryField, template, or workspace).",
-                  "type": "string"
-                },
-                "parentObjectName": {
-                  "description": "Search result parent object name.",
-                  "type": "string"
-                },
-                "parentObjectType": {
-                  "description": "Search result parent object type (dashboard, folder, report, sheet, template, or workspace).",
-                  "type": "string"
-                },
-                "proofUrl": {
-                  "description": "The proofUrl string will be present in the contextData if the discussion or attachment belongs to a proof.",
-                  "type": "string"
-                },
-                "text": {
-                  "description": "Search result text excerpt.",
-                  "type": "string"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/SearchResultItemArray"
           },
           "totalCount": {
             "description": "Total number of search results.",
             "type": "number"
           }
+        }
+      },
+      "SearchResultItemArray": {
+        "description": "Array of SearchResultItem objects.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SearchResultItem"
         }
       },
       "SearchResultItem": {
@@ -6050,25 +5596,19 @@
         "properties": {
           "id": {
             "description": "The Id of the sent update request.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "columnIds": {
             "description": "The Ids of columns included in the request.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "rowIds": {
             "description": "The Ids of rows where an update is requested.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "updateRequestId": {
             "description": "The Id of the originating update request.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "includeAttachments": {
             "description": "Indicates whether the attachments were included in the email.",
@@ -6084,27 +5624,15 @@
           },
           "sentAt": {
             "description": "The date and time for when the sent update request was sent to the recipient.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Date"
-              }
-            ]
+            "$ref": "#/components/schemas/Date"
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "sentTo": {
             "description": "Recipient object.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
-              }
-            ]
+            "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
           },
           "status": {
             "description": "The status of the sent update request.",
@@ -6246,13 +5774,11 @@
           },
           "groupId": {
             "description": "Group Id if the share is a group share, else null.",
-            "type": "number",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "userId": {
             "description": "User Id if the share is a user share, else null.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "description": "The type of this share. One of the following values: GROUP or USER.\n",
@@ -6313,38 +5839,29 @@
         "properties": {
           "id": {
             "description": "Sheet Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "fromId": {
             "description": "The Id of the template from which to create the sheet. This attribute can be specified in a request, but is never present in a response.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "ownerId": {
             "description": "User Id of the sheet owner.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
           },
           "attachments": {
             "description": "Array of Attachment objects.\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **attachments**.\n",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "cellImageUploadEnabled": {
             "description": "The sheet is enabled for cell images to be uploaded.\n",
             "type": "boolean"
           },
           "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CellLinkWidgetContent/properties/columns/items"
-            }
+            "$ref": "#/components/schemas/ColumnArray"
           },
           "createdAt": {
             "$ref": "#/components/schemas/Date"
@@ -6394,8 +5911,7 @@
                 },
                 "sourceSheetId": {
                   "description": "Sheet Id of source sheet.",
-                  "type": "integer",
-                  "format": "int64"
+                  "$ref": "#/components/schemas/Int64"
                 }
               }
             }
@@ -6571,7 +6087,7 @@
       "SheetEmail": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/ProofRequestBody/allOf/0"
+            "$ref": "#/components/schemas/Email"
           }
         ],
         "type": "object",
@@ -6860,8 +6376,7 @@
                 "properties": {
                   "id": {
                     "description": "Dashboard Id.",
-                    "type": "integer",
-                    "format": "int64",
+                    "$ref": "#/components/schemas/Int64",
                     "readOnly": true
                   },
                   "accessLevel": {
@@ -6979,8 +6494,7 @@
         "properties": {
           "id": {
             "description": "The Id of the dashboard, report, sheet, or template from which the enclosing dashboard, report, sheet, or template was created.\n",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
@@ -7010,15 +6524,7 @@
         "properties": {
           "columnIds": {
             "description": "A column Id or Ids",
-            "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            },
-            "example": [
-              7318427511613316,
-              7318427511613123
-            ]
+            "$ref": "#/components/schemas/Int64Array"
           }
         }
       },
@@ -7027,8 +6533,7 @@
         "properties": {
           "id": {
             "description": "SummaryField Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "contactOptions": {
             "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
@@ -7143,8 +6648,7 @@
         "properties": {
           "id": {
             "description": "Template Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "description": "Type of template. Only applicable to public templates.",
@@ -7584,8 +7088,7 @@
         "properties": {
           "id": {
             "description": "User Id.",
-            "type": "integer",
-            "format": "int64",
+            "$ref": "#/components/schemas/Int64",
             "readOnly": true
           },
           "admin": {
@@ -7909,8 +7412,7 @@
             "properties": {
               "id": {
                 "description": "Webhook Id.",
-                "type": "integer",
-                "format": "int64",
+                "$ref": "#/components/schemas/Int64",
                 "readOnly": true,
                 "example": 8444254503626628
               },
@@ -7921,8 +7423,7 @@
                 "example": 555555
               },
               "scopeObjectId": {
-                "type": "integer",
-                "format": "int64",
+                "$ref": "#/components/schemas/Int64",
                 "description": "Id of the object that is subscribed to. Specified when a webhook is created and cannot be changed.",
                 "example": 3285357287499652
               },
@@ -8008,11 +7509,7 @@
                 "properties": {
                   "columnIds": {
                     "description": "A column Id or Ids",
-                    "type": "array",
-                    "items": {
-                      "type": "integer",
-                      "format": "int64"
-                    }
+                    "$ref": "#/components/schemas/Int64Array"
                   }
                 }
               }
@@ -8024,295 +7521,6 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Widget"
-        }
-      },
-      "Widget_Chart": {
-        "type": "object",
-        "title": "Chart",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "CHART"
-            ]
-          },
-          "reportId": {
-            "description": "Report Id denoting container source, if applicable.",
-            "type": "number"
-          },
-          "sheetId": {
-            "description": "Sheet Id denoting container source, if applicable.",
-            "type": "number"
-          },
-          "axes": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "location": {
-                  "description": "Describes location of the axis.",
-                  "type": "string",
-                  "enum": [
-                    "BOTTOM",
-                    "LEFT",
-                    "NONE",
-                    "RIGHT",
-                    "TOP"
-                  ]
-                },
-                "title": {
-                  "description": "Axis title.",
-                  "type": "string"
-                },
-                "titleInfo": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": [
-                        "ABSTRACT_DATE_TIME",
-                        "CHECKBOX",
-                        "CONTACT_LIST",
-                        "DATE",
-                        "DATE_TIME",
-                        "DURATION",
-                        "MULTI_CONTACT_LIST",
-                        "MULTI_PICKLIST",
-                        "PICKLIST",
-                        "PREDECESSOR",
-                        "TEXT_NUMBER"
-                      ]
-                    }
-                  }
-                },
-                "axisTitleFont": {
-                  "$ref": "#/components/schemas/LabelFont"
-                },
-                "axisLabelFormat": {
-                  "description": "Describes the axis format (see [Formatting](/section/Formatting)).",
-                  "type": "string",
-                  "example": ",,,,,,,,36,,,,,,,,"
-                },
-                "axisLabelFont": {
-                  "$ref": "#/components/schemas/LabelFont"
-                },
-                "includeZero": {
-                  "description": "Includes 0 in the axis.",
-                  "type": "boolean"
-                }
-              }
-            }
-          },
-          "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
-          },
-          "includedColumnIds": {
-            "description": "Array of column Ids if the range was selected through the UI.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
-          "legend": {
-            "type": "object",
-            "properties": {
-              "location": {
-                "type": "string",
-                "enum": [
-                  "BOTTOM",
-                  "LEFT",
-                  "NONE",
-                  "RIGHT",
-                  "TOP"
-                ]
-              },
-              "legendFormat": {
-                "type": "string",
-                "description": "The format descriptor (see [Formatting](/section/Formatting)). Only returned if the legend has a non-default format applied to it.",
-                "example": ",,1,1,,,,,,,,,,,,,"
-              },
-              "legendFont": {
-                "$ref": "#/components/schemas/LabelFont"
-              }
-            }
-          },
-          "selectionRanges": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ChartWidgetContent/properties/selectionRanges/items"
-            }
-          },
-          "series": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "title": {
-                  "type": "string"
-                },
-                "titleInfo": {
-                  "$ref": "#/components/schemas/Widget/properties/contents/oneOf/0/properties/axes/items/properties/titleInfo"
-                },
-                "seriesTitleFormat": {
-                  "type": "string",
-                  "description": "Series title format (see [Formatting](/section/Formatting))."
-                },
-                "seriesType": {
-                  "type": "string",
-                  "enum": [
-                    "AREA",
-                    "BAR",
-                    "COLUMN",
-                    "LINE",
-                    "PIE",
-                    "SCATTER"
-                  ]
-                },
-                "dataLabels": {
-                  "type": "object",
-                  "properties": {
-                    "labelType": {
-                      "type": "string",
-                      "enum": [
-                        "NONE",
-                        "PERCENT",
-                        "VALUE"
-                      ]
-                    }
-                  }
-                },
-                "tooltips": {
-                  "type": "object",
-                  "properties": {
-                    "labelType": {
-                      "type": "string",
-                      "enum": [
-                        "NONE",
-                        "PERCENT",
-                        "X_SERIES_Y",
-                        "X_Y_PERCENT",
-                        "Y",
-                        "Y_PERCENT"
-                      ]
-                    }
-                  }
-                },
-                "lineType": {
-                  "type": "string",
-                  "enum": [
-                    "CURVED",
-                    "STEPPED",
-                    "STRAIGHT"
-                  ]
-                },
-                "holeSize": {
-                  "type": "number"
-                },
-                "isFilled": {
-                  "type": "boolean"
-                },
-                "isHalf": {
-                  "type": "boolean"
-                },
-                "isStacked": {
-                  "type": "boolean"
-                },
-                "xFormat": {
-                  "type": "string",
-                  "description": "The format descriptor (see [Formatting](/section/Formatting)). Only returned if the series has a non-default format applied to it.",
-                  "example": ",,1,1,,,,,,,,,,,,,"
-                },
-                "yFormat": {
-                  "type": "string",
-                  "description": "The format descriptor (see [Formatting](/section/Formatting)). Only returned if the series has a non-default format applied to it.",
-                  "example": ",,1,1,,,,,,,,,,,,,"
-                },
-                "color": {
-                  "type": "string"
-                },
-                "axisLocationX": {
-                  "type": "string",
-                  "enum": [
-                    "BOTTOM",
-                    "LEFT",
-                    "NONE",
-                    "RIGHT",
-                    "TOP"
-                  ]
-                },
-                "axisLocationY": {
-                  "type": "string",
-                  "enum": [
-                    "BOTTOM",
-                    "LEFT",
-                    "NONE",
-                    "RIGHT",
-                    "TOP"
-                  ]
-                },
-                "yColumnInfo": {
-                  "$ref": "#/components/schemas/Widget/properties/contents/oneOf/0/properties/axes/items/properties/titleInfo"
-                },
-                "xColumnInfo": {
-                  "$ref": "#/components/schemas/Widget/properties/contents/oneOf/0/properties/axes/items/properties/titleInfo"
-                },
-                "seriesSelectionOrder": {
-                  "type": "string",
-                  "enum": [
-                    "COLUMNS",
-                    "ROWS"
-                  ]
-                },
-                "seriesData": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "x": {
-                        "type": "number"
-                      },
-                      "y": {
-                        "type": "number"
-                      },
-                      "xFormat": {
-                        "type": "string",
-                        "description": "The format descriptor (see [Formatting](/section/Formatting)). Only returned if the series has a non-default format applied to it.",
-                        "example": ",,1,1,,,,,,,,,,,,,"
-                      },
-                      "yFormat": {
-                        "type": "string",
-                        "description": "The format descriptor (see [Formatting](/section/Formatting)). Only returned if the series has a non-default format applied to it.",
-                        "example": ",,1,1,,,,,,,,,,,,,"
-                      },
-                      "color": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                },
-                "selectionRanges": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ChartWidgetContent/properties/selectionRanges/items"
-                  }
-                }
-              }
-            }
-          },
-          "verticalGridLines": {
-            "type": "object",
-            "properties": {
-              "lineStyle": {
-                "type": "string",
-                "enum": [
-                  "SOLID"
-                ]
-              }
-            }
-          },
-          "horizontalGridLines": {
-            "$ref": "#/components/schemas/Widget/properties/contents/oneOf/0/properties/verticalGridLines"
-          }
         }
       },
       "Widget_Metric": {
@@ -8333,69 +7541,14 @@
           "cellData": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CellLinkWidgetContent/properties/cellData/items"
+              "$ref": "#/components/schemas/CellDataItem"
             }
           },
           "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CellLinkWidgetContent/properties/columns/items"
-            }
+            "$ref": "#/components/schemas/ColumnArray"
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
-          }
-        }
-      },
-      "Widget_Image": {
-        "type": "object",
-        "title": "Image",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "IMAGE"
-            ]
-          },
-          "privateId": {
-            "description": "The image private Id.",
-            "type": "string"
-          },
-          "fileName": {
-            "description": "Name of the image file.",
-            "type": "string"
-          },
-          "fit": {
-            "description": "Describes how the image occupies the available space of its widget.\n * ACTUAL_SIZE - Uses the original image width and height dimensions.\n * FILL - Scales the image to maintain its aspect ratio while filling\nits entire widget. If the image aspect  ratio does not match the aspect ratio of its widget, then the image will be clipped to fit.\n * FIT - Scales the image to maintain its aspect ratio while fitting\nwithin its widget. The image will be  \"letterboxed\" if its aspect ratio does not match the aspect ratio of its widget. Default value for new  image widgets and for existing image widgets where this property has not been explicitly set.\n",
-            "enum": [
-              "ACTUAL_SIZE",
-              "FILL",
-              "FIT"
-            ],
-            "type": "string"
-          },
-          "format": {
-            "description": "Format descriptor. Follows the pattern in FormatTables.",
-            "type": "string",
-            "example": ",7,1,,,,2,2,1,3,,,,,,1,"
-          },
-          "height": {
-            "type": "number"
-          },
-          "hyperlink": {
-            "$ref": "#/components/schemas/CellLinkWidgetContent/properties/hyperlink"
-          },
-          "margin": {
-            "description": "Indicates whether there is margin between the image and its widget borders.\n * MARGIN - Default value for existing image widgets where this\nproperty has not been explicitly set.\n * NO_MARGIN - Default value for new image widgets.\n",
-            "enum": [
-              "MARGIN",
-              "NO_MARGIN"
-            ],
-            "type": "string"
-          },
-          "width": {
-            "description": "Original width of the image in pixels.",
-            "type": "number"
+            "$ref": "#/components/schemas/Hyperlink"
           }
         }
       },
@@ -8506,8 +7659,7 @@
         "properties": {
           "id": {
             "description": "Widget Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "type": {
             "description": "Type of widget.",
@@ -8530,13 +7682,13 @@
             "description": "The type of widget content depends on the value of widget.type.",
             "oneOf": [
               {
-                "$ref": "#/components/schemas/Widget_Chart"
+                "$ref": "#/components/schemas/ChartWidgetContent"
               },
               {
                 "$ref": "#/components/schemas/Widget_Metric"
               },
               {
-                "$ref": "#/components/schemas/Widget_Image"
+                "$ref": "#/components/schemas/ImageWidgetContent"
               },
               {
                 "$ref": "#/components/schemas/Widget_Report"
@@ -8621,23 +7773,19 @@
           },
           "folderId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the folder to open.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "reportId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the report to open.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "sheetId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the sheet to open.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "sightId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the dashboard to open.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "url": {
             "description": "If interactionType = WEB this is the URL to launch.",
@@ -8645,9 +7793,14 @@
           },
           "workspaceId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the workspace to open.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           }
+        }
+      },
+      "WorkspaceArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Workspace"
         }
       },
       "Workspace": {
@@ -8656,8 +7809,7 @@
         "properties": {
           "id": {
             "description": "Workspace Id.",
-            "type": "integer",
-            "format": "int64"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "description": "Workspace name.",
