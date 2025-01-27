@@ -1,22 +1,26 @@
-#/paths/~1contacts/parameters/0			- #/parameters/authorizationHeader
-#/paths/~1favorites/post/parameters/0	- #/parameters/contentTypeHeader
+#/paths/~1contacts/parameters/0			- #/components/parameters/authorizationHeader
+#/paths/~1favorites/post/parameters/0	- #/components/parameters/contentTypeHeader
 
-#/paths/~1contacts/get/parameters/0		- #/parameters/includeAllBoolean
-#/paths/~1contacts/get/parameters/1		- #/parameters/modifiedSince
-#/paths/~1contacts/get/parameters/2		- #/parameters/numericDates 
-#/paths/~1contacts/get/parameters/3		- #/parameters/pageNumber
-#/paths/~1contacts/get/parameters/4		- #/parameters/pageSize 
+#/paths/~1contacts/get/parameters/0		- #/components/parameters/includeAllBoolean
+#/paths/~1contacts/get/parameters/1		- #/components/parameters/modifiedSince
+#/paths/~1contacts/get/parameters/2		- #/components/parameters/numericDates
+#/paths/~1contacts/get/parameters/3		- #/components/parameters/pageNumber
+#/paths/~1contacts/get/parameters/4		- #/components/parameters/pageSize
+
+#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/PagedResult
+#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items			-
+#/components/schemas/BulkItemFailure/properties/error = #/components/schemas/Error
 
 #/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items	- #/components/schemas/Folder/properties/folders/items
 #/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0								- 
 #/paths/~1reports~1%7BreportId%7D/parameters/2																- #/parameters/accessApiLevel
 
 #/paths/~1search/get/responses/200/content/application~1json/schema/allOf/0
-#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items			-
 #/components/schemas/Discussion/properties/accessLevel  = #/components/schemas/AccessLevel
 #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
 
 #/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/ResultPrefix
+#/paths/~1folders~1%7BfolderId%7D/parameters/1 = #/components/parameters/folderIdInPath
 
 #/components/schemas/AutomationAction/oneOf/1/properties/recipients/items = #/components/schemas/EmailOrGroupId
 
