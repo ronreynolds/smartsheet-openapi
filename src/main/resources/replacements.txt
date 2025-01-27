@@ -7,20 +7,40 @@
 #/paths/~1contacts/get/parameters/3		- #/components/parameters/pageNumber
 #/paths/~1contacts/get/parameters/4		- #/components/parameters/pageSize
 
-#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/PagedResult
-#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items			-
-#/components/schemas/BulkItemFailure/properties/error = #/components/schemas/Error
+#/paths/~1contacts/get/responses/400 = #/components/responses/Error_400
+#/paths/~1contacts/get/responses/401 = #/components/responses/Error_401
+#/paths/~1contacts/get/responses/404 = #/components/responses/Error_404
+
+#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0 		= #/components/schemas/PagedResult
+
+#/paths/~1favorites/parameters/1	= #/components/parameters/actorIdHeader
+#/paths/~1favorites/get/parameters/3	= 
+#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items	= #/components/schemas/Favorite
+#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 	= #/components/schemas/ResultPrefix
+
+#/paths/~1folders~1%7BfolderId%7D/parameters/1 	= #/components/parameters/folderIdInPath
+#/paths/~1folders~1%7BfolderId%7D/get/parameters/0 = #/components/parameters/include_folders
+
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/parameters/1 = #/components/parameters/include_sheets
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0	= TBC
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1	= 
+
+#/paths/~1groups/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items 				= #/components/schemas/Group
+#/paths/~1groups~1%7BgroupId%7D~1members/post/requestBody/content/application~1json/schema/oneOf/0 	= #/components/schemas/GroupMember 
+#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2 = #/components/parameters/userIdInPath
 
 #/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items	- #/components/schemas/Folder/properties/folders/items
-#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0								- 
-#/paths/~1reports~1%7BreportId%7D/parameters/2																- #/parameters/accessApiLevel
+
+#/paths/~1reports~1%7BreportId%7D/parameters/2	= #/parameters/accessApiLevel
+
+
+
+#/components/schemas/BulkItemFailure/properties/error = #/components/schemas/Error
+
 
 #/paths/~1search/get/responses/200/content/application~1json/schema/allOf/0
 #/components/schemas/Discussion/properties/accessLevel  = #/components/schemas/AccessLevel
 #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
-
-#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/ResultPrefix
-#/paths/~1folders~1%7BfolderId%7D/parameters/1 = #/components/parameters/folderIdInPath
 
 #/components/schemas/AutomationAction/oneOf/1/properties/recipients/items = #/components/schemas/EmailOrGroupId
 
@@ -28,20 +48,4 @@
 "$ref": "#/components/schemas/Int64Array"
 "$ref": "#/components/schemas/StringArray"
 
-parameters
-      "pageNumberReadonly": {
-        "name": "pageNumber",
-        "description": "The current page in the full result set that the data array represents. NOTE when a page number greater than totalPages is requested, the last page is instead returned.",
-        "type": "number",
-        "example": 1,
-        "readOnly": true
-      },
-      "pageSizeReadonly": {
-        "name": "pageSize",
-        "description": "The number of items in a page. Omitted if there is no limit to page size (and hence, all results are included). Unless otherwise specified, this defaults to 100 for most endpoints.",
-        "type": "number",
-        "example": 50,
-        "nullable": true,
-        "readOnly": true
-      }
 
