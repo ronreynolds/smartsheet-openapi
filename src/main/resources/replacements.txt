@@ -22,6 +22,7 @@
 
 "$ref": "#/components/schemas/Int64"
 "$ref": "#/components/schemas/Int64Array"
+"$ref": "#/components/schemas/StringArray"
 
 parameters
       "pageNumberReadonly": {

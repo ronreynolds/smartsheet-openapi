@@ -80,7 +80,13 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/ContactArray"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "description": "List of Contacts",
+                          "$ref": "#/components/schemas/ContactArray"
+                        }
+                      }
                     }
                   ]
                 }
@@ -1037,7 +1043,7 @@
         "in": "query",
         "description": "When specified with a date and time value, response only includes the objects that are modified on or after the date and time specified. If you need to keep track of frequent changes, it may be more useful to use Get Sheet Version.",
         "schema": {
-          "$ref": "#/components/schemas/Date"
+          "$ref": "#/components/schemas/DateUnion"
         }
       },
       "numericDates": {
@@ -1127,7 +1133,6 @@
         }
       },
       "Error_403": {
-        "$ref": "#/components/responses/",
         "description": "Forbidden.  See Smartsheet Error Code and Message for details.\n",
         "content": {
           "application/json": {
@@ -1216,7 +1221,7 @@
         }
       },
       "Error_415": {
-        "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
+        "description": "Unsupported Media Type.  See Smartsheet Error Code and Message for details.\n",
         "content": {
           "application/json": {
             "schema": {
@@ -1236,7 +1241,7 @@
         }
       },
       "Error_429": {
-        "description": "Gone.  See Smartsheet Error Code and Message for details.\n",
+        "description": "Too Many Requests.  See Smartsheet Error Code and Message for details.\n",
         "content": {
           "application/json": {
             "schema": {
@@ -1370,6 +1375,27 @@
           }
         }
       },
+      "AbstractDatetimeObjectValue": {
+        "description": "Object representing a calculated datetime",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "ABSTRACT_DATETIME"
+            ]
+          },
+          "value": {
+            "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "objectType": "ABSTRACT_DATETIME",
+          "value": "2025-03-03T16:59:59"
+        }
+      },
       "AccessLevel": {
         "type": "string",
         "enum": [
@@ -1409,12 +1435,6 @@
             "description": "User's alternate email address.",
             "type": "string"
           }
-        }
-      },
-      "AttachmentArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Attachment"
         }
       },
       "Attachment": {
@@ -1471,7 +1491,7 @@
             ]
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "$ref": "#/components/schemas/NameAndEmail"
@@ -1494,18 +1514,10 @@
           }
         }
       },
-      "NameAndEmail": {
-        "type": "object",
-        "description": "`User` object containing `name` and `email` of the user who created this attachment.\n",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "name": {
-            "type": "string",
-            "readOnly": true
-          }
+      "AttachmentArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Attachment"
         }
       },
       "AutomationAction": {
@@ -1598,7 +1610,7 @@
             "description": "A timestamp of when the rule was originally added.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/Date"
+                "$ref": "#/components/schemas/DateUnion"
               }
             ]
           },
@@ -1633,7 +1645,7 @@
           },
           "modifiedAt": {
             "description": "The datetime for when the change was made to the rule.",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "modifiedBy": {
             "description": "`User` object containing the `name` and `email` of the user that made the change.\n",
@@ -1985,112 +1997,7 @@
             "type": "integer"
           },
           "profileField": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "SummaryField Id.",
-                "$ref": "#/components/schemas/Int64"
-              },
-              "contactOptions": {
-                "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-                }
-              },
-              "createdAt": {
-                "$ref": "#/components/schemas/Date"
-              },
-              "createdBy": {
-                "description": "User object containing name and email of the creator of this summary field.",
-                "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
-              },
-              "displayValue": {
-                "description": "Visual representation of cell contents, as presented to the user in the UI.",
-                "type": "string"
-              },
-              "format": {
-                "description": "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it.",
-                "type": "string"
-              },
-              "formula": {
-                "description": "The formula for a cell, if set.",
-                "type": "string"
-              },
-              "hyperlink": {
-                "$ref": "#/components/schemas/Cell/properties/hyperlink"
-              },
-              "image": {
-                "$ref": "#/components/schemas/Cell/properties/image"
-              },
-              "index": {
-                "description": "Field index or position. This number is zero-based.",
-                "type": "integer"
-              },
-              "locked": {
-                "description": "Indicates whether the field is locked.",
-                "type": "boolean"
-              },
-              "lockedForUser": {
-                "description": "Indicates whether the field is locked for the requesting user.",
-                "type": "boolean"
-              },
-              "modifiedAt": {
-                "$ref": "#/components/schemas/Date"
-              },
-              "modifiedBy": {
-                "description": "User object containing name and email of the user who most recently modified this summary field.",
-                "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
-              },
-              "objectValue": {
-                "$ref": "#/components/schemas/CellObjectValue"
-              },
-              "options": {
-                "description": "When applicable for PICKLIST column type. Array of the options available for the field.",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              },
-              "symbol": {
-                "description": "When applicable for PICKLIST column type.",
-                "type": "string"
-              },
-              "title": {
-                "description": "Arbitrary name, must be unique within summary.",
-                "type": "string"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "ABSTRACT_DATETIME",
-                  "CHECKBOX",
-                  "CONTACT_LIST",
-                  "DATE",
-                  "DATETIME",
-                  "DURATION",
-                  "MULTI_CONTACT_LIST",
-                  "MULTI_PICKLIST",
-                  "PICKLIST",
-                  "PREDECESSOR",
-                  "TEXT_NUMBER"
-                ]
-              },
-              "validation": {
-                "description": "Indicates whether summary field values are restricted to the type.",
-                "type": "boolean"
-              }
-            }
+            "$ref": "#/components/schemas/SummaryField"
           },
           "valueFormat": {
             "description": "Format description for value.",
@@ -2106,7 +2013,7 @@
         "type": "object",
         "properties": {
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "modifiedBy": {
             "description": "User object containing the name and email of the user that made the change.",
@@ -2193,187 +2100,41 @@
         "oneOf": [
           {
             "description": "Object representing a calculated datetime",
-            "type": "object",
-            "title": "AbstractDatetimeObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "ABSTRACT_DATETIME"
-                ]
-              },
-              "value": {
-                "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "example": {
-              "objectType": "ABSTRACT_DATETIME",
-              "value": "2025-03-03T16:59:59"
-            }
+            "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
           },
           {
             "description": "Object representing a checkbox",
-            "type": "object",
-            "title": "CheckboxObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "CHECKBOX"
-                ]
-              },
-              "value": {
-                "description": "true if checked; false otherwise",
-                "type": "boolean"
-              }
-            },
-            "example": {
-              "objectType": "CHECKBOX",
-              "value": true
-            }
+            "$ref": "#/components/schemas/CheckboxObjectValue"
           },
           {
-            "$ref": "#/components/schemas/CellObjectValue_Contact"
+            "description": "The list of contacts",
+            "$ref": "#/components/schemas/ContactObjectValue"
           },
           {
             "description": "Object representing a date",
-            "type": "object",
-            "title": "DateObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DATE"
-                ]
-              },
-              "value": {
-                "description": "Date in the **full-date** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date"
-              }
-            },
-            "example": {
-              "objectType": "DATE",
-              "value": "2025-01-14"
-            }
+            "$ref": "#/components/schemas/DateObjectValue"
           },
           {
             "description": "Object representing a datetime",
-            "type": "object",
-            "title": "DatetimeObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DATETIME"
-                ]
-              },
-              "value": {
-                "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "example": {
-              "objectType": "DATETIME",
-              "value": "2025-03-03T16:59:59"
-            }
+            "$ref": "#/components/schemas/DatetimeObjectValue"
           },
           {
             "description": "Object representing a duration in days",
-            "type": "object",
-            "title": "DurationObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DURATION"
-                ]
-              },
-              "days": {
-                "description": "Number of days",
-                "type": "number",
-                "format": "float"
-              }
-            },
-            "example": {
-              "objectType": "DURATION",
-              "days": 29
-            }
+            "$ref": "#/components/schemas/DurationObjectValue"
           },
           {
             "description": "Object containing a list of Contacts",
-            "type": "object",
-            "title": "MultiContactObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "MULTI_CONTACT"
-                ]
-              },
-              "value": {
-                "description": "List of Contacts",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CellObjectValue_Contact"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MultiContactObjectValue"
           },
           {
             "description": "Object containing a list of strings to choose from",
-            "type": "object",
-            "title": "MultiPicklistObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "MULTI_PICKLIST"
-                ]
-              },
-              "value": {
-                "description": "List of strings to choose from",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MultiPicklistObjectValue"
           },
           {
-            "$ref": "#/components/schemas/ObjectValue/oneOf/8"
+            "description": "Object containing a list of references to rows on which the current row depends",
+            "$ref": "#/components/schemas/PredecessorListObjectValue"
           }
         ]
-      },
-      "CellObjectValue_Contact": {
-        "description": "Object containing a Contact",
-        "type": "object",
-        "title": "ContactObjectValue",
-        "properties": {
-          "objectType": {
-            "type": "string",
-            "enum": [
-              "CONTACT"
-            ]
-          },
-          "email": {
-            "description": "Email address of the Contact",
-            "type": "string",
-            "format": "email"
-          },
-          "name": {
-            "description": "Name of the Contact",
-            "type": "string"
-          },
-          "imageId": {
-            "description": "ID of an image associated with the Contact",
-            "type": "string",
-            "example": "1234!_qwer!_5667zxcvQWER!_ASDF"
-          }
-        }
       },
       "ChartWidgetTitleInfo": {
         "type": "object",
@@ -2489,25 +2250,7 @@
             "type": "array",
             "items": {
               "description": "Defines a block of cells in a sheet.",
-              "type": "object",
-              "properties": {
-                "sourceColumnId1": {
-                  "description": "Defines beginning edge of range when specifying one or more columns.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "sourceColumnId2": {
-                  "description": "Defines ending edge of range when specifying one or more columns.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "sourceRowId1": {
-                  "description": "Defines beginning edge of range when specifying one or more rows.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "sourceRowId2": {
-                  "description": "Defines ending edge of range when specifying one or more rows.",
-                  "$ref": "#/components/schemas/Int64"
-                }
-              }
+              "$ref": "#/components/schemas/SelectionRange"
             }
           },
           "series": {
@@ -2661,32 +2404,38 @@
                 "selectionRanges": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/ChartWidgetContent/properties/selectionRanges/items"
+                    "$ref": "#/components/schemas/SelectionRange"
                   }
                 }
               }
             }
           },
           "verticalGridLines": {
-            "type": "object",
-            "properties": {
-              "lineStyle": {
-                "type": "string",
-                "enum": [
-                  "SOLID"
-                ]
-              }
-            }
+            "$ref": "#/components/schemas/GridLines"
           },
           "horizontalGridLines": {
-            "$ref": "#/components/schemas/ChartWidgetContent/properties/verticalGridLines"
+            "$ref": "#/components/schemas/GridLines"
           }
         }
       },
-      "ColumnArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Column"
+      "CheckboxObjectValue": {
+        "description": "Object representing a checkbox",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "CHECKBOX"
+            ]
+          },
+          "value": {
+            "description": "true if checked; false otherwise",
+            "type": "boolean"
+          }
+        },
+        "example": {
+          "objectType": "CHECKBOX",
+          "value": true
         }
       },
       "Column": {
@@ -2715,21 +2464,8 @@
             }
           },
           "contactOptions": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "description": "A parsable email address.",
-                  "type": "string"
-                },
-                "name": {
-                  "description": "Can be a user's name, display name, or free text.",
-                  "type": "string"
-                }
-              }
-            },
-            "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
+            "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**.",
+            "$ref": "#/components/schemas/ContactOptionArray"
           },
           "description": {
             "type": "string",
@@ -2764,11 +2500,8 @@
             "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
           },
           "options": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Array of the options available for the column."
+            "description": "Array of the options available for the column.",
+            "$ref": "#/components/schemas/StringArray"
           },
           "primary": {
             "type": "boolean",
@@ -2852,6 +2585,12 @@
           }
         }
       },
+      "ColumnArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Column"
+        }
+      },
       "ColumnObject": {
         "type": "object",
         "properties": {
@@ -2910,11 +2649,8 @@
             "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
           },
           "options": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "description": "Array of the options available for the column."
-            }
+            "description": "Array of the options available for the column.",
+            "$ref": "#/components/schemas/StringArray"
           },
           "symbol": {
             "type": "string",
@@ -2950,17 +2686,13 @@
         "properties": {
           "attachments": {
             "description": "Array of attachments on comments.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this comment.",
-            "type": "object",
             "$ref": "#/components/schemas/NameAndEmail"
           },
           "discussionId": {
@@ -2972,13 +2704,17 @@
             "$ref": "#/components/schemas/Int64"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "text": {
             "description": "Comment body.",
             "type": "string"
           }
         }
+      },
+      "CommentArray": {
+        "type": "array",
+        "items": { "$ref": "#/components/schemas/Comment"}
       },
       "Contact": {
         "type": "object",
@@ -2990,24 +2726,48 @@
           },
           "name": {
             "description": "Contact's full name.",
-            "type": "string"
+            "type": "string",
+            "example": "Jane Doe"
           },
           "email": {
             "description": "Contact's email address.",
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "jane.doe@smartsheet.com"
           }
         }
       },
       "ContactArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Contact"
+        }
+      },
+      "ContactObjectValue": {
+        "description": "Object containing a Contact",
         "type": "object",
         "properties": {
-          "data": {
-            "description": "List of Contacts",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Contact"
-            }
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "CONTACT"
+            ]
+          },
+          "email": {
+            "description": "Email address of the Contact",
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@acme.com"
+          },
+          "name": {
+            "description": "Name of the Contact",
+            "type": "string",
+            "example": "John Doe"
+          },
+          "imageId": {
+            "description": "ID of an image associated with the Contact",
+            "type": "string",
+            "example": "1234!_qwer!_5667zxcvQWER!_ASDF"
           }
         }
       },
@@ -3206,6 +2966,12 @@
           }
         }
       },
+      "CrossSheetReferenceArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/CrossSheetReference"
+        }
+      },
       "Currency": {
         "type": "object",
         "properties": {
@@ -3221,7 +2987,28 @@
           }
         }
       },
-      "Date": {
+      "DateObjectValue": {
+        "description": "Object representing a date",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "DATE"
+            ]
+          },
+          "value": {
+            "description": "Date in the **full-date** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "example": {
+          "objectType": "DATE",
+          "value": "2025-01-14"
+        }
+      },
+      "DateUnion": {
         "description": "supports date-time in ISO-8601 or epoch-millis",
         "type": "object",
         "oneOf": [
@@ -3234,6 +3021,27 @@
           }
         ],
         "readOnly": true
+      },
+      "DatetimeObjectValue": {
+        "description": "Object representing a datetime",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "DATETIME"
+            ]
+          },
+          "value": {
+            "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "example": {
+          "objectType": "DATETIME",
+          "value": "2025-03-03T16:59:59"
+        }
       },
       "DiscussionArray": {
         "type": "array",
@@ -3261,47 +3069,11 @@
           },
           "comments": {
             "description": "Array of comments in discussion. Only returned if the include query string parameter contains comments.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "attachments": {
-                  "description": "Array of attachments on comments.",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Attachment"
-                  }
-                },
-                "createdAt": {
-                  "$ref": "#/components/schemas/Date"
-                },
-                "createdBy": {
-                  "$ref": "#/components/schemas/NameAndEmail"
-                },
-                "discussionId": {
-                  "description": "Discussion Id of discussion that contains comment.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "id": {
-                  "description": "Comment Id.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "modifiedAt": {
-                  "$ref": "#/components/schemas/Date"
-                },
-                "text": {
-                  "description": "Comment body.",
-                  "type": "string"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/CommentArray"
           },
           "commentAttachments": {
             "description": "Array of attachments on discussion comments. Only returned if the include query string parameter contains attachments.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "commentCount": {
             "description": "Number of comments in the discussion.",
@@ -3309,22 +3081,14 @@
           },
           "createdBy": {
             "description": "`User` object containing `name` and `email` of the user who created the discussion.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "lastCommentedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "lastCommentedUser": {
             "description": "`User` object containing `name` and `email` of the user who last commented on the discussion.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "parentId": {
             "description": "The Id of the associated row or sheet.",
@@ -3391,6 +3155,28 @@
             "description": "The number of weeks for this duration.",
             "type": "number"
           }
+        }
+      },
+      "DurationObjectValue": {
+        "description": "Object representing a duration in days",
+        "type": "object",
+        "title": "",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "DURATION"
+            ]
+          },
+          "days": {
+            "description": "Number of days",
+            "type": "number",
+            "format": "float"
+          }
+        },
+        "example": {
+          "objectType": "DURATION",
+          "days": 29
         }
       },
       "Email": {
@@ -3851,6 +3637,17 @@
           }
         }
       },
+      "GridLines": {
+        "type": "object",
+        "properties": {
+          "lineStyle": {
+            "type": "string",
+            "enum": [
+              "SOLID"
+            ]
+          }
+        }
+      },
       "Group": {
         "type": "object",
         "properties": {
@@ -3876,10 +3673,10 @@
             "$ref": "#/components/schemas/Int64"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           }
         }
       },
@@ -4162,6 +3959,44 @@
           }
         }
       },
+      "MultiContactObjectValue": {
+        "description": "Object containing a list of Contacts",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "MULTI_CONTACT"
+            ]
+          },
+          "value": {
+            "description": "List of Contacts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactObjectValue"
+            }
+          }
+        }
+      },
+      "MultiPicklistObjectValue": {
+        "description": "Object containing a list of strings to choose from",
+        "type": "object",
+        "properties": {
+          "objectType": {
+            "type": "string",
+            "enum": [
+              "MULTI_PICKLIST"
+            ]
+          },
+          "value": {
+            "description": "List of strings to choose from",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
       "MultiRowEmail": {
         "allOf": [
           {
@@ -4199,6 +4034,20 @@
           }
         }
       },
+      "NameAndEmail": {
+        "type": "object",
+        "description": "`User` object containing `name` and `email` of the user who created this attachment.\n",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "name": {
+            "type": "string",
+            "readOnly": true
+          }
+        }
+      },
       "ObjectValue": {
         "description": "The base object for values found in the **Cell.objectValue** attribute. Its **objectType** attribute indicates the type of the object. This object itself is not used directly.",
         "required": [
@@ -4212,208 +4061,39 @@
         "oneOf": [
           {
             "description": "Object representing a calculated datetime",
-            "type": "object",
-            "title": "AbstractDatetimeObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "ABSTRACT_DATETIME"
-                ]
-              },
-              "value": {
-                "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "example": {
-              "objectType": "ABSTRACT_DATETIME",
-              "value": "2025-03-03T16:59:59"
-            }
+            "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
           },
           {
             "description": "Object representing a checkbox",
-            "type": "object",
-            "title": "CheckboxObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "CHECKBOX"
-                ]
-              },
-              "value": {
-                "description": "true if checked; false otherwise",
-                "type": "boolean"
-              }
-            },
-            "example": {
-              "objectType": "CHECKBOX",
-              "value": true
-            }
+            "$ref": "#/components/schemas/CheckboxObjectValue"
           },
           {
             "description": "Object containing a Contact",
-            "type": "object",
-            "title": "ContactObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "CONTACT"
-                ]
-              },
-              "email": {
-                "description": "Email address of the Contact",
-                "type": "string",
-                "format": "email",
-                "example": "john.doe@acme.com"
-              },
-              "name": {
-                "description": "Name of the Contact",
-                "type": "string",
-                "example": "John Doe"
-              },
-              "imageId": {
-                "description": "ID of an image associated with the Contact",
-                "type": "string",
-                "example": "1234!_qwer!_5667zxcvQWER!_ASDF"
-              }
-            }
+            "$ref": "#/components/schemas/ContactObjectValue"
           },
           {
             "description": "Object representing a date",
-            "type": "object",
-            "title": "DateObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DATE"
-                ]
-              },
-              "value": {
-                "description": "Date in the **full-date** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date"
-              }
-            },
-            "example": {
-              "objectType": "DATE",
-              "value": "2025-01-14"
-            }
+            "$ref": "#/components/schemas/DateObjectValue"
           },
           {
             "description": "Object representing a datetime",
-            "type": "object",
-            "title": "DatetimeObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DATETIME"
-                ]
-              },
-              "value": {
-                "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-                "type": "string",
-                "format": "date-time"
-              }
-            },
-            "example": {
-              "objectType": "DATETIME",
-              "value": "2025-03-03T16:59:59"
-            }
+            "$ref": "#/components/schemas/DatetimeObjectValue"
           },
           {
             "description": "Object representing a duration in days",
-            "type": "object",
-            "title": "DurationObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "DURATION"
-                ]
-              },
-              "days": {
-                "description": "Number of days",
-                "type": "number",
-                "format": "float"
-              }
-            },
-            "example": {
-              "objectType": "DURATION",
-              "days": 29
-            }
+            "$ref": "#/components/schemas/DurationObjectValue"
           },
           {
             "description": "Object containing a list of Contacts",
-            "type": "object",
-            "title": "MultiContactObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "MULTI_CONTACT"
-                ]
-              },
-              "value": {
-                "description": "List of Contacts",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ObjectValue/oneOf/2"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/MultiContactObjectValue"
           },
           {
             "description": "Object containing a list of strings to choose from",
-            "type": "object",
-            "title": "MultiPicklistObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "MULTI_PICKLIST"
-                ]
-              },
-              "value": {
-                "description": "List of strings to choose from",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
-            },
-            "example": {
-              "objectType": "MULTI_PICKLIST",
-              "values": [
-                "foo bar",
-                "baz biff"
-              ]
-            }
+            "$ref": "#/components/schemas/MultiPicklistObjectValue"
           },
           {
             "description": "Object containing a list of references to rows on which the current row depends",
-            "type": "object",
-            "title": "PredecessorListObjectValue",
-            "properties": {
-              "objectType": {
-                "type": "string",
-                "enum": [
-                  "PREDECESSOR_LIST"
-                ]
-              },
-              "predecessors": {
-                "description": "List of references to rows on which the current row depends",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/PredecessorList/properties/predecessors/items"
-                }
-              }
-            }
+            "title": "#/components/schemas/PredecessorListObjectValue"
           }
         ]
       },
@@ -4516,7 +4196,7 @@
           },
           "rowNumber": {
             "description": "The row number of the predecessor row. Omitted if invalid is true.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true
           }
         },
@@ -4527,10 +4207,9 @@
           "inCriticalPath": true
         }
       },
-      "PredecessorList": {
+      "PredecessorListObjectValue":           {
         "description": "Object containing a list of references to rows on which the current row depends",
         "type": "object",
-        "title": "PredecessorListObjectValue",
         "properties": {
           "objectType": {
             "type": "string",
@@ -4542,47 +4221,7 @@
             "description": "List of references to rows on which the current row depends",
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "rowId": {
-                  "description": "The Id of the predecessor row.",
-                  "type": "number"
-                },
-                "type": {
-                  "description": "Type of the predecessor:\n * FF (Finish-to-Finish) - finish at the same time the predecessor\nfinishes.\n * FS (Finish-to-Start) - start after the predecessor finishes.\n * SF (Start-to-Finish) - finish before the predecessor starts.\n * SS (Start-to-Start) - start at the same time the predecessor\nstarts.\n",
-                  "type": "string",
-                  "enum": [
-                    "FF",
-                    "FS",
-                    "SF",
-                    "SS"
-                  ]
-                },
-                "inCriticalPath": {
-                  "description": "True if this predecessor is in the critical path.",
-                  "type": "boolean",
-                  "readOnly": true
-                },
-                "invalid": {
-                  "description": "True if the row referenced by rowId is not a valid row in this sheet, or there is a circular reference (displayed in the Smartsheet app as \"#REF\") Omitted if false.",
-                  "type": "boolean",
-                  "readOnly": true
-                },
-                "lag": {
-                  "$ref": "#/components/schemas/Predecessor/properties/lag"
-                },
-                "rowNumber": {
-                  "description": "The row number of the predecessor row. Omitted if invalid is true.",
-                  "type": "number",
-                  "readOnly": true
-                }
-              },
-              "example": {
-                "rowId": "1234567890123456,",
-                "rowNumber": "2,",
-                "type": "FS,",
-                "inCriticalPath": true
-              }
+              "$ref": "#/components/schemas/Predecessor"
             }
           }
         }
@@ -4658,7 +4297,7 @@
             "type": "number"
           },
           "lastUpdatedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "lastUpdatedBy": {
             "description": "`User` object containing `name` and `email` of the user who last updated the proof.\n",
@@ -4681,77 +4320,7 @@
           },
           "discussions": {
             "description": "Array of Discussion objects. Only returned if the include query string parameter contains discussions.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "accessLevel": {
-                  "$ref": "#/components/schemas/AccessLevel"
-                },
-                "id": {
-                  "description": "Discussion Id.",
-                  "type": "number"
-                },
-                "comments": {
-                  "description": "Array of comments in discussion. Only returned if the include query string parameter contains comments.",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Discussion/properties/comments/items"
-                  }
-                },
-                "commentAttachments": {
-                  "description": "Array of attachments on discussion comments. Only returned if the include query string parameter contains attachments.",
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Attachment"
-                  }
-                },
-                "commentCount": {
-                  "description": "Number of comments in the discussion.",
-                  "type": "number"
-                },
-                "createdBy": {
-                  "description": "`User` object containing `name` and `email` of the user who created the discussion.\n",
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/NameAndEmail"
-                    }
-                  ]
-                },
-                "lastCommentedAt": {
-                  "$ref": "#/components/schemas/Date"
-                },
-                "lastCommentedUser": {
-                  "description": "`User` object containing `name` and `email` of the user who last commented on the discussion.\n",
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/NameAndEmail"
-                    }
-                  ]
-                },
-                "parentId": {
-                  "description": "The Id of the associated row or sheet.",
-                  "type": "number"
-                },
-                "parentType": {
-                  "description": "Type of parent object.",
-                  "type": "string",
-                  "enum": [
-                    "ROW",
-                    "SHEET"
-                  ]
-                },
-                "readOnly": {
-                  "description": "Indicates whether the user can modify the discussion.",
-                  "type": "boolean"
-                },
-                "title": {
-                  "description": "Title automatically created by duplicating the first 100 characters of top-level comment.",
-                  "type": "string",
-                  "readOnly": true
-                }
-              }
-            }
+            "$ref": "#/components/schemas/DiscussionArray"
           }
         }
       },
@@ -4791,7 +4360,7 @@
             ]
           },
           "sentAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "isDownloadable": {
             "description": "Indicates whether the description is downloadable.",
@@ -4989,120 +4558,7 @@
         }
       },
       "ReportRow": {
-        "allOf": [
-          {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Row Id.",
-                "type": "number"
-              },
-              "sheetId": {
-                "description": "Parent sheet Id.",
-                "type": "number"
-              },
-              "siblingId": {
-                "description": "Sibling Id.",
-                "type": "number"
-              },
-              "accessLevel": {
-                "$ref": "#/components/schemas/AccessLevel"
-              },
-              "attachments": {
-                "description": "Attachments on row. Only returned if the include query string parameter contains attachments.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Attachment"
-                }
-              },
-              "cells": {
-                "description": "Cells belonging to the row.",
-                "$ref": "#/components/schemas/CellArray"
-              },
-              "columns": {
-                "description": "Columns of row. Only returned if the include query string parameter contains columns.",
-                "$ref": "#/components/schemas/ColumnArray"
-              },
-              "conditionalFormat": {
-                "description": "Describes this row's conditional format. Only returned if the include query string parameter contains format and this row has a conditional format applied.",
-                "type": "string",
-                "example": ",,1,1,,,,,,,,,,,,,"
-              },
-              "createdAt": {
-                "$ref": "#/components/schemas/Date"
-              },
-              "createdBy": {
-                "description": "User object containing name and email of the creator of this row.",
-                "type": "object",
-                "$ref": "#/components/schemas/NameAndEmail"
-              },
-              "discussions": {
-                "description": "Discussions on the row. Only returned if the include query string parameter contains discussions.",
-                "$ref": "#/components/schemas/DiscussionArray"
-              },
-              "proof": {
-                "$ref": "#/components/schemas/Proof"
-              },
-              "expanded": {
-                "description": "Indicates whether the row is expanded or collapsed.",
-                "type": "boolean"
-              },
-              "filteredOut": {
-                "description": "Indicates if the row is filtered out by a column filter. Only returned if the include query string parameter contains filters.",
-                "type": "boolean"
-              },
-              "format": {
-                "description": "Format descriptor. Only returned if the include query string parameter contains format and this row has a non-default format applied.",
-                "type": "string",
-                "example": ",,1,1,,,,,,,,,,,,,"
-              },
-              "inCriticalPath": {
-                "description": "Only returned, with a value of true, if the sheet is a project sheet with dependencies enabled and this row is in the critical path.",
-                "type": "boolean"
-              },
-              "locked": {
-                "description": "Indicates whether the row is locked.",
-                "type": "boolean"
-              },
-              "lockedForUser": {
-                "description": "Indicates whether the row is locked for the requesting user.",
-                "type": "boolean"
-              },
-              "modifiedAt": {
-                "$ref": "#/components/schemas/Date"
-              },
-              "modifiedBy": {
-                "description": "User object containing name and email of the last person to modify this row.",
-                "type": "object",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
-              },
-              "permaLink": {
-                "description": "URL that represents a direct link to the row in Smartsheet. Only returned if the include query string parameter contains rowPermalink.",
-                "type": "string"
-              },
-              "rowNumber": {
-                "description": "Row number within the sheet.",
-                "type": "number",
-                "minimum": 1
-              },
-              "version": {
-                "description": "Sheet version number that is incremented every time a sheet is modified.",
-                "type": "number"
-              }
-            }
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "sheetId": {
-            "type": "number",
-            "description": "The Id of the sheet from which the row originates."
-          }
-        }
+        "$ref": "#/components/schemas/Row"
       },
       "ReportWidgetContent": {
         "type": "object",
@@ -5200,6 +4656,12 @@
           }
         }
       },
+      "RowArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Row"
+        }
+      },
       "Row": {
         "type": "object",
         "properties": {
@@ -5236,7 +4698,7 @@
             "example": ",,1,1,,,,,,,,,,,,,"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this row.",
@@ -5276,7 +4738,7 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "modifiedBy": {
             "description": "User object containing name and email of the last person to modify this row.",
@@ -5397,19 +4859,19 @@
           },
           "endAt": {
             "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "lastSentAt": {
             "description": "The date and time for when the last request was sent.",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "nextSendAt": {
             "description": "The date and time for when the next request is scheduled to send.",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "startAt": {
             "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601 date and\ntime with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time with\nno offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           }
         }
       },
@@ -5540,7 +5002,7 @@
           },
           "sentAt": {
             "description": "The date and time for when the sent update request was sent to the recipient.",
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -5607,7 +5069,7 @@
             "type": "boolean"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "email": {
             "description": "User's primary email address for user shares; null for group shares.",
@@ -5618,7 +5080,7 @@
             "type": "string"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "name": {
             "description": "If a user share and user is also a contact, the user's full name. If a group share, the group's name.",
@@ -5679,57 +5141,11 @@
             "$ref": "#/components/schemas/ColumnArray"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "crossSheetReferences": {
             "description": "Array of CrossSheetReference objects.\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **crossSheetReferences**.\n",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "endColumnId": {
-                  "description": "Defines ending edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-                  "type": "number"
-                },
-                "endRowId": {
-                  "description": "Defines ending edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                  "type": "number"
-                },
-                "id": {
-                  "description": "Cross-sheet reference Id, guaranteed unique within referencing sheet.",
-                  "type": "number"
-                },
-                "name": {
-                  "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
-                  "type": "string"
-                },
-                "startColumnId": {
-                  "description": "Defines beginning edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-                  "type": "number"
-                },
-                "startRowId": {
-                  "description": "Defines beginning edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                  "type": "number"
-                },
-                "status": {
-                  "description": "Status of request:\n * 'BLOCKED' - A reference is downstream of a circular issue.\n * 'BROKEN' - The data source location (column, row or sheet) was\ndeleted.\n * 'CIRCULAR' - The formula reference is self referencing and cannot\nbe resolved.\n * 'DISABLED' - Updating the reference is temporarily disabled due\nto maintenance.\n * 'INVALID/UNKNOWN' - The reference is new and had not been validated.\n * 'NOT_SHARED' - No common shared users.\n * 'OK' - The reference is in a good state.\n",
-                  "type": "string",
-                  "enum": [
-                    "BLOCKED",
-                    "BROKEN",
-                    "CIRCULAR",
-                    "DISABLED",
-                    "INVALID/UNKNOWN",
-                    "NOT-SHARED",
-                    "OK"
-                  ]
-                },
-                "sourceSheetId": {
-                  "description": "Sheet Id of source sheet.",
-                  "$ref": "#/components/schemas/Int64"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/CrossSheetReferenceArray"
           },
           "dependenciesEnabled": {
             "description": "Indicates whether dependencies are enabled.",
@@ -5741,10 +5157,7 @@
           },
           "effectiveAttachmentOptions": {
             "description": "Array of enum strings (see [Attachment.attachmentType](../../tag/attachmentsDescription) indicating the allowable attachment options for the current user and sheet.\n",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/StringArray"
           },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked this sheet as a favorite in their Home tab (value = **true**).",
@@ -5764,7 +5177,7 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "name": {
             "description": "Sheet name.",
@@ -5780,38 +5193,7 @@
           },
           "projectSettings": {
             "description": "Represents the project settings dependencies for a specific sheet. Project settings may be updated on sheets that the user has editor access.",
-            "type": "object",
-            "properties": {
-              "lengthOfDay": {
-                "description": "Length of a workday for a project sheet.",
-                "type": "number",
-                "minimum": 1,
-                "maximum": 24
-              },
-              "nonWorkingDays": {
-                "description": "Non-working days for a project sheet.",
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "format": "date"
-                }
-              },
-              "workingDays": {
-                "type": "array",
-                "items": {
-                  "type": "string",
-                  "enum": [
-                    "MONDAY",
-                    "TUESDAY",
-                    "WEDNESDAY",
-                    "THURSDAY",
-                    "FRIDAY",
-                    "SATURDAY",
-                    "SUNDAY"
-                  ]
-                }
-              }
-            }
+            "$ref": "#/components/schemas/ProjectSettings"
           },
           "readOnly": {
             "description": "Returned only if the sheet belongs to an expired trial (value = **true**).",
@@ -5831,10 +5213,7 @@
             ]
           },
           "rows": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ReportRow/allOf/0"
-            }
+            "$ref": "#/components/schemas/RowArray"
           },
           "showParentRowsForFilters": {
             "description": "Returned only if there are column filters on the sheet. Value = **true** if \"show parent rows\" is enabled for the filters.",
@@ -5849,10 +5228,7 @@
             "properties": {
               "fields": {
                 "description": "Array of summary (or metadata) fields defined on the sheet.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/CellDataItem/properties/profileField"
-                }
+                "$ref": "#/components/schemas/SummaryFieldArray"
               }
             }
           },
@@ -6027,10 +5403,7 @@
         "properties": {
           "fields": {
             "description": "Array of summary (or metadata) fields defined on the sheet.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CellDataItem/properties/profileField"
-            }
+            "$ref": "#/components/schemas/SummaryFieldArray"
           }
         }
       },
@@ -6082,7 +5455,7 @@
             ]
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/Cell/properties/hyperlink"
+            "$ref": "#/components/schemas/Hyperlink"
           },
           "label": {
             "description": "Label for the data point.",
@@ -6101,7 +5474,7 @@
           },
           "order": {
             "description": "The display order for the ShortcutWidgetItem object.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -6137,7 +5510,7 @@
                   ]
                 },
                 "hyperlink": {
-                  "$ref": "#/components/schemas/Cell/properties/hyperlink"
+                  "$ref": "#/components/schemas/Hyperlink"
                 },
                 "label": {
                   "description": "Label for the data point.",
@@ -6207,10 +5580,10 @@
             ],
             "properties": {
               "createdAt": {
-                "$ref": "#/components/schemas/Date"
+                "$ref": "#/components/schemas/DateUnion"
               },
               "modifiedAt": {
-                "$ref": "#/components/schemas/Date"
+                "$ref": "#/components/schemas/DateUnion"
               }
             }
           }
@@ -6228,7 +5601,7 @@
           },
           "columnCount": {
             "description": "Number of columns that the dashboard contains.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true
           },
           "favorite": {
@@ -6279,7 +5652,7 @@
         "type": "object",
         "properties": {
           "columnId": {
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "direction": {
             "description": "Direction of the sort.",
@@ -6292,15 +5665,18 @@
           }
         }
       },
+      "SortCriterionArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SortCriterion"
+        }
+      },
       "SortSpecifier": {
         "type": "object",
         "properties": {
           "sortCriteria": {
             "description": "Specifies sort order. Array is in priority order.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/SortCriterion"
-            }
+            "$ref": "#/components/schemas/SortCriterionArray"
           }
         }
       },
@@ -6333,6 +5709,12 @@
           }
         }
       },
+      "StringArray": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
       "Subscope": {
         "description": "An object that contains an array of column Ids if you want to limit the subscription to a subscope. Specified when a webhook is created and cannot be changed.",
         "type": "object",
@@ -6341,6 +5723,12 @@
             "description": "A column Id or Ids",
             "$ref": "#/components/schemas/Int64Array"
           }
+        }
+      },
+      "SummaryFieldArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SummaryField"
         }
       },
       "SummaryField": {
@@ -6355,16 +5743,12 @@
             "$ref": "#/components/schemas/ContactOptionArray"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this summary field.",
             "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "displayValue": {
             "description": "Visual representation of cell contents, as presented to the user in the UI.",
@@ -6379,14 +5763,14 @@
             "type": "string"
           },
           "hyperlink": {
-            "$ref": "#/components/schemas/Cell/properties/hyperlink"
+            "$ref": "#/components/schemas/Hyperlink"
           },
           "image": {
-            "$ref": "#/components/schemas/Cell/properties/image"
+            "$ref": "#/components/schemas/Image"
           },
           "index": {
             "description": "Field index or position. This number is zero-based.",
-            "type": "number"
+            "type": "integer"
           },
           "locked": {
             "description": "Indicates whether the field is locked.",
@@ -6397,26 +5781,18 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/Date"
+            "$ref": "#/components/schemas/DateUnion"
           },
           "modifiedBy": {
             "description": "User object containing name and email of the user who most recently modified this summary field.",
-            "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "objectValue": {
             "$ref": "#/components/schemas/CellObjectValue"
           },
           "options": {
             "description": "When applicable for PICKLIST column type. Array of the options available for the field.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/StringArray"
           },
           "symbol": {
             "description": "When applicable for PICKLIST column type.",
@@ -6479,10 +5855,7 @@
           },
           "categories": {
             "description": "Indicates whether the template is blank. Only applicable to public templates.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/StringArray"
           },
           "description": {
             "description": "Template description.",
@@ -6622,10 +5995,7 @@
           },
           "tags": {
             "description": "List of search tags for this template. Only applicable to non-blank public templates.",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "$ref": "#/components/schemas/StringArray"
           }
         }
       },
@@ -6636,7 +6006,7 @@
             "format": "date-time"
           },
           {
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           }
         ],
         "readOnly": true
@@ -6676,7 +6046,7 @@
           },
           "expires_in": {
             "description": "Number of seconds token is valid once issued.",
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "default": 604799,
             "readOnly": true
           },
@@ -6726,7 +6096,7 @@
                 "description": "The date and time for when this request was originally created. Read-only.",
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Date"
+                    "$ref": "#/components/schemas/DateUnion"
                   }
                 ]
               },
@@ -6734,7 +6104,7 @@
                 "description": "The date and time for when the last change was made to this request. Read-only.",
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Date"
+                    "$ref": "#/components/schemas/DateUnion"
                   }
                 ]
               },
@@ -6813,7 +6183,7 @@
                             "description": "The date and time for when the last request was sent."
                           },
                           {
-                            "$ref": "#/components/schemas/Date"
+                            "$ref": "#/components/schemas/DateUnion"
                           }
                         ]
                       },
@@ -6823,7 +6193,7 @@
                             "description": "The date and time for when the next request is scheduled to send."
                           },
                           {
-                            "$ref": "#/components/schemas/Date"
+                            "$ref": "#/components/schemas/DateUnion"
                           }
                         ]
                       },
@@ -7249,7 +6619,7 @@
                 "readOnly": true,
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Date"
+                    "$ref": "#/components/schemas/DateUnion"
                   }
                 ]
               },
@@ -7262,7 +6632,7 @@
                 "readOnly": true,
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/Date"
+                    "$ref": "#/components/schemas/DateUnion"
                   }
                 ]
               },
