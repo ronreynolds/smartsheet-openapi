@@ -1,0 +1,1337 @@
+    "/sights": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        }
+      ],
+      "get": {
+        "operationId": "list-sights",
+        "summary": "List Dashboards",
+        "description": "Gets a list of all dashboards that the user has access to.",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/2"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/1"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/2"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/3"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IndexResult object containing an array of Dashboard objects with a subset of attributes.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "description": "List of Dashboards",
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "allOf": [
+                              {
+                                "type": "object",
+                                "allOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "description": "Dashboard name.",
+                                        "type": "string"
+                                      }
+                                    }
+                                  }
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "description": "Dashboard Id.",
+                                    "type": "number",
+                                    "readOnly": true
+                                  },
+                                  "accessLevel": {
+                                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                                  },
+                                  "permalink": {
+                                    "description": "URL that represents a direct link to the dashboard in Smartsheet.",
+                                    "type": "string",
+                                    "readOnly": true
+                                  }
+                                }
+                              }
+                            ],
+                            "properties": {
+                              "createdAt": {
+                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                              },
+                              "modifiedAt": {
+                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "PaginatedResult<Sight> sights = smartsheet.SightResources.ListSights(\n  null,       // PaginationParameters\n  null        // Nullable<DateTime> modifiedSince\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "PagedResult<Sight> sights = smartsheet.sightResources().listSights(\n        null,       // PaginationParameters\n        null        // Date modifiedSince\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "smartsheet.sights.listSights()\n  .then(function(sights) {\n    console.log(sights.data);\n  })\n  .catch(function(error) {\n    console.log(error);\n  })\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: List All\nresponse = smartsheet_client.Sights.list_sights(include_all=True)\n sights = response.data\n\n# Sample 2: Paginate the list of dashboards\n response = smartsheet_client.Sights.list_sights(\n  page_size=10,\n  page=1)\n pages = response.total_pages\nsights = response.data\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "response = smartsheet.sights.list\nsights = response[:data]\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "name": "sightId",
+          "in": "path",
+          "required": true,
+          "description": "SightID of the sight being accessed.",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get Dashboard",
+        "description": "Gets the specified dashboard.",
+        "operationId": "get-sight",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/2"
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "description": "A comma-separated list of optional elements to include in the response:\n  * **objectValue** - when used in combination with a **level** query parameter,\nincludes the email addresses for multi-contact data.\n  * **source** - the Source object for any Sight that was created from another\nSight, if any\n",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "objectValue",
+                "source"
+              ]
+            }
+          },
+          {
+            "name": "level",
+            "in": "query",
+            "required": false,
+            "description": "Specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format (**level=0**, default), multi-contact data (**level=2**), multi-picklist data (**level=3**), or Metric widget with sheet summary (**level=4**).",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/2"
+          }
+        ],
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SIGHTS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dashboard object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Folder/properties/sights/items"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}?level=4 \\\n -H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Sight sight = smartsheet.SightResources.GetSight(\n  6327127650920324        // long sightId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "Sight sight = smartsheet.sightResources().getSight(\n        6327127650920324L       // long sightId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 6327127650920324\n};\n \n// Get dashboard\nsmartsheet.sights.getSight(options)\n  .then(function(sight) {\n    console.log(sight);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: Get dashboard\nsight = smartsheet_client.Sights.get_sight(\n  6327127650920324)     # sightId\n\n# Sample 2: Determine whether a user has Commenter permissions for a dashboard\nresponse = smartsheet_client.Sights.get_sight(\n  6327127650920324,       # sightId\n  accessApiLevel=1)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "sight = smartsheet.sights.get(\n  sight_id: 6327127650920324\n)\n"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update Dashboard",
+        "description": "Updates (renames) the specified dashboard.",
+        "operationId": "update-sight",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/2"
+          },
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          }
+        ],
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_SIGHTS"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "description": "Dashboard name.",
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing the updated Dashboard object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/paths/~1sights~1%7BsightId%7D/get/responses/200/content/application~1json/schema"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X PUT \\\n-d '{\"name\": \"New Dashboard Name\"}'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Sight sight = smartsheet.SightResources.UpdateSight(\n  new Sight {\n    Id = 5363568917931908,    // sightId\n    Name = \"New Dashboard Name\"\n  }\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "Sight sight = new Sight();\nsight.setId(5363568917931908L);    // long sightId\nsight.setName(\"New Dashboard Name\");\nSight updatedSight = smartsheet.sightResources().updateSight(sight);\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set property to change\nvar body = {\n  name: \"New Dashboard Name\"\n};\n\n// Set options\nvar options = {\n  sightId: 5363568917931908,\n  body: body\n};\n\n// Update Dashboard\nsmartsheet.sights.updateSight(options)\n  .then(function(updatedSight) {\n    console.log(updatedSight);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "updated_sight = smartsheet_client.Sights.update_sight(\n  5363568917931908,           # sight_id\n  smartsheet.models.Sight({\n    'name': 'New Dashboard Name'\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify property to change\nbody = {\n  name: 'New Dashboard Name'\n }\n\n# Update Dashboard\nresponse = smartsheet.sights.update(\n  sight_id: 5363568917931908,\n  body: body\n)\nupdated_sight = response[:result]\n"
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete Dashboard",
+        "description": "Deletes the dashboard specified in the URL.",
+        "operationId": "delete-sight",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "DELETE_SIGHTS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Generic response result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "smartsheet.SightResources.DeleteSight(\n  5077532685952900            // sightId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "smartsheet.sightResources().deleteSight(\n        3100061023397764L       // long sightId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 5363568917931908\n};\n \n// Delete Dashboard\nsmartsheet.sights.deleteSight(options)\n  .then(function(results) {\n    console.log(results);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "smartsheet_client.Sights.delete_sight(3404239197235076)     # sight_id\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "smartsheet.sights.delete(\n  sight_id: 6327127650920324\n)\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}/copy": {
+      "post": {
+        "summary": "Copy Dashboard",
+        "description": "Creates a copy of the specified dashboard.",
+        "operationId": "copy-sight",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "CREATE_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1contacts/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a dashboard with a subset of attributes for the newly created dashboard.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "allOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "description": "Dashboard name.",
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          ],
+                          "properties": {
+                            "id": {
+                              "description": "Dashboard Id.",
+                              "type": "number",
+                              "readOnly": true
+                            },
+                            "accessLevel": {
+                              "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                            },
+                            "permalink": {
+                              "description": "URL that represents a direct link to the dashboard in Smartsheet.",
+                              "type": "string",
+                              "readOnly": true
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/copy \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-d '{\n  \"destinationType\": \"workspace\",\n  \"destinationId\": 7960873114331012,\n  \"newName\": \"newDashboardName\"\n}' \\\n-X POST\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination\n{\n  DestinationId = 3791509922310020,               // long destinationFolderId\n  DestinationType = DestinationType.FOLDER,\n  NewName = \"newDashboardName\"\n};\n\n// Copy Dashboard\nSight sight = smartsheet.SightResources.CopySight(\n  6327127650920324,                               // long sightId\n  destination\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination()\n        .setDestinationType(DestinationType.FOLDER)\n        .setDestinationId(3791509922310020L)\n        .setNewName(\"newDashboardName\");\n\n// Copy Dashboard\nSight sight = smartsheet.sightResources().copySight(\n        6327127650920324L,                          // long sightId\n        destination\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Specify new dashboard properties\nvar body = {\n  destinationType: \"home\",\n  newName: \"newDashboardName\"\n};\n\n// Set options\nvar options = {\n  sightId: 6327127650920324,\n  body: body\n};\n\n// Copy Dashboard\nsmartsheet.sights.copySight(options)\n  .then(function(copiedSight) {\n    console.log(copiedSight);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "new_sight = smartsheet_client.Sights.copy_sight(\n  6327127650920324,                           # sight_id\n  smartsheet.models.ContainerDestination({\n    'destination_type': 'folder',           # folder, workspace, or home\n    'destination_id': 3791509922310020,     # folder_id\n    'new_name': 'newDashboardName'\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify destination\nbody = {\n  destination_type: 'folder',\n  destination_id: 3791509922310020,\n  new_name: 'newDashboardName'\n}\n \n# Copy Dashboard\nnew_sight = smartsheet.sights.copy(\n  sight_id: 6327127650920324,\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}/move": {
+      "post": {
+        "summary": "Move Dashboard",
+        "description": "Moves the specified dashboard to a new location.",
+        "operationId": "move-sight",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "CREATE_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1contacts/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing a Dashboard object with a subset of attributes for the moved dashboard.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/paths/~1sights~1%7BsightId%7D~1copy/post/responses/200/content/application~1json/schema/allOf/1/properties/result"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/move \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-d '{\n  \"destinationType\": \"folder\",\n  \"destinationId\": workspace_or_folder_id\n}' \\\n-X POST\n"
+          },
+          {
+            "lang": "C#",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination\n{\n  DestinationId = 8460057768683396,               // long destinationFolderId\n  DestinationType = DestinationType.FOLDER\n};\n\n// Move Dashboard\nSight sight = smartsheet.SightResources.MoveSight(\n  5077532685952900,                               // long sightId\n  destination\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify destination\nContainerDestination destination = new ContainerDestination()\n        .setDestinationType(DestinationType.FOLDER)\n        .setDestinationId(7960873114331012L);\n \n// Move Dashboard\nSight sight = smartsheet.sightResources().moveSight(\n        4583173393803140L,                          // long sightId\n        destination\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set destination\nvar body = {\n  destinationType: \"folder\",\n  destinationId: 8460057768683396\n};\n\n// Set options\nvar options = {\n  sightId: 5077532685952900,\n  body: body\n};\n\n// Move Dashboard\nsmartsheet.sights.moveSight(options)\n  .then(function(movedSight) {\n    console.log(movedSight);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "response = smartsheet_client.Sights.move_sight(\n  5363568917931908,                           # sight_id\n  smartsheet.models.ContainerDestination({\n    'destination_type': 'folder',           # folder, workspace, or home\n    'destination_id': 8460057768683396      # destination folder_id\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Specify destination\nbody = {\n  destination_type: 'folder',\n  destination_id: 8460057768683396\n}\n\n# Move Dashboard\nresponse = smartsheet.sights.move(\n  sight_id: 5363568917931908,\n  body: body\n)\nmoved_sight = response[:result]\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}/publish": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+        }
+      ],
+      "get": {
+        "summary": "Get Dashboard Publish Status",
+        "description": "Gets the dashboard 'publish' settings.",
+        "operationId": "get-sight-publish-status",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SIGHTS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SightPublish object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Describes the dashboard's publish settings.",
+                  "type": "object",
+                  "properties": {
+                    "readOnlyFullAccessibleBy": {
+                      "description": "Indicates who can access the 'Read-Only Full' view of the published dashboard. Only returned in the response if **readOnlyFullEnabled = true**.\n  * **ALL** - available to anyone who has the link.\n  * **ORG** - available only to members of the dashboard owner's\nSmartsheet organization account.\n  * **SHARED** - available only to users shared to the item.\n\n---\nIf **readOnlyFullEnabled** is set to true in the request, but **readOnlyFullAccessibleBy** is not specified, the value of **readOnlyFullAccessibleBy** defaults to the organization-level 'Dashboard Publishing' setting (if the dashboard owner belongs to an organization account) or to **ALL** (if the dashboard owner does not belong to an organization account).\n",
+                      "type": "string",
+                      "enum": [
+                        "ALL",
+                        "ORG"
+                      ]
+                    },
+                    "readOnlyFullEnabled": {
+                      "description": "If true, a rich version of the dashboard is published with the ability to use shortcuts and widget interactions.",
+                      "type": "boolean"
+                    },
+                    "readOnlyFullUrl": {
+                      "description": "URL for 'Read-Only Full' view of the published dashboard. Only returned in a response if readOnlyFullEnabled = true.",
+                      "type": "string",
+                      "readOnly": true
+                    }
+                  },
+                  "required": [
+                    "readOnlyFullEnabled"
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/publish \\\n -H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "SightPublish publish = smartsheet.SightResources.GetPublishStatus(\n    5363568917931908    // sightId\n  );\n"
+          },
+          {
+            "lang": "Java",
+            "source": "SightPublish publish = smartsheet.sightResources().getPublishStatus(\n        5363568917931908L    // long sightId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 5363568917931908\n};\n \n// Get dashboard publish status\nsmartsheet.sights.getSightPublishStatus(options)\n  .then(function(status) {\n    console.log(status);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "status = smartsheet_client.Sights.get_publish_status(\n  5363568917931908)       # sight_id\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "status = smartsheet.sights.get_publish_status(\n  sight_id: 5363568917931908\n)\n"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Set Dashboard Publish Status",
+        "description": "Publishes or unpublishes a dashboard.",
+        "operationId": "set-sight-publish-status",
+        "tags": [
+          "dashboards"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "ADMIN_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1favorites/post/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SightPublish object",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/publish \\\n -H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n -H \"Content-Type: application/json\" \\\n-X PUT \\\n-d '{\n  \"readOnlyFullEnabled\": true,\n  \"readOnlyFullAccessibleBy\": \"ALL\"\n}'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "SightPublish publish = new SightPublish();\npublish.ReadOnlyFullEnabled = true;\nsmartsheet.SightResources.SetPublishStatus(\n  5363568917931908,    // sightId\n  publish\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "SightPublish publish = new SightPublish();\npublish.setReadOnlyFullEnabled(true);\nsmartsheet.sightResources().setPublishStatus(\n        5363568917931908L,    // long sightId\n        publish\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Specify property to change\nvar body = {\n  readOnlyFullEnabled: false\n};\n\n// Set options\nvar options = {\n  sightId: 5363568917931908,\n  body: body\n};\n\n// Set dashboard publish status\nsmartsheet.sights.setSightPublishStatus(options)\n  .then(function(newStatus) {\n    console.log(newStatus);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "response = smartsheet_client.Sights.set_publish_status(\n  5363568917931908,       # sight_id\n  smartsheet.models.SightPublish({\n    'read_only_full_enabled': True\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "# Set options\nbody = {\n  read_only_full_enabled: true,\n  read_only_full_accessible_by: 'ALL'\n}\n\n# Set dashboard publish status\nresponse = smartsheet.sights.set_publish_status(\n  sight_id: 5363568917931908,\n  body: body\n)\nstatus = response[:result]\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}/shares": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        },
+        {
+          "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/2"
+        },
+        {
+          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+        }
+      ],
+      "post": {
+        "summary": "Share Dashboard",
+        "description": "Shares a dashboard with the specified users and groups.",
+        "operationId": "share-sight",
+        "tags": [
+          "dashboards",
+          "sharing"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "SHARE_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Result object containing either a single Share object or an array of Share objects, corresponding to what was\nspecified in the request. All shares have scope=ITEM.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "oneOf": [
+                            {
+                              "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "If called with a single Share object, and that user or group share already exists, error code 1025 is returned.\nIf called with an array of Share objects, and one or more user or group shares in the array already exist,\nthey are ignored and omitted from the response.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/responses/400/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl 'https://api.smartsheet.com/2.0/sights/{sightId}/shares?sendEmail=true' \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X POST \\\n-d '[{\"email\": \"jane.doe@smartsheet.com\", \"accessLevel\": \"VIEWER\"}]'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Share share = new Share {\n  Type = ShareType.USER,\n  AccessLevel = AccessLevel.EDITOR,\n  Email = \"jane.doe@smartsheet.com\"\n}\nList<Share> sightShares = smartsheet.SightResources.ShareResources.ShareTo(\n  6327127650920324,             // sightId\n  new Share[] { share },        // IEnumerable<Share> shares\n  true                          // bool sendEmail\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Specify share (to one user as Viewer)\nShare shareSpecification = new Share()\n        .setEmail(\"jane.doe@smartsheet.com\")\n        .setAccessLevel(AccessLevel.VIEWER);\n \n// Share dashboard\nList<Share> addressList = smartsheet.sightResources().shareResources().shareTo(\n        4583614634583940L,                    // long sightId\n        (Arrays.asList(shareSpecification)),\n        true                                  // Boolean sendEmail\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Specify share (to one user as Viewer)\nvar share = [\n  {\n    \"email\": \"jane.doe@smartsheet.com\",\n    \"accessLevel\": \"VIEWER\"\n  }\n];\n\n// Set options\nvar options = {\n  sightId: 6327127650920324,\n  body: share\n};\n\n// Share dashboard\nsmartsheet.sights.share(options)\n  .then(function(addressList) {\n    console.log(addressList);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "response = smartsheet_client.Sights.share_sight(\n  6327127650920324,       # sight_id\n  smartsheet.models.Share({\n    'access_level': 'VIEWER',\n    'email': 'jane.doe@smartsheet.com'\n  }),\n  True                    # sendEmail\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "body = {\n  email: 'jane.doe@smartsheet.com',\n  access_level: 'VIEWER',\n  subject: 'This dashboard has been shared with you!',\n  message: 'This Smartsheet dashboard is ready for your inspection.'\n}\n\nresponse = smartsheet.sights.share.create(\n  sight_id: 6327127650920324,\n  body: body\n)\n"
+          }
+        ]
+      },
+      "get": {
+        "summary": "List Dashboard Shares",
+        "description": "Gets a list of all users and groups to whom the specified dashboard is shared, and their access level.",
+        "operationId": "list-sight-shares",
+        "tags": [
+          "dashboards",
+          "sharing"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SIGHTS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/get/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/0"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/3"
+          },
+          {
+            "$ref": "#/paths/~1contacts/get/parameters/4"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "IndexResult object containing an array of Share objects. By default, this operation returns only item-level\nshares (scope=ITEM). Use the sharingInclude parameter to request that workspace-level shares (scope=WORKSPACE)\nalso be returned.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/responses/400/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/shares \\\n -H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "PaginatedResult<Share> shares = smartsheet.SightResources.ShareResources.ListShares(\n  6327127650920324,       // sightId\n  null,                   // Pagination parameters\n  ShareScope.Item         // ShareScope shareScope\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "//Sample 1: List all\nsmartsheet.sightResources().shareResources().listShares(\n        6327127650920324L,    // long sightId\n        null,    // PaginationParameters\n        true    // includeWorkspaceShares\n        );\n\n//Sample 2: Paginate the list\nPaginationParameters paginationParameters = new PaginationParameters(\n        false,  // includeAll\n        100,    // pageSize\n        1   // page\n        );\nsmartsheet.sightResources().shareResources().listShares(\n        6327127650920324L,    // long sightId\n        paginationParameters,\n        true    // includeWorkspaceShares\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 6327127650920324\n}\n \n// List dashboard shares\nsmartsheet.sights.listShares(options)\n  .then(function(shareList) {\n    console.log(shareList);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "# Sample 1: List all\nresponse = smartsheet_client.Sights.list_shares(\n  6327127650920324,       # sight_id\n  include_all=True)\nshares = response.data\n \n# Sample 2: Paginate the list\nresponse = smartsheet_client.Sights.list_shares(\n  6327127650920324,       # sight_id\n  page_size=10,\n  page=1)\npages = response.total_pages\nshares = response.data\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "response = smartsheet.sights.share.list(\n  sight_id: 6327127650920324\n )\nshares = response[:data]\n"
+          }
+        ]
+      }
+    },
+    "/sights/{sightId}/shares/{shareId}": {
+      "parameters": [
+        {
+          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+        },
+        {
+          "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1"
+        },
+        {
+          "$ref": "#/paths/~1contacts/parameters/0"
+        }
+      ],
+      "get": {
+        "summary": "Get Dashboard Share",
+        "description": "Gets a list of all users and groups to whom the specified dashboard is shared, and their access level.",
+        "operationId": "share-sight-get",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/2"
+          }
+        ],
+        "tags": [
+          "dashboards",
+          "sharing"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SIGHTS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Share object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkItemFailure/properties/error"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/shares/{shareId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\"\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Share share = smartsheet.SightResources.ShareResources.GetShare(\n  6327127650920324,           // long sightId\n  \"AAABbMomFOeE\"              // string shareId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "Share share = smartsheet.sightResources().shareResources().getShare(\n        6327127650920324L,           // long sightId\n        \"AAABbMomFOeE\"              // string shareId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 6327127650920324,\n  shareId: \"AAABbMomFOeE\"\n}\n\n// Get dashboard share\nsmartsheet.sights.getShare(options)\n  .then(function(share) {\n    console.log(share);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "share = smartsheet_client.Sights.get_share(\n  6327127650920324,       # sight_id\n  'AAACOqOmFOeE')         # share_id\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "share = smartsheet.sights.share.get(\n  sight_id: 6327127650920324,\n  share_id: 'AAABbMomFOeE'\n)\n"
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete Dashboard Share",
+        "description": "Deletes the share specified in the URL.",
+        "operationId": "delete-sight-share",
+        "tags": [
+          "dashboards",
+          "sharing"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "SHARE_SIGHTS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns Result object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/shares/{shareId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-X DELETE\n"
+          },
+          {
+            "lang": "C#",
+            "source": "smartsheet.SightResources.ShareResources.DeleteShare(\n  6327127650920324,     // sightId\n  \"AAABbMomFOeE\"        // string shareId\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "smartsheet.sightResources().shareResources().deleteShare(\n        6327127650920324L,           // long sightId\n        \"AAABbMomFOeE\"               // string shareId\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set options\nvar options = {\n  sightId: 6327127650920324,\n  shareId: \"AAABbMomFOeE\"\n}\n\n// Delete dashboard share\nsmartsheet.sights.deleteShare(options)\n  .then(function(results) {\n    console.log(results);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "smartsheet_client.Sights.delete_share(\n  6327127650920324,       # sight_id\n  'AAACOqOmFOeE')         # share_id\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "smartsheet.sights.share.delete(\n  sight_id: 6327127650920324,\n  share_id: 'AAABbMomFOeE'\n)\n"
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update Dashboard Share",
+        "description": "Updates the access level of a user or group for the specified dashboard.",
+        "operationId": "update-sight-share",
+        "parameters": [
+          {
+            "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/2"
+          }
+        ],
+        "tags": [
+          "dashboards",
+          "sharing"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "SHARE_SIGHTS"
+            ]
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "accessLevel": {
+                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns Result object containing the modified Share object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/delete/responses/200/content/application~1json/schema"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "type": "object",
+                          "items": {
+                            "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/get/responses/200/content/application~1json/schema"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Generic Error Payload",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/get/responses/default/content/application~1json/schema"
+                }
+              }
+            }
+          }
+        },
+        "x-codeSamples": [
+          {
+            "lang": "cURL",
+            "source": "curl https://api.smartsheet.com/2.0/sights/{sightId}/shares/{shareId} \\\n-H \"Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789\" \\\n-H \"Content-Type: application/json\" \\\n-X PUT \\\n-d '{\"accessLevel\": \"VIEWER\"}'\n"
+          },
+          {
+            "lang": "C#",
+            "source": "Share updatedShare = smartsheet.SightResources.ShareResources.UpdateShare(\n  6327127650920324,          // sightId\n  new Share {                // Share share\n    Id = \"AAALRqomFOeE\",     // string shareId\n    AccessLevel = AccessLevel.VIEWER  // AccessLevel accessLevel\n  }\n);\n"
+          },
+          {
+            "lang": "Java",
+            "source": "// Set the access level to Viewer\nShare shareSpecification = new Share();\n        shareSpecification.setAccessLevel(AccessLevel.VIEWER)\n        .setId(\"AAAFeF82FOeE\");   // string shareId\n\n// Update dashboard share\nShare updatedShare = smartsheet.sightResources().shareResources().updateShare(\n        6327127650920324L,       // long sightId\n        shareSpecification\n        );\n"
+          },
+          {
+            "lang": "JavaScript",
+            "source": "// Set access level to Viewer\nvar shareSpecification = {\"accessLevel\": \"VIEWER\"};\n\n// Set options\nvar options = {\n  sightId: 6327127650920324,\n  shareId: \"AAALRqomFOeE\",\n  body: shareSpecification\n};\n\n// Update dashboard share\nsmartsheet.sights.updateShare(options)\n  .then(function(updatedShare) {\n    console.log(updatedShare);\n  })\n  .catch(function(error) {\n    console.log(error);\n  });\n",
+            "label": "Node.js"
+          },
+          {
+            "lang": "Python",
+            "source": "updated_share = smartsheet_client.Sights.update_share(\n  6327127650920324,       # sight_id\n  'AAALRqomFOeE',         # share_id\n  smartsheet.models.Share({\n    'access_level': 'VIEWER'\n  })\n)\n"
+          },
+          {
+            "lang": "Ruby",
+            "source": "body = {\n  access_level: 'VIEWER'\n}\n\nresponse = smartsheet.sights.share.update(\n  sight_id: 6327127650920324,\n  share_id: 'AAABbMomFOeE',\n  body: body\n)\n"
+          }
+        ]
+      }
+    },
