@@ -1229,34 +1229,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "type": "object",
-                      "allOf": [
-                        {
-                          "type": "object",
-                          "allOf": [
-                            {
-                              "$ref": "#/components/schemas/ResultPrefix"
-                            }
-                          ],
-                          "properties": {
-                            "failedItems": {
-                              "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/Result/allOf/0/properties/failedItems/items"
-                              },
-                              "nullable": true
-                            }
-                          }
-                        }
-                      ],
-                      "properties": {
-                        "version": {
-                          "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                          "type": "number",
-                          "nullable": true
-                        }
-                      }
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -1621,95 +1594,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "type": "object",
-                    "description": "Sheet to create from scratch using the specified columns.",
-                    "properties": {
-                      "columns": {
-                        "type": "array",
-                        "items": {
-                          "type": "object",
-                          "properties": {
-                            "autoNumberFormat": {
-                              "$ref": "#/components/schemas/Column/properties/autoNumberFormat"
-                            },
-                            "contactOptions": {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-                              },
-                              "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
-                            },
-                            "options": {
-                              "type": "array",
-                              "items": {
-                                "type": "string"
-                              },
-                              "description": "Array of the options available for the column."
-                            },
-                            "primary": {
-                              "type": "boolean",
-                              "description": "Returned only if the column is the Primary Column (value = **true**)."
-                            },
-                            "symbol": {
-                              "type": "string",
-                              "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                            },
-                            "systemColumnType": {
-                              "type": "string",
-                              "enum": [
-                                "AUTO_NUMBER",
-                                "CREATED_BY",
-                                "CREATED_DATE",
-                                "MODIFIED_BY",
-                                "MODIFIED_DATE"
-                              ],
-                              "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
-                            },
-                            "title": {
-                              "type": "string",
-                              "description": "Column title."
-                            },
-                            "type": {
-                              "type": "string",
-                              "enum": [
-                                "ABSTRACT_DATETIME",
-                                "CHECKBOX",
-                                "CONTACT_LIST",
-                                "DATE",
-                                "DATETIME",
-                                "DURATION",
-                                "MULTI_CONTACT_LIST",
-                                "MULTI_PICKLIST",
-                                "PICKLIST",
-                                "PREDECESSOR",
-                                "TEXT_NUMBER"
-                              ],
-                              "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
-                            },
-                            "width": {
-                              "type": "number",
-                              "description": "Display width of the column in pixels."
-                            }
-                          }
-                        }
-                      },
-                      "name": {
-                        "$ref": "#/components/schemas/Sheet/properties/name"
-                      }
-                    }
+                    "$ref": "#/components/schemas/SheetTemplate"
                   },
                   {
-                    "type": "object",
-                    "description": "Sheet to create from template.",
-                    "properties": {
-                      "fromId": {
-                        "description": "Template Id from which to create the sheet.",
-                        "type": "number"
-                      },
-                      "name": {
-                        "$ref": "#/components/schemas/Sheet/properties/name"
-                      }
-                    }
+                    "$ref": "#/components/schemas/SheetTemplateId"
                   }
                 ]
               }
@@ -1732,43 +1620,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "type": "object",
-                              "description": "Sheet created from scratch using the specified columns.",
-                              "properties": {
-                                "accessLevel": {
-                                  "$ref": "#/components/schemas/Sheet/properties/accessLevel"
-                                },
-                                "columns": {
-                                  "$ref": "#/components/schemas/Sheet/properties/columns"
-                                },
-                                "id": {
-                                  "$ref": "#/components/schemas/Sheet/properties/id"
-                                },
-                                "name": {
-                                  "$ref": "#/components/schemas/Sheet/properties/name"
-                                },
-                                "permalink": {
-                                  "$ref": "#/components/schemas/Sheet/properties/permalink"
-                                }
-                              }
+                              "$ref": "SheetLite_withColumns"
                             },
                             {
-                              "type": "object",
-                              "description": "Sheet created from template.",
-                              "properties": {
-                                "accessLevel": {
-                                  "$ref": "#/components/schemas/Sheet/properties/accessLevel"
-                                },
-                                "id": {
-                                  "$ref": "#/components/schemas/Sheet/properties/id"
-                                },
-                                "name": {
-                                  "$ref": "#/components/schemas/Sheet/properties/name"
-                                },
-                                "permalink": {
-                                  "$ref": "#/components/schemas/Sheet/properties/permalink"
-                                }
-                              }
+                              "$ref": "SheetLite"
                             }
                           ]
                         }
@@ -1813,54 +1668,19 @@
         ],
         "parameters": [
           {
-            "name": "Content-Disposition",
-            "in": "header",
-            "description": "Should be equal to \"attachment\" to tell the API that a file is in the body of the POST request, followed by a semicolon, followed by **filename=** and the URL-encoded filename in quotes\n",
-            "schema": {
-              "type": "string",
-              "example": "attachment; filename=\"ProgressReport.docx\""
-            }
+            "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
-            "name": "Content-Type",
-            "in": "header",
-            "required": true,
-            "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "text/csv",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-              ]
-            }
+            "$ref": "#/components/parameters/contentTypeHeader_CSV_SHEET"
           },
           {
-            "name": "sheetName",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "description": "Desired name of the sheet."
+            "$ref": "#/components/parameters/sheetName"
           },
           {
-            "name": "headerRowIndex",
-            "in": "query",
-            "schema": {
-              "type": "number"
-            },
-            "required": false,
-            "description": "A zero-based integer indicating the row number to use for column names. Rows before this are omitted.\nIf not specified, the default values are Column1, Column2, etc.\n"
+            "$ref": "#/components/parameters/headerRowIndex"
           },
           {
-            "name": "primaryColumnIndex",
-            "in": "query",
-            "schema": {
-              "type": "number",
-              "default": 0
-            },
-            "required": false,
-            "description": "A zero-based integer indicating the column to designate as primary.\n"
+            "$ref": "#/components/parameters/primaryColumnIndex"
           }
         ],
         "requestBody": {
@@ -1892,20 +1712,20 @@
                           "description": "Sheet imported from CSV / XLSX file.",
                           "properties": {
                             "accessLevel": {
-                              "$ref": "#/components/schemas/Sheet/properties/accessLevel"
+                              "$ref": "#/components/schemas/AccessLevel"
                             },
                             "id": {
-                              "$ref": "#/components/schemas/Sheet/properties/id"
+                              "$ref": "#/components/schemas/Int64"
                             },
                             "name": {
-                              "$ref": "#/components/schemas/Sheet/properties/name"
+                              "type": "string"
                             },
                             "type": {
                               "description": "Container type. Has 'sheet' value for the imported sheet.",
                               "type": "string"
                             },
                             "permalink": {
-                              "$ref": "#/components/schemas/Sheet/properties/permalink"
+                              "type": "string"
                             }
                           }
                         }
@@ -2756,32 +2576,13 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "name": "Accept",
-          "in": "header",
-          "description": "The Accept request-header field can be used to specify certain media types which are acceptable for the response.",
-          "schema": {
-            "type": "string"
-          },
-          "required": false
+          "$ref": "#/components/parameters/acceptHeader"
         },
         {
-          "name": "accessApiLevel",
-          "in": "query",
-          "required": false,
-          "description": "Allows COMMENTER access for inputs and return values. For backwards-compatibility, VIEWER is the default. For example, to see whether a user has COMMENTER access for a sheet, use accessApiLevel=1.\n",
-          "schema": {
-            "type": "number",
-            "default": 0
-          }
+          "$ref": "#/parameters/accessApiLevel"
         },
         {
-          "name": "reportId",
-          "in": "path",
-          "schema": {
-            "type": "number"
-          },
-          "required": true,
-          "description": "reportID of the report being accessed."
+          "$ref": "#/components/parameters/reportIdInPath"
         }
       ],
       "get": {
@@ -2899,7 +2700,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/3"
+          "$ref": "#/components/parameters/reportIdInPath"
         }
       ],
       "post": {
@@ -2953,7 +2754,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -2970,7 +2771,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/3"
+          "$ref": "#/components/parameters/reportIdInPath"
         }
       ],
       "get": {
@@ -3110,7 +2911,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/3"
+          "$ref": "#/components/parameters/reportIdInPath"
         }
       ],
       "post": {
@@ -3167,7 +2968,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -3284,16 +3085,10 @@
     "/reports/{reportId}/shares/{shareId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/3"
+          "$ref": "#/components/parameters/reportIdInPath"
         },
         {
-          "name": "shareId",
-          "in": "path",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "Share Id."
+          "$ref": "#/components/parameters/shareIdInPath"
         },
         {
           "$ref": "#/components/parameters/accessApiLevel"
@@ -3360,7 +3155,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -3544,13 +3339,7 @@
     "/search/sheets/{sheetId}": {
       "parameters": [
         {
-          "name": "sheetId",
-          "in": "path",
-          "schema": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "required": true,
-          "description": "Sheet Id of the sheet being accessed."
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -3705,28 +3494,28 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "$ref": "#/components/schemas/Sheet/properties/id"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "accessLevel": {
-                                "$ref": "#/components/schemas/Sheet/properties/accessLevel"
+                                "$ref": "#/components/schemas/AccessLevel"
                               },
                               "createdAt": {
-                                "$ref": "#/components/schemas/Sheet/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/Sheet/properties/modifiedAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "name": {
-                                "$ref": "#/components/schemas/Sheet/properties/name"
+                                "type": "string"
                               },
                               "permalink": {
-                                "$ref": "#/components/schemas/Sheet/properties/permalink"
+                                "type": "string"
                               },
                               "version": {
-                                "$ref": "#/components/schemas/Sheet/properties/version"
+                                "type": "integer"
                               },
                               "source": {
-                                "$ref": "#/components/schemas/Sheet/properties/source"
+                                "$ref": "#components/schemas/Source"
                               }
                             }
                           }
@@ -3776,10 +3565,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/SheetTemplate"
                   },
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1"
+                    "$ref": "#/components/schemas/SheetTemplateId"
                   }
                 ]
               }
@@ -3802,10 +3591,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/0"
+                              "$ref": "#/components/schemas/SheetLite_withColumns"
                             },
                             {
-                              "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/1"
+                              "$ref": "#/components/schemas/SheetLite"
                             }
                           ]
                         }
@@ -3847,19 +3636,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0"
+            "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/1"
+            "$ref": "#/components/parameters/contentTypeHeader_CSV_SHEET"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/2"
+            "$ref": "#/components/parameters/sheetName"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/3"
+            "$ref": "#/components/parameters/headerRowIndex"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/4"
+            "$ref": "#/components/parameters/primaryColumnIndex"
           }
         ],
         "requestBody": {
@@ -3908,7 +3697,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         }
       ],
       "get": {
@@ -3917,7 +3706,7 @@
         "operationId": "getSheet",
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D/parameters/1"
+            "$ref": "#/parameters/acceptHeader"
           },
           {
             "$ref": "#/components/parameters/accessApiLevel"
@@ -4050,7 +3839,7 @@
             "description": "Filter to return only rows that have been modified since the date/time provided. Date should be in ISO-8601 format.",
             "example": "2020-01-30T13:25:32-07:00",
             "schema": {
-              "$ref": "#/components/schemas/Attachment/properties/createdAt"
+              "$ref": "#/components/schemas/DateUnion"
             }
           }
         ],
@@ -4396,7 +4185,7 @@
     "/sheets/{sheetId}/attachments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -4447,7 +4236,7 @@
                           "description": "list of attachments",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                            "$ref": "#/components/schemas/Attachment"
                           }
                         }
                       }
@@ -4584,16 +4373,10 @@
     "/sheets/{sheetId}/attachments/{attachmentId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "attachmentId",
-          "in": "path",
-          "required": true,
-          "description": "ID of the attachment",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/attachmentIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -4624,7 +4407,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                      "$ref": "#/components/schemas/Attachment"
                     }
                   ]
                 }
@@ -4667,10 +4450,10 @@
     "/sheets/{sheetId}/attachments/{attachmentId}/versions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1"
+          "$ref": "#/components/parameters/attachmentIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -4719,10 +4502,7 @@
                       "properties": {
                         "data": {
                           "description": "list of attachments",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Comment/properties/attachments/items"
-                          }
+                          "$ref": "#/components/schemas/AttachmentArray"
                         }
                       }
                     }
@@ -4793,7 +4573,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Attachment"
                         }
                       }
                     }
@@ -4834,7 +4614,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/post/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/ResultPrefix"
                 }
               }
             }
@@ -4845,7 +4625,7 @@
     "/sheets/{sheetId}/automationrules": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -4909,7 +4689,7 @@
                                 "description": "A timestamp of when the rule was originally added.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                    "$ref": "#/components/schemas/DateUnion"
                                   }
                                 ]
                               },
@@ -4917,7 +4697,7 @@
                                 "description": "`User` object containing `name` and `email` of the creator of this rule.\n",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 ]
                               },
@@ -4946,7 +4726,7 @@
                                 "description": "The datetime for when the change was made to the rule.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                    "$ref": "#/components/schemas/DateUnion"
                                   }
                                 ]
                               },
@@ -4954,7 +4734,7 @@
                                 "description": "`User` object containing the `name` and `email` of the user that made the change.\n",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 ]
                               },
@@ -4982,7 +4762,7 @@
     "/sheets/{sheetId}/automationrules/{automationRuleId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "automationRuleId",
@@ -5020,11 +4800,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1automationrules/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/AutomationRule"
                 }
               }
             }
@@ -5057,7 +4833,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1automationrules~1%7BautomationRuleId%7D/get/responses/200/content/application~1json/schema/allOf/0"
+                "$ref": "#/components/schemas/AutomationRule"
               }
             }
           }
@@ -5070,13 +4846,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1automationrules~1%7BautomationRuleId%7D/get/responses/200/content/application~1json/schema/allOf/0"
+                          "$ref": "#/components/schemas/AutomationRule"
                         }
                       }
                     }
@@ -5121,7 +4897,7 @@
     "/sheets/{sheetId}/columns": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -5294,7 +5070,7 @@
                     "description": "Column index or position. This number is zero-based."
                   },
                   "autoNumberFormat": {
-                    "$ref": "#/components/schemas/Column/properties/autoNumberFormat"
+                    "$ref": "#/components/schemas/AutoNumberFormat"
                   },
                   "contactOptions": {
                     "$ref": "#/components/schemas/Column/properties/contactOptions/items"
@@ -5432,16 +5208,10 @@
     "/sheets/{sheetId}/columns/{columnId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "columnId",
-          "in": "path",
-          "schema": {
-            "type": "number"
-          },
-          "required": true,
-          "description": "Column Id in the sheet being accessed."
+          "$ref": "#/components/parameters/columnIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -5614,7 +5384,7 @@
     "/sheets/{sheetId}/comments/{commentId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "commentId",
@@ -5777,7 +5547,7 @@
     "/sheets/{sheetId}/comments/{commentId}/attachments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/parameters/1"
@@ -5851,7 +5621,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                          "$ref": "#/components/schemas/Attachment"
                         }
                       }
                     }
@@ -5873,7 +5643,7 @@
     "/sheets/{sheetId}/copy": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -5924,7 +5694,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -5933,16 +5703,16 @@
                           "type": "object",
                           "properties": {
                             "id": {
-                              "$ref": "#/components/schemas/Sheet/properties/id"
+                              "$ref": "#/components/schemas/Int64"
                             },
                             "accessLevel": {
-                              "$ref": "#/components/schemas/Sheet/properties/accessLevel"
+                              "$ref": "#/components/schemas/AccessLevel"
                             },
                             "name": {
-                              "$ref": "#/components/schemas/Sheet/properties/name"
+                              "type": "string"
                             },
                             "permalink": {
-                              "$ref": "#/components/schemas/Sheet/properties/permalink"
+                              "type": "string"
                             }
                           }
                         }
@@ -5962,7 +5732,7 @@
     "/sheets/{sheetId}/crosssheetreferences": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6084,7 +5854,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -6170,7 +5940,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "crossSheetReferenceId",
@@ -6219,7 +5989,7 @@
     "/sheets/{sheetId}/discussions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6407,7 +6177,7 @@
     "/sheets/{sheetId}/discussions/{discussionId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "discussionId",
@@ -6490,7 +6260,7 @@
     "/sheets/{sheetId}/discussions/{discussionId}/attachments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1"
@@ -6544,7 +6314,7 @@
                           "description": "list of attachments",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                            "$ref": "#/components/schemas/Attachment"
                           }
                         }
                       }
@@ -6560,7 +6330,7 @@
     "/sheets/{sheetId}/discussions/{discussionId}/comments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1"
@@ -6659,7 +6429,7 @@
     "/sheets/{sheetId}/emails": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6716,7 +6486,7 @@
     "/sheets/{sheetId}/move": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6777,7 +6547,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -6801,7 +6571,7 @@
     "/sheets/{sheetId}/proofs": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6868,7 +6638,7 @@
     "/sheets/{sheetId}/proofs/{proofId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "proofId",
@@ -7014,7 +6784,7 @@
     "/sheets/{sheetId}/proofs/{proofId}/attachments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
@@ -7068,7 +6838,7 @@
                           "description": "list of proof attachments",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                            "$ref": "#/components/schemas/Attachment"
                           }
                         }
                       }
@@ -7148,7 +6918,7 @@
     "/sheets/{sheetId}/proofs/{proofId}/discussions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
@@ -7297,7 +7067,7 @@
     "/sheets/{sheetId}/proofs/{proofId}/requestactions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
@@ -7357,7 +7127,7 @@
                                 "description": "`User` object containing `name` and `email` of the user performing the action.\n",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 ]
                               },
@@ -7386,7 +7156,7 @@
     "/sheets/{sheetId}/proofs/{proofId}/requests": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
@@ -7489,12 +7259,12 @@
                               "description": "`User` object containing `name` and `email` of the sender.\n",
                               "allOf": [
                                 {
-                                  "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                  "$ref": "#/components/schemas/NameAndEmail"
                                 }
                               ]
                             },
                             "sentAt": {
-                              "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                              "$ref": "#/components/schemas/DateUnion"
                             },
                             "isDownloadable": {
                               "description": "Indicates whether the description is downloadable.",
@@ -7524,7 +7294,7 @@
     "/sheets/{sheetId}/proofs/{proofId}/versions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
@@ -7707,7 +7477,7 @@
     "/sheets/{sheetId}/publish": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -7959,7 +7729,7 @@
     "/sheets/{sheetId}/rows": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -7990,24 +7760,10 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "name": "allowPartialSuccess",
-            "in": "query",
-            "description": "When specified with a value of true, enables partial success for this bulk operation. See [Partial Success](https://smartsheet.redoc.ly/#section/Work-at-Scale/Bulk-Operations) for more information.",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            },
-            "required": false
+            "$ref": "#/components/parameters/allowPartialSuccess"
           },
           {
-            "name": "overrideValidation",
-            "in": "query",
-            "description": "You may use the query string parameter **overrideValidation** with a value of **true** to allow a cell value outside of the validation limits. You must specify **strict** with a value of **false** to bypass value type checking.",
-            "schema": {
-              "type": "boolean",
-              "default": false
-            },
-            "required": false
+            "$ref": "#/components/parameters/overrideValidation"
           }
         ],
         "requestBody": {
@@ -8017,7 +7773,7 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/components/schemas/ReportRow/allOf/0"
+                    "$ref": "#/components/schemas/Row"
                   },
                   {
                     "type": "array",
@@ -8066,10 +7822,10 @@
                                 "type": "boolean"
                               },
                               "createdAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "cells": {
                                 "description": "Cells objects.",
@@ -8226,10 +7982,10 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/2"
+            "$ref": "#/components/parameters/allowPartialSuccess"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3"
+            "$ref": "#/components/parameters/overrideValidation"
           }
         ],
         "requestBody": {
@@ -8292,10 +8048,10 @@
                                 "type": "boolean"
                               },
                               "createdAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "cells": {
                                 "description": "Cells objects.",
@@ -8334,7 +8090,7 @@
     "/sheets/{sheetId}/rows/emails": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8393,7 +8149,7 @@
     "/sheets/{sheetId}/rows/copy": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8497,7 +8253,7 @@
     "/sheets/{sheetId}/rows/move": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8574,16 +8330,10 @@
     "/sheets/{sheetId}/rows/{rowId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "rowId",
-          "in": "path",
-          "schema": {
-            "type": "number"
-          },
-          "required": true,
-          "description": "Row Id in the sheet being accessed."
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8665,10 +8415,10 @@
                           }
                         },
                         "createdAt": {
-                          "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                          "$ref": "#/components/schemas/DateUnion"
                         },
                         "modifiedAt": {
-                          "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                          "$ref": "#/components/schemas/DateUnion"
                         }
                       }
                     }
@@ -8683,10 +8433,10 @@
     "/sheets/{sheetId}/rows/{rowId}/attachments": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1"
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8737,7 +8487,7 @@
                           "description": "list of attachments",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Comment/properties/attachments/items"
+                            "$ref": "#/components/schemas/Attachment"
                           }
                         }
                       }
@@ -8836,13 +8586,13 @@
     "/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/cellimages": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1"
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1"
+          "$ref": "#/components/parameters/columnIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -8870,7 +8620,7 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0"
+            "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
             "name": "Content-Length",
@@ -8891,7 +8641,7 @@
             "required": false
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3"
+            "$ref": "#/components/parameters/overrideValidation"
           }
         ],
         "requestBody": {
@@ -8912,13 +8662,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/ReportRow/allOf/0"
+                          "$ref": "#/components/schemas/Row"
                         }
                       }
                     }
@@ -8933,13 +8683,13 @@
     "/sheets/{sheetId}/rows/{rowId}/columns/{columnId}/history": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1"
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1"
+          "$ref": "#/components/parameters/columnIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9011,14 +8761,14 @@
                             ],
                             "properties": {
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "modifiedBy": {
                                 "description": "User object containing the name and email of the user that made the change.",
                                 "type": "object",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 ]
                               }
@@ -9041,10 +8791,10 @@
     "/sheets/{sheetId}/rows/{rowId}/discussions": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1"
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9190,10 +8940,10 @@
     "/sheets/{sheetId}/rows/{rowId}/proofs": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1"
+          "$ref": "#/components/parameters/rowIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9267,7 +9017,7 @@
     "/sheets/{sheetId}/sentupdaterequests": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9358,7 +9108,7 @@
                                 "description": "The date and time for when the sent update request was sent to the recipient.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                    "$ref": "#/components/schemas/DateUnion"
                                   }
                                 ]
                               },
@@ -9366,7 +9116,7 @@
                                 "description": "`User` object containing `name` and `email` of the sender.\n",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 ]
                               },
@@ -9461,7 +9211,7 @@
     "/sheets/{sheetId}/sentupdaterequests/{sentUpdateRequestId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "sentUpdateRequestId",
@@ -9530,7 +9280,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -9541,7 +9291,7 @@
     "/sheets/{sheetId}/summary": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9613,7 +9363,7 @@
     "/sheets/{sheetId}/summary/fields": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -9810,7 +9560,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -10046,7 +9796,7 @@
     "/sheets/{sheetId}/summary/fields/{fieldId}/images": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "fieldId",
@@ -10083,7 +9833,7 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0"
+            "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
             "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/2"
@@ -10092,7 +9842,7 @@
             "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/3"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3"
+            "$ref": "#/components/parameters/overrideValidation"
           }
         ],
         "requestBody": {
@@ -10168,10 +9918,10 @@
                               "$ref": "#/components/schemas/Cell/properties/image"
                             },
                             "createdAt": {
-                              "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                              "$ref": "#/components/schemas/DateUnion"
                             },
                             "modifiedAt": {
-                              "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                              "$ref": "#/components/schemas/DateUnion"
                             },
                             "version": {
                               "description": "Sheet version number that is incremented every time a sheet is modified.",
@@ -10195,7 +9945,7 @@
     "/sheets/{sheetId}/updaterequests": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -10262,7 +10012,7 @@
                                     "description": "The date and time for when this request was originally created. Read-only.",
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                        "$ref": "#/components/schemas/DateUnion"
                                       }
                                     ]
                                   },
@@ -10270,7 +10020,7 @@
                                     "description": "The date and time for when the last change was made to this request. Read-only.",
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                        "$ref": "#/components/schemas/DateUnion"
                                       }
                                     ]
                                   },
@@ -10286,7 +10036,7 @@
                                     "description": "`User` object containing `name` and `email` of the sender.\n",
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/Attachment/properties/createdBy/allOf/0"
+                                        "$ref": "#/components/schemas/NameAndEmail"
                                       }
                                     ]
                                   }
@@ -10343,7 +10093,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -10364,7 +10114,7 @@
     "/sheets/{sheetId}/updaterequests/{updateRequestId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "name": "updateRequestId",
@@ -10439,7 +10189,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -10494,7 +10244,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/accessApiLevel"
@@ -10550,7 +10300,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -10657,7 +10407,7 @@
     "/sheets/{sheetId}/shares/{shareId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1"
@@ -10727,7 +10477,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -10804,7 +10554,7 @@
     "/sheets/{sheetId}/sort": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -10881,7 +10631,7 @@
     "/sheets/{sheetId}/version": {
       "parameters": [
         {
-          "$ref": "#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0"
+          "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -11015,10 +10765,10 @@
                             ],
                             "properties": {
                               "createdAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                "$ref": "#/components/schemas/DateUnion"
                               }
                             }
                           }
@@ -11558,7 +11308,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -11737,7 +11487,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -13315,7 +13065,7 @@
                                     "readOnly": true,
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                        "$ref": "#/components/schemas/DateUnion"
                                       }
                                     ]
                                   },
@@ -13328,7 +13078,7 @@
                                     "readOnly": true,
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/Attachment/properties/createdAt"
+                                        "$ref": "#/components/schemas/DateUnion"
                                       }
                                     ]
                                   },
@@ -13483,7 +13233,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -13636,7 +13386,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -13727,7 +13477,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -14036,7 +13786,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -14350,7 +14100,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -14526,7 +14276,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -14650,10 +14400,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/SheetTemplate"
                   },
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1"
+                    "$ref": "#/components/schemas/SheetTemplateId"
                   }
                 ]
               }
@@ -14676,10 +14426,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/0"
+                              "$ref": "#/components/schemas/SheetLite_withColumns"
                             },
                             {
-                              "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/1"
+                              "$ref": "#/components/schemas/SheetLite"
                             }
                           ]
                         }
@@ -14724,19 +14474,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0"
+            "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/1"
+            "$ref": "#/components/parameters/contentTypeHeader_CSV_SHEET"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/2"
+            "$ref": "#/components/parameters/sheetName"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/3"
+            "$ref": "#/components/parameters/headerRowIndex"
           },
           {
-            "$ref": "#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/4"
+            "$ref": "#/components/parameters/primaryColumnIndex"
           }
         ],
         "requestBody": {
@@ -14788,8 +14538,7 @@
         "description": "The Accept request-header field can be used to specify certain media types which are acceptable for the response.",
         "schema": {
           "type": "string"
-        },
-        "required": false
+        }
       },
       "acceptEncodingHeader": {
         "name": "Accept-Encoding",
@@ -14801,8 +14550,7 @@
             "deflate",
             "gzip"
           ]
-        },
-        "required": false
+        }
       },
       "accessApiLevel": {
         "name": "accessApiLevel",
@@ -14822,6 +14570,24 @@
           "example": 100012
         }
       },
+      "allowPartialSuccess": {
+        "name": "allowPartialSuccess",
+        "in": "query",
+        "description": "When specified with a value of true, enables partial success for this bulk operation. See [Partial Success](https://smartsheet.redoc.ly/#section/Work-at-Scale/Bulk-Operations) for more information.",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
+      "attachmentIdInPath": {
+        "name": "attachmentId",
+        "in": "path",
+        "required": true,
+        "description": "ID of the attachment",
+        "schema": {
+          "type": "string"
+        }
+      },
       "authorizationHeader": {
         "name": "Authorization",
         "in": "header",
@@ -14838,6 +14604,37 @@
           "type": "string"
         },
         "description": "The client Id you obtained when you registered your app."
+      },
+      "columnIdInPath": {
+        "name": "columnId",
+        "in": "path",
+        "schema": {
+          "type": "number"
+        },
+        "required": true,
+        "description": "Column Id in the sheet being accessed."
+      },
+      "contentDispositionHeader": {
+        "name": "Content-Disposition",
+        "in": "header",
+        "description": "Should be equal to \"attachment\" to tell the API that a file is in the body of the POST request, followed by a semicolon, followed by **filename=** and the URL-encoded filename in quotes\n",
+        "schema": {
+          "type": "string",
+          "example": "attachment; filename=\"ProgressReport.docx\""
+        }
+      },
+      "contentTypeHeader_CSV_SHEET": {
+        "name": "Content-Type",
+        "in": "header",
+        "required": true,
+        "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "text/csv",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          ]
+        }
       },
       "contactIdInPath": {
         "name": "contactId",
@@ -14871,7 +14668,6 @@
       "exclude_folder_copy": {
         "name": "exclude",
         "in": "query",
-        "required": false,
         "description": "When specified with a value of **sheetHyperlinks**, excludes this category from the response",
         "schema": {
           "type": "string",
@@ -14915,10 +14711,17 @@
           "$ref": "#/components/schemas/Int64"
         }
       },
+      "headerRowIndex": {
+        "name": "headerRowIndex",
+        "in": "query",
+        "schema": {
+          "type": "number"
+        },
+        "description": "A zero-based integer indicating the row number to use for column names. Rows before this are omitted.\nIf not specified, the default values are Column1, Column2, etc.\n"
+      },
       "include_folder": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of optional elements to include in the response:\n  * **source** - adds the Source object indicating which object the folder\nwas created from, if any\n  * **distributionLink**\n  * **ownerInfo**\n  * **sheetVersion**\n  * **permalinks**\n",
         "schema": {
           "type": "string",
@@ -14934,7 +14737,6 @@
       "include_folder_copy": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of elements to copy:\n  * **attachments**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients** -- includes notification recipients, must also include\nrules when using this attribute\n  * **rules** -- includes notifications and workflow rules\n  * **shares** |\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
           "type": "string",
@@ -14954,7 +14756,6 @@
       "include_report": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments**\n  * **discussions**\n  * **proofs**\n  * **format**\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data\n  * **scope** - adds the report's scope to the response\n  * **source** - adds the Source object indicating which report the report\nwas created from, if any\n  * **sourceSheets**\n",
         "schema": {
           "type": "string",
@@ -14973,7 +14774,6 @@
       "include_sheet": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "Additional parameter to create a sheet from template.\nA comma-separated list of elements to copy from the template.\n",
         "schema": {
           "type": "string",
@@ -14992,7 +14792,6 @@
       "include_workspace": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of elements to include:\n  * **all**\n  * **attachments**\n  * **brand**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients**\n  * **rules**\n  * **shares**\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
           "type": "string",
@@ -15050,6 +14849,15 @@
         },
         "description": "You can optionally choose to receive and send dates/times in numeric format, as milliseconds since the UNIX epoch (midnight on January 1, 1970 in UTC time), using the query string parameter numericDates with a value of true. This query parameter works for any API request."
       },
+      "overrideValidation": {
+        "name": "overrideValidation",
+        "in": "query",
+        "description": "You may use the query string parameter **overrideValidation** with a value of **true** to allow a cell value outside of the validation limits. You must specify **strict** with a value of **false** to bypass value type checking.",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
       "pageNumber": {
         "name": "page",
         "in": "query",
@@ -15067,6 +14875,60 @@
           "type": "integer",
           "default": 100
         }
+      },
+      "primaryColumnIndex": {
+        "name": "primaryColumnIndex",
+        "in": "query",
+        "schema": {
+          "type": "integer",
+          "default": 0
+        },
+        "description": "A zero-based integer indicating the column to designate as primary.\n"
+      },
+      "reportIdInPath": {
+        "name": "reportId",
+        "in": "path",
+        "schema": {
+          "$ref": "#/components/schemas/Int64"
+        },
+        "required": true,
+        "description": "reportID of the report being accessed."
+      },
+      "rowIdInPath": {
+        "name": "rowId",
+        "in": "path",
+        "schema": {
+          "$ref": "#/components/schemas/Int64"
+        },
+        "required": true,
+        "description": "Row Id in the sheet being accessed."
+      },
+      "shareIdInPath": {
+        "name": "shareId",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Share Id."
+      },
+      "sheetIdInPath": {
+        "name": "sheetId",
+        "in": "path",
+        "schema": {
+          "$ref": "#/components/schemas/Int64"
+        },
+        "required": true,
+        "description": "Sheet Id of the sheet being accessed."
+      },
+      "sheetName": {
+        "name": "sheetName",
+        "in": "query",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "Desired name of the sheet."
       },
       "sinceDate": {
         "name": "since",
@@ -15089,8 +14951,7 @@
             "sheetHyperlinks",
             "sights"
           ]
-        },
-        "required": false
+        }
       },
       "streamPosition": {
         "name": "streamPosition",
@@ -16461,26 +16322,7 @@
         "type": "object",
         "properties": {
           "autoNumberFormat": {
-            "type": "object",
-            "description": "Object that describes how the the System Column type of \"AUTO_NUMBER\" is auto-generated.",
-            "properties": {
-              "fill": {
-                "description": "Indicates zero-padding. Must be between 0 and 10 \"0\" (zero) characters.",
-                "type": "string"
-              },
-              "prefix": {
-                "description": "The prefix. Can include the date tokens:\n  * {DD}\n  * {MM}\n  * {YY}\n  * {YYYY}\n",
-                "type": "string"
-              },
-              "startingNumber": {
-                "description": "The starting number for the auto-id.",
-                "$ref": "#/components/schemas/Int64"
-              },
-              "suffix": {
-                "description": "The suffix. Can include the date tokens:\n  * {DD}\n  * {MM}\n  * {YY}\n  * {YYYY}\n",
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/AutoNumberFormat"
           },
           "contactOptions": {
             "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**.",
@@ -17966,20 +17808,6 @@
           "Verdana"
         ]
       },
-      "MiniUser": {
-        "description": "MiniUser Object",
-        "type": "object",
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email"
-          },
-          "name": {
-            "type": "string",
-            "readOnly": true
-          }
-        }
-      },
       "MultiContactObjectValue": {
         "description": "Object containing a list of Contacts",
         "type": "object",
@@ -18057,7 +17885,7 @@
       },
       "NameAndEmail": {
         "type": "object",
-        "description": "`User` object containing `name` and `email` of the user who created this attachment.\n",
+        "description": "`User` object containing `name` and `email` of a user. (AKA MiniUser Object)",
         "properties": {
           "email": {
             "type": "string",
@@ -18579,7 +18407,18 @@
         }
       },
       "ReportRow": {
-        "$ref": "#/components/schemas/Row"
+        "allOf": [
+          {
+            "$ref": "#/components/schema/Row"
+          }
+        ],
+        "type": "object",
+        "properties": {
+          "sheetId": {
+            "$ref": "#/components/schema/Int64",
+            "description": "The Id of the sheet from which the row originates."
+          }
+        }
       },
       "ReportWidgetContent": {
         "type": "object",
@@ -18771,7 +18610,7 @@
           },
           "rowNumber": {
             "description": "Row number within the sheet.",
-            "type": "number",
+            "type": "integer",
             "minimum": 1
           },
           "version": {
@@ -19292,7 +19131,7 @@
           },
           "version": {
             "description": "A number that is incremented every time a sheet is modified.",
-            "type": "number"
+            "type": "integer"
           },
           "workspace": {
             "$ref": "#/components/schemas/Workspace"
@@ -19331,6 +19170,45 @@
                 ]
               }
             }
+          }
+        }
+      },
+      "SheetLite": {
+        "type": "object",
+        "description": "Sheet created from template.",
+        "properties": {
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "id": {
+            "$ref": "#/components/schemas/Int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "permalink": {
+            "type": "string"
+          }
+        }
+      },
+      "SheetLite_withColumns": {
+        "type": "object",
+        "description": "Sheet created from scratch using the specified columns.",
+        "properties": {
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "columns": {
+            "$ref": "#/components/schemas/ColumnArray"
+          },
+          "id": {
+            "$ref": "#/components/schemas/Int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "permalink": {
+            "type": "string"
           }
         }
       },
@@ -19428,6 +19306,91 @@
           "fields": {
             "description": "Array of summary (or metadata) fields defined on the sheet.",
             "$ref": "#/components/schemas/SummaryFieldArray"
+          }
+        }
+      },
+      "SheetTemplate": {
+        "type": "object",
+        "description": "Sheet to create from scratch using the specified columns.",
+        "properties": {
+          "columns": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "autoNumberFormat": {
+                  "$ref": "#/components/schemas/AutoNumberFormat"
+                },
+                "contactOptions": {
+                  "$ref": "#/components/schemas/ContactOptionArray",
+                  "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
+                },
+                "options": {
+                  "$ref": "#/components/schemas/StringArray",
+                  "description": "Array of the options available for the column."
+                },
+                "primary": {
+                  "type": "boolean",
+                  "description": "Returned only if the column is the Primary Column (value = **true**)."
+                },
+                "symbol": {
+                  "type": "string",
+                  "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+                },
+                "systemColumnType": {
+                  "type": "string",
+                  "enum": [
+                    "AUTO_NUMBER",
+                    "CREATED_BY",
+                    "CREATED_DATE",
+                    "MODIFIED_BY",
+                    "MODIFIED_DATE"
+                  ],
+                  "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Column title."
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ABSTRACT_DATETIME",
+                    "CHECKBOX",
+                    "CONTACT_LIST",
+                    "DATE",
+                    "DATETIME",
+                    "DURATION",
+                    "MULTI_CONTACT_LIST",
+                    "MULTI_PICKLIST",
+                    "PICKLIST",
+                    "PREDECESSOR",
+                    "TEXT_NUMBER"
+                  ],
+                  "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+                },
+                "width": {
+                  "type": "integer",
+                  "description": "Display width of the column in pixels."
+                }
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "SheetTemplateId": {
+        "type": "object",
+        "description": "Sheet to create from template.",
+        "properties": {
+          "fromId": {
+            "description": "Template Id from which to create the sheet.",
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
