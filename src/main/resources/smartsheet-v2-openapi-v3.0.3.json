@@ -1298,27 +1298,7 @@
               "schema": {
                 "oneOf": [
                   {
-                    "type": "object",
-                    "properties": {
-                      "destinationId": {
-                        "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
-                        "type": "number"
-                      },
-                      "destinationType": {
-                        "description": "Type of the destination container.",
-                        "type": "string",
-                        "nullable": true,
-                        "enum": [
-                          "folder",
-                          "home",
-                          "workspace"
-                        ]
-                      },
-                      "newName": {
-                        "description": "Name of the newly created object (when creating a copy of a dashboard, folder, sheet, or workspace). This attribute is not supported for \"move\" operations.",
-                        "type": "string"
-                      }
-                    }
+                    "$ref": "#/components/schemas/ContainerDestination"
                   }
                 ]
               }
@@ -1331,7 +1311,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/ContainerDestination"
                 }
               }
             }
@@ -1528,7 +1508,7 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/ContainerDestination"
                   }
                 ]
               }
@@ -2543,7 +2523,7 @@
                                 "example": "Q2 Earnings"
                               },
                               "accessLevel": {
-                                "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                                "$ref": "#/components/schemas/AccessLevel"
                               },
                               "permalink": {
                                 "type": "string",
@@ -2613,14 +2593,7 @@
             "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "name": "level",
-            "in": "query",
-            "required": false,
-            "description": "specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format (level=0, default), multi-contact data (level=1), or multi-picklist data (level=3).",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
+            "$ref": "#/components/parameters/level"
           }
         ],
         "tags": [
@@ -2797,30 +2770,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "readOnlyFullAccessibleBy": {
-                      "description": "Indicates who can access the 'Read-Only Full' view of the published report:\n* If **ALL**, it is available to anyone who has the link.\n* If **ORG**, it is available only to members of the report owner's Smartsheet organization account.\n* If **SHARED**, it is available only to users shared to the item.\n\nOnly returned in a response if **readOnlyFullEnabled** = **true**.\n",
-                      "type": "string"
-                    },
-                    "readOnlyFullDefaultView": {
-                      "description": "Indicates which view the user has set for a read-only, default view of the published report. Must be one of\nthe following values: **CALENDAR**, **CARD**, or **GRID**.\n",
-                      "type": "string"
-                    },
-                    "readOnlyFullEnabled": {
-                      "description": "(Required) If **true**, a rich version of the report is published with the ability to download row\nattachments and discussions.\n",
-                      "type": "boolean"
-                    },
-                    "readOnlyFullShowToolbar": {
-                      "deprecated": true,
-                      "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar.\nIf **false**, hides the toolbar.\n",
-                      "type": "boolean"
-                    },
-                    "readOnlyFullUrl": {
-                      "description": "URL for 'Read-Only Full' view of the published report.\n\nOnly returned in a response if **readOnlyFullEnabled** = **true**.\n",
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/ReportPublish"
                 }
               }
             }
@@ -2856,7 +2806,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/get/responses/200/content/application~1json/schema"
+                "$ref": "#/components/schemas/ReportPublish"
               }
             }
           }
@@ -2869,28 +2819,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "type": "object",
-                      "allOf": [
-                        {
-                          "$ref": "#/components/schemas/ResultPrefix"
-                        }
-                      ],
-                      "properties": {
-                        "failedItems": {
-                          "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Result/allOf/0/properties/failedItems/items"
-                          },
-                          "nullable": true
-                        }
-                      }
+                      "$ref": "#/components/schemas/BulkItemFailureResult"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/get/responses/200/content/application~1json/schema"
+                          "$ref": "#/components/schemas/ReportPublish"
                         }
                       }
                     }
@@ -2937,7 +2872,6 @@
             "name": "sendEmail",
             "in": "query",
             "description": "Either true or false to indicate whether to notify the user by email. Default is false. If true, limit is 1000 emails.",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false
@@ -2976,13 +2910,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                              "$ref": "#/components/schemas/Share"
                             },
                             {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                              }
+                              "$ref": "#/components/schemas/ShareArray"
                             }
                           ]
                         }
@@ -3064,10 +2995,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                          }
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -3121,7 +3049,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/Share"
                 }
               }
             }
@@ -3190,7 +3118,7 @@
                 "type": "object",
                 "properties": {
                   "accessLevel": {
-                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                    "$ref": "#/components/schemas/AccessLevel"
                   }
                 }
               }
@@ -3736,19 +3664,7 @@
             }
           },
           {
-            "name": "exclude",
-            "in": "query",
-            "required": false,
-            "description": "A comma-separated list of element types to exclude from the response:\n  * **filteredOutRows** - excludes filtered-out rows from response payload\nif a sheet filter is applied; includes total number of filtered rows\n  * **linkInFromCellDetails** - excludes the following attributes from the\n**cell.linkInFromCell** object: `columnId`, `rowId`, `status`\n  * **linksOutToCellsDetails** - excludes the following attributes from\nthe **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`\n  * **nonexistentCells** - excludes empty cells\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "filteredOutRows",
-                "linkInFromCellDetails",
-                "linksOutToCellsDetails",
-                "nonexistentCells"
-              ]
-            }
+            "$ref": "#/components/parameters/exclude_sheet"
           },
           {
             "name": "columnIds",
@@ -3778,14 +3694,7 @@
             }
           },
           {
-            "name": "level",
-            "in": "query",
-            "required": false,
-            "description": "Specifies whether object data types, such as multi-contact data are returned in a backwards-compatible, text format in text/number columns.<br>  - Set `level=0` (default) to use text/number columns for multi-contact data and multi-picklist data.<br>  - Set `level=1` to use multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.<br>  - Set `level=2` to use multiple-entry contact list columns for multi-contact data and use multiple-entry picklist columns for multi-picklist data.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
+            "$ref": "#/components/parameters/level"
           },
           {
             "$ref": "#/components/parameters/pageSize"
@@ -4909,14 +4818,7 @@
         "operationId": "columns-listOnSheet",
         "parameters": [
           {
-            "name": "level",
-            "in": "query",
-            "required": false,
-            "description": "Specifies whether object data types, such as multi-contact data are returned in a backwards-compatible, text format in text/number columns.<br>  - Set `level=0` (default) to use text/number columns for multi-contact data and multi-picklist data.<br>  - Set `level=1` to use multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.<br>  - Set `level=2` to use multiple-entry contact list columns for multi-contact data and use multiple-entry picklist columns for multi-picklist data.",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
+            "$ref": "#/components/parameters/compatibilityLevel"
           },
           {
             "$ref": "#/components/parameters/pageNumber"
@@ -4952,54 +4854,7 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "type": "number",
-                                "description": "Column Id."
-                              },
-                              "index": {
-                                "type": "number",
-                                "description": "Column index or position. This number is zero-based."
-                              },
-                              "symbol": {
-                                "type": "string",
-                                "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                              },
-                              "title": {
-                                "type": "string",
-                                "description": "Column title."
-                              },
-                              "type": {
-                                "type": "string",
-                                "enum": [
-                                  "ABSTRACT_DATETIME",
-                                  "CHECKBOX",
-                                  "CONTACT_LIST",
-                                  "DATE",
-                                  "DATETIME",
-                                  "DURATION",
-                                  "MULTI_CONTACT_LIST",
-                                  "MULTI_PICKLIST",
-                                  "PICKLIST",
-                                  "PREDECESSOR",
-                                  "TEXT_NUMBER"
-                                ],
-                                "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
-                              },
-                              "validation": {
-                                "type": "boolean",
-                                "description": "Indicates whether validation has been enabled for the column (value = **true**)."
-                              }
-                            }
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/ColumnLite"
                     }
                   ]
                 }
@@ -5223,7 +5078,7 @@
         "operationId": "column-get",
         "parameters": [
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D/get/parameters/7"
+            "$ref": "#/components/parameters/compatibilityLevel"
           }
         ],
         "tags": [
@@ -5247,7 +5102,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1columns/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                      "$ref": "#/components/schemas/ColumnLite"
                     }
                   ]
                 }
@@ -5681,7 +5536,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -6622,7 +6477,7 @@
                           "description": "list of all proofs",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Row/properties/proof"
+                            "$ref": "#/components/schemas/Proof"
                           }
                         }
                       }
@@ -6693,7 +6548,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/Row/properties/proof"
+                      "$ref": "#/components/schemas/Proof"
                     }
                   ]
                 }
@@ -7348,7 +7203,7 @@
                           "description": "list of proof versions",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Row/properties/proof"
+                            "$ref": "#/components/schemas/Proof"
                           }
                         }
                       }
@@ -7506,91 +7361,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Describes the sheet's publish settings.",
-                  "type": "object",
-                  "properties": {
-                    "icalEnabled": {
-                      "description": "If **true**, a webcal is available for the calendar in the sheet.",
-                      "type": "boolean"
-                    },
-                    "icalUrl": {
-                      "description": "URL for **iCal** view of the published sheet. Only returned in a response if **icalEnabled = true**.\n"
-                    },
-                    "readOnlyFullAccessibleBy": {
-                      "description": "Indicates who can access the 'Read-Only Full' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readOnlyFullEnabled = true**.\n",
-                      "type": "string",
-                      "enum": [
-                        "ALL",
-                        "ORG",
-                        "SHARED"
-                      ]
-                    },
-                    "readOnlyFullDefaultView": {
-                      "description": "Indicates which view the user has set for a read-only, default view of the published sheet. Must be one of the listed enum values.\n",
-                      "type": "string",
-                      "enum": [
-                        "CALENDAR",
-                        "CARD",
-                        "GRID"
-                      ]
-                    },
-                    "readOnlyFullEnabled": {
-                      "description": "If **true**, a rich version of the sheet is published with the ability to download row attachments and discussions.",
-                      "type": "boolean"
-                    },
-                    "readOnlyFullShowToolbar": {
-                      "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
-                      "type": "boolean",
-                      "deprecated": true
-                    },
-                    "readOnlyFullUrl": {
-                      "description": "URL for 'Read-Only Full' view of the published sheet. Only returned in a response if **readOnlyFullEnabled = true.",
-                      "type": "string"
-                    },
-                    "readOnlyLiteEnabled": {
-                      "description": "If **true**, a lightweight version of the sheet is published without row attachments and discussions.",
-                      "type": "boolean"
-                    },
-                    "readOnlyLiteSslUrl": {
-                      "description": "URL for 'Read-Only' view of the published sheet when SSL is enabled.",
-                      "type": "string"
-                    },
-                    "readOnlyLiteUrl": {
-                      "description": "URL for 'Read-Only HTML' view of the published sheet. Only returned in a response if **readOnlyLiteEnabled = true**.",
-                      "type": "string"
-                    },
-                    "readWriteAccessibleBy": {
-                      "description": "Indicates who can access the 'Edit by Anyone' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readWriteEnabled = true**.\n",
-                      "type": "string",
-                      "enum": [
-                        "ALL",
-                        "ORG",
-                        "SHARED"
-                      ]
-                    },
-                    "readWriteDefaultView": {
-                      "description": "Indicates which view the user has set for a read-write, default view of the published sheet. Must be one of the listed enum values.\n",
-                      "type": "string",
-                      "enum": [
-                        "CALENDAR",
-                        "CARD",
-                        "GRID"
-                      ]
-                    },
-                    "readWriteEnabled": {
-                      "description": "If **true**,a rich version of the sheet is published with the ability to edit cells and manage attachments and discussions.",
-                      "type": "boolean"
-                    },
-                    "readWriteShowToolbar": {
-                      "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
-                      "type": "boolean",
-                      "deprecated": true
-                    },
-                    "readWriteUrl": {
-                      "description": "URL for 'Edit by Anyone' view of the published sheet. Only returned in a response if **readWriteEnabled = true**.",
-                      "type": "string"
-                    }
-                  }
+                  "$ref": "#/components/schemas/SheetPublish"
                 }
               }
             }
@@ -7627,72 +7398,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "description": "Describes the sheet's publish settings. Used as a request body to set publish status.",
-                "type": "object",
-                "properties": {
-                  "icalEnabled": {
-                    "description": "If **true**, a webcal is available for the calendar in the sheet.",
-                    "type": "boolean"
-                  },
-                  "readOnlyFullAccessibleBy": {
-                    "description": "Indicates who can access the 'Read-Only Full' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readOnlyFullEnabled = true**.\n",
-                    "type": "string",
-                    "enum": [
-                      "ALL",
-                      "ORG",
-                      "SHARED"
-                    ]
-                  },
-                  "readOnlyFullDefaultView": {
-                    "description": "Indicates which view the user has set for a read-only, default view of the published sheet. Must be one of the listed enum values.\n",
-                    "type": "string",
-                    "enum": [
-                      "CALENDAR",
-                      "CARD",
-                      "GRID"
-                    ]
-                  },
-                  "readOnlyFullEnabled": {
-                    "description": "If **true**, a rich version of the sheet is published with the ability to download row attachments and discussions.",
-                    "type": "boolean"
-                  },
-                  "readOnlyFullShowToolbar": {
-                    "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
-                    "type": "boolean",
-                    "deprecated": true
-                  },
-                  "readOnlyLiteEnabled": {
-                    "description": "If **true**, a lightweight version of the sheet is published without row attachments and discussions.",
-                    "type": "boolean"
-                  },
-                  "readWriteAccessibleBy": {
-                    "description": "Indicates who can access the 'Edit by Anyone' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readWriteEnabled = true**.\n",
-                    "type": "string",
-                    "enum": [
-                      "ALL",
-                      "ORG",
-                      "SHARED"
-                    ]
-                  },
-                  "readWriteDefaultView": {
-                    "description": "Indicates which view the user has set for a read-write, default view of the published sheet. Must be one of the listed enum values.\n",
-                    "type": "string",
-                    "enum": [
-                      "CALENDAR",
-                      "CARD",
-                      "GRID"
-                    ]
-                  },
-                  "readWriteEnabled": {
-                    "description": "If **true**,a rich version of the sheet is published with the ability to edit cells and manage attachments and discussions.",
-                    "type": "boolean"
-                  },
-                  "readWriteShowToolbar": {
-                    "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
-                    "type": "boolean",
-                    "deprecated": true
-                  }
-                }
+                "$ref": "#/components/schemas/SheetPublishSettings"
               }
             }
           }
@@ -7711,7 +7417,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1publish/get/responses/200/content/application~1json/schema"
+                          "$ref": "#/components/schemas/SheetPublish"
                         }
                       }
                     }
@@ -7776,10 +7482,7 @@
                     "$ref": "#/components/schemas/Row"
                   },
                   {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0"
-                    }
+                    "$ref": "#/components/schemas/RowArray"
                   }
                 ]
               }
@@ -7995,13 +7698,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/Row"
                   },
                   {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0"
-                    }
+                    "$ref": "#/components/schemas/RowArray"
                   }
                 ]
               }
@@ -8361,10 +8061,10 @@
             }
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D/get/parameters/3"
+            "$ref": "#/components/parameters/exclude_sheet"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D/get/parameters/7"
+            "$ref": "#/components/parameters/compatibilityLevel"
           }
         ],
         "tags": [
@@ -8623,22 +8323,10 @@
             "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
-            "name": "Content-Length",
-            "in": "header",
-            "description": "Must be set to the size of the file, in bytes. For example to determine file size using in UNIX:\n$ ls -l ProgressReport.docx\n5463 ProgressReport.docx\n",
-            "schema": {
-              "type": "integer",
-              "example": 5463
-            }
+            "$ref": "#/components/parameters/contentLengthHeader"
           },
           {
-            "name": "altText",
-            "in": "query",
-            "description": "Url-encoded alternate text for the image",
-            "schema": {
-              "type": "string"
-            },
-            "required": false
+            "$ref": "#/components/parameters/altText"
           },
           {
             "$ref": "#/components/parameters/overrideValidation"
@@ -8720,7 +8408,7 @@
             "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D/get/parameters/7"
+            "$ref": "#/components/parameters/compatibilityLevel"
           }
         ],
         "tags": [
@@ -8995,7 +8683,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Row/properties/proof"
+                          "$ref": "#/components/schemas/Proof"
                         }
                       }
                     }
@@ -9316,31 +9004,10 @@
         ],
         "parameters": [
           {
-            "name": "include",
-            "in": "query",
-            "required": false,
-            "description": "A comma-separated list of elements to include in the response.\n* **format**: includes format info for cells, rows, and summary fields\n* **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "format",
-                "writerInfo"
-              ]
-            }
+            "$ref": "#/components/parameters/include_sheetSummary"
           },
           {
-            "name": "exclude",
-            "in": "query",
-            "required": false,
-            "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "displayValue",
-                "image",
-                "imageAltText"
-              ]
-            }
+            "$ref": "#/components/parameters/exclude_sheetSummary"
           }
         ],
         "responses": {
@@ -9397,10 +9064,10 @@
             "$ref": "#/components/parameters/pageSize"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/0"
+            "$ref": "#/components/parameters/include_sheetSummary"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/1"
+            "$ref": "#/components/parameters/exclude_sheetSummary"
           }
         ],
         "responses": {
@@ -9418,10 +9085,7 @@
                       "properties": {
                         "data": {
                           "description": "List of Summary Fields",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/CellDataItem/properties/profileField"
-                          }
+                          "$ref": "#/components/schemas/SummaryFieldArray"
                         }
                       }
                     }
@@ -9836,10 +9500,10 @@
             "$ref": "#/components/parameters/contentDispositionHeader"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/2"
+            "$ref": "#/components/parameters/contentLengthHeader"
           },
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/3"
+            "$ref": "#/components/parameters/altText"
           },
           {
             "$ref": "#/components/parameters/overrideValidation"
@@ -9908,14 +9572,14 @@
                               "type": "boolean"
                             },
                             "objectValue": {
-                              "$ref": "#/components/schemas/Cell/properties/objectValue"
+                              "$ref": "#/components/schemas/CellObjectValue"
                             },
                             "formula": {
                               "description": "The formula for a cell, if set.",
                               "type": "string"
                             },
                             "image": {
-                              "$ref": "#/components/schemas/Cell/properties/image"
+                              "$ref": "#/components/schemas/Image"
                             },
                             "createdAt": {
                               "$ref": "#/components/schemas/DateUnion"
@@ -10270,7 +9934,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0"
+            "$ref": "#/components/parameters/sendEmail"
           }
         ],
         "requestBody": {
@@ -10279,13 +9943,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/Share"
                   },
                   {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                    }
+                    "$ref": "#/components/schemas/ShareArray"
                   }
                 ]
               }
@@ -10308,13 +9969,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                              "$ref": "#/components/schemas/Share"
                             },
                             {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                              }
+                              "$ref": "#/components/schemas/ShareArray"
                             }
                           ]
                         }
@@ -10386,10 +10044,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                          }
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -10410,7 +10065,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1"
+          "$ref": "#/components/parameters/shareIdInPath"
         },
         {
           "$ref": "#/components/parameters/accessApiLevel"
@@ -10443,7 +10098,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/Share"
                 }
               }
             }
@@ -10512,7 +10167,7 @@
                 "type": "object",
                 "properties": {
                   "accessLevel": {
-                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                    "$ref": "#/components/schemas/AccessLevel"
                   }
                 }
               }
@@ -10753,7 +10408,7 @@
                                     "readOnly": true
                                   },
                                   "accessLevel": {
-                                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                                    "$ref": "#/components/schemas/AccessLevel"
                                   },
                                   "permalink": {
                                     "description": "URL that represents a direct link to the dashboard in Smartsheet.",
@@ -10792,13 +10447,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "name": "sightId",
-          "in": "path",
-          "required": true,
-          "description": "SightID of the sight being accessed.",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/sightIdInPath"
         }
       ],
       "get": {
@@ -10823,14 +10472,7 @@
             }
           },
           {
-            "name": "level",
-            "in": "query",
-            "required": false,
-            "description": "Specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format (**level=0**, default), multi-contact data (**level=2**), multi-picklist data (**level=3**), or Metric widget with sheet summary (**level=4**).",
-            "schema": {
-              "type": "integer",
-              "default": 0
-            }
+            "$ref": "#/components/parameters/compatibilityLevel"
           },
           {
             "$ref": "#/components/parameters/numericDates"
@@ -10913,13 +10555,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/BulkItemFailureResult"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sights~1%7BsightId%7D/get/responses/200/content/application~1json/schema"
+                          "$ref": "#/components/schemas/Sight"
                         }
                       }
                     }
@@ -10997,14 +10639,14 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+            "$ref": "#/components/parameters/sightIdInPath"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -11017,7 +10659,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/BulkItemFailureResult"
                     },
                     {
                       "type": "object",
@@ -11042,7 +10684,7 @@
                               "readOnly": true
                             },
                             "accessLevel": {
-                              "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                              "$ref": "#/components/schemas/AccessLevel"
                             },
                             "permalink": {
                               "description": "URL that represents a direct link to the dashboard in Smartsheet.",
@@ -11090,14 +10732,14 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+            "$ref": "#/components/parameters/sightIdInPath"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -11110,7 +10752,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/BulkItemFailureResult"
                     },
                     {
                       "type": "object",
@@ -11137,7 +10779,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+          "$ref": "#/components/parameters/sightIdInPath"
         }
       ],
       "get": {
@@ -11163,30 +10805,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "description": "Describes the dashboard's publish settings.",
-                  "type": "object",
-                  "properties": {
-                    "readOnlyFullAccessibleBy": {
-                      "description": "Indicates who can access the 'Read-Only Full' view of the published dashboard. Only returned in the response if **readOnlyFullEnabled = true**.\n  * **ALL** - available to anyone who has the link.\n  * **ORG** - available only to members of the dashboard owner's\nSmartsheet organization account.\n  * **SHARED** - available only to users shared to the item.\n\n---\nIf **readOnlyFullEnabled** is set to true in the request, but **readOnlyFullAccessibleBy** is not specified, the value of **readOnlyFullAccessibleBy** defaults to the organization-level 'Dashboard Publishing' setting (if the dashboard owner belongs to an organization account) or to **ALL** (if the dashboard owner does not belong to an organization account).\n",
-                      "type": "string",
-                      "enum": [
-                        "ALL",
-                        "ORG"
-                      ]
-                    },
-                    "readOnlyFullEnabled": {
-                      "description": "If true, a rich version of the dashboard is published with the ability to use shortcuts and widget interactions.",
-                      "type": "boolean"
-                    },
-                    "readOnlyFullUrl": {
-                      "description": "URL for 'Read-Only Full' view of the published dashboard. Only returned in a response if readOnlyFullEnabled = true.",
-                      "type": "string",
-                      "readOnly": true
-                    }
-                  },
-                  "required": [
-                    "readOnlyFullEnabled"
-                  ]
+                  "$ref": "#/components/schemas/SightPublish"
                 }
               }
             }
@@ -11222,7 +10841,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema"
+                "$ref": "#/components/schemas/SightPublish"
               }
             }
           }
@@ -11235,13 +10854,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/BulkItemFailureResult"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema"
+                          "$ref": "#/components/schemas/SightPublish"
                         }
                       }
                     }
@@ -11265,7 +10884,7 @@
           "$ref": "#/components/parameters/accessApiLevel"
         },
         {
-          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+          "$ref": "#/components/parameters/sightIdInPath"
         }
       ],
       "post": {
@@ -11288,14 +10907,14 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0"
+            "$ref": "#/components/parameters/sendEmail"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                "$ref": "#/components/schemas/Share"
               }
             }
           }
@@ -11415,10 +11034,10 @@
     "/sights/{sightId}/shares/{shareId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1sights~1%7BsightId%7D/parameters/1"
+          "$ref": "#/components/parameters/sightIdInPath"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1"
+          "$ref": "#/components/parameters/shareIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -11453,7 +11072,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/Share"
                 }
               }
             }
@@ -11527,7 +11146,7 @@
                 "type": "object",
                 "properties": {
                   "accessLevel": {
-                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                    "$ref": "#/components/schemas/AccessLevel"
                   }
                 }
               }
@@ -11661,7 +11280,7 @@
             "required": false
           },
           {
-            "$ref": "#/components/parameters/levelNumber",
+            "$ref": "#/components/parameters/templateTypeLevel",
             "required": false
           },
           {
@@ -12018,7 +11637,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0"
+            "$ref": "#/components/parameters/sendEmail"
           }
         ],
         "requestBody": {
@@ -13648,13 +13267,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "name": "workspaceId",
-          "in": "path",
-          "schema": {
-            "type": "string"
-          },
-          "required": true,
-          "description": "WorkspaceID of the worksheet being accessed."
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "get": {
@@ -13813,7 +13426,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "post": {
@@ -13838,7 +13451,7 @@
             "$ref": "#/components/parameters/contentTypeHeader"
           },
           {
-            "$ref": "#/paths/~1workspaces/post/parameters/1"
+            "$ref": "#/components/parameters/include_workspace"
           },
           {
             "$ref": "#/components/parameters/skipRemap_folder_copy"
@@ -13852,7 +13465,7 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/ContainerDestination"
                   }
                 ]
               }
@@ -13865,7 +13478,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/ContainerDestination"
                 }
               }
             }
@@ -13882,7 +13495,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "get": {
@@ -14047,7 +13660,7 @@
           "$ref": "#/components/parameters/accessApiLevel"
         },
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "post": {
@@ -14070,7 +13683,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0"
+            "$ref": "#/components/parameters/sendEmail"
           }
         ],
         "requestBody": {
@@ -14079,13 +13692,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                    "$ref": "#/components/schemas/Share"
                   },
                   {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                    }
+                    "$ref": "#/components/schemas/ShareArray"
                   }
                 ]
               }
@@ -14108,13 +13718,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                              "$ref": "#/components/schemas/Share"
                             },
                             {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                              }
+                              "$ref": "#/components/schemas/ShareArray"
                             }
                           ]
                         }
@@ -14183,10 +13790,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
-                          }
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -14204,10 +13808,10 @@
     "/workspaces/{workspaceId}/shares/{shareId}": {
       "parameters": [
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         },
         {
-          "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1"
+          "$ref": "#/components/parameters/shareIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -14242,7 +13846,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0"
+                  "$ref": "#/components/schemas/Share"
                 }
               }
             }
@@ -14316,7 +13920,7 @@
                 "type": "object",
                 "properties": {
                   "accessLevel": {
-                    "$ref": "#/components/schemas/Discussion/properties/accessLevel"
+                    "$ref": "#/components/schemas/AccessLevel"
                   }
                 }
               }
@@ -14361,7 +13965,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "post": {
@@ -14452,7 +14056,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1"
+          "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
       "post": {
@@ -14579,6 +14183,14 @@
           "default": false
         }
       },
+      "altText": {
+        "name": "altText",
+        "in": "query",
+        "description": "Url-encoded alternate text for the image",
+        "schema": {
+          "type": "string"
+        }
+      },
       "attachmentIdInPath": {
         "name": "attachmentId",
         "in": "path",
@@ -14614,6 +14226,20 @@
         "required": true,
         "description": "Column Id in the sheet being accessed."
       },
+      "compatibilityLevel": {
+        "name": "level",
+        "in": "query",
+        "description": "Specifies compatibility level for multi-contact/picklist data; 0 (default) = text/number; 1 = multi-contact list uses multi-contact data, multi-picklist data uses text/number; 2 = multi-contact list uses multi-contact data, multi-picklist uses multi-picklist data.",
+        "schema": {
+          "type": "integer",
+          "default": 0,
+          "enum": [
+            0,
+            1,
+            2
+          ]
+        }
+      },
       "contentDispositionHeader": {
         "name": "Content-Disposition",
         "in": "header",
@@ -14645,6 +14271,15 @@
         "description": "contactId of the contact being accessed.",
         "required": true
       },
+      "contentLengthHeader": {
+        "name": "Content-Length",
+        "in": "header",
+        "description": "Must be set to the size of the file, in bytes. For example to determine file size using in UNIX:\n$ ls -l ProgressReport.docx\n5463 ProgressReport.docx\n",
+        "schema": {
+          "type": "integer",
+          "example": 5463
+        }
+      },
       "contentTypeHeader_FORM": {
         "name": "Content-Type",
         "in": "header",
@@ -14673,6 +14308,34 @@
           "type": "string",
           "enum": [
             "sheetHyperlinks"
+          ]
+        }
+      },
+      "exclude_sheet": {
+        "name": "exclude",
+        "in": "query",
+        "description": "A comma-separated list of element types to exclude from the response:\n  * **filteredOutRows** - excludes filtered-out rows from response payload\nif a sheet filter is applied; includes total number of filtered rows\n  * **linkInFromCellDetails** - excludes the following attributes from the\n**cell.linkInFromCell** object: `columnId`, `rowId`, `status`\n  * **linksOutToCellsDetails** - excludes the following attributes from\nthe **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`\n  * **nonexistentCells** - excludes empty cells\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "filteredOutRows",
+            "linkInFromCellDetails",
+            "linksOutToCellsDetails",
+            "nonexistentCells"
+          ]
+        }
+      },
+      "exclude_sheetSummary": {
+        "name": "exclude",
+        "in": "query",
+        "required": false,
+        "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "displayValue",
+            "image",
+            "imageAltText"
           ]
         }
       },
@@ -14789,6 +14452,20 @@
           ]
         }
       },
+      "include_sheetSummary": {
+        "name": "include",
+        "in": "query",
+        "required": false,
+        "description": "A comma-separated list of elements to include in the response.\n* **format**: includes format info for cells, rows, and summary fields\n* **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "format",
+            "writerInfo"
+          ]
+        }
+      },
+
       "include_workspace": {
         "name": "include",
         "in": "query",
@@ -14817,19 +14494,6 @@
         "schema": {
           "type": "boolean",
           "default": false
-        }
-      },
-      "levelNumber": {
-        "name": "level",
-        "in": "query",
-        "description": "Level of public template types. 0 refers to only Sheet types, 1 refers to all types.",
-        "schema": {
-          "type": "integer",
-          "enum": [
-            0,
-            1
-          ],
-          "default": 0
         }
       },
       "modifiedSince": {
@@ -14903,6 +14567,15 @@
         "required": true,
         "description": "Row Id in the sheet being accessed."
       },
+      "sendEmail": {
+        "name": "sendEmail",
+        "in": "query",
+        "description": "Either true or false to indicate whether to notify the user by email. Default is false. If true, limit is 1000 emails.",
+        "schema": {
+          "type": "boolean",
+          "default": false
+        }
+      },
       "shareIdInPath": {
         "name": "shareId",
         "in": "path",
@@ -14939,6 +14612,15 @@
           "format": "date-time"
         }
       },
+      "sightIdInPath": {
+        "name": "sightId",
+        "in": "path",
+        "required": true,
+        "description": "SightID of the sight being accessed.",
+        "schema": {
+          "type": "string"
+        }
+      },
       "skipRemap_folder_copy": {
         "name": "skipRemap",
         "in": "query",
@@ -14962,6 +14644,19 @@
           "example": "XyzAb1234cdefghijklmnofpq"
         }
       },
+      "templateTypeLevel": {
+        "name": "level",
+        "in": "query",
+        "description": "Level of public template types. 0 refers to only Sheet types, 1 refers to all types.",
+        "schema": {
+          "type": "integer",
+          "enum": [
+            0,
+            1
+          ],
+          "default": 0
+        }
+      },
       "toDate": {
         "name": "to",
         "in": "query",
@@ -14979,6 +14674,15 @@
         "schema": {
           "$ref": "#/components/schemas/Int64"
         }
+      },
+      "workspaceIdInPath": {
+        "name": "workspaceId",
+        "in": "path",
+        "schema": {
+          "type": "string"
+        },
+        "required": true,
+        "description": "WorkspaceID of the worksheet being accessed."
       }
     },
     "responses": {
@@ -15595,6 +15299,27 @@
           }
         }
       },
+      "BulkItemFailureArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/BulkItemFailure"
+        }
+      },
+      "BulkItemFailureResult": {
+        "type": "object",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResultPrefix"
+          }
+        ],
+        "properties": {
+          "failedItems": {
+            "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
+            "$ref": "#/components/schemas/BulkItemFailureArray",
+            "nullable": true
+          }
+        }
+      },
       "Callback": {
         "type": "object",
         "properties": {
@@ -15742,12 +15467,6 @@
           }
         }
       },
-      "CellArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Cell"
-        }
-      },
       "Cell": {
         "type": "object",
         "properties": {
@@ -15815,6 +15534,12 @@
             ],
             "description": "A string, number, or a Boolean value -- depending on the cell type and the data in the cell. Cell values larger than 4000 characters are silently truncated. An empty cell returns no value."
           }
+        }
+      },
+      "CellArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Cell"
         }
       },
       "CellDataItem": {
@@ -16452,6 +16177,56 @@
           "$ref": "#/components/schemas/Column"
         }
       },
+      "ColumnLite": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "description": "Column Id."
+                },
+                "index": {
+                  "type": "number",
+                  "description": "Column index or position. This number is zero-based."
+                },
+                "symbol": {
+                  "type": "string",
+                  "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+                },
+                "title": {
+                  "type": "string",
+                  "description": "Column title."
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ABSTRACT_DATETIME",
+                    "CHECKBOX",
+                    "CONTACT_LIST",
+                    "DATE",
+                    "DATETIME",
+                    "DURATION",
+                    "MULTI_CONTACT_LIST",
+                    "MULTI_PICKLIST",
+                    "PICKLIST",
+                    "PREDECESSOR",
+                    "TEXT_NUMBER"
+                  ],
+                  "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+                },
+                "validation": {
+                  "type": "boolean",
+                  "description": "Indicates whether validation has been enabled for the column (value = **true**)."
+                }
+              }
+            }
+          }
+        }
+      },
       "ColumnObject": {
         "type": "object",
         "properties": {
@@ -16906,25 +16681,11 @@
           "value": "2025-03-03T16:59:59"
         }
       },
-      "DiscussionArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Discussion"
-        }
-      },
       "Discussion": {
         "type": "object",
         "properties": {
           "accessLevel": {
-            "type": "string",
-            "enum": [
-              "ADMIN",
-              "COMMENTER",
-              "EDITOR",
-              "EDITOR_SHARE",
-              "OWNER",
-              "VIEWER"
-            ]
+            "$ref": "#/components/schemas/AccessLevel"
           },
           "id": {
             "description": "Discussion Id.",
@@ -16974,6 +16735,12 @@
             "type": "string",
             "readOnly": true
           }
+        }
+      },
+      "DiscussionArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Discussion"
         }
       },
       "Duration": {
@@ -17063,12 +16830,6 @@
           }
         }
       },
-      "EmailOrGroupIdArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/EmailOrGroupId"
-        }
-      },
       "EmailOrGroupId": {
         "oneOf": [
           {
@@ -17094,6 +16855,12 @@
           }
         ]
       },
+      "EmailOrGroupIdArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EmailOrGroupId"
+        }
+      },
       "Error": {
         "description": "The error caused by the failed item.",
         "type": "object",
@@ -17110,14 +16877,6 @@
             "description": "Descriptive error message.",
             "type": "string"
           }
-        }
-      },
-      "EventArray": {
-        "description": "List of Events",
-        "type": "array",
-        "items": {
-          "description": "An Event object for event reporting.",
-          "$ref": "#/components/schemas/Event"
         }
       },
       "Event": {
@@ -17177,6 +16936,14 @@
             "type": "object",
             "additionalProperties": true
           }
+        }
+      },
+      "EventArray": {
+        "description": "List of Events",
+        "type": "array",
+        "items": {
+          "description": "An Event object for event reporting.",
+          "$ref": "#/components/schemas/Event"
         }
       },
       "Favorite": {
@@ -17306,12 +17073,6 @@
           }
         }
       },
-      "FolderArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Folder"
-        }
-      },
       "Folder": {
         "description": "Can contain dashboards, folders, reports, sheets, or templates.",
         "type": "object",
@@ -17348,6 +17109,12 @@
           "templates": {
             "$ref": "#/components/schemas/TemplateArray"
           }
+        }
+      },
+      "FolderArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Folder"
         }
       },
       "FontFamily": {
@@ -18308,12 +18075,6 @@
           }
         ]
       },
-      "ReportArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Report"
-        }
-      },
       "Report": {
         "allOf": [
           {
@@ -18346,6 +18107,12 @@
             "type": "boolean",
             "description": "A boolean to represent whether the report is a sheet summary report or not. If this property is false, it is a row report."
           }
+        }
+      },
+      "ReportArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Report"
         }
       },
       "ReportCell": {
@@ -18409,13 +18176,13 @@
       "ReportRow": {
         "allOf": [
           {
-            "$ref": "#/components/schema/Row"
+            "$ref": "#/components/schemas/Row"
           }
         ],
         "type": "object",
         "properties": {
           "sheetId": {
-            "$ref": "#/components/schema/Int64",
+            "$ref": "#/components/schemas/Int64",
             "description": "The Id of the sheet from which the row originates."
           }
         }
@@ -18461,10 +18228,7 @@
             "properties": {
               "failedItems": {
                 "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/BulkItemFailure"
-                },
+                "$ref": "#/components/schemas/BulkItemFailureArray",
                 "nullable": true
               }
             }
@@ -18514,12 +18278,6 @@
             "description": "The widget contents as HTML. The Rich Text widget supports the following subset of HTML tags and CSS Styles:\n\nHTML\n  * a - hyperlink\n  * br - line break\n  * li - list item\n  * ol - ordered list\n  * p - paragraph\n  * span - section of the document\n  * ul - unordered list\n\nCSS\n  * color\n  * font-family\n  * font-size\n  * font-style\n  * font-weight\n  * text-align\n  * text-decoration\n",
             "type": "string"
           }
-        }
-      },
-      "RowArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Row"
         }
       },
       "Row": {
@@ -18617,6 +18375,12 @@
             "description": "Sheet version number that is incremented every time a sheet is modified.",
             "type": "number"
           }
+        }
+      },
+      "RowArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Row"
         }
       },
       "RowEmail": {
@@ -18968,12 +18732,6 @@
           }
         }
       },
-      "SheetArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Sheet"
-        }
-      },
       "Sheet": {
         "type": "object",
         "properties": {
@@ -19138,6 +18896,12 @@
           }
         }
       },
+      "SheetArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Sheet"
+        }
+      },
       "SheetEmail": {
         "allOf": [
           {
@@ -19296,6 +19060,74 @@
           "readWriteUrl": {
             "description": "URL for 'Edit by Anyone' view of the published sheet. Only returned in a response if **readWriteEnabled = true**.",
             "type": "string"
+          }
+        }
+      },
+      "SheetPublishSettings": {
+        "description": "Describes the sheet's publish settings. Used as a request body to set publish status.",
+        "type": "object",
+        "properties": {
+          "icalEnabled": {
+            "description": "If **true**, a webcal is available for the calendar in the sheet.",
+            "type": "boolean"
+          },
+          "readOnlyFullAccessibleBy": {
+            "description": "Indicates who can access the 'Read-Only Full' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readOnlyFullEnabled = true**.\n",
+            "type": "string",
+            "enum": [
+              "ALL",
+              "ORG",
+              "SHARED"
+            ]
+          },
+          "readOnlyFullDefaultView": {
+            "description": "Indicates which view the user has set for a read-only, default view of the published sheet. Must be one of the listed enum values.\n",
+            "type": "string",
+            "enum": [
+              "CALENDAR",
+              "CARD",
+              "GRID"
+            ]
+          },
+          "readOnlyFullEnabled": {
+            "description": "If **true**, a rich version of the sheet is published with the ability to download row attachments and discussions.",
+            "type": "boolean"
+          },
+          "readOnlyFullShowToolbar": {
+            "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
+            "type": "boolean",
+            "deprecated": true
+          },
+          "readOnlyLiteEnabled": {
+            "description": "If **true**, a lightweight version of the sheet is published without row attachments and discussions.",
+            "type": "boolean"
+          },
+          "readWriteAccessibleBy": {
+            "description": "Indicates who can access the 'Edit by Anyone' view of the published sheet:\n  * ALL - available to anyone who has the link.\n  * ORG - available only to members of the sheet owner's Smartsheet\norganization account.\n  * SHARED - available only to users shared to the item.\n\nOnly returned in the response if **readWriteEnabled = true**.\n",
+            "type": "string",
+            "enum": [
+              "ALL",
+              "ORG",
+              "SHARED"
+            ]
+          },
+          "readWriteDefaultView": {
+            "description": "Indicates which view the user has set for a read-write, default view of the published sheet. Must be one of the listed enum values.\n",
+            "type": "string",
+            "enum": [
+              "CALENDAR",
+              "CARD",
+              "GRID"
+            ]
+          },
+          "readWriteEnabled": {
+            "description": "If **true**,a rich version of the sheet is published with the ability to edit cells and manage attachments and discussions.",
+            "type": "boolean"
+          },
+          "readWriteShowToolbar": {
+            "description": "Indicates whether the left nav toolbar is displayed. The default, or **true**, is to display the toolbar. If **false**, hides the toolbar.",
+            "type": "boolean",
+            "deprecated": true
           }
         }
       },
@@ -19523,12 +19355,6 @@
           }
         }
       },
-      "SightArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#components/schemas/Sight"
-        }
-      },
       "Sight": {
         "type": "object",
         "allOf": [
@@ -19607,6 +19433,12 @@
           "workspace": {
             "$ref": "#/components/schemas/Workspace"
           }
+        }
+      },
+      "SightArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#components/schemas/Sight"
         }
       },
       "SightPublish": {
@@ -19712,12 +19544,6 @@
           }
         }
       },
-      "SummaryFieldArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/SummaryField"
-        }
-      },
       "SummaryField": {
         "type": "object",
         "properties": {
@@ -19811,10 +19637,10 @@
           }
         }
       },
-      "TemplateArray": {
+      "SummaryFieldArray": {
         "type": "array",
         "items": {
-          "$ref": "#components/schemas/Template"
+          "$ref": "#/components/schemas/SummaryField"
         }
       },
       "Template": {
@@ -19984,6 +19810,12 @@
             "description": "List of search tags for this template. Only applicable to non-blank public templates.",
             "$ref": "#/components/schemas/StringArray"
           }
+        }
+      },
+      "TemplateArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#components/schemas/Template"
         }
       },
       "Timestamp": {
@@ -20686,12 +20518,6 @@
           }
         ]
       },
-      "WidgetArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Widget"
-        }
-      },
       "Widget_Metric": {
         "type": "object",
         "title": "Metric",
@@ -20853,6 +20679,12 @@
           }
         }
       },
+      "WidgetArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Widget"
+        }
+      },
       "WidgetHyperlink": {
         "type": "object",
         "properties": {
@@ -20893,12 +20725,6 @@
           }
         }
       },
-      "WorkspaceArray": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Workspace"
-        }
-      },
       "Workspace": {
         "description": "Can contain dashboards, folders, reports, sheets, and templates.",
         "type": "object",
@@ -20918,6 +20744,12 @@
             "description": "URL that represents a direct link to the workspace in Smartsheet.",
             "type": "string"
           }
+        }
+      },
+      "WorkspaceArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Workspace"
         }
       }
     },

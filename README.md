@@ -10,11 +10,7 @@ the classes needed to invoke the API.
 ### https://editor.swagger.io/
 * because the Smartsheet API uses DELETE operations with a request body we must bump the spec to 3.1.0 (the first 
 version to support DELETE requests with a body)
-* unfortunately the old swagger editor doesn't support versions other than 3.0.x
-
-### https://editor-next.swagger.io/
-* used to convert JSON to YAML (much easier to edit)
-  * removed all `x-codeSamples` sections (as they won't apply to the OpenAPI-generated version anyway)
+  * i'm not sure if this is 100% true; still TBD (currently still on spec 3.0.3)
   
 ### org.openapi.generator
 #### openApiValidate
@@ -29,51 +25,137 @@ version to support DELETE requests with a body)
     * also it appears to have broken the `components` section in a whole new way.
 
 ## Changes
-* openapi code-gen doesn't seem to handle multiple $refs so need to replace those cases with their literal values
-  * e.g., the error `paths.'/favorites'(get).parameters. There are duplicate parameter values` is caused by this block:
-```yaml
-        - $ref: '#/paths/~1contacts/get/parameters/0'
-        - $ref: '#/paths/~1contacts/get/parameters/3'
-        - $ref: '#/paths/~1contacts/get/parameters/4'
+### Replacements
+this is a list of just SOME of the replacements needed to address OpenAPI-generator parser errors of the form
+`paths.'/favorites'(get).parameters. There are duplicate parameter values` (which happens mostly when a ref points to an
+element of another path definition; e.g., one path pointing to the parameters, request-schema, or response-schema of 
+another path definition).
+
+#### Path refs
+* the path-schema refs were addressed by creating new types for those requests or responses.
+* the path-parameter refs were addressed by creating new parameter definitions and then ref'ing those parameters
+* common error responses across paths were addressed by creating a family of `Error_*` responses
+
 ```
-which can be replaced with
-```yaml
-# 0
-        - name: includeAll
-          in: query
-          required: false
-          description: If true, include all results, that is, do not paginate. Mutually exclusive with page and pageSize (they are ignored if includeAll=true is specified).
-          schema:
-            type: boolean
-            default: false
-# 1
-        - name: modifiedSince
-          in: query
-          required: false
-          description: When specified with a date and time value, response only includes the objects that are modified on or after the date and time specified. If you need to keep track of frequent changes, it may be more useful to use Get Sheet Version.
-          schema:
-            $ref: '#/components/schemas/Attachment/properties/createdAt'
- # 2
-        - name: numericDates
-          in: query
-          schema:
-            type: boolean
-            default: false
-          description: You can optionally choose to receive and send dates/times in numeric format, as milliseconds since the UNIX epoch (midnight on January 1, 1970 in UTC time), using the query string parameter numeric Dates with a value of true. This query parameter works for any API request.
- # 3
-        - name: page
-          in: query
-          required: false
-          description: Which page to return. Defaults to 1 if not specified. If you specify a value greater than the total number of pages, you'll receive an empty *data* set.
-          schema:
-            type: number
-            default: 1
-# 4
-        - name: pageSize
-          in: query
-          required: false
-          description: The maximum number of items to return per page. Unless otherwise stated for a specific endpoint, defaults to 100. If only page is specified, defaults to a page size of 100. For reports, the default is 100 rows. If you need larger sets of data from your report, returns a maximum of 10,000 rows per request.
-          schema:
-            type: number
-            default: 100
+#/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1 	= #/components/parameters/workspaceIdInPath
+#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1	= #/components/parameters/include_workspace
+#/paths/~1folders~1%7BfolderId%7D~1copy/post/requestBody/content/application~1json/schema/oneOf/0	= #/components/schemas/ContainerDestination
+#/paths/~1reports~1%7BreportId%7D~1shares/post/parameters/0	= #/components/parameters/sendEmail
+#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0				= #/components/schemas/Share
+#/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0					= #/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = 
+#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0	= #/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = #/components/schemas/Share
+#/paths/~1reports~1%7BreportId%7D~1shares~1%7BshareId%7D/parameters/1	= #/components/parameters/shareIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0 = #/components/schemas/Row
+#/paths/~1sheets~1%7BsheetId%7D/get/parameters/3	= #/components/parameters/exclude_sheet
+#/paths/~1sheets~1%7BsheetId%7D/get/parameters/7	= #/components/parameters/compatibilityLevel
+#/paths/~1sheets~1%7BsheetId%7D~1columns/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items	= #/components/schemas/ColumnLite
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/2 = #/components/parameters/contentLengthHeader
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1columns~1%7BcolumnId%7D~1cellimages/post/parameters/3 = #/components/parameters/altText
+#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/0	= #/components/parameters/include_sheetSummary
+#/paths/~1sheets~1%7BsheetId%7D~1summary/get/parameters/1	= #/components/parameters/exclude_sheetSummary
+#/paths/~1sights~1%7BsightId%7D/parameters/1	= #/components/parameters/sightIdInPath
+#/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema = #/components/schemas/SightPublish
+#/paths/~1sheets~1%7BsheetId%7D~1publish/get/responses/200/content/application~1json/schema = #/components/schemas/SheetPublish
+#/paths/~1reports~1%7BreportId%7D~1publish/get/responses/200/content/application~1json/schema = #/components/schemas/ReportPublish
+#/paths/~1reports~1%7BreportId%7D~1publish/put/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/BulkItemFailureResult
+#/paths/~1sights~1%7BsightId%7D/get/responses/200/content/application~1json/schema = #/components/schemas/Sight
+#/paths/~1contacts/parameters/0			= #/components/parameters/authorizationHeader
+#/paths/~1favorites/post/parameters/0	= #/components/parameters/contentTypeHeader
+
+#/paths/~1contacts/get/parameters/0	  = #/components/parameters/includeAllBoolean
+#/paths/~1contacts/get/parameters/1	  = #/components/parameters/modifiedSince
+#/paths/~1contacts/get/parameters/2	  = #/components/parameters/numericDates
+#/paths/~1contacts/get/parameters/3	  = #/components/parameters/pageNumber
+#/paths/~1contacts/get/parameters/4	  = #/components/parameters/pageSize
+
+#/paths/~1contacts/get/responses/400  = #/components/responses/Error_400
+#/paths/~1contacts/get/responses/401  = #/components/responses/Error_401
+#/paths/~1contacts/get/responses/404  = #/components/responses/Error_404
+
+#/paths/~1contacts/get/responses/200/content/application~1json/schema/allOf/0 		= #/components/schemas/PagedResult
+
+#/paths/~1favorites/parameters/1	  = #/components/parameters/actorIdHeader
+#/paths/~1favorites/get/parameters/3  = ...
+#/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items	= #/components/schemas/Favorite
+#/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 	= #/components/schemas/ResultPrefix
+
+#/paths/~1folders~1%7BfolderId%7D/parameters/1 		= #/components/parameters/folderIdInPath
+#/paths/~1folders~1%7BfolderId%7D/get/parameters/0 = #/components/parameters/include_folders
+#/paths/~1folders~1%7BfolderId%7D/put/responses/200/content/application~1json/schema/allOf/0	= #/components/schemas/Result
+
+#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/1 = #/components/parameters/include_folder_copy
+#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/2 = #/components/parameters/exclude_folder_copy
+#/paths/~1folders~1%7BfolderId%7D~1copy/post/parameters/3 = #/components/parameters/skipRemap_folder_copy
+
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/parameters/1 = #/components/parameters/include_sheets
+
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/0		= #/components/schemas/SheetTemplate
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/requestBody/content/application~1json/schema/oneOf/1		= #/components/schemas/SheetTemplateId
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/0	= #/components/schemas/SheetLite_withColumns
+#/paths/~1folders~1%7BfolderId%7D~1sheets/post/responses/200/content/application~1json/schema/allOf/1/properties/result/oneOf/1	= #/components/schemas/SheetLite
+
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/0 	= #/components/parameters/contentDispositionHeader
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/1 	= #/components/parameters/contentTypeHeader_CSV_SHEET
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/2		= #/components/parameters/sheetName
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/3		= #/components/parameters/headerRowIndex
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/parameters/4		= #/components/parameters/primaryColumnIndex
+#/paths/~1folders~1%7BfolderId%7D~1sheets~1import/post/responses/200/content/application~1json/schema/allOf/1/properties/result = 
+
+#/paths/~1groups/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items 		= #/components/schemas/Group
+#/paths/~1groups~1%7BgroupId%7D~1members/post/requestBody/content/application~1json/schema/oneOf/0 		= #/components/schemas/GroupMember 
+#/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2 									= #/components/parameters/userIdInPath
+
+#/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items	= #/components/schemas/Folder/properties/folders/items = #/components/schemas/Folder
+
+#/paths/~1reports~1%7BreportId%7D/parameters/1	= #/parameters/acceptHeader
+#/paths/~1reports~1%7BreportId%7D/parameters/2	= #/parameters/accessApiLevel
+#/paths/~1reports~1%7BreportId%7D/parameters/3  = #/parameters/reportIdInPath
+
+#/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 	= #/components/schemas/Share
+
+#/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0							= #/components/parameters/sheetIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1	= #/components/parameters/attachmentIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1				    = #/components/parameters/rowIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1		    = #/components/parameters/columnIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/2							= #/components/parameters/allowPartialSuccess
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3							= #/components/parameters/overrideValidation
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0		= #/components/schemas/ReportRow/allOf/0 = ...
+
+#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items = #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
+#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/post/responses/200/content/application~1json/schema/allOf/0  = #/components/schemas/ResultPrefix
+#/paths/~1sheets~1%7BsheetId%7D~1automationrules/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items       = #/components/schemas/AutomationRule
+#/paths/~1sheets~1%7BsheetId%7D~1automationrules~1%7BautomationRuleId%7D/get/responses/200/content/application~1json/schema/allOf/0	    = #/components/schemas/AutomationRule
+
+#/paths/~1workspaces/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items     = #/components/schemas/Scope/properties/workspaces/items = #/components/schemas/Workspace
+#/paths/~1workspaces~1%7BworkspaceId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = #/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = WIP!!
+```
+
+#### Schema refs
+some refs point to the types of fields within schema components (sort of like defining one class by pointing to the type
+of another class's field); these can generate similar errors to the paths-refing-paths issue.  this is brittle because
+it assumes the structure of another type which could potentially change, thus breaking those refs.  it also makes the
+ref'ing type less clear since you have to follow those links to other fields in other types.  also these types might not
+always match; that seems to be an assumption of the openapi-spec generator (that types are immutable and that it should
+simply ref to the first type it created; also it seems to default to generating types within the first path where they're
+used).  in short most of these issues start with the assumptions passed into or built into the openapi-spec generator.
+```
+#/components/schemas/Attachment/properties/createdAt			= #/components/schemas/DateUnion
+#/components/schemas/Attachment/properties/createdBy/allOf/0 = #/components/schemas/NameAndEmail
+#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items = #/components/schemas/EmailOrGroupId
+#/components/schemas/BulkItemFailure/properties/error 				= #/components/schemas/Error
+#/components/schemas/Comment/properties/attachments/items 	= #/components/schemas/Attachment
+#/components/schemas/Discussion/properties/accessLevel  			= #/components/schemas/AccessLevel
+#/components/schemas/Folder/properties/folders/items 				= #/components/schemas/Folder
+#/components/schemas/ReportRow/allOf/0									= #/components/schemas/Row
+#/components/schemas/Sheet/properties/accessLevel 					= #/components/schemas/AccessLevel 
+#/components/schemas/Sheet/properties/id									= #/components/schemas/Int64
+```
+
+#### General replacements
+some types are so common (the int-64 long type used for almost all IDs, long[], and string[]) that it saved typing to 
+create types for these common patterns.
+```
+"type":"number|integer"[, "format":"int64"] 	= "$ref": "#/components/schemas/Int64"
+"type":"array", "items":{"type":"number"} 		= "$ref": "#/components/schemas/Int64Array"
+"type":"array", "items":{"type":"string"} 			= "$ref": "#/components/schemas/StringArray"
 ```
