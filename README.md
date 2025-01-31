@@ -97,14 +97,23 @@ another path definition).
 
 #/paths/~1search~1sheets~1%7BsheetId%7D/parameters/0							            = #/components/parameters/sheetIdInPath
 
-#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1	= #/components/parameters/attachmentIdInPath
-#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1				= #/components/parameters/rowIdInPath
-#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1	= #/components/parameters/columnIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1 = #/components/parameters/attachmentIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1				  = #/components/parameters/rowIdInPath
+#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/parameters/1	      = #/components/parameters/columnIdInPath
+
+#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/parameters/0                 = #/components/parameters/include_discussion
+#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1 = #/components/parameters/discussionIdInPath
+
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1           = #/components/parameters/proofIdInPath
+
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/2							        = #/components/parameters/allowPartialSuccess
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3							        = #/components/parameters/overrideValidation
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0		= #/components/schemas/ReportRow/allOf/0 = ...
 #/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0   = #/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = 
+
 #/paths/~1groups~1%7BgroupId%7D/get/responses/200/content/application~1json/schema/allOf/1/properties/members/items = #/components/schemas/GroupMember
+
+#/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema = #/components/schemas/URLAttachmentRequest
 
 #/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items = #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
 #/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/post/responses/200/content/application~1json/schema/allOf/0  = #/components/schemas/ResultPrefix

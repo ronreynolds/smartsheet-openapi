@@ -4180,18 +4180,7 @@
                   },
                   "attachmentType": {
                     "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-                    "type": "string",
-                    "enum": [
-                      "BOX_COM",
-                      "DROPBOX",
-                      "EGNYTE",
-                      "EVERNOTE",
-                      "FILE",
-                      "GOOGLE_DRIVE",
-                      "LINK",
-                      "ONEDRIVE",
-                      "TRELLO"
-                    ]
+                    "$ref": "#/components/schemas/AttachmentType_trello"
                   },
                   "description": {
                     "type": "string"
@@ -4858,7 +4847,7 @@
                     "description": "Column title."
                   },
                   "type": {
-                    "$ref":"#/components/schemas/ColumnType"
+                    "$ref": "#/components/schemas/ColumnType"
                   },
                   "formula": {
                     "type": "string",
@@ -4957,7 +4946,7 @@
                                 "description": "Column title."
                               },
                               "type": {
-                                "$ref":"#/components/schemas/ColumnType",
+                                "$ref": "#/components/schemas/ColumnType",
                                 "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                               },
                               "options": {
@@ -5104,7 +5093,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1columns~1%7BcolumnId%7D/delete/responses/200/content/application~1json/schema"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
@@ -5113,18 +5102,15 @@
                           "type": "object",
                           "properties": {
                             "id": {
-                              "type": "number",
+                              "$ref": "#/components/schemas/Int64",
                               "description": "Column Id."
                             },
                             "index": {
-                              "type": "number",
+                              "type": "integer",
                               "description": "Column index or position. This number is zero-based."
                             },
                             "options": {
-                              "type": "array",
-                              "items": {
-                                "type": "string"
-                              },
+                              "$ref": "#/components/schemas/StringArray",
                               "description": "Array of the options available for the column."
                             },
                             "title": {
@@ -5132,7 +5118,7 @@
                               "description": "Column title."
                             },
                             "type": {
-                              "$ref":"#/components/schemas/ColumnType",
+                              "$ref": "#/components/schemas/ColumnType",
                               "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                             },
                             "validation": {
@@ -5157,13 +5143,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "commentId",
-          "in": "path",
-          "required": true,
-          "description": "ID of the comment",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/commentIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -5192,11 +5172,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Discussion/properties/comments/items"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Comment"
                 }
               }
             }
@@ -5254,7 +5230,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/get/responses/200/content/application~1json/schema/allOf/0"
+                          "$ref": "#/components/schemas/Comment"
                         }
                       }
                     }
@@ -5297,7 +5273,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     }
                   ],
                   "properties": {
@@ -5320,7 +5296,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/parameters/1"
+          "$ref": "#/components/parameters/commentIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -5372,7 +5348,7 @@
             },
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/URLAttachmentRequest"
               }
             }
           }
@@ -5630,7 +5606,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Sheet/properties/crossSheetReferences/items"
+                          "$ref": "#/components/schemas/CrossSheetReference"
                         }
                       }
                     }
@@ -5688,7 +5664,7 @@
                         "data": {
                           "type": "array",
                           "items": {
-                            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1crosssheetreferences/post/responses/200/content/application~1json/schema/allOf/1/properties/result"
+                            "$ref": "#/components/schemas/CrossSheetReference"
                           }
                         }
                       }
@@ -5745,7 +5721,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Sheet/properties/crossSheetReferences/items"
+                  "$ref": "#/components/schemas/CrossSheetReference"
                 }
               }
             }
@@ -5821,10 +5797,7 @@
                       "properties": {
                         "data": {
                           "description": "list of discussions",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Proof/properties/discussions/items"
-                          }
+                          "$ref": "#/components/schemas/DiscussionArray"
                         }
                       }
                     }
@@ -5950,13 +5923,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "discussionId",
-          "in": "path",
-          "required": true,
-          "description": "ID of the discussion",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/discussionIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6033,7 +6000,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1"
+          "$ref": "#/components/parameters/discussionIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6082,10 +6049,7 @@
                       "properties": {
                         "data": {
                           "description": "list of attachments",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Attachment"
-                          }
+                          "$ref": "#/components/schemas/AttachmentArray"
                         }
                       }
                     }
@@ -6103,7 +6067,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions~1%7BdiscussionId%7D/parameters/1"
+          "$ref": "#/components/parameters/discussionIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6411,13 +6375,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "name": "proofId",
-          "in": "path",
-          "required": true,
-          "description": "Proof Id of the original proof",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6426,17 +6384,7 @@
       "get": {
         "parameters": [
           {
-            "name": "include",
-            "in": "query",
-            "required": false,
-            "description": "A comma-separated list of optional elements to include in the response.\n",
-            "schema": {
-              "type": "string",
-              "enum": [
-                "attachments",
-                "discussions"
-              ]
-            }
+            "$ref": "#/components/parameters/include_discussion"
           }
         ],
         "summary": "Get Proof",
@@ -6557,7 +6505,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6691,7 +6639,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6716,7 +6664,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/parameters/0"
+            "$ref": "#/components/parameters/include_discussion"
           },
           {
             "$ref": "#/components/parameters/pageNumber"
@@ -6840,7 +6788,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -6929,7 +6877,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -7067,7 +7015,7 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/parameters/1"
+          "$ref": "#/components/parameters/proofIdInPath"
         },
         {
           "$ref": "#/components/parameters/authorizationHeader"
@@ -7206,7 +7154,7 @@
             },
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/URLAttachmentRequest"
               }
             }
           }
@@ -8160,7 +8108,7 @@
             },
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/URLAttachmentRequest"
               }
             }
           }
@@ -8422,7 +8370,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/parameters/0"
+            "$ref": "#/components/parameters/include_discussion"
           },
           {
             "$ref": "#/components/parameters/pageNumber"
@@ -9106,7 +9054,7 @@
                       "type": "string"
                     },
                     "type": {
-                      "$ref":"#/components/schemas/ColumnType"
+                      "$ref": "#/components/schemas/ColumnType"
                     },
                     "validation": {
                       "description": "Indicates whether summary field values are restricted to the type.",
@@ -9301,7 +9249,7 @@
                       "type": "string"
                     },
                     "type": {
-                      "$ref":"#/components/schemas/ColumnType"
+                      "$ref": "#/components/schemas/ColumnType"
                     },
                     "validation": {
                       "description": "Indicates whether summary field values are restricted to the type.",
@@ -9437,7 +9385,7 @@
                               "type": "string"
                             },
                             "type": {
-                              "$ref":"#/components/schemas/ColumnType"
+                              "$ref": "#/components/schemas/ColumnType"
                             },
                             "locked": {
                               "description": "Indicates whether the field is locked.",
@@ -12353,7 +12301,7 @@
             },
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/URLAttachmentRequest"
               }
             }
           }
@@ -14102,6 +14050,15 @@
         "required": true,
         "description": "Column Id in the sheet being accessed."
       },
+      "commentIdInPath": {
+        "name": "commentId",
+        "in": "path",
+        "required": true,
+        "description": "ID of the comment",
+        "schema": {
+          "type": "string"
+        }
+      },
       "compatibilityLevel": {
         "name": "level",
         "in": "query",
@@ -14257,6 +14214,19 @@
           "type": "number"
         },
         "description": "A zero-based integer indicating the row number to use for column names. Rows before this are omitted.\nIf not specified, the default values are Column1, Column2, etc.\n"
+      },
+      "include_discussion": {
+        "name": "include",
+        "in": "query",
+        "required": false,
+        "description": "A comma-separated list of optional elements to include in the response.\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "attachments",
+            "discussions"
+          ]
+        }
       },
       "include_favorite": {
         "name": "include",
@@ -14436,6 +14406,15 @@
           "default": 0
         },
         "description": "A zero-based integer indicating the column to designate as primary.\n"
+      },
+      "proofIdInPath": {
+        "name": "proofId",
+        "in": "path",
+        "required": true,
+        "description": "Proof Id of the original proof",
+        "schema": {
+          "type": "string"
+        }
       },
       "reportIdInPath": {
         "name": "reportId",
@@ -14923,18 +14902,7 @@
           },
           "attachmentType": {
             "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "type": "string",
-            "enum": [
-              "BOX_COM",
-              "DROPBOX",
-              "EGNYTE",
-              "EVERNOTE",
-              "FILE",
-              "GOOGLE_DRIVE",
-              "LINK",
-              "ONEDRIVE",
-              "TRELLO"
-            ]
+            "$ref": "#/components/schemas/AttachmentType_trello"
           },
           "attachmentSubType": {
             "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
@@ -14991,6 +14959,34 @@
         "items": {
           "$ref": "#/components/schemas/Attachment"
         }
+      },
+      "AttachmentType_smar": {
+        "type": "string",
+        "enum": [
+          "BOX_COM",
+          "DROPBOX",
+          "EGNYTE",
+          "EVERNOTE",
+          "FILE",
+          "GOOGLE_DRIVE",
+          "LINK",
+          "ONEDRIVE",
+          "SMARTSHEET"
+        ]
+      },
+      "AttachmentType_trello": {
+        "type": "string",
+        "enum": [
+          "BOX_COM",
+          "DROPBOX",
+          "EGNYTE",
+          "EVERNOTE",
+          "FILE",
+          "GOOGLE_DRIVE",
+          "LINK",
+          "ONEDRIVE",
+          "TRELLO"
+        ]
       },
       "AutomationAction": {
         "type": "object",
@@ -16017,7 +16013,7 @@
             "description": "Column title."
           },
           "type": {
-            "$ref":"#/components/schemas/ColumnType",
+            "$ref": "#/components/schemas/ColumnType",
             "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
           },
           "validation": {
@@ -16070,7 +16066,7 @@
                   "description": "Column title."
                 },
                 "type": {
-                  "$ref":"#/components/schemas/ColumnType",
+                  "$ref": "#/components/schemas/ColumnType",
                   "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                 },
                 "validation": {
@@ -16090,7 +16086,7 @@
             "description": "Column title."
           },
           "type": {
-            "$ref":"#/components/schemas/ColumnType"
+            "$ref": "#/components/schemas/ColumnType"
           },
           "formula": {
             "type": "string",
@@ -16163,7 +16159,7 @@
             "description": "Column title."
           },
           "type": {
-            "$ref":"#/components/schemas/ColumnType"
+            "$ref": "#/components/schemas/ColumnType"
           },
           "formula": {
             "type": "string",
@@ -16286,6 +16282,21 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Comment"
+        }
+      },
+      "CommentText": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "description": "Comment.",
+            "type": "object",
+            "properties": {
+              "text": {
+                "description": "Comment text.",
+                "type": "string"
+              }
+            }
+          }
         }
       },
       "Contact": {
@@ -19146,7 +19157,7 @@
                   "description": "Column title."
                 },
                 "type": {
-                  "$ref":"#/components/schemas/ColumnType",
+                  "$ref": "#/components/schemas/ColumnType",
                   "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                 },
                 "width": {
@@ -19208,18 +19219,7 @@
         "type": "object",
         "properties": {
           "attachmentType": {
-            "type": "string",
-            "enum": [
-              "BOX_COM",
-              "DROPBOX",
-              "EGNYTE",
-              "EVERNOTE",
-              "FILE",
-              "GOOGLE_DRIVE",
-              "LINK",
-              "ONEDRIVE",
-              "SMARTSHEET"
-            ]
+            "$ref": "#/components/schemas/AttachmentType_smar"
           },
           "hyperlink": {
             "$ref": "#/components/schemas/Hyperlink"
@@ -19263,18 +19263,7 @@
               "type": "object",
               "properties": {
                 "attachmentType": {
-                  "type": "string",
-                  "enum": [
-                    "BOX_COM",
-                    "DROPBOX",
-                    "EGNYTE",
-                    "EVERNOTE",
-                    "FILE",
-                    "GOOGLE_DRIVE",
-                    "LINK",
-                    "ONEDRIVE",
-                    "SMARTSHEET"
-                  ]
+                  "$ref": "#/components/schemas/AttachmentType_smar"
                 },
                 "hyperlink": {
                   "$ref": "#/components/schemas/Hyperlink"
@@ -19564,7 +19553,7 @@
             "type": "string"
           },
           "type": {
-            "$ref":"#/components/schemas/ColumnType"
+            "$ref": "#/components/schemas/ColumnType"
           },
           "validation": {
             "description": "Indicates whether summary field values are restricted to the type.",
@@ -19994,18 +19983,7 @@
           },
           "attachmentType": {
             "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "type": "string",
-            "enum": [
-              "BOX_COM",
-              "DROPBOX",
-              "EGNYTE",
-              "EVERNOTE",
-              "FILE",
-              "GOOGLE_DRIVE",
-              "LINK",
-              "ONEDRIVE",
-              "TRELLO"
-            ]
+            "$ref": "#/components/schemas/AttachmentType_trello"
           },
           "description": {
             "type": "string"
