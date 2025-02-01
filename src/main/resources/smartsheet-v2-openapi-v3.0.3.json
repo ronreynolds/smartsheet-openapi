@@ -1268,7 +1268,7 @@
         "operationId": "copy-folder",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_folder_copy"
@@ -1399,7 +1399,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_folder_copy"
@@ -1487,7 +1487,7 @@
         "operationId": "move-folder",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -1550,7 +1550,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_sheet"
@@ -2656,7 +2656,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -2760,7 +2760,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -3440,7 +3440,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_sheet"
@@ -4137,7 +4137,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4391,7 +4391,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4685,7 +4685,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4832,7 +4832,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4865,7 +4865,7 @@
                     "$ref": "#/components/schemas/AutoNumberFormat"
                   },
                   "contactOptions": {
-                    "$ref": "#/components/schemas/Column/properties/contactOptions/items"
+                    "$ref": "#/components/schemas/ContactOption"
                   },
                   "description": {
                     "type": "string",
@@ -5198,20 +5198,14 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "text": {
-                    "description": "Comment body.",
-                    "type": "string"
-                  }
-                }
+                "$ref": "#/components/schemas/CommentBody"
               }
             }
           }
@@ -5321,7 +5315,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -5395,7 +5389,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader"
+          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         },
         {
           "$ref": "#/components/parameters/include_folder_copy"
@@ -5490,7 +5484,7 @@
         "operationId": "add-crosssheet-reference",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "tags": [
@@ -5827,7 +5821,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -5954,7 +5948,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/Proof/properties/discussions/items"
+                      "$ref": "#/components/schemas/Discussion"
                     }
                   ]
                 }
@@ -6092,14 +6086,14 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1comments~1%7BcommentId%7D/put/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/CommentBody"
               }
             },
             "multipart/form-data": {
@@ -6148,7 +6142,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Discussion/properties/comments/items"
+                          "$ref": "#/components/schemas/Comment"
                         }
                       }
                     }
@@ -6169,7 +6163,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader"
+          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -6226,7 +6220,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader"
+          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -6587,7 +6581,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -6693,7 +6687,7 @@
                           "description": "list of proof discussions",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Proof/properties/discussions/items"
+                            "$ref": "#/components/schemas/Discussion"
                           }
                         }
                       }
@@ -6724,7 +6718,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -6932,7 +6926,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -7127,7 +7121,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -7253,7 +7247,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -7326,7 +7320,7 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/allowPartialSuccess"
@@ -7545,7 +7539,7 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/allowPartialSuccess"
@@ -7678,7 +7672,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -7737,7 +7731,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "name": "include",
@@ -7802,7 +7796,7 @@
                       "description": "Array of rowMapping objects.",
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/CopyOrMoveRowResult/properties/rowMappings/items"
+                        "$ref": "#/components/schemas/RowMapping"
                       }
                     }
                   }
@@ -7841,7 +7835,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "name": "include",
@@ -8081,7 +8075,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -8180,7 +8174,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -8399,7 +8393,7 @@
                           "description": "list of discussions",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/Proof/properties/discussions/items"
+                            "$ref": "#/components/schemas/Discussion"
                           }
                         }
                       }
@@ -8430,7 +8424,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -8519,7 +8513,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -8675,7 +8669,7 @@
                                 "description": "Recipient object.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/AutomationAction/oneOf/1/properties/recipients/items"
+                                    "$ref": "#/components/schemas/EmailOrGroupId"
                                   }
                                 ]
                               },
@@ -9008,10 +9002,7 @@
                     },
                     "contactOptions": {
                       "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-                      }
+                      "$ref": "#/components/schemas/ContactOptionArray"
                     },
                     "format": {
                       "description": "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it.",
@@ -9203,10 +9194,7 @@
                   "properties": {
                     "contactOptions": {
                       "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Column/properties/contactOptions/items"
-                      }
+                      "$ref": "#/components/schemas/ContactOptionArray"
                     },
                     "format": {
                       "description": "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it.",
@@ -9331,7 +9319,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -9561,7 +9549,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -9666,7 +9654,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "responses": {
@@ -10039,7 +10027,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader"
+          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -10081,7 +10069,7 @@
                     "description": "Specifies sort order. Array is in priority order.",
                     "type": "array",
                     "items": {
-                      "$ref": "#/components/schemas/SortSpecifier/properties/sortCriteria/items"
+                      "$ref": "#/components/schemas/SortCriterion"
                     }
                   }
                 }
@@ -10340,7 +10328,7 @@
             "$ref": "#/components/parameters/numericDates"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "tags": [
@@ -10460,7 +10448,7 @@
             "$ref": "#/components/parameters/authorizationHeader"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/sightIdInPath"
@@ -10553,7 +10541,7 @@
             "$ref": "#/components/parameters/authorizationHeader"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/sightIdInPath"
@@ -10658,7 +10646,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12274,7 +12262,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12614,7 +12602,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12768,7 +12756,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12909,7 +12897,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "responses": {
@@ -13028,7 +13016,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_workspace"
@@ -13272,7 +13260,7 @@
         "operationId": "copy-workspace",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_workspace"
@@ -13418,7 +13406,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -13814,7 +13802,7 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader"
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/include_sheet"
@@ -14082,19 +14070,6 @@
           "example": "attachment; filename=\"ProgressReport.docx\""
         }
       },
-      "contentTypeHeader_CSV_SHEET": {
-        "name": "Content-Type",
-        "in": "header",
-        "required": true,
-        "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
-        "schema": {
-          "type": "string",
-          "enum": [
-            "text/csv",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          ]
-        }
-      },
       "contactIdInPath": {
         "name": "contactId",
         "in": "path",
@@ -14111,6 +14086,19 @@
         "schema": {
           "type": "integer",
           "example": 5463
+        }
+      },
+      "contentTypeHeader_CSV_SHEET": {
+        "name": "Content-Type",
+        "in": "header",
+        "required": true,
+        "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "text/csv",
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+          ]
         }
       },
       "contentTypeHeader_FORM": {
@@ -14131,6 +14119,15 @@
         "schema": {
           "type": "string",
           "default": "application/json"
+        }
+      },
+      "discussionIdInPath": {
+        "name": "discussionId",
+        "in": "path",
+        "required": true,
+        "description": "ID of the discussion",
+        "schema": {
+          "type": "string"
         }
       },
       "exclude_folder_copy": {
@@ -15046,11 +15043,7 @@
           {
             "properties": {
               "recipients": {
-                "type": "array",
-                "items": {
-                  "description": "Specifies the recipient of an email. The recipient may be either an individual or a group. To specify an individual, set the email attribute; to specify a group, set the groupId attribute. Either email and groupId may be set, but not both.\n",
-                  "$ref": "#/components/schemas/EmailOrGroupId"
-                }
+                "$ref": "#/components/schemas/EmailOrGroupIdArray"
               }
             }
           },
@@ -16104,7 +16097,7 @@
             "$ref": "#/components/schemas/AutoNumberFormat"
           },
           "contactOptions": {
-            "$ref": "#/components/schemas/Column/properties/contactOptions/items"
+            "$ref": "#/components/schemas/ContactOptionArray"
           },
           "description": {
             "type": "string",
@@ -16284,18 +16277,21 @@
           "$ref": "#/components/schemas/Comment"
         }
       },
+      "CommentBody": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "description": "Comment body.",
+            "type": "string"
+          }
+        }
+      },
       "CommentText": {
         "type": "object",
         "properties": {
           "comment": {
             "description": "Comment.",
-            "type": "object",
-            "properties": {
-              "text": {
-                "description": "Comment text.",
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/CommentBody"
           }
         }
       },
@@ -16431,21 +16427,7 @@
             "$ref": "#/components/schemas/Int64"
           },
           "rowMappings": {
-            "description": "Array of rowMapping objects.",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "from": {
-                  "description": "Row Id in the source sheet.",
-                  "$ref": "#/components/schemas/Int64"
-                },
-                "to": {
-                  "description": "Row Id in the destination sheet.",
-                  "$ref": "#/components/schemas/Int64"
-                }
-              }
-            }
+            "$ref": "#/components/schemas/RowMappingArray"
           }
         }
       },
@@ -18380,6 +18362,13 @@
             "description": "Row Id in the destination sheet.",
             "$ref": "#/components/schemas/Int64"
           }
+        }
+      },
+      "RowMappingArray": {
+        "description": "Array of rowMapping objects.",
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/RowMapping"
         }
       },
       "Schedule": {

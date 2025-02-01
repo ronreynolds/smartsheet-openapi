@@ -18,6 +18,25 @@ version to support DELETE requests with a body)
   * mostly it seems to not like endpoints with multiple parameter refs to parameters of other endpoints
 
 ## Changes
+### Fixes
+the general process of fixing the original OpenAPI spec is primarily to replace all `#/paths/...` and many
+`#/components/schemas/` field refs with type-specific refs (refs to the actual type, typically a top-level `schemas`
+element)
+
+there are also a few bits that seem like actual bugs (so far fields that MUST (?) be the wrong type); this section is 
+intended to list those changes.
+#### Column.contactOptions pointed to single ContactOption
+```
+#/components/schemas...
+      "ColumnObject": {
+          "contactOptions": {
+            "$ref": "#/components/schemas/Column/properties/contactOptions/items"
+          },
+```
+all references to `"contactOptions"` in the Java-SDK point to `List<Contact>` which would indicate that this type should
+be a `ContactOptionArray` and not a single `ContactOption` object.  this also is in keeping with the common theme that 
+any collection/array of items has a plural name whereas single items have a singular name.
+
 ### Replacements
 this is a list of just SOME of the replacements needed to address OpenAPI-generator parser errors of the form
 `paths.'/favorites'(get).parameters. There are duplicate parameter values` (which happens mostly when a ref points to an
@@ -47,7 +66,7 @@ another path definition).
 #/paths/~1favorites/parameters/1	            = #/components/parameters/actorIdHeader
 #/paths/~1favorites/get/parameters/3      = #/components/parameters/include_favorite
 #/paths/~1favorites/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items	= #/components/schemas/Favorite
-#/paths/~1favorites/post/parameters/0	    = #/components/parameters/contentTypeHeader
+#/paths/~1favorites/post/parameters/0	    = #/components/parameters/contentTypeHeader_JSON
 #/paths/~1favorites/post/responses/200/content/application~1json/schema/allOf/0 	= #/components/schemas/ResultPrefix
 
 #/paths/~1folders~1%7BfolderId%7D/parameters/1 		= #/components/parameters/folderIdInPath
