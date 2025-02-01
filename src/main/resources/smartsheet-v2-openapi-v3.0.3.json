@@ -856,10 +856,7 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Favorite"
-                          }
+                          "$ref": "#/components/schemas/FavoriteArray"
                         }
                       }
                     }
@@ -920,17 +917,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Favorite"
-                            },
-                            {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/Favorite"
-                              }
-                            }
-                          ]
+                          "$ref": "#/components/schemas/FavoriteArray"
                         }
                       }
                     }
@@ -1276,11 +1263,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContainerDestination"
-                  }
-                ]
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -1407,11 +1390,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Folder"
-                  }
-                ]
+                "$ref": "#/components/schemas/Folder"
               }
             }
           }
@@ -1430,11 +1409,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Folder"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/Folder"
                         }
                       }
                     }
@@ -1486,11 +1461,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContainerDestination"
-                  }
-                ]
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -2135,17 +2106,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/GroupMember"
-                            },
-                            {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/components/schemas/GroupMember"
-                              }
-                            }
-                          ]
+                          "$ref": "#/components/schemas/GroupMemberArray"
                         }
                       }
                     }
@@ -2845,14 +2806,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Share"
-                            },
-                            {
-                              "$ref": "#/components/schemas/ShareArray"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -7310,14 +7264,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Row"
-                  },
-                  {
-                    "$ref": "#/components/schemas/RowArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/RowArray"
               }
             }
           }
@@ -7529,14 +7476,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Row"
-                  },
-                  {
-                    "$ref": "#/components/schemas/RowArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/RowArray"
               }
             }
           }
@@ -9462,35 +9402,19 @@
                                   },
                                   "createdAt": {
                                     "description": "The date and time for when this request was originally created. Read-only.",
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/DateUnion"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/DateUnion"
                                   },
                                   "modifiedAt": {
                                     "description": "The date and time for when the last change was made to this request. Read-only.",
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/DateUnion"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/DateUnion"
                                   },
                                   "schedule": {
                                     "description": "The schedule for which update requests are sent out.",
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/UpdateRequest/allOf/1/properties/schedule/allOf/0"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/UpdateRequest/allOf/1/properties/schedule/allOf/0"
                                   },
                                   "sentBy": {
                                     "description": "`User` object containing `name` and `email` of the sender.\n",
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/NameAndEmail"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/NameAndEmail"
                                   }
                                 }
                               }
@@ -9729,14 +9653,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Share"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ShareArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/ShareArray"
               }
             }
           }
@@ -9755,14 +9672,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Share"
-                            },
-                            {
-                              "$ref": "#/components/schemas/ShareArray"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -10059,11 +9969,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Sheet"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Sheet"
                 }
               }
             }
@@ -10386,11 +10292,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ResultPrefix"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ResultPrefix"
                 }
               }
             }
@@ -10721,17 +10623,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
-                            },
-                            {
-                              "type": "array",
-                              "items": {
-                                "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
-                              }
-                            }
-                          ]
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -10801,10 +10693,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares/post/requestBody/content/application~1json/schema"
-                          }
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -10949,7 +10838,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/delete/responses/200/content/application~1json/schema"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -10957,7 +10846,7 @@
                         "result": {
                           "type": "object",
                           "items": {
-                            "$ref": "#/paths/~1sights~1%7BsightId%7D~1shares~1%7BshareId%7D/get/responses/200/content/application~1json/schema"
+                            "$ref": "#/components/schemas/Share"
                           }
                         }
                       }
@@ -11952,14 +11841,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/EmailAddress"
-                  },
-                  {
-                    "$ref": "#/components/schemas/EmailAddressArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/EmailAddressArray"
               }
             }
           }
@@ -12004,13 +11886,7 @@
           "$ref": "#/components/parameters/userIdInPath"
         },
         {
-          "name": "alternateEmailId",
-          "description": "Alternate Email Id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "number"
-          }
+          "$ref": "#/components/parameters/alternateEmailIdInPath"
         }
       ],
       "get": {
@@ -12089,7 +11965,7 @@
           "$ref": "#/components/parameters/userIdInPath"
         },
         {
-          "$ref": "#/paths/~1users~1%7BuserId%7D~1alternateemails~1%7BalternateEmailId%7D/parameters/2"
+          "$ref": "#/components/parameters/alternateEmailIdInPath"
         }
       ],
       "post": {
@@ -12442,11 +12318,7 @@
                                   },
                                   "createdAt": {
                                     "readOnly": true,
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/DateUnion"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/DateUnion"
                                   },
                                   "disabledDetails": {
                                     "description": "Details about the reason the webhook was disabled. Read-only. Only present when enabled=false.",
@@ -12455,11 +12327,7 @@
                                   },
                                   "modifiedAt": {
                                     "readOnly": true,
-                                    "allOf": [
-                                      {
-                                        "$ref": "#/components/schemas/DateUnion"
-                                      }
-                                    ]
+                                    "$ref": "#/components/schemas/DateUnion"
                                   },
                                   "scope": {
                                     "description": "Scope of the subscription. Currently, the only supported value is sheet. Specified when a webhook is created and cannot be changed.",
@@ -12969,11 +12837,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Workspace"
-                  }
-                ]
+                "$ref": "#/components/schemas/Workspace"
               }
             }
           }
@@ -12992,11 +12856,7 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Workspace"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/Workspace"
                         }
                       }
                     }
@@ -13213,11 +13073,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/ContainerDestination"
-                  }
-                ]
+                "$ref": "#/components/schemas/ContainerDestination"
               }
             }
           }
@@ -13440,14 +13296,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Share"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ShareArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/ShareArray"
               }
             }
           }
@@ -13466,14 +13315,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "oneOf": [
-                            {
-                              "$ref": "#/components/schemas/Share"
-                            },
-                            {
-                              "$ref": "#/components/schemas/ShareArray"
-                            }
-                          ]
+                          "$ref": "#/components/schemas/ShareArray"
                         }
                       }
                     }
@@ -13941,6 +13783,15 @@
           "type": "string"
         }
       },
+      "alternateEmailIdInPath": {
+        "name": "alternateEmailId",
+        "description": "Alternate Email Id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "number"
+        }
+      },
       "attachmentIdInPath": {
         "name": "attachmentId",
         "in": "path",
@@ -14287,6 +14138,15 @@
         "schema": {
           "type": "boolean",
           "default": false
+        }
+      },
+      "level": {
+        "name": "level",
+        "in": "query",
+        "description": "specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format (level=0, default), multi-contact data (level=1), or multi-picklist data (level=3).",
+        "schema": {
+          "type": "integer",
+          "default": 0
         }
       },
       "modifiedSince": {
@@ -15025,19 +14885,11 @@
           },
           "createdAt": {
             "description": "A timestamp of when the rule was originally added.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/DateUnion"
-              }
-            ]
+            "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "description": "`User` object containing `name` and `email` of the creator of this rule.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "disabledReason": {
             "description": "Machine-readable reason a rule is disabled:\n* `APPROVAL_COLUMN_MISSING` This rule's approval status column has been deleted.\n\n* `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a dropdown column.\n\n* `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated actions,\nyou need to upgrade your organization account to a Business or Enterprise plan.\n\n* `COLUMN_MISSING` A column referenced by this rule has been deleted.\n\n* `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has been changed to an incompatible column type.\n\n* `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be able to receive\nnotifications based on this sheet's permission settings or this account's approved domain sharing list.\n\n* `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule have been deleted.\n",
@@ -15140,11 +14992,7 @@
       },
       "BulkItemFailureResult": {
         "type": "object",
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/ResultPrefix"
-          }
-        ],
+        "$ref": "#/components/schemas/ResultPrefix",
         "properties": {
           "failedItems": {
             "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
@@ -15456,11 +15304,7 @@
           "modifiedBy": {
             "description": "User object containing the name and email of the user that made the change.",
             "type": "object",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           }
         }
       },
@@ -17834,11 +17678,7 @@
           },
           "lastUpdatedBy": {
             "description": "`User` object containing `name` and `email` of the user who last updated the proof.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "isCompleted": {
             "description": "Indicates whether the proof is completed.",
@@ -17886,11 +17726,7 @@
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/NameAndEmail"
-              }
-            ]
+            "$ref": "#/components/schemas/NameAndEmail"
           },
           "sentAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -19788,10 +19624,7 @@
             "properties": {
               "rowIds": {
                 "description": "The Ids of rows to be included.",
-                "type": "array",
-                "items": {
-                  "type": "number"
-                }
+                "$ref": "#/components/schemas/Int64Array"
               }
             }
           },
@@ -19804,19 +19637,11 @@
               },
               "createdAt": {
                 "description": "The date and time for when this request was originally created. Read-only.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/DateUnion"
-                  }
-                ]
+                "$ref": "#/components/schemas/DateUnion"
               },
               "modifiedAt": {
                 "description": "The date and time for when the last change was made to this request. Read-only.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/DateUnion"
-                  }
-                ]
+                "$ref": "#/components/schemas/DateUnion"
               },
               "schedule": {
                 "description": "The schedule for which update requests are sent out.",
@@ -19878,44 +19703,20 @@
                         "maximum": 99
                       },
                       "endAt": {
-                        "allOf": [
-                          {
-                            "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n"
-                          },
-                          {
-                            "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
-                          }
-                        ]
+                        "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
+                        "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
                       },
                       "lastSentAt": {
-                        "allOf": [
-                          {
-                            "description": "The date and time for when the last request was sent."
-                          },
-                          {
-                            "$ref": "#/components/schemas/DateUnion"
-                          }
-                        ]
+                        "description": "The date and time for when the last request was sent.",
+                        "$ref": "#/components/schemas/DateUnion"
                       },
                       "nextSendAt": {
-                        "allOf": [
-                          {
-                            "description": "The date and time for when the next request is scheduled to send."
-                          },
-                          {
-                            "$ref": "#/components/schemas/DateUnion"
-                          }
-                        ]
+                        "description": "The date and time for when the next request is scheduled to send.",
+                        "$ref": "#/components/schemas/DateUnion"
                       },
                       "startAt": {
-                        "allOf": [
-                          {
-                            "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601\ndate and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time\nwith no offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n"
-                          },
-                          {
-                            "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
-                          }
-                        ]
+                        "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601\ndate and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time\nwith no offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
+                        "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
                       }
                     }
                   }
@@ -19923,11 +19724,7 @@
               },
               "sentBy": {
                 "description": "`User` object containing `name` and `email` of the sender.\n",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/NameAndEmail"
-                  }
-                ]
+                "$ref": "#/components/schemas/NameAndEmail"
               }
             }
           }
