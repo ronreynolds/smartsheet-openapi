@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.openapi.generator").version("7.7.0") // latest as of 2024-07-02
+    id("org.openapi.generator").version("7.11.0") // latest as of 2025-01-20
     id("jacoco")
 }
 
@@ -82,13 +82,15 @@ openApiGenerate {
     outputDir.set("$buildDirectory/generated/api")
     library.set("native")
     configOptions.set(mutableMapOf(
-        "invokerPackage"          to "com.ronreynolds.smartsheet",
-        "apiPackage"              to "com.ronreynolds.smartsheet.api",
-        "modelPackage"            to "com.ronreynolds.smartsheet.model",
-        "openApiNullable"         to "false",
-        "hideGenerationTimestamp" to "true",
-        "useEnumCaseInsensitive"  to "true", // some endpoints return enums in slightly different case than specified
-//        "additionalModelTypeAnnotations" to "@lombok.Value @lombok.NoArgsConstructor @lombok.Builder"
+        "invokerPackage"            to "com.ronreynolds.smartsheet",
+        "apiPackage"                to "com.ronreynolds.smartsheet.api",
+        "modelPackage"              to "com.ronreynolds.smartsheet.model",
+        "library"                   to "native",    // consider "okhttp-gson"
+        "openApiNullable"           to "false",
+        "hideGenerationTimestamp"   to "true",
+        "useEnumCaseInsensitive"    to "true", // some endpoints return enums in slightly different case than specified
+        "serializationLibrary"      to "jackson" // consider gson instead of jackson to serialize
+        //        "additionalModelTypeAnnotations" to "@lombok.Value @lombok.NoArgsConstructor @lombok.Builder"
     ))
 }
 

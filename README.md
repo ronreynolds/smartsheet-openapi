@@ -36,6 +36,8 @@ intended to list those changes.
 all references to `"contactOptions"` in the Java-SDK point to `List<Contact>` which would indicate that this type should
 be a `ContactOptionArray` and not a single `ContactOption` object.  this also is in keeping with the common theme that 
 any collection/array of items has a plural name whereas single items have a singular name.
+#### UserProfile.alternateEmails is single AlternateEmail
+looks like a similar issue to `contactOptions` above
 
 ### Replacements
 this is a list of just SOME of the replacements needed to address OpenAPI-generator parser errors of the form

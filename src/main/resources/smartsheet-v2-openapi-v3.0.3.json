@@ -2131,7 +2131,10 @@
                     "$ref": "#/components/schemas/GroupMember"
                   },
                   {
-                    "$ref": "#/components/schemas/GroupMemberArray"
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/GroupMember"
+                    }
                   }
                 ]
               }
@@ -11546,10 +11549,7 @@
                       "properties": {
                         "data": {
                           "description": "List of Groups",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Group"
-                          }
+                          "$ref": "#/components/schemas/GroupArray"
                         }
                       }
                     }
@@ -11702,7 +11702,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1users~1me/get/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/UserProfile"
                 }
               }
             }
@@ -11845,7 +11845,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1users~1%7BuserId%7D/delete/responses/200/content/application~1json/schema"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
@@ -11943,11 +11943,8 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "description": "list of attachments",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/UserProfile/properties/alternateEmails"
-                          }
+                          "description": "list of alternate emails",
+                          "$ref": "#/components/schemas/AlternateEmailArray"
                         }
                       }
                     }
@@ -11984,20 +11981,10 @@
               "schema": {
                 "oneOf": [
                   {
-                    "type": "object",
-                    "properties": {
-                      "email": {
-                        "description": "User's alternate email address.",
-                        "type": "string",
-                        "example": "johnathan.doe@smartsheet.com"
-                      }
-                    }
+                    "$ref": "#/components/schemas/EmailAddress"
                   },
                   {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/paths/~1users~1%7BuserId%7D~1alternateemails/post/requestBody/content/application~1json/schema/oneOf/0"
-                    }
+                    "$ref": "#/components/schemas/EmailAddressArray"
                   }
                 ]
               }
@@ -12018,11 +12005,8 @@
                       "type": "object",
                       "properties": {
                         "data": {
-                          "description": "Updated User Properties",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1users~1%7BuserId%7D~1alternateemails/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-                          }
+                          "description": "Updated User alternate emails",
+                          "$ref": "#/components/schemas/AlternateEmailArray"
                         }
                       }
                     }
@@ -12033,13 +12017,7 @@
           },
           "default": {
             "description": "If a single email address is specified in the request and an error occurs, the response contains an Error object.\n\nIf multiple email addresses are specified in the request and an error occurs, the Error object returned contains a detail attribute set to an array of objects, each object in the array having the following attributes:\n  * email: Problematic email address specified in the request\n  * errorCode: Smartsheet error code\n  * message: Message that describes the problem with the specified email\naddress\nFor example:\n```\n{\n  \"errorCode\": 1160,\n  \"message\": \"Invalid bulk request. See detail for more information.\"\n  \"detail\": [\n      {\n        \"email\": \"altEmail1@smartsheet.com\",\n        \"errorCode\": 1157,\n        \"message\": \"This address is already associated with another Smartsheet\naccount, so it cannot be added as an alternate address for this account.\"\n      }\n  ]\n}\n```\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/paths/~1users~1%7BuserId%7D~1alternateemails/get/responses/default/content/application~1json/schema"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -12085,7 +12063,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/UserProfile/properties/alternateEmails"
+                  "$ref": "#/components/schemas/AlternateEmail"
                 }
               }
             }
@@ -12173,10 +12151,7 @@
                       "properties": {
                         "data": {
                           "description": "list of alternate email results",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/UserProfile/properties/alternateEmails"
-                          }
+                          "$ref": "#/components/schemas/AlternateEmailArray"
                         }
                       }
                     }
@@ -12698,13 +12673,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "name": "webhookId",
-          "in": "path",
-          "required": true,
-          "description": "The Id of a Webhook",
-          "schema": {
-            "type": "string"
-          }
+          "$ref": "#/components/parameters/webhookIdInPath"
         }
       ],
       "get": {
@@ -12857,11 +12826,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/paths/~1webhooks~1%7BwebhookId%7D/put/responses/200/content/application~1json/schema/allOf/0"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -12875,7 +12840,7 @@
           "$ref": "#/components/parameters/authorizationHeader"
         },
         {
-          "$ref": "#/paths/~1webhooks~1%7BwebhookId%7D/parameters/1"
+          "$ref": "#/components/parameters/webhookIdInPath"
         }
       ],
       "post": {
@@ -14539,6 +14504,15 @@
           "$ref": "#/components/schemas/Int64"
         }
       },
+      "webhookIdInPath": {
+        "name": "webhookId",
+        "in": "path",
+        "required": true,
+        "description": "The Id of a Webhook",
+        "schema": {
+          "type": "string"
+        }
+      },
       "workspaceIdInPath": {
         "name": "workspaceId",
         "in": "path",
@@ -14873,16 +14847,25 @@
         "properties": {
           "id": {
             "description": "AlternateEmail Id.",
-            "$ref": "#/components/schemas/Int64"
+            "$ref": "#/components/schemas/Int64",
+            "example": 8150532427671428
           },
           "confirmed": {
             "description": "Indicates whether the alternate email address has been confirmed.",
-            "type": "boolean"
+            "type": "boolean",
+            "example": true
           },
           "email": {
             "description": "User's alternate email address.",
-            "type": "string"
+            "type": "string",
+            "example": "johnathan.doe@smartsheet.com"
           }
+        }
+      },
+      "AlternateEmailArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/AlternateEmail"
         }
       },
       "Attachment": {
@@ -16755,6 +16738,22 @@
             "description": "The subject of the email.",
             "type": "string"
           }
+        }
+      },
+      "EmailAddress": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "description": "User's email address.",
+            "type": "string",
+            "example": "johnathan.doe@smartsheet.com"
+          }
+        }
+      },
+      "EmailAddressArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/EmailAddress"
         }
       },
       "EmailOrGroupId": {
@@ -18666,7 +18665,7 @@
       "ShareArray": {
         "type": "array",
         "items": {
-          "type": "#/components/schemas/Share"
+          "$ref": "#/components/schemas/Share"
         }
       },
       "SharedSecret": {
@@ -20121,24 +20120,7 @@
             "example": true
           },
           "alternateEmails": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "AlternateEmail Id.",
-                "type": "number",
-                "example": 8150532427671428
-              },
-              "confirmed": {
-                "description": "Indicates whether the alternate email address has been confirmed.",
-                "type": "boolean",
-                "example": true
-              },
-              "email": {
-                "description": "User's alternate email address.",
-                "type": "string",
-                "example": "johnathan.doe@smartsheet.com"
-              }
-            }
+            "$ref": "#/components/schemas/AlternateEmailArray"
           },
           "company": {
             "description": "User's company.",
