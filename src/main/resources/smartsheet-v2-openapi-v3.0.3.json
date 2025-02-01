@@ -901,17 +901,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Favorite"
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/Favorite"
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/FavoriteArray"
               }
             }
           }
@@ -2126,17 +2116,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/GroupMember"
-                  },
-                  {
-                    "type": "array",
-                    "items": {
-                      "$ref": "#/components/schemas/GroupMember"
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/GroupMemberArray"
               }
             }
           }
@@ -2846,14 +2826,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "oneOf": [
-                  {
-                    "$ref": "#/components/schemas/Share"
-                  },
-                  {
-                    "$ref": "#/components/schemas/ShareArray"
-                  }
-                ]
+                "$ref": "#/components/schemas/ShareArray"
               }
             }
           }
@@ -3407,7 +3380,7 @@
                                 "type": "integer"
                               },
                               "source": {
-                                "$ref": "#components/schemas/Source"
+                                "$ref": "#/components/schemas/Source"
                               }
                             }
                           }
@@ -16892,6 +16865,12 @@
           }
         }
       },
+      "FavoriteArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Favorite"
+        }
+      },
       "Filters": {
         "description": "Smartsheet users can define and save personal column filters on sheets they can view.",
         "type": "object",
@@ -18786,7 +18765,7 @@
             "type": "boolean"
           },
           "source": {
-            "$ref": "#components/schemas/Source"
+            "$ref": "#/components/schemas/Source"
           },
           "summary": {
             "type": "object",
@@ -19363,7 +19342,7 @@
       "SightArray": {
         "type": "array",
         "items": {
-          "$ref": "#components/schemas/Sight"
+          "$ref": "#/components/schemas/Sight"
         }
       },
       "SightPublish": {
@@ -19727,7 +19706,7 @@
       "TemplateArray": {
         "type": "array",
         "items": {
-          "$ref": "#components/schemas/Template"
+          "$ref": "#/components/schemas/Template"
         }
       },
       "Timestamp": {
