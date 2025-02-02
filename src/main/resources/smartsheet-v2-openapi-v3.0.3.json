@@ -2607,21 +2607,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/ProofRequestBody/allOf/0"
-                  }
-                ],
-                "type": "object",
-                "properties": {
-                  "format": {
-                    "description": "One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.\n",
-                    "type": "string"
-                  },
-                  "formatDetails": {
-                    "$ref": "#/components/schemas/SheetEmail/properties/formatDetails"
-                  }
-                }
+                "$ref": "#/components/schemas/SheetEmail"
               }
             }
           }
@@ -2850,17 +2836,7 @@
         ],
         "parameters": [
           {
-            "name": "sharingInclude",
-            "in": "query",
-            "description": "When applicable for the specific object this parameter defines the scope of the share. Possible values are ITEM or WORKSPACE. ITEM is an item-level share (that is, the specific object to which the share applies is shared with the user or group). WORKSPACE is a workspace-level share (that is, the workspace that contains the object to which the share applies is shared with the user or group).",
-            "required": false,
-            "schema": {
-              "type": "string",
-              "enum": [
-                "ITEM",
-                "WORKSPACE"
-              ]
-            }
+            "$ref": "#/components/parameters/sharingInclude"
           },
           {
             "$ref": "#/components/parameters/includeAllBoolean"
@@ -5135,7 +5111,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentBody"
+                "$ref": "#/components/schemas/CommentText"
               }
             }
           }
@@ -5370,21 +5346,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "$ref": "#/components/schemas/Int64"
-                            },
-                            "accessLevel": {
-                              "$ref": "#/components/schemas/AccessLevel"
-                            },
-                            "name": {
-                              "type": "string"
-                            },
-                            "permalink": {
-                              "type": "string"
-                            }
-                          }
+                          "$ref": "#/components/schemas/SheetLite"
                         }
                       }
                     }
@@ -5758,19 +5720,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "comment": {
-                    "description": "Comment.",
-                    "type": "object",
-                    "properties": {
-                      "text": {
-                        "description": "Comment text.",
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
+                "$ref": "#/components/schemas/CommentLite"
               }
             },
             "multipart/form-data": {
@@ -5782,7 +5732,7 @@
                     "description": "Discussion.",
                     "properties": {
                       "comment": {
-                        "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions/post/requestBody/content/application~1json/schema/properties/comment"
+                        "$ref": "#/components/schemas/CommentText"
                       },
                       "title": {
                         "description": "Title for the attachment. Only used with an attachment.",
@@ -5822,7 +5772,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Discussion"
                         }
                       }
                     }
@@ -6023,7 +5973,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentBody"
+                "$ref": "#/components/schemas/CommentText"
               }
             },
             "multipart/form-data": {
@@ -6118,7 +6068,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1reports~1%7BreportId%7D~1emails/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/SheetEmail"
               }
             }
           }
@@ -6129,11 +6079,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ResultPrefix"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/ResultPrefix"
                 }
               }
             }
@@ -6211,7 +6157,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1copy/post/responses/200/content/application~1json/schema/allOf/1/properties/result"
+                          "$ref": "#/components/schemas/SheetLite"
                         }
                       }
                     }
@@ -8529,80 +8475,7 @@
                           "description": "list of Sent Update Requests",
                           "type": "array",
                           "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "description": "The Id of the sent update request.",
-                                "type": "number"
-                              },
-                              "columnIds": {
-                                "description": "The Ids of columns included in the request.",
-                                "type": "array",
-                                "items": {
-                                  "type": "number"
-                                }
-                              },
-                              "rowIds": {
-                                "description": "The Ids of rows where an update is requested.",
-                                "type": "array",
-                                "items": {
-                                  "type": "number"
-                                }
-                              },
-                              "updateRequestId": {
-                                "description": "The Id of the originating update request.",
-                                "type": "number"
-                              },
-                              "includeAttachments": {
-                                "description": "Indicates whether the attachments were included in the email.",
-                                "type": "boolean"
-                              },
-                              "includeDiscussions": {
-                                "description": "Indicates whether the discussions were included in the email.",
-                                "type": "boolean"
-                              },
-                              "message": {
-                                "description": "The message of the email. Max 10000 characters.",
-                                "type": "string"
-                              },
-                              "sentAt": {
-                                "description": "The date and time for when the sent update request was sent to the recipient.",
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/DateUnion"
-                                  }
-                                ]
-                              },
-                              "sentBy": {
-                                "description": "`User` object containing `name` and `email` of the sender.\n",
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/NameAndEmail"
-                                  }
-                                ]
-                              },
-                              "sentTo": {
-                                "description": "Recipient object.",
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/EmailOrGroupId"
-                                  }
-                                ]
-                              },
-                              "status": {
-                                "description": "The status of the sent update request.",
-                                "type": "string",
-                                "enum": [
-                                  "CANCELED",
-                                  "COMPLETE",
-                                  "PENDING"
-                                ]
-                              },
-                              "subject": {
-                                "description": "The subject of the email.",
-                                "type": "string"
-                              }
-                            }
+                            "$ref": "#/components/schemas/SentUpdateRequest"
                           }
                         }
                       }
@@ -8710,7 +8583,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1sentupdaterequests/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                  "$ref": "#/components/schemas/SentUpdateRequest"
                 }
               }
             }
@@ -8988,10 +8861,7 @@
                       "description": "A list of updated summary fields",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary~1fields/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-                          }
+                          "$ref": "#/components/schemas/SummaryFieldArray"
                         }
                       }
                     }
@@ -9051,7 +8921,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary~1fields/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
@@ -9173,17 +9043,14 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary~1fields/put/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Result"
                     },
                     {
                       "type": "object",
                       "description": "A list of created summary fields",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary~1fields/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-                          }
+                          "$ref": "#/components/schemas/SummaryFieldArray"
                         }
                       }
                     }
@@ -9456,7 +9323,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1updaterequests/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                "$ref": "#/components/schemas/UpdateRequest"
               }
             }
           }
@@ -9475,7 +9342,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1updaterequests/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/UpdateRequest"
                         }
                       }
                     }
@@ -9528,7 +9395,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1updaterequests/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                  "$ref": "#/components/schemas/UpdateRequest"
                 }
               }
             }
@@ -9571,7 +9438,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1updaterequests~1%7BupdateRequestId%7D/get/responses/200/content/application~1json/schema"
+                          "$ref": "#/components/schemas/UpdateRequest"
                         }
                       }
                     }
@@ -9606,7 +9473,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1updaterequests~1%7BupdateRequestId%7D/put/responses/200/content/application~1json/schema/allOf/0"
+                  "$ref": "#/components/schemas/Result"
                 }
               }
             }
@@ -9716,7 +9583,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/get/parameters/0"
+            "$ref": "#/components/parameters/sharingInclude"
           },
           {
             "$ref": "#/components/parameters/includeAllBoolean"
@@ -10667,7 +10534,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/paths/~1reports~1%7BreportId%7D~1shares/get/parameters/0"
+            "$ref": "#/components/parameters/sharingInclude"
           },
           {
             "$ref": "#/components/parameters/includeAllBoolean"
@@ -14247,6 +14114,18 @@
         "required": true,
         "description": "Share Id."
       },
+      "sharingInclude": {
+        "name": "sharingInclude",
+        "in": "query",
+        "description": "When applicable for the specific object this parameter defines the scope of the share. Possible values are ITEM or WORKSPACE. ITEM is an item-level share (that is, the specific object to which the share applies is shared with the user or group). WORKSPACE is a workspace-level share (that is, the workspace that contains the object to which the share applies is shared with the user or group).",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "ITEM",
+            "WORKSPACE"
+          ]
+        }
+      },
       "sheetIdInPath": {
         "name": "sheetId",
         "in": "path",
@@ -16077,21 +15956,21 @@
           "$ref": "#/components/schemas/Comment"
         }
       },
-      "CommentBody": {
+      "CommentLite": {
         "type": "object",
         "properties": {
-          "text": {
-            "description": "Comment body.",
-            "type": "string"
+          "comment": {
+            "description": "Comment.",
+            "$ref": "#/components/schemas/CommentText"
           }
         }
       },
       "CommentText": {
         "type": "object",
         "properties": {
-          "comment": {
-            "description": "Comment.",
-            "$ref": "#/components/schemas/CommentBody"
+          "text": {
+            "description": "Comment body.",
+            "type": "string"
           }
         }
       },
@@ -17377,30 +17256,7 @@
       "MultiRowEmail": {
         "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Email"
-              }
-            ],
-            "type": "object",
-            "properties": {
-              "columnIds": {
-                "description": "The Id of the columns to be included.",
-                "$ref": "#/components/schemas/Int64Array"
-              },
-              "includeAttachments": {
-                "description": "Indicates whether to include attachments in the email.",
-                "type": "boolean"
-              },
-              "includeDiscussions": {
-                "description": "Indicates whether to include discussions in the email.",
-                "type": "boolean"
-              },
-              "layout": {
-                "description": "One of the following values: **HORIZONTAL** or **VERTICAL**. Optional, defaults to **HORIZONTAL** when multiple rows are being sent and to **VERTICAL** when a single row is being sent. **HORIZONTAL** formats the rows being sent as a grid, whereas **VERTICAL** formats the rows being sent as separate cards.\n",
-                "type": "boolean"
-              }
-            }
+            "$ref": "#/components/schemas/RowEmail"
           }
         ],
         "type": "object",
@@ -17771,25 +17627,7 @@
       "ProofRequestBody": {
         "allOf": [
           {
-            "type": "object",
-            "properties": {
-              "ccMe": {
-                "description": "Indicates whether to send a copy of the email to the sender.",
-                "type": "boolean"
-              },
-              "message": {
-                "description": "The message of the email.",
-                "type": "string"
-              },
-              "sendTo": {
-                "description": "Array of recipients.",
-                "$ref": "#/components/schemas/EmailOrGroupIdArray"
-              },
-              "subject": {
-                "description": "The subject of the email.",
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/Email"
           }
         ],
         "type": "object",
@@ -18146,10 +17984,7 @@
         "properties": {
           "columnIds": {
             "description": "The Id of the columns to be included.",
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
+            "$ref": "#/components/schemas/Int64Array"
           },
           "includeAttachments": {
             "description": "Indicates whether to include attachments in the email.",
@@ -18721,7 +18556,6 @@
       },
       "SheetLite": {
         "type": "object",
-        "description": "Sheet created from template.",
         "properties": {
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
@@ -19681,7 +19515,7 @@
                       },
                       "dayOfMonth": {
                         "description": "The day within the month.\n\nValid range is 1 to 28.\n\nThis attribute is applicable to the following schedule type:\n * **MONTHLY**\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "type": "number",
+                        "type": "integer",
                         "minimum": 1,
                         "maximum": 31
                       },
@@ -19698,13 +19532,13 @@
                       },
                       "repeatEvery": {
                         "description": "Frequency on which the request is delivered. The unit is a function of the **type** attribute. For example,\nfor **MONTHLY** schedule, **repeatEvery=1** means every month.\n\nValid range is 1 to 99.\n\nThis attribute is applicable to the following schedule types: **DAILY**, **WEEKLY**, **MONTHLY**, or **YEARLY**.\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "type": "number",
+                        "type": "integer",
                         "minimum": 1,
                         "maximum": 99
                       },
                       "endAt": {
                         "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
+                        "$ref": "#/components/schemas/DateUnion"
                       },
                       "lastSentAt": {
                         "description": "The date and time for when the last request was sent.",
@@ -19716,7 +19550,7 @@
                       },
                       "startAt": {
                         "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601\ndate and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time\nwith no offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "$ref": "#/components/schemas/Schedule/properties/endAt/allOf/1"
+                        "$ref": "#/components/schemas/DateUnion"
                       }
                     }
                   }
