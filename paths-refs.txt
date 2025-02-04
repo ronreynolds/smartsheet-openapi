@@ -3,7 +3,6 @@
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/get/responses/200/content/application~1json/schema/allOf/0"
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1discussions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-"$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1requests/delete/responses/200/content/application~1json/schema"
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1versions/delete/responses/200/content/application~1json/schema"
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
 
@@ -24,11 +23,18 @@
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1summary~1fields/put/parameters/0"
 "$ref": "#/paths/~1sheets~1%7BsheetId%7D/get/responses/200/content/application~1json/schema/oneOf/1"
 
-"$ref": "#/paths/~1webhooks/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-"$ref": "#/paths/~1webhooks/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-
-"$ref": "#/paths/~1webhooks~1%7BwebhookId%7D/get/responses/200/content/application~1json/schema"
-
 "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/get/responses/200/content/application~1json/schema"
 "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares~1%7BshareId%7D/delete/responses/200/content/application~1json/schema"
 "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares~1%7BshareId%7D/get/responses/200/content/application~1json/schema"
+
+
+#/paths/~1sheets~1%7BsheetId%7D~1columns/post/requestBody/content/application~1json/schema
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/get/responses/200/content/application~1json/schema/allOf/0
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1requests/delete/responses/200/content/application~1json/schema
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/responses/200/content/application~1json/schema
+#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/requestBody/content/application~1json/schema
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/1/properties/result/items/properties/cells/items
+#/paths/~1sheets~1%7BsheetId%7D~1discussions/post/requestBody/content/multipart~1form-data/schema
+
+#/components/schemas/UpdateRequest/allOf/0 is not defined
+

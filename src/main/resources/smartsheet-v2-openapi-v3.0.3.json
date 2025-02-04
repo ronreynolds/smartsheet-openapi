@@ -1981,7 +1981,7 @@
                   },
                   "ownerId": {
                     "description": "ownerId (optional)\n\nId of an admin user to whom the group ownership is transferred.\n",
-                    "type": "number",
+                    "$ref": "#/components/schemas/Int64",
                     "example": 94094820842
                   }
                 }
@@ -2418,7 +2418,7 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "type": "number",
+                                "$ref": "#/components/schemas/Int64",
                                 "description": "The report's unique identifier.",
                                 "example": 987654321
                               },
@@ -4339,7 +4339,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -4438,7 +4438,7 @@
                             "properties": {
                               "id": {
                                 "description": "AutomationRule Id.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "action": {
                                 "description": "An [AutomationAction object](#section/AutomationAction-Object) containing information for this rule, such as type, recipients, and frequency."
@@ -4757,7 +4757,7 @@
                     "description": "Indicates whether the column is hidden."
                   },
                   "index": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "Column index or position. This number is zero-based."
                   },
                   "autoNumberFormat": {
@@ -4802,11 +4802,11 @@
                     "description": "Indicates whether validation has been enabled for the column (value = **true**)"
                   },
                   "version": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "Read only. The level of the column type. Each element in the array is set to one of the following values:\n * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST\n * **1**: MULTI_CONTACT_LIST\n * **2**: MULTI_PICKLIST\n\nSee [Versioning and Changes](#section/API-Basics/Versioning-and-Changes).\n"
                   },
                   "width": {
-                    "type": "number",
+                    "type": "integer",
                     "description": "Display width of the column in pixels."
                   }
                 }
@@ -4833,11 +4833,11 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "type": "number",
+                                "$ref": "#/components/schemas/Int64",
                                 "description": "Column Id."
                               },
                               "index": {
-                                "type": "number",
+                                "type": "integer",
                                 "description": "Column index or position. This number is zero-based."
                               },
                               "title": {
@@ -4860,7 +4860,7 @@
                                 "description": "Indicates whether validation has been enabled for the column (value = **true**)."
                               },
                               "width": {
-                                "type": "number",
+                                "type": "integer",
                                 "description": "Display width of the column in pixels."
                               }
                             }
@@ -5131,7 +5131,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the Sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -5172,7 +5172,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the Sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -5268,7 +5268,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -5398,7 +5398,7 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5406,11 +5406,11 @@
                       },
                       "endColumnId": {
                         "description": "Defines ending edge of range when specifying one or more columns. Must be used with startColumnId.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "startColumnId": {
                         "description": "Defines beginning edge of range when specifying one or more columns. Must be used with endColumnId.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       }
                     }
                   },
@@ -5420,7 +5420,7 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5428,11 +5428,11 @@
                       },
                       "endRowId": {
                         "description": "Defines ending edge of range when specifying one or more rows. Must be used with startRowId.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "startRowId": {
                         "description": "Defines beginning edge of range when specifying one or more rows. Must be used with endRowId.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       }
                     }
                   },
@@ -5442,7 +5442,7 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5450,19 +5450,19 @@
                       },
                       "endColumnId": {
                         "description": "Defines ending edge of range when specifying one or more columns. Must be used with startColumnId. To specify an entire column, omit the startRowId and endRowId parameters.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "endRowId": {
                         "description": "Defines ending edge of range when specifying one or more rows. Must be used with startRowId. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "startColumnId": {
                         "description": "Defines beginning edge of range when specifying one or more columns. Must be used with endColumnId. To specify an entire column, omit the startRowId and endRowId parameters.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       },
                       "startRowId": {
                         "description": "Defines beginning edge of range when specifying one or more rows. Must be used with endRowId. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                        "type": "number"
+                        "$ref": "#/components/schemas/Int64"
                       }
                     }
                   }
@@ -5571,7 +5571,7 @@
           "name": "crossSheetReferenceId",
           "in": "path",
           "schema": {
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "required": true,
           "description": "Cross-sheet Reference Id"
@@ -5753,7 +5753,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -6099,7 +6099,7 @@
                 "properties": {
                   "destinationId": {
                     "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
-                    "type": "number"
+                    "$ref": "#/components/schemas/Int64"
                   },
                   "destinationType": {
                     "description": "Type of the destination container.",
@@ -6465,7 +6465,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -6614,7 +6614,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -6782,7 +6782,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ProofRequest/allOf/0"
+                "$ref": "#/components/schemas/ProofRequestBody"
               }
             }
           }
@@ -6795,7 +6795,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1requests/delete/responses/200/content/application~1json/schema"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
@@ -6803,18 +6803,18 @@
                         "result": {
                           "allOf": [
                             {
-                              "$ref": "#/components/schemas/ProofRequest/allOf/0"
+                              "$ref": "#/components/schemas/ProofRequestBody"
                             }
                           ],
                           "type": "object",
                           "properties": {
                             "id": {
                               "description": "Proof request Id.",
-                              "type": "number"
+                              "$ref": "#/components/schemas/Int64"
                             },
                             "proofId": {
                               "description": "Proof Id of the original proof.",
-                              "type": "number"
+                              "$ref": "#/components/schemas/Int64"
                             },
                             "sentBy": {
                               "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -7010,13 +7010,13 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1versions/delete/responses/200/content/application~1json/schema"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Proof"
                         }
                       }
                     }
@@ -7024,7 +7024,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -7208,15 +7208,15 @@
                             "properties": {
                               "id": {
                                 "description": "Row Id.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "sheetId": {
                                 "description": "Parent sheet Id.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "rowNumber": {
                                 "description": "Row number within the sheet.",
-                                "type": "number",
+                                "type": "integer",
                                 "minimum": 1
                               },
                               "expanded": {
@@ -7236,7 +7236,7 @@
                                   "type": "object",
                                   "properties": {
                                     "columnId": {
-                                      "type": "number",
+                                      "$ref": "#/components/schemas/Int64",
                                       "description": "The Id of the column that the cell is located in."
                                     },
                                     "columnType": {
@@ -7266,7 +7266,7 @@
                               },
                               "version": {
                                 "description": "Sheet version number that is incremented every time a sheet is modified.",
-                                "type": "number"
+                                "type": "integer"
                               }
                             }
                           }
@@ -7342,10 +7342,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "type": "number"
-                          }
+                          "$ref": "#/components/schemas/Int64Array"
                         }
                       }
                     }
@@ -7420,20 +7417,20 @@
                             "properties": {
                               "id": {
                                 "description": "Row Id.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "rowNumber": {
                                 "description": "Row number within the sheet.",
-                                "type": "number",
+                                "type": "integer",
                                 "minimum": 1
                               },
                               "parentRowNumber": {
                                 "description": "The row number of the parent.",
-                                "type": "number"
+                                "type": "integer"
                               },
                               "parentId": {
                                 "description": "The Id of the parent.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "expanded": {
                                 "description": "Indicates whether the row is expanded or collapsed.",
@@ -7454,7 +7451,7 @@
                               },
                               "version": {
                                 "description": "Sheet version number that is incremented every time a sheet is modified.",
-                                "type": "number"
+                                "type": "integer"
                               }
                             }
                           }
@@ -7515,7 +7512,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/UpdateRequest/allOf/0"
+                "$ref": "#/components/schemas/MultiRowEmail"
               }
             }
           }
@@ -7602,10 +7599,7 @@
                 "properties": {
                   "rowIds": {
                     "description": "The Ids of the rows to move or copy from the source sheet.",
-                    "type": "array",
-                    "items": {
-                      "type": "number"
-                    }
+                    "$ref": "#/components/schemas/Int64Array"
                   },
                   "to": {
                     "$ref": "#/components/schemas/CopyOrMoveRowDirective/properties/to"
@@ -7625,7 +7619,7 @@
                   "properties": {
                     "destinationSheetId": {
                       "description": "The Id of the destination sheet.",
-                      "type": "number"
+                      "$ref": "#/components/schemas/Int64"
                     },
                     "rowMappings": {
                       "description": "Array of rowMapping objects.",
@@ -7784,15 +7778,15 @@
                       "properties": {
                         "id": {
                           "description": "Row Id.",
-                          "type": "number"
+                          "$ref": "#/components/schemas/Int64"
                         },
                         "sheetId": {
                           "description": "Parent sheet Id.",
-                          "type": "number"
+                          "$ref": "#/components/schemas/Int64"
                         },
                         "rowNumber": {
                           "description": "Row number within the sheet.",
-                          "type": "number",
+                          "type": "integer",
                           "minimum": 1
                         },
                         "expanded": {
@@ -7964,7 +7958,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -8306,7 +8300,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -8383,7 +8377,7 @@
                   "properties": {
                     "version": {
                       "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "number",
+                      "type": "integer",
                       "nullable": true
                     }
                   }
@@ -8750,7 +8744,7 @@
                   "properties": {
                     "id": {
                       "description": "SummaryField Id.",
-                      "type": "number"
+                      "$ref": "#/components/schemas/Int64"
                     },
                     "contactOptions": {
                       "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
@@ -8772,7 +8766,7 @@
                     },
                     "index": {
                       "description": "Field index or position. This number is zero-based.",
-                      "type": "number"
+                      "type": "integer"
                     },
                     "locked": {
                       "description": "Indicates whether the field is locked.",
@@ -8891,10 +8885,7 @@
                       "description": "A list of fieldIds corresponding to all summary fields that were successfully deleted.",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "type": "number"
-                          }
+                          "$ref": "#/components/schemas/Int64Array"
                         }
                       }
                     }
@@ -8961,7 +8952,7 @@
                     },
                     "index": {
                       "description": "Field index or position. This number is zero-based.",
-                      "type": "number"
+                      "type": "integer"
                     },
                     "locked": {
                       "description": "Indicates whether the field is locked.",
@@ -9037,7 +9028,7 @@
           "name": "fieldId",
           "in": "path",
           "schema": {
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "required": true,
           "description": "Summary Field Id of the sheet summary field being accessed."
@@ -9108,11 +9099,11 @@
                           "properties": {
                             "id": {
                               "description": "SummaryField Id.",
-                              "type": "number"
+                              "$ref": "#/components/schemas/Int64"
                             },
                             "index": {
                               "description": "Field index or position. This number is zero-based.",
-                              "type": "number"
+                              "type": "integer"
                             },
                             "title": {
                               "description": "Arbitrary name, must be unique within summary.",
@@ -9147,7 +9138,7 @@
                             },
                             "version": {
                               "description": "Sheet version number that is incremented every time a sheet is modified.",
-                              "type": "number"
+                              "type": "integer"
                             }
                           }
                         }
@@ -9221,14 +9212,14 @@
                             "type": "object",
                             "allOf": [
                               {
-                                "$ref": "#/components/schemas/UpdateRequest/allOf/0"
+                                "$ref": "#/components/schemas/MultiRowEmail"
                               },
                               {
                                 "type": "object",
                                 "properties": {
                                   "id": {
                                     "description": "Id of the update request.",
-                                    "type": "number"
+                                    "$ref": "#/components/schemas/Int64"
                                   },
                                   "createdAt": {
                                     "description": "The date and time for when this request was originally created. Read-only.",
@@ -10974,7 +10965,7 @@
                             "properties": {
                               "id": {
                                 "description": "User Id.",
-                                "type": "number",
+                                "$ref": "#/components/schemas/Int64",
                                 "readOnly": true,
                                 "example": 48569348493401200
                               },
@@ -11043,7 +11034,7 @@
                               },
                               "sheetCount": {
                                 "description": "The number of sheets owned by the current user within the organization account.",
-                                "type": "number",
+                                "type": "integer",
                                 "readOnly": true,
                                 "example": 42
                               },
@@ -11236,26 +11227,26 @@
                       "properties": {
                         "pageNumber": {
                           "description": "The current page in the full result set that the data array represents. NOTE when a page number greater than totalPages is requested, the last page is instead returned.",
-                          "type": "number",
+                          "type": "integer",
                           "example": 1,
                           "readOnly": true
                         },
                         "pageSize": {
                           "description": "The number of items in a page. Omitted if there is no limit to page size (and hence, all results are included). Unless otherwise specified, this defaults to 100 for most endpoints.",
-                          "type": "number",
+                          "type": "integer",
                           "example": 50,
                           "nullable": true,
                           "readOnly": true
                         },
                         "totalPages": {
                           "description": "If the data field value is not empty, returns a static value of -1. When you reach the first empty page after the end of the result set, then all four fields are set with a static value of “0”.",
-                          "type": "number",
+                          "type": "integer",
                           "example": -1,
                           "readOnly": true
                         },
                         "totalCount": {
                           "description": "If the data field value is not empty, returns a static value of -1. When you reach the first empty page after the end of the result set, then all four fields are set with a static value of “0”.",
-                          "type": "number",
+                          "type": "integer",
                           "example": -1,
                           "readOnly": true
                         }
@@ -11272,7 +11263,7 @@
                             "properties": {
                               "id": {
                                 "description": "Sheet Id.",
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               },
                               "name": {
                                 "description": "Sheet name.",
@@ -11286,7 +11277,7 @@
                               "ownerId": {
                                 "description": "Set to a static value of \"0\".",
                                 "example": 0,
-                                "type": "number"
+                                "$ref": "#/components/schemas/Int64"
                               }
                             }
                           }
@@ -11383,7 +11374,7 @@
                   },
                   "transferTo": {
                     "description": "(Required if user owns groups.)\n\n * The Id of the user to transfer ownership to.\n * If the user being removed owns groups, they are transferred\nto this user. If the user owns sheets, and **transferSheets** is true, the removed user's sheets are transferred to this user.\n",
-                    "type": "number",
+                    "$ref": "#/components/schemas/Int64",
                     "example": 94094820842
                   }
                 }
@@ -12040,7 +12031,7 @@
                       },
                       "version": {
                         "description": "Webhook version. Currently, the only supported value is 1. This attribute is intended to ensure backward compatibility as new webhook functionality is released. For example, a webhook with a version of 1 is guaranteed to always be sent callback objects that are compatible with the version 1 release of webhooks.",
-                        "type": "number",
+                        "type": "integer",
                         "example": 1,
                         "minimum": 1,
                         "maximum": 1
@@ -12182,7 +12173,7 @@
                       },
                       "version": {
                         "description": "Webhook version. Currently, the only supported value is 1. This attribute is intended to ensure backward compatibility as new webhook functionality is released. For example, a webhook with a version of 1 is guaranteed to always be sent callback objects that are compatible with the version 1 release of webhooks.",
-                        "type": "number",
+                        "type": "integer",
                         "example": 1,
                         "minimum": 1,
                         "maximum": 1
@@ -13374,7 +13365,7 @@
         "in": "path",
         "required": true,
         "schema": {
-          "type": "number"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "attachmentIdInPath": {
@@ -13407,7 +13398,7 @@
         "name": "columnId",
         "in": "path",
         "schema": {
-          "type": "number"
+          "$ref": "#/components/schemas/Int64"
         },
         "required": true,
         "description": "Column Id in the sheet being accessed."
@@ -13582,7 +13573,7 @@
         "name": "headerRowIndex",
         "in": "query",
         "schema": {
-          "type": "number"
+          "type": "integer"
         },
         "description": "A zero-based integer indicating the row number to use for column names. Rows before this are omitted.\nIf not specified, the default values are Column1, Column2, etc.\n"
       },
@@ -15206,7 +15197,7 @@
                   ]
                 },
                 "holeSize": {
-                  "type": "number"
+                  "type": "integer"
                 },
                 "isFilled": {
                   "type": "boolean"
@@ -15450,11 +15441,11 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "number",
+                  "$ref": "#/components/schemas/Int64",
                   "description": "Column Id."
                 },
                 "index": {
-                  "type": "number",
+                  "type": "integer",
                   "description": "Column index or position. This number is zero-based."
                 },
                 "symbol": {
@@ -15497,7 +15488,7 @@
             "description": "Indicates whether the column is hidden."
           },
           "index": {
-            "type": "number",
+            "type": "integer",
             "description": "Column index or position. This number is zero-based."
           },
           "autoNumberFormat": {
@@ -15542,11 +15533,11 @@
             "description": "Indicates whether validation has been enabled for the column (value = **true**)"
           },
           "version": {
-            "type": "number",
+            "type": "integer",
             "description": "Read only. The level of the column type. Each element in the array is set to one of the following values:\n * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST\n * **1**: MULTI_CONTACT_LIST\n * **2**: MULTI_PICKLIST\n\nSee [Versioning and Changes](#section/API-Basics/Versioning-and-Changes).\n"
           },
           "width": {
-            "type": "number",
+            "type": "integer",
             "description": "Display width of the column in pixels."
           }
         }
@@ -16106,7 +16097,7 @@
         "properties": {
           "days": {
             "description": "The number of days for this duration.",
-            "type": "number"
+            "type": "integer"
           },
           "elapsed": {
             "description": "If true, indicates this duration represents elapsed time, which ignores non-working time.",
@@ -16114,15 +16105,15 @@
           },
           "hours": {
             "description": "The number of hours for this duration.",
-            "type": "number"
+            "type": "integer"
           },
           "milliseconds": {
             "description": "The number of milliseconds for this duration.",
-            "type": "number"
+            "type": "integer"
           },
           "minutes": {
             "description": "The number of minutes for this duration.",
-            "type": "number"
+            "type": "integer"
           },
           "negative": {
             "description": "When used as a predecessor's lag value, indicates whether the lag is negative (if true), or positive (false). The individual duration values themselves (for example, days, hours, or minutes) is always positive.",
@@ -16136,11 +16127,11 @@
           },
           "seconds": {
             "description": "The number of seconds for this duration.",
-            "type": "number"
+            "type": "integer"
           },
           "weeks": {
             "description": "The number of weeks for this duration.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -16157,7 +16148,7 @@
           },
           "days": {
             "description": "Number of days",
-            "type": "number",
+            "type": "integer",
             "format": "float"
           }
         },
@@ -17140,7 +17131,7 @@
             "properties": {
               "days": {
                 "description": "The number of days for this duration.",
-                "type": "number"
+                "type": "integer"
               },
               "elapsed": {
                 "description": "If true, indicates this duration represents elapsed time, which ignores non-working time.",
@@ -17148,15 +17139,15 @@
               },
               "hours": {
                 "description": "The number of hours for this duration.",
-                "type": "number"
+                "type": "integer"
               },
               "milliseconds": {
                 "description": "The number of milliseconds for this duration.",
-                "type": "number"
+                "type": "integer"
               },
               "minutes": {
                 "description": "The number of minutes for this duration.",
-                "type": "number"
+                "type": "integer"
               },
               "negative": {
                 "description": "When used as a predecessor's lag value, indicates whether the lag is negative (if true), or positive (false). The individual duration values themselves (for example, days, hours, or minutes) is always positive.",
@@ -17170,11 +17161,11 @@
               },
               "seconds": {
                 "description": "The number of seconds for this duration.",
-                "type": "number"
+                "type": "integer"
               },
               "weeks": {
                 "description": "The number of weeks for this duration.",
-                "type": "number"
+                "type": "integer"
               }
             }
           },
@@ -17216,7 +17207,7 @@
         "properties": {
           "lengthOfDay": {
             "description": "Length of a workday for a project sheet.",
-            "type": "number",
+            "type": "integer",
             "minimum": 1,
             "maximum": 24
           },
@@ -17298,7 +17289,7 @@
           },
           "version": {
             "description": "The version number of the proof.",
-            "type": "number"
+            "type": "integer"
           },
           "lastUpdatedAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -17327,29 +17318,18 @@
       "ProofRequest": {
         "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Email"
-              }
-            ],
-            "type": "object",
-            "properties": {
-              "isDownloadable": {
-                "description": "Whether the description is downloadable.",
-                "type": "boolean"
-              }
-            }
+            "$ref": "#/components/schemas/ProofRequestBody"
           }
         ],
         "type": "object",
         "properties": {
           "id": {
             "description": "Proof request Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "proofId": {
             "description": "Proof Id of the original proof.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -17561,7 +17541,7 @@
           },
           "reportId": {
             "description": "Report Id denoting container source.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "htmlContent": {
             "description": "HTMl snippet to render report.",
@@ -17599,7 +17579,7 @@
         "properties": {
           "version": {
             "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-            "type": "number",
+            "type": "integer",
             "nullable": true
           }
         }
@@ -17618,7 +17598,7 @@
           },
           "resultCode": {
             "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
-            "type": "number",
+            "type": "integer",
             "enum": [
               0,
               3
@@ -17735,7 +17715,7 @@
           },
           "version": {
             "description": "Sheet version number that is incremented every time a sheet is modified.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -17826,7 +17806,7 @@
           },
           "dayOfMonth": {
             "description": "The day within the month.\n\nValid range is 1 to 28.\n\nThis attribute is applicable to the following schedule type:\n * **MONTHLY**\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "type": "number",
+            "type": "integer",
             "minimum": 1,
             "maximum": 31
           },
@@ -17843,7 +17823,7 @@
           },
           "repeatEvery": {
             "description": "Frequency on which the request is delivered. The unit is a function of the **type** attribute. For example,\nfor **MONTHLY** schedule, **repeatEvery=1** means every month.\n\nValid range is 1 to 99.\n\nThis attribute is applicable to the following schedule types: **DAILY**, **WEEKLY**, **MONTHLY**, or **YEARLY**.\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "type": "number",
+            "type": "integer",
             "minimum": 1,
             "maximum": 99
           },
@@ -17886,7 +17866,7 @@
           },
           "totalCount": {
             "description": "Total number of search results.",
-            "type": "number"
+            "type": "integer"
           }
         }
       },
@@ -17902,11 +17882,11 @@
         "properties": {
           "objectId": {
             "description": "Search result object Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "parentObjectId": {
             "description": "Search result parent object Id.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "contextData": {
             "description": "Additional info on search result context.",
@@ -17943,19 +17923,19 @@
         "properties": {
           "sourceColumnId1": {
             "description": "Defines beginning edge of range when specifying one or more columns.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "sourceColumnId2": {
             "description": "Defines ending edge of range when specifying one or more columns.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "sourceRowId1": {
             "description": "Defines beginning edge of range when specifying one or more rows.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "sourceRowId2": {
             "description": "Defines ending edge of range when specifying one or more rows.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           }
         }
       },
@@ -18227,7 +18207,7 @@
           },
           "totalRowCount": {
             "description": "The total number of rows in the sheet.",
-            "type": "number"
+            "type": "integer"
           },
           "userPermissions": {
             "type": "object",
@@ -18592,7 +18572,7 @@
         "properties": {
           "fromId": {
             "description": "Template Id from which to create the sheet.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "type": "string"
@@ -18708,7 +18688,7 @@
                 },
                 "order": {
                   "description": "The display order for the ShortcutWidgetItem object.",
-                  "type": "number"
+                  "type": "integer"
                 }
               }
             }
@@ -19231,25 +19211,14 @@
         "type": "object",
         "allOf": [
           {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/MultiRowEmail/allOf/0"
-              }
-            ],
-            "type": "object",
-            "properties": {
-              "rowIds": {
-                "description": "The Ids of rows to be included.",
-                "$ref": "#/components/schemas/Int64Array"
-              }
-            }
+            "$ref": "#/components/schemas/MultiRowEmail"
           },
           {
             "type": "object",
             "properties": {
               "id": {
                 "description": "Id of the update request.",
-                "type": "number"
+                "$ref": "#/components/schemas/Int64"
               },
               "createdAt": {
                 "description": "The date and time for when this request was originally created. Read-only.",
@@ -19374,7 +19343,7 @@
           },
           "sheetCount": {
             "description": "The number of sheets owned by the current user within the organization account.",
-            "type": "number",
+            "type": "integer",
             "readOnly": true,
             "example": 42
           },
@@ -19396,7 +19365,7 @@
         "properties": {
           "id": {
             "description": "Current user's Id.",
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "example": 48569348493401200
           },
           "account": {
@@ -19404,7 +19373,7 @@
             "properties": {
               "id": {
                 "description": "Account Id.",
-                "type": "number",
+                "$ref": "#/components/schemas/Int64",
                 "example": 122454719915908
               },
               "name": {
@@ -19509,7 +19478,7 @@
           },
           "sheetCount": {
             "description": "Typically, the number of sheets owned by the current user within the organization account. For GET /users/me, this returns a static '0'.",
-            "type": "number",
+            "type": "integer",
             "example": 0
           },
           "timeZone": {
@@ -19560,7 +19529,7 @@
           },
           "id": {
             "description": "User Id.",
-            "type": "number",
+            "$ref": "#/components/schemas/Int64",
             "readOnly": true,
             "example": 48569348493401200
           }
@@ -19616,7 +19585,7 @@
                   },
                   "version": {
                     "description": "Webhook version. Currently, the only supported value is 1. This attribute is intended to ensure backward compatibility as new webhook functionality is released. For example, a webhook with a version of 1 is guaranteed to always be sent callback objects that are compatible with the version 1 release of webhooks.",
-                    "type": "number",
+                    "type": "integer",
                     "example": 1,
                     "minimum": 1,
                     "maximum": 1
@@ -19704,7 +19673,7 @@
                     "description": "When this webhook last made a callback attempt."
                   },
                   "lastCallbackAttemptRetryCount": {
-                    "type": "number",
+                    "type": "integer",
                     "readOnly": true,
                     "description": "The number of retries the webhook had performed as of the last callback attempt."
                   },
@@ -19764,7 +19733,7 @@
           },
           "sheetId": {
             "description": "Sheet Id from which the cell data originates.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "cellData": {
             "type": "array",
@@ -19792,7 +19761,7 @@
           },
           "reportId": {
             "description": "Report Id denoting container source.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "htmlContent": {
             "description": "HTMl snippet to render report.",
