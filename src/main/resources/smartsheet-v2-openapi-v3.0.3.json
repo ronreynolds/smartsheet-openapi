@@ -7963,7 +7963,7 @@
                             "type": "object",
                             "allOf": [
                               {
-                                "$ref": "#/components/schemas/CellDataItem/properties/cell"
+                                "$ref": "#/components/schemas/Cell"
                               }
                             ],
                             "properties": {
