@@ -28,13 +28,39 @@
 "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D~1shares~1%7BshareId%7D/get/responses/200/content/application~1json/schema"
 
 
-#/paths/~1sheets~1%7BsheetId%7D~1columns/post/requestBody/content/application~1json/schema
-#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/get/responses/200/content/application~1json/schema/allOf/0
-#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1requests/delete/responses/200/content/application~1json/schema
-#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/responses/200/content/application~1json/schema
-#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/requestBody/content/application~1json/schema
-#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/1/properties/result/items/properties/cells/items
-#/paths/~1sheets~1%7BsheetId%7D~1discussions/post/requestBody/content/multipart~1form-data/schema
 
-#/components/schemas/UpdateRequest/allOf/0 is not defined
+
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Error obtaining the datatype from ref: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items. Default to 'object'
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Error obtaining the datatype from ref: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items. Default to 'object'
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Error obtaining the datatype from ref: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items. Default to 'object'
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Error obtaining the datatype from ref: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items. Default to 'object'
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to get the schema name: #/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items
+#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items is not defined
+Failed to obtain schema from cell
+Failed to obtain schema from cell
+Failed to obtain schema from cell
+
+
 

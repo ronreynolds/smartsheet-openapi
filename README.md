@@ -45,6 +45,13 @@ this is a list of just SOME of the replacements needed to address OpenAPI-genera
 element of another path definition; e.g., one path pointing to the parameters, request-schema, or response-schema of 
 another path definition).
 
+#### `$ref` caveat
+* (this note may only apply to OpenAPI versions <3.1) - https://stackoverflow.com/questions/69173235/how-to-reference-response-components-in-openapi
+* the `$ref` directive replaces ALL it sibling nodes so any time you want to add, say, a `description` to a `$ref` you 
+must wrap the `$ref` in `"allOf":[{"$ref": "..."}]` or something similar - https://swagger.io/docs/specification/v3_0/using-ref/
+  * note, this straight-forward solution doesn't work for path responses
+    * there you have to nest the `$ref` within `"content": { "application/json": { "schema": { ... }}}` and reference a SCHEMA, not a RESPONSE. :(
+
 #### Path refs
 * the path-schema refs were often addressed by reusing existing or creating new types for those requests or responses.
   * this only adds value when a type is used at least twice; otherwise leaving it "inline" seemed fine
