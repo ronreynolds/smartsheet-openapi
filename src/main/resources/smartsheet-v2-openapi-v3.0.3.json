@@ -7363,7 +7363,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
@@ -7435,7 +7435,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/ResultPrefix"
                     },
                     {
                       "type": "object",
@@ -8473,10 +8473,7 @@
                       "properties": {
                         "data": {
                           "description": "list of Sent Update Requests",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/SentUpdateRequest"
-                          }
+                          "$ref": "#/components/schemas/SentUpdateRequestArray"
                         }
                       }
                     }
@@ -9277,7 +9274,7 @@
                                   },
                                   "schedule": {
                                     "description": "The schedule for which update requests are sent out.",
-                                    "$ref": "#/components/schemas/UpdateRequest/allOf/1/properties/schedule/allOf/0"
+                                    "$ref": "#/components/schemas/Schedule"
                                   },
                                   "sentBy": {
                                     "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -9950,33 +9947,7 @@
                             "type": "object",
                             "allOf": [
                               {
-                                "type": "object",
-                                "allOf": [
-                                  {
-                                    "type": "object",
-                                    "properties": {
-                                      "name": {
-                                        "description": "Dashboard name.",
-                                        "type": "string"
-                                      }
-                                    }
-                                  }
-                                ],
-                                "properties": {
-                                  "id": {
-                                    "description": "Dashboard Id.",
-                                    "type": "number",
-                                    "readOnly": true
-                                  },
-                                  "accessLevel": {
-                                    "$ref": "#/components/schemas/AccessLevel"
-                                  },
-                                  "permalink": {
-                                    "description": "URL that represents a direct link to the dashboard in Smartsheet.",
-                                    "type": "string",
-                                    "readOnly": true
-                                  }
-                                }
+                                "$ref": "#/components/schemas/SightLite"
                               }
                             ],
                             "properties": {
@@ -10222,33 +10193,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "object",
-                          "allOf": [
-                            {
-                              "type": "object",
-                              "properties": {
-                                "name": {
-                                  "description": "Dashboard name.",
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          ],
-                          "properties": {
-                            "id": {
-                              "description": "Dashboard Id.",
-                              "type": "number",
-                              "readOnly": true
-                            },
-                            "accessLevel": {
-                              "$ref": "#/components/schemas/AccessLevel"
-                            },
-                            "permalink": {
-                              "description": "URL that represents a direct link to the dashboard in Smartsheet.",
-                              "type": "string",
-                              "readOnly": true
-                            }
-                          }
+                          "$ref": "#/components/schemas/SightLite"
                         }
                       }
                     }
@@ -10315,7 +10260,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sights~1%7BsightId%7D~1copy/post/responses/200/content/application~1json/schema/allOf/1/properties/result"
+                          "$ref": "#/components/schemas/SightLite"
                         }
                       }
                     }
@@ -11189,7 +11134,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1users/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                "$ref": "#/components/schemas/User"
               }
             }
           }
@@ -11208,7 +11153,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1users/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/User"
                         }
                       }
                     }
@@ -11219,13 +11164,7 @@
           },
           "default": {
             "description": "If an error occurs because the request specified the alternate email address (that is, not the primary email address) of an existing Smartsheet user (to invite the user into the org), the Error object returned contains a detail attribute set to an array of objects, each object in the array having the following attributes:\n\n  * alternateEmailAddress: User's alternate email address that was specified\nin the request\n  * primaryEmailAddress: User's primary email address that must instead\nbe specified for the operation\nFor example:\n```\n{\n  \"errorCode\": 5xxx,\n  \"message\": \"The specified email address (u1+1@smartsheet.com) is an\nalternate address for a user with the primary email address of u1@smartsheet.com. Please retry using their primary address.\"\n  \"detail\": [\n      {\n        \"alternateEmailAddress\": \"u1+1@smartsheet.com\",\n        \"primaryEmailAddress\": \"u1@smartsheet.com\"\n      }\n  ]\n}\n```\n",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/paths/~1users/get/responses/default/content/application~1json/schema"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -11581,43 +11520,7 @@
                       "properties": {
                         "data": {
                           "description": "Updated User Properties",
-                          "type": "array",
-                          "items": {
-                            "description": "User profile image response.",
-                            "properties": {
-                              "email": {
-                                "description": "User's primary email address.",
-                                "type": "string",
-                                "format": "email",
-                                "example": "jane.doe@smartsheet.com"
-                              },
-                              "name": {
-                                "description": "User's full name (read-only).",
-                                "type": "string",
-                                "readOnly": true,
-                                "example": "Jane Doe"
-                              },
-                              "firstName": {
-                                "description": "User's first name.",
-                                "type": "string",
-                                "example": "Jane"
-                              },
-                              "lastName": {
-                                "description": "User's last name.",
-                                "type": "string",
-                                "example": "Doe"
-                              },
-                              "profileImage": {
-                                "$ref": "#/components/schemas/User/properties/profileImage"
-                              },
-                              "id": {
-                                "description": "User Id.",
-                                "type": "number",
-                                "readOnly": true,
-                                "example": 48569348493401200
-                              }
-                            }
-                          }
+                          "$ref": "#/components/schemas/UserProfileImageResponseArray"
                         }
                       }
                     }
@@ -12000,10 +11903,7 @@
                       "properties": {
                         "data": {
                           "description": "Updated User Properties",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/paths/~1users~1%7BuserId%7D/put/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
-                          }
+                          "$ref": "#/components/schemas/UserProfileImageResponseArray"
                         }
                       }
                     }
@@ -12364,13 +12264,7 @@
           },
           "default": {
             "description": "Error Payload",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/paths/~1webhooks/get/responses/default/content/application~1json/schema"
-                }
-              }
-            }
+            "$ref": "#/components/responses/Error_Generic"
           }
         }
       }
@@ -13019,7 +12913,7 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "type": "number",
+                                "$ref": "#/components/schemas/Int64",
                                 "description": "The folder's unique identifier.",
                                 "example": 987654321
                               },
@@ -17494,17 +17388,37 @@
           }
         }
       },
+      "ProfileImage": {
+        "type": "object",
+        "properties": {
+          "imageId": {
+            "description": "Unique image Id.",
+            "type": "string",
+            "example": "u!1!nAtdn5RJB_o!k6_e_3h2R3w!wmYXPek-yVD"
+          },
+          "height": {
+            "description": "Image height.",
+            "type": "integer",
+            "example": 1050
+          },
+          "width": {
+            "description": "Image width.",
+            "type": "integer",
+            "example": 1050
+          }
+        }
+      },
       "Proof": {
         "description": "Object containing zero or more media items, including images, videos, and documents, for review, editing, or approval.",
         "type": "object",
         "properties": {
           "id": {
             "description": "Proof Id of the proof version.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "originalId": {
             "description": "Proof Id of the original proof version.",
-            "type": "number"
+            "$ref": "#/components/schemas/Int64"
           },
           "name": {
             "description": "Proof name. This is the same as primary column value. If the primary column value is empty, name is empty.",
@@ -17659,7 +17573,7 @@
             "properties": {
               "groupId": {
                 "description": "The Id of a group recipient.",
-                "type": "number",
+                "$ref": "#/components/schemas/Int64",
                 "example": 2258118617917316
               }
             }
@@ -18244,6 +18158,12 @@
             "description": "The subject of the email.",
             "type": "string"
           }
+        }
+      },
+      "SentUpdateRequestArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SentUpdateRequest"
         }
       },
       "ServerInfo": {
@@ -18936,33 +18856,7 @@
             "type": "object",
             "allOf": [
               {
-                "type": "object",
-                "allOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "description": "Dashboard name.",
-                        "type": "string"
-                      }
-                    }
-                  }
-                ],
-                "properties": {
-                  "id": {
-                    "description": "Dashboard Id.",
-                    "$ref": "#/components/schemas/Int64",
-                    "readOnly": true
-                  },
-                  "accessLevel": {
-                    "$ref": "#/components/schemas/AccessLevel"
-                  },
-                  "permalink": {
-                    "description": "URL that represents a direct link to the dashboard in Smartsheet.",
-                    "type": "string",
-                    "readOnly": true
-                  }
-                }
+                "$ref": "#/components/schemas/SightLite"
               }
             ],
             "properties": {
@@ -19013,6 +18907,28 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Sight"
+        }
+      },
+      "SightLite": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Dashboard Id.",
+            "$ref": "#/components/schemas/Int64",
+            "readOnly": true
+          },
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "permalink": {
+            "description": "URL that represents a direct link to the dashboard in Smartsheet.",
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Dashboard name.",
+            "type": "string"
+          }
         }
       },
       "SightPublish": {
@@ -19479,82 +19395,7 @@
               },
               "schedule": {
                 "description": "The schedule for which update requests are sent out.",
-                "allOf": [
-                  {
-                    "type": "object",
-                    "properties": {
-                      "type": {
-                        "description": "Type of schedule.",
-                        "type": "string",
-                        "enum": [
-                          "ONCE",
-                          "DAILY",
-                          "WEEKLY",
-                          "MONTHLY",
-                          "YEARLY"
-                        ]
-                      },
-                      "dayDescriptors": {
-                        "description": "A string array consists of one or more of the following values:\n* **DAY**, **WEEKDAY**, **WEEKEND**\n* **SUNDAY**, **MONDAY**, **TUESDAY**, **WEDNESDAY**, **THURSDAY**, **FRIDAY**, **SATURDAY**\n\nThe subset of values applicable to the schedule type are as followed:\n\n| Value         | Daily schedule | Weekly schedule | Monthly schedule |\n|---------------|----------------|-----------------|------------------|\n| **DAY**       |                |                 |       **✓**      |\n| **WEEKDAY**   |      **✓**     |                 |       **✓**      |\n| **WEEKEND**   |                |                 |       **✓**      |\n| **SUNDAY**    |                |      **✓**      |       **✓**      |\n| **MONDAY**    |                |      **✓**      |       **✓**      |\n| **TUESDAY**   |                |      **✓**      |       **✓**      |\n| **WEDNESDAY** |                |      **✓**      |       **✓**      |\n| **THURSDAY**  |                |      **✓**      |       **✓**      |\n| **FRIDAY**    |                |      **✓**      |       **✓**      |\n| **SATURDAY**  |                |      **✓**      |       **✓**      |\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "type": "array",
-                        "items": {
-                          "type": "string",
-                          "enum": [
-                            "DAY",
-                            "WEEKDAY",
-                            "WEEKEND",
-                            "SUNDAY",
-                            "MONDAY",
-                            "TUESDAY",
-                            "WEDNESDAY",
-                            "THURSDAY",
-                            "FRIDAY",
-                            "SATURDAY"
-                          ]
-                        }
-                      },
-                      "dayOfMonth": {
-                        "description": "The day within the month.\n\nValid range is 1 to 28.\n\nThis attribute is applicable to the following schedule type:\n * **MONTHLY**\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 31
-                      },
-                      "dayOrdinal": {
-                        "description": "Must be one of the following values:\n  * **FIRST** or **LAST**\n  * **SECOND**, **THIRD**, or **FOURTH**\n\nThis attribute is applicable to the following schedule type:\n  * **MONTHLY**\n\n  For more details, refer to the Table of Schedule Object’s Attributes\nbelow.\n",
-                        "type": "string",
-                        "enum": [
-                          "FIRST",
-                          "LAST",
-                          "SECOND",
-                          "THIRD",
-                          "FOURTH"
-                        ]
-                      },
-                      "repeatEvery": {
-                        "description": "Frequency on which the request is delivered. The unit is a function of the **type** attribute. For example,\nfor **MONTHLY** schedule, **repeatEvery=1** means every month.\n\nValid range is 1 to 99.\n\nThis attribute is applicable to the following schedule types: **DAILY**, **WEEKLY**, **MONTHLY**, or **YEARLY**.\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "type": "integer",
-                        "minimum": 1,
-                        "maximum": 99
-                      },
-                      "endAt": {
-                        "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "$ref": "#/components/schemas/DateUnion"
-                      },
-                      "lastSentAt": {
-                        "description": "The date and time for when the last request was sent.",
-                        "$ref": "#/components/schemas/DateUnion"
-                      },
-                      "nextSendAt": {
-                        "description": "The date and time for when the next request is scheduled to send.",
-                        "$ref": "#/components/schemas/DateUnion"
-                      },
-                      "startAt": {
-                        "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601\ndate and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time\nwith no offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-                        "$ref": "#/components/schemas/DateUnion"
-                      }
-                    }
-                  }
-                ]
+                "$ref": "#/components/schemas/Schedule"
               },
               "sentBy": {
                 "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -19657,24 +19498,7 @@
             "example": "Jane Doe"
           },
           "profileImage": {
-            "type": "object",
-            "properties": {
-              "imageId": {
-                "description": "Unique image Id.",
-                "type": "string",
-                "example": "u!1!nAtdn5RJB_o!k6_e_3h2R3w!wmYXPek-yVD"
-              },
-              "height": {
-                "description": "Image height.",
-                "type": "string",
-                "example": 1050
-              },
-              "width": {
-                "description": "Image width.",
-                "type": "string",
-                "example": 1050
-              }
-            }
+            "$ref": "#/components/schemas/ProfileImage"
           },
           "resourceViewer": {
             "description": "Indicates whether the user is a resource viewer (can access resource views).",
@@ -19837,6 +19661,49 @@
             "type": "string",
             "example": "844-324-2360"
           }
+        }
+      },
+      "UserProfileImageResponse": {
+        "type": "object",
+        "description": "User profile image response.",
+        "properties": {
+          "email": {
+            "description": "User's primary email address.",
+            "type": "string",
+            "format": "email",
+            "example": "jane.doe@smartsheet.com"
+          },
+          "name": {
+            "description": "User's full name (read-only).",
+            "type": "string",
+            "readOnly": true,
+            "example": "Jane Doe"
+          },
+          "firstName": {
+            "description": "User's first name.",
+            "type": "string",
+            "example": "Jane"
+          },
+          "lastName": {
+            "description": "User's last name.",
+            "type": "string",
+            "example": "Doe"
+          },
+          "profileImage": {
+            "$ref": "#/components/schemas/User/properties/profileImage"
+          },
+          "id": {
+            "description": "User Id.",
+            "type": "number",
+            "readOnly": true,
+            "example": 48569348493401200
+          }
+        }
+      },
+      "UserProfileImageResponseArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/UserProfileImageResponse"
         }
       },
       "WebContentWidgetContent": {

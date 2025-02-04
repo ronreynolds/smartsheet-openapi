@@ -101,7 +101,8 @@ another path definition).
 #/paths/~1groups~1%7BgroupId%7D~1members/post/requestBody/content/application~1json/schema/oneOf/0             = #/components/schemas/GroupMember 
 #/paths/~1groups~1%7BgroupId%7D~1members~1%7BuserId%7D/parameters/2                                         = #/components/parameters/userIdInPath
 
-#/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items    = #/components/schemas/Folder/properties/folders/items = #/components/schemas/Folder
+#/paths/~1home~1folders/get/responses/200/content/application~1json/schema/allOf/1/properties/result/items 
+  = #/components/schemas/Folder/properties/folders/items = #/components/schemas/Folder
 
 #/paths/~1reports~1%7BreportId%7D/parameters/1  = #/parameters/acceptHeader
 #/paths/~1reports~1%7BreportId%7D/parameters/2  = #/parameters/accessApiLevel
@@ -119,7 +120,8 @@ another path definition).
 #/paths/~1sheets~1%7BsheetId%7D/get/parameters/3      = #/components/parameters/exclude_sheet
 #/paths/~1sheets~1%7BsheetId%7D/get/parameters/7      = #/components/parameters/compatibilityLevel
 #/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D/parameters/1 = #/components/parameters/attachmentIdInPath
-#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items = #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
+#/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items 
+  = #/components/schemas/Comment/properties/attachments/items = #/components/schemas/Attachment
 #/paths/~1sheets~1%7BsheetId%7D~1attachments~1%7BattachmentId%7D~1versions/post/responses/200/content/application~1json/schema/allOf/0  = #/components/schemas/ResultPrefix
 #/paths/~1sheets~1%7BsheetId%7D~1attachments/post/requestBody/content/application~1json/schema = #/components/schemas/URLAttachmentRequest
 #/paths/~1sheets~1%7BsheetId%7D~1automationrules/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items       = #/components/schemas/AutomationRule
@@ -132,6 +134,7 @@ another path definition).
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/2                       = #/components/parameters/allowPartialSuccess
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/parameters/3                       = #/components/parameters/overrideValidation
 #/paths/~1sheets~1%7BsheetId%7D~1rows/post/requestBody/content/application~1json/schema/oneOf/0        = #/components/schemas/ReportRow/allOf/0 = ...
+#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/0 = #/components/schemas/ResultPrefix
 #/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D/parameters/1               = #/components/parameters/rowIdInPath
 #/paths/~1sheets~1%7BsheetId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0   = #/paths/~1reports~1%7BreportId%7D~1shares/post/requestBody/content/application~1json/schema/oneOf/0 = 
 
@@ -146,6 +149,8 @@ another path definition).
 #/paths/~1sights~1%7BsightId%7D/parameters/1    = #/components/parameters/sightIdInPath
 #/paths/~1sights~1%7BsightId%7D~1publish/get/responses/200/content/application~1json/schema = #/components/schemas/SightPublish
 #/paths/~1sights~1%7BsightId%7D/get/responses/200/content/application~1json/schema = #/components/schemas/Sight
+
+#/paths/~1users/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items = #/components/schemas/User
 
 #/paths/~1workspaces/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items     = #/components/schemas/Scope/properties/workspaces/items = #/components/schemas/Workspace
 #/paths/~1workspaces~1%7BworkspaceId%7D/parameters/1     = #/components/parameters/workspaceIdInPath
