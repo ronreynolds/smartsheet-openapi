@@ -565,23 +565,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/includeAllBoolean",
-            "required": false
+            "$ref": "#/components/parameters/includeAllBoolean"
           },
           {
-            "$ref": "#/components/parameters/modifiedSince",
-            "required": false
+            "$ref": "#/components/parameters/modifiedSince"
           },
           {
             "$ref": "#/components/parameters/numericDates"
           },
           {
-            "$ref": "#/components/parameters/pageNumber",
-            "required": false
+            "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "$ref": "#/components/parameters/pageSize",
-            "required": false
+            "$ref": "#/components/parameters/pageSize"
           }
         ],
         "responses": {
@@ -650,7 +646,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to include in the response:\n  * **profileImage**\n",
             "schema": {
               "type": "string",
@@ -703,16 +698,13 @@
             "$ref": "#/components/parameters/authorizationHeader"
           },
           {
-            "$ref": "#/components/parameters/sinceDate",
-            "required": false
+            "$ref": "#/components/parameters/sinceDate"
           },
           {
-            "$ref": "#/components/parameters/toDate",
-            "required": false
+            "$ref": "#/components/parameters/toDate"
           },
           {
-            "$ref": "#/components/parameters/streamPosition",
-            "required": false
+            "$ref": "#/components/parameters/streamPosition"
           },
           {
             "name": "maxCount",
@@ -723,8 +715,7 @@
               "minimum": 1,
               "maximum": 10000,
               "default": 1000
-            },
-            "required": false
+            }
           },
           {
             "name": "numericDates",
@@ -733,8 +724,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "required": false
+            }
           },
           {
             "name": "managedPlanId",
@@ -742,8 +732,7 @@
             "description": "The target managed plan for which to list events. Authorized if the caller is a system administrator on either the target managed plan or the main plan in EPM hierarchy.",
             "schema": {
               "$ref": "#/components/schemas/Int64"
-            },
-            "required": false
+            }
           }
         ],
         "responses": {
@@ -2199,16 +2188,13 @@
         "operationId": "home-list-folders",
         "parameters": [
           {
-            "$ref": "#/components/parameters/includeAllBoolean",
-            "required": false
+            "$ref": "#/components/parameters/includeAllBoolean"
           },
           {
-            "$ref": "#/components/parameters/pageNumber",
-            "required": false
+            "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "$ref": "#/components/parameters/pageSize",
-            "required": false
+            "$ref": "#/components/parameters/pageSize"
           }
         ],
         "responses": {
@@ -2481,7 +2467,6 @@
           {
             "name": "exclude",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to not include in the response\n",
             "schema": {
               "type": "string",
@@ -3060,7 +3045,6 @@
           {
             "name": "location",
             "in": "query",
-            "required": false,
             "description": "**Deprecated** When specified with a value of **personalWorkspace**, limits the response to only those items in the user's workspaces.\n",
             "schema": {
               "type": "string",
@@ -3069,13 +3053,11 @@
             "deprecated": true
           },
           {
-            "$ref": "#/components/parameters/modifiedSince",
-            "required": false
+            "$ref": "#/components/parameters/modifiedSince"
           },
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "When specified with a value of **favoriteFlag**, response indicates which returned items are favorites.  favorite -- dashboards, folders, reports, sheets, templates, and workspaces will have the property favorite: true parentObjectFavorite -- attachments, discussions, summary fields, and rows will have the property parentObjectFavorite: true\n",
             "schema": {
               "type": "string",
@@ -3085,7 +3067,6 @@
           {
             "name": "scopes",
             "in": "query",
-            "required": false,
             "description": "If search fails, try using an array for each type of this comma-separated list of search filters.",
             "schema": {
               "type": "array",
@@ -3244,7 +3225,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to include in the response:\n* **sheetVersion** - current version number of each sheet, should not be combined with pagination\n* **source** - the Source object for any sheet that was created from another sheet, if any\n",
             "schema": {
               "type": "string",
@@ -3509,7 +3489,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - includes the metadata for sheet-level and row-level\nattachments. To include discussion attachments, both attachments and discussions must be present in the include list.\n  * **columnType** -includes columnType attribute in the row's cells indicating\nthe type of the column the cell resides in.\n  * **crossSheetReferences** - includes the cross-sheet references\n  * **discussions** - includes sheet-level and row-level discussions. To\ninclude discussion attachments, both attachments and discussions must be present in the include list.\n  * **filters** - includes filteredOut attribute indicating if the row should\nbe displayed or hidden according to the sheet's filters.\n  * **filterDefinitions** - includes type of filter, operators used, and\ncriteria\n  * **format** -  includes column, row, cell, and summary fields formatting.\n  * **ganttConfig** - includes Gantt chart details.\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data.\n  * **ownerInfo** - includes the owner's email address and the owner's user\nId.\n  * **rowPermalink** - includes permalink attribute that represents a direct\nlink to the row in the Smartsheet application.\n  * **source** - adds the Source object indicating which report, sheet  Sight\n(aka dashboard), or template the sheet was created from, if any.\n  * **writerInfo** - includes createdBy and modifiedBy attributes on the\nrow or summary fields, indicating the row or summary field's creator, and last modifier.\n",
             "schema": {
               "type": "string",
@@ -3536,7 +3515,6 @@
           {
             "name": "columnIds",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of column ids. The response contains only the specified columns in the \"columns\" array, and individual rows' \"cells\" array only contains cells in the specified columns.\n",
             "schema": {
               "type": "string"
@@ -3545,7 +3523,6 @@
           {
             "name": "filterId",
             "in": "query",
-            "required": false,
             "description": "Overrides the existing include={filters} parameter if both are supplied. Applies the given filter (if accessible by the calling user) and marks the affected rows as \"filteredOut\": true.\n",
             "schema": {
               "type": "string"
@@ -3554,7 +3531,6 @@
           {
             "name": "ifVersionAfter",
             "in": "query",
-            "required": false,
             "description": "If version specified is still the current sheet version, then returns an abbreviated Sheet object with only the sheet version property. Otherwise, if the sheet has been modified, returns the complete Sheet object. Intended to allow clients with a cached copy to make sure they have the latest version.\n",
             "schema": {
               "type": "integer"
@@ -3572,7 +3548,6 @@
           {
             "name": "paperSize",
             "in": "query",
-            "required": false,
             "description": "applies to PDF format only",
             "schema": {
               "type": "string",
@@ -3593,7 +3568,6 @@
           {
             "name": "rowIds",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of row Ids on which to filter the rows included in the result.\n",
             "schema": {
               "type": "string"
@@ -3602,7 +3576,6 @@
           {
             "name": "rowNumbers",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of row numbers on which to filter the rows included in the result. Non-existent row numbers are ignored.\n",
             "schema": {
               "type": "string"
@@ -3611,7 +3584,6 @@
           {
             "name": "rowsModifiedSince",
             "in": "query",
-            "required": false,
             "description": "Filter to return only rows that have been modified since the date/time provided. Date should be in ISO-8601 format.",
             "example": "2020-01-30T13:25:32-07:00",
             "schema": {
@@ -5641,7 +5613,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - effective only if comments is present, otherwise ignored\n  * **comments** - include all comments in threads\n",
             "schema": {
               "type": "string",
@@ -7321,7 +7292,6 @@
             "name": "ignoreRowsNotFound",
             "description": "**true** or **false**. If set to **false** and any of the specified row Ids are not found, no rows are deleted, and the \"not found\" [error](../../tag/commonObjects#section/Error-Object) is returned.\n",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false
@@ -7568,7 +7538,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of row elements to copy in addition to the cell data:\n  * **all** - specify a value of **all** to include everything (attachments,\nchildren, and discussions).\n  * **attachments**\n  * **children** -  if specified, any child rows of the rows specified in\nthe request are also copied to the destination sheet, and parent-child relationships amongst rows are preserved within the destination sheet; if not specified, only the rows specified in the request are copied.\n  * **discussions**\n",
             "schema": {
               "type": "string",
@@ -7584,7 +7553,6 @@
             "name": "ignoreRowsNotFound",
             "description": "**true** or **false**: default is **false**. If set to **true**, specifying row Ids that do not exist within the source sheet does not cause an error response. If omitted or set to **false**, specifying row Ids that do not exist within the source sheet causes an error response (and no rows are copied).\n",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false
@@ -7669,7 +7637,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separate list of row elements to move in addition to the cell data.\n",
             "schema": {
               "type": "string",
@@ -7683,7 +7650,6 @@
             "name": "ignoreRowsNotFound",
             "description": "**true** or **false**: default is **false**. If set to **true**, specifying row Ids that do not exist within the source sheet does not cause an error response. If omitted or set to **false**, specifying row Ids that do not exist within the source sheet causes an error response (and no rows are moved).\n",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false
@@ -7736,7 +7702,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of elements to include in the response.\n\nSee [Row Include Flags](../../tag/rowsRelated#section/Row-Include-Flags).\n\nAlso supports the **columns** include flag, which adds a columns array that specifies all of the columns for the sheet. This enables you to have the full context of the cells in the row.\n\nThe **filters** include flag returns a **filteredOut** attribute indicating if the row should be displayed or hidden according to the sheet's filters.\n",
             "schema": {
               "type": "string",
@@ -8077,7 +8042,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of elements to copy:\n  * **columnType** - includes the columnType attribute for each Cell object\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for a multi-contact cell.\n",
             "schema": {
               "type": "string",
@@ -8863,7 +8827,6 @@
             "name": "ignoreSummaryFieldsNotFound",
             "description": "If **true**, the operation will succeed even if some fieldIds are not found.",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "boolean",
               "default": false
@@ -9758,7 +9721,6 @@
           {
             "name": "include&exclude",
             "in": "query",
-            "required": false,
             "description": "(Optional) Any of the relevant parameters or query parameters listed for [Get Sheet](../../tag/sheets#operation/getSheet).\n",
             "schema": {
               "type": "string"
@@ -9950,7 +9912,6 @@
           {
             "name": "include",
             "in": "query",
-            "required": false,
             "description": "A comma-separated list of optional elements to include in the response:\n  * **objectValue** - when used in combination with a **level** query parameter,\nincludes the email addresses for multi-contact data.\n  * **source** - the Source object for any Sight that was created from another\nSight, if any\n",
             "schema": {
               "type": "string",
@@ -10656,20 +10617,16 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/accessApiLevel",
-            "required": false
+            "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/includeAllBoolean",
-            "required": false
+            "$ref": "#/components/parameters/includeAllBoolean"
           },
           {
-            "$ref": "#/components/parameters/pageNumber",
-            "required": false
+            "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "$ref": "#/components/parameters/pageSize",
-            "required": false
+            "$ref": "#/components/parameters/pageSize"
           }
         ],
         "responses": {
@@ -10718,24 +10675,19 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/accessApiLevel",
-            "required": false
+            "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/includeAllBoolean",
-            "required": false
+            "$ref": "#/components/parameters/includeAllBoolean"
           },
           {
-            "$ref": "#/components/parameters/templateTypeLevel",
-            "required": false
+            "$ref": "#/components/parameters/templateTypeLevel"
           },
           {
-            "$ref": "#/components/parameters/pageNumber",
-            "required": false
+            "$ref": "#/components/parameters/pageNumber"
           },
           {
-            "$ref": "#/components/parameters/pageSize",
-            "required": false
+            "$ref": "#/components/parameters/pageSize"
           }
         ],
         "responses": {
@@ -10864,8 +10816,7 @@
               "type": "boolean",
               "default": false
             },
-            "description": "The client Id and user Id is fetched based on the token that is used to make this API call. A value of true deletes all tokens associated to the given client Id and user Id.",
-            "required": false
+            "description": "The client Id and user Id is fetched based on the token that is used to make this API call. A value of true deletes all tokens associated to the given client Id and user Id."
           }
         ],
         "responses": {
@@ -10913,7 +10864,6 @@
             "name": "email",
             "description": "Comma-separated list of email addresses on which to filter the results.",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -10922,7 +10872,6 @@
             "name": "include",
             "description": "If the API request is submitted by a system administrator and when specified with a value of 'lastLogin', response includes a lastLogin attribute for each user that indicates the Last login date/time of the user.\n\n**Note** If the number of users included in the response is > 100, you must paginate your query to see the lastLogin attribute. For large responses, the lastLogin attribute is never included.\n",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string"
             }
@@ -11150,7 +11099,6 @@
             "name": "include",
             "description": "When specified with a value of 'groups', response includes an array of groups (groupId, name, and description only) that the user is a member of.",
             "in": "query",
-            "required": false,
             "schema": {
               "type": "string",
               "enum": [
@@ -12487,8 +12435,7 @@
             "schema": {
               "type": "boolean",
               "default": false
-            },
-            "required": false
+            }
           }
         ],
         "responses": {
@@ -13523,7 +13470,6 @@
       "exclude_sheetSummary": {
         "name": "exclude",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
         "schema": {
           "type": "string",
@@ -13580,7 +13526,6 @@
       "include_discussion": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
           "type": "string",
@@ -13593,7 +13538,6 @@
       "include_favorite": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
           "type": "string",
@@ -13676,7 +13620,6 @@
       "include_sheetSummary": {
         "name": "include",
         "in": "query",
-        "required": false,
         "description": "A comma-separated list of elements to include in the response.\n* **format**: includes format info for cells, rows, and summary fields\n* **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields\n",
         "schema": {
           "type": "string",
@@ -13791,7 +13734,6 @@
         "name": "renameIfConflict",
         "description": "Set to true if you want to override the requirement for unique summary field names. Repeated names will be adjusted by appending \"(1)\" or similar after the field name.",
         "in": "query",
-        "required": false,
         "schema": {
           "type": "boolean",
           "default": false
