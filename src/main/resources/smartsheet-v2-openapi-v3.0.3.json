@@ -595,7 +595,11 @@
                       "properties": {
                         "data": {
                           "description": "List of Contacts",
-                          "$ref": "#/components/schemas/ContactArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/ContactArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -1901,7 +1905,11 @@
                       "properties": {
                         "members": {
                           "description": "List of Group Members",
-                          "$ref": "#/components/schemas/GroupMemberArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/GroupMemberArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -1952,7 +1960,11 @@
                   },
                   "ownerId": {
                     "description": "ownerId (optional)\n\nId of an admin user to whom the group ownership is transferred.\n",
-                    "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Int64"
+                      }
+                    ],
                     "example": 94094820842
                   }
                 }
@@ -2329,7 +2341,11 @@
                         },
                         "urlExpiresInMillis": {
                           "description": "Milliseconds before the URLs within imageUrls expire.",
-                          "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/Int64"
+                            }
+                          ]
                         }
                       }
                     }
@@ -2386,7 +2402,11 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ],
                                 "description": "The report's unique identifier.",
                                 "example": 987654321
                               },
@@ -4034,7 +4054,11 @@
                   },
                   "attachmentType": {
                     "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-                    "$ref": "#/components/schemas/AttachmentType_trello"
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/AttachmentType_trello"
+                      }
+                    ]
                   },
                   "description": {
                     "type": "string"
@@ -4215,7 +4239,11 @@
                       "properties": {
                         "data": {
                           "description": "list of attachments",
-                          "$ref": "#/components/schemas/AttachmentArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AttachmentArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -4393,7 +4421,11 @@
                             "properties": {
                               "id": {
                                 "description": "AutomationRule Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "action": {
                                 "description": "An [AutomationAction object](#section/AutomationAction-Object) containing information for this rule, such as type, recipients, and frequency."
@@ -4718,7 +4750,11 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ],
                                 "description": "Column Id."
                               },
                               "index": {
@@ -4730,7 +4766,11 @@
                                 "description": "Column title."
                               },
                               "type": {
-                                "$ref": "#/components/schemas/ColumnType",
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/ColumnType"
+                                  }
+                                ],
                                 "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                               },
                               "options": {
@@ -4886,7 +4926,11 @@
                           "type": "object",
                           "properties": {
                             "id": {
-                              "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/Int64"
+                                }
+                              ],
                               "description": "Column Id."
                             },
                             "index": {
@@ -4905,7 +4949,11 @@
                               "description": "Column title."
                             },
                             "type": {
-                              "$ref": "#/components/schemas/ColumnType",
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/ColumnType"
+                                }
+                              ],
                               "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                             },
                             "validation": {
@@ -5286,7 +5334,11 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5294,11 +5346,19 @@
                       },
                       "endColumnId": {
                         "description": "Defines ending edge of range when specifying one or more columns. Must be used with startColumnId.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "startColumnId": {
                         "description": "Defines beginning edge of range when specifying one or more columns. Must be used with endColumnId.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       }
                     }
                   },
@@ -5308,7 +5368,11 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5316,11 +5380,19 @@
                       },
                       "endRowId": {
                         "description": "Defines ending edge of range when specifying one or more rows. Must be used with startRowId.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "startRowId": {
                         "description": "Defines beginning edge of range when specifying one or more rows. Must be used with endRowId.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       }
                     }
                   },
@@ -5330,7 +5402,11 @@
                     "properties": {
                       "sourceSheetId": {
                         "description": "Sheet Id of source sheet.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "name": {
                         "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -5338,19 +5414,35 @@
                       },
                       "endColumnId": {
                         "description": "Defines ending edge of range when specifying one or more columns. Must be used with startColumnId. To specify an entire column, omit the startRowId and endRowId parameters.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "endRowId": {
                         "description": "Defines ending edge of range when specifying one or more rows. Must be used with startRowId. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "startColumnId": {
                         "description": "Defines beginning edge of range when specifying one or more columns. Must be used with endColumnId. To specify an entire column, omit the startRowId and endRowId parameters.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       },
                       "startRowId": {
                         "description": "Defines beginning edge of range when specifying one or more rows. Must be used with endRowId. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-                        "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                        "allOf": [
+                          {
+                            "$ref": "#/components/schemas/Int64"
+                          }
+                        ]
                       }
                     }
                   }
@@ -5563,7 +5655,11 @@
                       "properties": {
                         "data": {
                           "description": "list of discussions",
-                          "$ref": "#/components/schemas/DiscussionArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/DiscussionArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -5783,7 +5879,11 @@
                       "properties": {
                         "data": {
                           "description": "list of attachments",
-                          "$ref": "#/components/schemas/AttachmentArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AttachmentArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -5986,7 +6086,11 @@
                 "properties": {
                   "destinationId": {
                     "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
-                    "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Int64"
+                      }
+                    ]
                   },
                   "destinationType": {
                     "description": "Type of the destination container.",
@@ -6139,11 +6243,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Proof"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Proof"
                 }
               }
             }
@@ -6217,11 +6317,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Proof"
-                    }
-                  ]
+                  "$ref": "#/components/schemas/Proof"
                 }
               }
             }
@@ -6284,10 +6380,11 @@
                       "properties": {
                         "data": {
                           "description": "list of proof attachments",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Attachment"
-                          }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AttachmentArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -6421,10 +6518,11 @@
                       "properties": {
                         "data": {
                           "description": "list of proof discussions",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Discussion"
-                          }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/DiscussionArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -6697,11 +6795,19 @@
                           "properties": {
                             "id": {
                               "description": "Proof request Id.",
-                              "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/Int64"
+                                }
+                              ]
                             },
                             "proofId": {
                               "description": "Proof Id of the original proof.",
-                              "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/Int64"
+                                }
+                              ]
                             },
                             "sentBy": {
                               "description": "`User` object containing `name` and `email` of the sender.\n",
@@ -7095,11 +7201,19 @@
                             "properties": {
                               "id": {
                                 "description": "Row Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "sheetId": {
                                 "description": "Parent sheet Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "rowNumber": {
                                 "description": "Row number within the sheet.",
@@ -7278,7 +7392,11 @@
                             "properties": {
                               "id": {
                                 "description": "Row Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "rowNumber": {
                                 "description": "Row number within the sheet.",
@@ -7291,7 +7409,11 @@
                               },
                               "parentId": {
                                 "description": "The Id of the parent.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "expanded": {
                                 "description": "Indicates whether the row is expanded or collapsed.",
@@ -7612,11 +7734,19 @@
                       "properties": {
                         "id": {
                           "description": "Row Id.",
-                          "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/Int64"
+                            }
+                          ]
                         },
                         "sheetId": {
                           "description": "Parent sheet Id.",
-                          "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/Int64"
+                            }
+                          ]
                         },
                         "rowNumber": {
                           "description": "Row number within the sheet.",
@@ -7705,10 +7835,11 @@
                       "properties": {
                         "data": {
                           "description": "list of attachments",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Attachment"
-                          }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AttachmentArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -7972,7 +8103,6 @@
                               },
                               "modifiedBy": {
                                 "description": "User object containing the name and email of the user that made the change.",
-                                "type": "object",
                                 "allOf": [
                                   {
                                     "$ref": "#/components/schemas/NameAndEmail"
@@ -8053,10 +8183,11 @@
                       "properties": {
                         "data": {
                           "description": "list of discussions",
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Discussion"
-                          }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/DiscussionArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -8273,7 +8404,11 @@
                       "properties": {
                         "data": {
                           "description": "list of Sent Update Requests",
-                          "$ref": "#/components/schemas/SentUpdateRequestArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SentUpdateRequestArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -8528,7 +8663,11 @@
                       "properties": {
                         "data": {
                           "description": "List of Summary Fields",
-                          "$ref": "#/components/schemas/SummaryFieldArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/SummaryFieldArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -8577,11 +8716,19 @@
                   "properties": {
                     "id": {
                       "description": "SummaryField Id.",
-                      "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Int64"
+                        }
+                      ]
                     },
                     "contactOptions": {
                       "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-                      "$ref": "#/components/schemas/ContactOptionArray"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ContactOptionArray"
+                        }
+                      ]
                     },
                     "format": {
                       "description": "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it.",
@@ -8769,7 +8916,11 @@
                   "properties": {
                     "contactOptions": {
                       "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-                      "$ref": "#/components/schemas/ContactOptionArray"
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/ContactOptionArray"
+                        }
+                      ]
                     },
                     "format": {
                       "description": "The format descriptor. Only returned if the include query string parameter contains format and this column has a non-default format applied to it.",
@@ -8934,7 +9085,11 @@
                           "properties": {
                             "id": {
                               "description": "SummaryField Id.",
-                              "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                              "allOf": [
+                                {
+                                  "$ref": "#/components/schemas/Int64"
+                                }
+                              ]
                             },
                             "index": {
                               "description": "Field index or position. This number is zero-based.",
@@ -9054,23 +9209,43 @@
                                 "properties": {
                                   "id": {
                                     "description": "Id of the update request.",
-                                    "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                    "allOf": [
+                                      {
+                                        "$ref": "#/components/schemas/Int64"
+                                      }
+                                    ]
                                   },
                                   "createdAt": {
                                     "description": "The date and time for when this request was originally created. Read-only.",
-                                    "$ref": "#/components/schemas/DateUnion"
+                                    "allOf": [
+                                      {
+                                        "$ref": "#/components/schemas/DateUnion"
+                                      }
+                                    ]
                                   },
                                   "modifiedAt": {
                                     "description": "The date and time for when the last change was made to this request. Read-only.",
-                                    "$ref": "#/components/schemas/DateUnion"
+                                    "allOf": [
+                                      {
+                                        "$ref": "#/components/schemas/DateUnion"
+                                      }
+                                    ]
                                   },
                                   "schedule": {
                                     "description": "The schedule for which update requests are sent out.",
-                                    "$ref": "#/components/schemas/Schedule"
+                                    "allOf": [
+                                      {
+                                        "$ref": "#/components/schemas/Schedule"
+                                      }
+                                    ]
                                   },
                                   "sentBy": {
                                     "description": "`User` object containing `name` and `email` of the sender.\n",
-                                    "$ref": "#/components/schemas/NameAndEmail"
+                                    "allOf": [
+                                      {
+                                        "$ref": "#/components/schemas/NameAndEmail"
+                                      }
+                                    ]
                                   }
                                 }
                               }
@@ -10596,7 +10771,12 @@
             "$ref": "#/components/parameters/contentTypeHeader_FORM"
           },
           {
-            "$ref": "#/components/parameters/clientId",
+            "in": "query",
+            "name": "client_id",
+            "schema": {
+              "type": "string"
+            },
+            "description": "The client Id you obtained when you registered your app.",
             "required": true
           },
           {
@@ -10786,7 +10966,11 @@
                             "properties": {
                               "id": {
                                 "description": "User Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ],
                                 "readOnly": true,
                                 "example": 48569348493401200
                               },
@@ -11000,7 +11184,11 @@
                       "properties": {
                         "data": {
                           "description": "List of Groups",
-                          "$ref": "#/components/schemas/GroupArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/GroupArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11089,7 +11277,11 @@
                             "properties": {
                               "id": {
                                 "description": "Sheet Id.",
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               },
                               "name": {
                                 "description": "Sheet name.",
@@ -11103,7 +11295,11 @@
                               "ownerId": {
                                 "description": "Set to a static value of \"0\".",
                                 "example": 0,
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ]
                               }
                             }
                           }
@@ -11200,7 +11396,11 @@
                   },
                   "transferTo": {
                     "description": "(Required if user owns groups.)\n\n * The Id of the user to transfer ownership to.\n * If the user being removed owns groups, they are transferred\nto this user. If the user owns sheets, and **transferSheets** is true, the removed user's sheets are transferred to this user.\n",
-                    "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Int64"
+                      }
+                    ],
                     "example": 94094820842
                   }
                 }
@@ -11303,7 +11503,11 @@
                       "properties": {
                         "data": {
                           "description": "Updated User Properties",
-                          "$ref": "#/components/schemas/UserProfileImageResponseArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/UserProfileImageResponseArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11359,7 +11563,11 @@
                       "properties": {
                         "data": {
                           "description": "list of alternate emails",
-                          "$ref": "#/components/schemas/AlternateEmailArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AlternateEmailArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11414,7 +11622,11 @@
                       "properties": {
                         "data": {
                           "description": "Updated User alternate emails",
-                          "$ref": "#/components/schemas/AlternateEmailArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AlternateEmailArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11559,7 +11771,11 @@
                       "properties": {
                         "data": {
                           "description": "list of alternate email results",
-                          "$ref": "#/components/schemas/AlternateEmailArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/AlternateEmailArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11692,7 +11908,11 @@
                       "properties": {
                         "data": {
                           "description": "Updated User Properties",
-                          "$ref": "#/components/schemas/UserProfileImageResponseArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/UserProfileImageResponseArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -11799,7 +12019,11 @@
                       "properties": {
                         "data": {
                           "description": "list of Webhooks",
-                          "$ref": "#/components/schemas/WebhookArray"
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/WebhookArray"
+                            }
+                          ]
                         }
                       }
                     }
@@ -12565,7 +12789,11 @@
                             "type": "object",
                             "properties": {
                               "id": {
-                                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                                "allOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Int64"
+                                  }
+                                ],
                                 "description": "The folder's unique identifier.",
                                 "example": 987654321
                               },
@@ -13222,14 +13450,6 @@
           "type": "string",
           "example": "Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789"
         }
-      },
-      "clientId": {
-        "in": "query",
-        "name": "client_id",
-        "schema": {
-          "type": "string"
-        },
-        "description": "The client Id you obtained when you registered your app."
       },
       "columnIdInPath": {
         "name": "columnId",
@@ -14085,7 +14305,11 @@
         "properties": {
           "id": {
             "description": "Account Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "description": "Account name.",
@@ -14098,7 +14322,11 @@
         "properties": {
           "id": {
             "description": "AlternateEmail Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "example": 8150532427671428
           },
           "confirmed": {
@@ -14125,15 +14353,27 @@
         "properties": {
           "id": {
             "description": "Attachment Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "parentId": {
             "description": "The Id of the parent.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "attachmentType": {
             "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "$ref": "#/components/schemas/AttachmentType_trello"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentType_trello"
+              }
+            ]
           },
           "attachmentSubType": {
             "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
@@ -14302,18 +14542,30 @@
         "properties": {
           "id": {
             "description": "AutomationRule Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "action": {
             "description": "An [AutomationAction object](#section/AutomationAction-Object) containing information for this rule, such as type, recipients, and frequency."
           },
           "createdAt": {
             "description": "A timestamp of when the rule was originally added.",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "createdBy": {
             "description": "`User` object containing `name` and `email` of the creator of this rule.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "disabledReason": {
             "description": "Machine-readable reason a rule is disabled:\n* `APPROVAL_COLUMN_MISSING` This rule's approval status column has been deleted.\n\n* `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a dropdown column.\n\n* `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated actions,\nyou need to upgrade your organization account to a Business or Enterprise plan.\n\n* `COLUMN_MISSING` A column referenced by this rule has been deleted.\n\n* `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has been changed to an incompatible column type.\n\n* `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be able to receive\nnotifications based on this sheet's permission settings or this account's approved domain sharing list.\n\n* `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule have been deleted.\n",
@@ -14338,11 +14590,19 @@
           },
           "modifiedAt": {
             "description": "The datetime for when the change was made to the rule.",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "modifiedBy": {
             "description": "`User` object containing the `name` and `email` of the user that made the change.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "name": {
             "description": "Rule name as shown in the UI.",
@@ -14368,7 +14628,11 @@
           },
           "startingNumber": {
             "description": "The starting number for the auto-id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "suffix": {
             "description": "The suffix. Can include the date tokens:\n  * {DD}\n  * {MM}\n  * {YY}\n  * {YYYY}\n",
@@ -14381,7 +14645,11 @@
         "properties": {
           "rowId": {
             "description": "The Id of the row that failed. Applicable only to bulk row operations.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "nullable": true
           },
           "error": {
@@ -14416,11 +14684,19 @@
       },
       "BulkItemFailureResult": {
         "type": "object",
-        "$ref": "#/components/schemas/ResultPrefix",
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ResultPrefix"
+          }
+        ],
         "properties": {
           "failedItems": {
             "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
-            "$ref": "#/components/schemas/BulkItemFailureArray",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BulkItemFailureArray"
+              }
+            ],
             "nullable": true
           }
         }
@@ -14429,12 +14705,20 @@
         "type": "object",
         "properties": {
           "scopeObjectId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Id of the object that corresponds to scope.",
             "readOnly": true
           },
           "webhookId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Id of the corresponding webhook."
           },
           "events": {
@@ -14444,21 +14728,37 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Int64"
+                    }
+                  ],
                   "description": "Id of the object that corresponds to objectType. Omitted if objectType is cell."
                 },
                 "columnId": {
-                  "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Int64"
+                    }
+                  ],
                   "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
                   "nullable": true
                 },
                 "rowid": {
-                  "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Int64"
+                    }
+                  ],
                   "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
                   "nullable": true
                 },
                 "userid": {
-                  "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Int64"
+                    }
+                  ],
                   "description": "The user Id of the person who caused this event."
                 },
                 "objectType": {
@@ -14522,21 +14822,37 @@
         "type": "object",
         "properties": {
           "id": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Id of the object that corresponds to objectType. Omitted if objectType is cell."
           },
           "columnId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
             "nullable": true
           },
           "rowid": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
             "nullable": true
           },
           "userid": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "The user Id of the person who caused this event."
           },
           "objectType": {
@@ -14576,7 +14892,11 @@
         "type": "object",
         "properties": {
           "columnId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
@@ -14652,15 +14972,27 @@
         "properties": {
           "columnId": {
             "description": "Column Id for each item.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "rowId": {
             "description": "Row Id for each item.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sheetId": {
             "description": "Sheet Id for each item.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "objectValue": {
             "description": "The type of data returned depends on the cell type and the data in the cell.",
@@ -14728,7 +15060,11 @@
           "modifiedBy": {
             "description": "User object containing the name and email of the user that made the change.",
             "type": "object",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           }
         }
       },
@@ -14736,15 +15072,27 @@
         "type": "object",
         "properties": {
           "columnId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Column Id of the linked cell."
           },
           "rowId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Row Id of the linked cell."
           },
           "sheetId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Sheet Id of the sheet that the linked cell belongs to."
           },
           "sheetName": {
@@ -14780,7 +15128,11 @@
           },
           "sheetId": {
             "description": "Sheet Id from which the cell data originates.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "cellData": {
             "$ref": "#/components/schemas/CellDataItem"
@@ -14797,7 +15149,11 @@
         "type": "object",
         "properties": {
           "columnId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
@@ -14837,39 +15193,75 @@
         "oneOf": [
           {
             "description": "Object representing a calculated datetime",
-            "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a checkbox",
-            "$ref": "#/components/schemas/CheckboxObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CheckboxObjectValue"
+              }
+            ]
           },
           {
             "description": "The list of contacts",
-            "$ref": "#/components/schemas/ContactObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a date",
-            "$ref": "#/components/schemas/DateObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a datetime",
-            "$ref": "#/components/schemas/DatetimeObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DatetimeObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a duration in days",
-            "$ref": "#/components/schemas/DurationObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DurationObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of Contacts",
-            "$ref": "#/components/schemas/MultiContactObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MultiContactObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of strings to choose from",
-            "$ref": "#/components/schemas/MultiPicklistObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MultiPicklistObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of references to rows on which the current row depends",
-            "$ref": "#/components/schemas/PredecessorListObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PredecessorListObjectValue"
+              }
+            ]
           }
         ]
       },
@@ -14906,11 +15298,19 @@
           },
           "reportId": {
             "description": "Report Id denoting container source, if applicable.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sheetId": {
             "description": "Sheet Id denoting container source, if applicable.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "axes": {
             "type": "array",
@@ -14990,7 +15390,11 @@
             "type": "array",
             "items": {
               "description": "Defines a block of cells in a sheet.",
-              "$ref": "#/components/schemas/SelectionRange"
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/SelectionRange"
+                }
+              ]
             }
           },
           "series": {
@@ -15186,7 +15590,11 @@
           },
           "contactOptions": {
             "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**.",
-            "$ref": "#/components/schemas/ContactOptionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactOptionArray"
+              }
+            ]
           },
           "description": {
             "type": "string",
@@ -15205,7 +15613,11 @@
             "description": "Indicates whether the column is hidden."
           },
           "id": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "Column Id."
           },
           "index": {
@@ -15236,7 +15648,11 @@
             "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
           },
           "systemColumnType": {
-            "$ref": "#/components/schemas/ColumnType_system",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType_system"
+              }
+            ],
             "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
           },
           "tags": {
@@ -15267,7 +15683,11 @@
             "description": "Column title."
           },
           "type": {
-            "$ref": "#/components/schemas/ColumnType",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
             "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
           },
           "validation": {
@@ -15304,7 +15724,11 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Int64"
+                    }
+                  ],
                   "description": "Column Id."
                 },
                 "index": {
@@ -15320,7 +15744,11 @@
                   "description": "Column title."
                 },
                 "type": {
-                  "$ref": "#/components/schemas/ColumnType",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ColumnType"
+                    }
+                  ],
                   "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                 },
                 "validation": {
@@ -15388,7 +15816,11 @@
             "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
           },
           "systemColumnType": {
-            "$ref": "#/components/schemas/ColumnType_system",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType_system"
+              }
+            ],
             "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)"
           },
           "validation": {
@@ -15461,7 +15893,11 @@
             "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
           },
           "systemColumnType": {
-            "$ref": "#/components/schemas/ColumnType_system",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType_system"
+              }
+            ],
             "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)"
           },
           "validation": {
@@ -15509,22 +15945,38 @@
         "properties": {
           "attachments": {
             "description": "Array of attachments on comments.",
-            "$ref": "#/components/schemas/AttachmentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentArray"
+              }
+            ]
           },
           "createdAt": {
             "$ref": "#/components/schemas/DateUnion"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this comment.",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "discussionId": {
             "description": "Discussion Id of discussion that contains comment.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "id": {
             "description": "Comment Id.",
-            "$ref": "#/components/schemas/Int64"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "modifiedAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -15546,7 +15998,11 @@
         "properties": {
           "comment": {
             "description": "Comment.",
-            "$ref": "#/components/schemas/CommentText"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommentText"
+              }
+            ]
           }
         }
       },
@@ -15638,7 +16094,11 @@
         "properties": {
           "destinationId": {
             "description": "The Id of the destination container (when copying or moving a sheet or a folder). Required if destinationType is \"folder\" or \"workspace\". If destinationType is \"home\", this value must be null.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "destinationType": {
             "description": "Type of the destination container.",
@@ -15661,7 +16121,11 @@
         "properties": {
           "sheetId": {
             "description": "The Id of the destination sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -15680,7 +16144,11 @@
             "properties": {
               "sheetId": {
                 "description": "The Id of the destination sheet.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ]
               }
             }
           }
@@ -15691,7 +16159,11 @@
         "properties": {
           "destinationSheetId": {
             "description": "The Id of the destination sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "rowMappings": {
             "$ref": "#/components/schemas/RowMappingArray"
@@ -15703,7 +16175,11 @@
         "properties": {
           "columnId": {
             "description": "Column Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "operator": {
             "description": "Operator used to filter column values.",
@@ -15757,15 +16233,27 @@
         "properties": {
           "endColumnId": {
             "description": "Defines ending edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "endRowId": {
             "description": "Defines ending edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "id": {
             "description": "Cross-sheet reference Id, guaranteed unique within referencing sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "description": "Friendly name of reference. Auto-generated unless specified in Create Cross-sheet References.",
@@ -15773,11 +16261,19 @@
           },
           "startColumnId": {
             "description": "Defines beginning edge of range when specifying one or more columns. To specify an entire column, omit the startRowId and endRowId parameters.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "startRowId": {
             "description": "Defines beginning edge of range when specifying one or more rows. To specify an entire row, omit the startColumnId and endColumnId parameters.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "status": {
             "description": "Status of request:\n * 'BLOCKED' - A reference is downstream of a circular issue.\n * 'BROKEN' - The data source location (column, row or sheet) was deleted.\n * 'CIRCULAR' - The formula reference is self referencing and cannot be\nresolved.\n * 'DISABLED' - Updating the reference is temporarily disabled due to\nmaintenance.\n * 'INVALID/UNKNOWN' - The reference is new and had not been validated.\n * 'NOT_SHARED' - No common shared users.\n * 'OK' - The reference is in a good state.\n",
@@ -15794,7 +16290,11 @@
           },
           "sourceSheetId": {
             "description": "Sheet Id of source sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -15883,15 +16383,27 @@
           },
           "id": {
             "description": "Discussion Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "comments": {
             "description": "Array of comments in discussion. Only returned if the include query string parameter contains comments.",
-            "$ref": "#/components/schemas/CommentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CommentArray"
+              }
+            ]
           },
           "commentAttachments": {
             "description": "Array of attachments on discussion comments. Only returned if the include query string parameter contains attachments.",
-            "$ref": "#/components/schemas/AttachmentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentArray"
+              }
+            ]
           },
           "commentCount": {
             "description": "Number of comments in the discussion.",
@@ -15899,18 +16411,30 @@
           },
           "createdBy": {
             "description": "`User` object containing `name` and `email` of the user who created the discussion.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "lastCommentedAt": {
             "$ref": "#/components/schemas/DateUnion"
           },
           "lastCommentedUser": {
             "description": "`User` object containing `name` and `email` of the user who last commented on the discussion.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "parentId": {
             "description": "The Id of the associated row or sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "parentType": {
             "description": "Type of parent object.",
@@ -16039,7 +16563,11 @@
           },
           "sendTo": {
             "description": "Array of recipients.",
-            "$ref": "#/components/schemas/EmailOrGroupIdArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailOrGroupIdArray"
+              }
+            ]
           },
           "subject": {
             "description": "The subject of the email.",
@@ -16082,7 +16610,11 @@
             "properties": {
               "groupId": {
                 "description": "The Id of a group recipient.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ]
               }
             }
           }
@@ -16146,12 +16678,20 @@
           },
           "userId": {
             "description": "User assumed as the one who initiated the event. Usually the userId property and the requestUserId property (below) have the same value. However, if the request is an API call with Assume-User header then the userId property identifies the user whose email matches the value in the Assume-User header.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "example": 123457654321
           },
           "requestUserId": {
             "description": "User whose authentication credential is embedded in the request that initiated the event. For example, if the request is an API call with an access token then requestUserId identifies the user whose data can be accessed via the access token (i.e., the user who authorized the creation of the access token). On the other hand, if the request comes from a UI session, then requestUserId identifies the user logged-in to the UI.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "example": 133445566778
           },
           "accessTokenName": {
@@ -16176,7 +16716,11 @@
         "type": "array",
         "items": {
           "description": "An Event object for event reporting.",
-          "$ref": "#/components/schemas/Event"
+          "allOf": [
+            {
+              "$ref": "#/components/schemas/Event"
+            }
+          ]
         }
       },
       "Favorite": {
@@ -16184,7 +16728,11 @@
         "properties": {
           "objectId": {
             "description": "The Id of the favorited item. If type is template, only private sheet-type template Id is allowed.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "type": "string",
@@ -16211,7 +16759,11 @@
         "properties": {
           "id": {
             "description": "Filters Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "excludeSelected": {
             "description": "If true, rows containing cells matching the values or criteria items are excluded instead of included.",
@@ -16242,7 +16794,11 @@
                   "properties": {
                     "columnId": {
                       "description": "Column Id.",
-                      "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                      "allOf": [
+                        {
+                          "$ref": "#/components/schemas/Int64"
+                        }
+                      ]
                     },
                     "operator": {
                       "description": "Operator used to filter column values.",
@@ -16318,7 +16874,11 @@
         "properties": {
           "id": {
             "description": "Folder Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked the folder as a favorite in their \"Home\" tab (value = true).",
@@ -16522,7 +17082,11 @@
         "properties": {
           "id": {
             "description": "Group Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "description": "Group name.",
@@ -16539,7 +17103,11 @@
           },
           "ownerId": {
             "description": "Group owner's user Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "createdAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -16560,7 +17128,11 @@
         "properties": {
           "id": {
             "description": "Group member's user Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "email": {
             "description": "Group member's email address.",
@@ -16612,15 +17184,27 @@
         "type": "object",
         "properties": {
           "reportId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "If non-null, this hyperlink is a link to the report with this Id."
           },
           "sheetId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "If non-null, this hyperlink is a link to the sheet with this Id."
           },
           "sightId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "If non-null, this hyperlink is a link to the dashboard with this Id."
           },
           "url": {
@@ -16684,7 +17268,11 @@
           },
           "urlExpiresInMillis": {
             "description": "Milliseconds before the URLs within imageUrls expire.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -16902,39 +17490,75 @@
         "oneOf": [
           {
             "description": "Object representing a calculated datetime",
-            "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AbstractDatetimeObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a checkbox",
-            "$ref": "#/components/schemas/CheckboxObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CheckboxObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a Contact",
-            "$ref": "#/components/schemas/ContactObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a date",
-            "$ref": "#/components/schemas/DateObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a datetime",
-            "$ref": "#/components/schemas/DatetimeObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DatetimeObjectValue"
+              }
+            ]
           },
           {
             "description": "Object representing a duration in days",
-            "$ref": "#/components/schemas/DurationObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DurationObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of Contacts",
-            "$ref": "#/components/schemas/MultiContactObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MultiContactObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of strings to choose from",
-            "$ref": "#/components/schemas/MultiPicklistObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MultiPicklistObjectValue"
+              }
+            ]
           },
           {
             "description": "Object containing a list of references to rows on which the current row depends",
-            "title": "#/components/schemas/PredecessorListObjectValue"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PredecessorListObjectValue"
+              }
+            ]
           }
         ]
       },
@@ -16969,7 +17593,11 @@
         "properties": {
           "rowId": {
             "description": "The Id of the predecessor row.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "description": "Type of the predecessor:\n * FF (Finish-to-Finish) - finish at the same time the predecessor finishes.\n * FS (Finish-to-Start) - start after the predecessor finishes.\n * SF (Start-to-Finish) - finish before the predecessor starts.\n * SS (Start-to-Start) - start at the same time the predecessor starts.\n",
@@ -17128,11 +17756,19 @@
         "properties": {
           "id": {
             "description": "Proof Id of the proof version.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "originalId": {
             "description": "Proof Id of the original proof version.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "description": "Proof name. This is the same as primary column value. If the primary column value is empty, name is empty.",
@@ -17162,7 +17798,11 @@
           },
           "lastUpdatedBy": {
             "description": "`User` object containing `name` and `email` of the user who last updated the proof.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "isCompleted": {
             "description": "Indicates whether the proof is completed.",
@@ -17170,11 +17810,19 @@
           },
           "attachments": {
             "description": "Array of Attachment objects. Only returned if the include query string parameter contains attachments.",
-            "$ref": "#/components/schemas/AttachmentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentArray"
+              }
+            ]
           },
           "discussions": {
             "description": "Array of Discussion objects. Only returned if the include query string parameter contains discussions.",
-            "$ref": "#/components/schemas/DiscussionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiscussionArray"
+              }
+            ]
           }
         }
       },
@@ -17188,15 +17836,27 @@
         "properties": {
           "id": {
             "description": "Proof request Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "proofId": {
             "description": "Proof Id of the original proof.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "sentAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -17273,7 +17933,11 @@
             "properties": {
               "groupId": {
                 "description": "The Id of a group recipient.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ],
                 "example": 2258118617917316
               }
             }
@@ -17293,17 +17957,29 @@
             "properties": {
               "sheets": {
                 "description": "Array of Sheet objects (containing just the sheet Id) of any sheets that the requester has access to that make up the report.\n",
-                "$ref": "#/components/schemas/SheetArray"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SheetArray"
+                  }
+                ]
               },
               "workspaces": {
                 "description": "Array of Workspace objects (containing just the workspace Id) that the requester has access to that make up the report.\n",
-                "$ref": "#/components/schemas/WorkspaceArray"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/WorkspaceArray"
+                  }
+                ]
               }
             }
           },
           "sourceSheets": {
             "description": "An array of Sheet objects (without rows), representing the sheets that rows in the report originated from. Only included in the Get Report response if the include parameter specifies sourceSheets.",
-            "$ref": "#/components/schemas/SheetArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SheetArray"
+              }
+            ]
           },
           "isSummaryReport": {
             "type": "boolean",
@@ -17326,7 +18002,11 @@
         "type": "object",
         "properties": {
           "virtualColumnId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet."
           }
         }
@@ -17341,7 +18021,11 @@
         "properties": {
           "virtualId": {
             "description": "The virtual Id of this report column.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sheetNameColumn": {
             "description": "Returns true only for the special \"Sheet Name\" report column.",
@@ -17384,7 +18068,11 @@
         "type": "object",
         "properties": {
           "sheetId": {
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "description": "The Id of the sheet from which the row originates."
           }
         }
@@ -17401,7 +18089,11 @@
           },
           "reportId": {
             "description": "Report Id denoting container source.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "htmlContent": {
             "description": "HTMl snippet to render report.",
@@ -17430,7 +18122,11 @@
             "properties": {
               "failedItems": {
                 "description": "Array of BulkItemFailure objects which represents the items that failed to be added or updated. See [Partial Success](/partial-success) for more information. Applicable only for bulk operations that support partial success.",
-                "$ref": "#/components/schemas/BulkItemFailureArray",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/BulkItemFailureArray"
+                  }
+                ],
                 "nullable": true
               }
             }
@@ -17487,30 +18183,54 @@
         "properties": {
           "id": {
             "description": "Row Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sheetId": {
             "description": "Parent sheet Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "siblingId": {
             "description": "Sibling Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
           },
           "attachments": {
             "description": "Attachments on row. Only returned if the include query string parameter contains attachments.",
-            "$ref": "#/components/schemas/AttachmentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentArray"
+              }
+            ]
           },
           "cells": {
             "description": "Cells belonging to the row.",
-            "$ref": "#/components/schemas/CellArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CellArray"
+              }
+            ]
           },
           "columns": {
             "description": "Columns of row. Only returned if the include query string parameter contains columns.",
-            "$ref": "#/components/schemas/ColumnArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnArray"
+              }
+            ]
           },
           "conditionalFormat": {
             "description": "Describes this row's conditional format. Only returned if the include query string parameter contains format and this row has a conditional format applied.",
@@ -17522,15 +18242,27 @@
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this row.",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "discussions": {
             "description": "Discussions on the row. Only returned if the include query string parameter contains discussions.",
-            "$ref": "#/components/schemas/DiscussionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiscussionArray"
+              }
+            ]
           },
           "proof": {
             "description": "Object containing zero or more media items, including images, videos, and documents, for review, editing, or approval.",
-            "$ref": "#/components/schemas/Proof"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Proof"
+              }
+            ]
           },
           "expanded": {
             "description": "Indicates whether the row is expanded or collapsed.",
@@ -17562,7 +18294,11 @@
           },
           "modifiedBy": {
             "description": "User object containing name and email of the last person to modify this row.",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "permaLink": {
             "description": "URL that represents a direct link to the row in Smartsheet. Only returned if the include query string parameter contains rowPermalink.",
@@ -17619,11 +18355,19 @@
         "properties": {
           "from": {
             "description": "Row Id in the source sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "to": {
             "description": "Row Id in the destination sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -17692,19 +18436,35 @@
           },
           "endAt": {
             "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "lastSentAt": {
             "description": "The date and time for when the last request was sent.",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "nextSendAt": {
             "description": "The date and time for when the next request is scheduled to send.",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "startAt": {
             "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601 date and\ntime with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time with\nno offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           }
         }
       },
@@ -17713,11 +18473,19 @@
         "properties": {
           "sheets": {
             "description": "Array of Sheet objects (containing just the sheet Id) of any sheets that the requester has access to that make up the report.\n",
-            "$ref": "#/components/schemas/SheetArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SheetArray"
+              }
+            ]
           },
           "workspaces": {
             "description": "Array of Workspace objects (containing just the workspace Id) that the requester has access to that make up the report.\n",
-            "$ref": "#/components/schemas/WorkspaceArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WorkspaceArray"
+              }
+            ]
           }
         }
       },
@@ -17745,11 +18513,19 @@
         "properties": {
           "objectId": {
             "description": "Search result object Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "parentObjectId": {
             "description": "Search result parent object Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "contextData": {
             "description": "Additional info on search result context.",
@@ -17786,19 +18562,35 @@
         "properties": {
           "sourceColumnId1": {
             "description": "Defines beginning edge of range when specifying one or more columns.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sourceColumnId2": {
             "description": "Defines ending edge of range when specifying one or more columns.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sourceRowId1": {
             "description": "Defines beginning edge of range when specifying one or more rows.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sourceRowId2": {
             "description": "Defines ending edge of range when specifying one or more rows.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -17807,7 +18599,11 @@
         "properties": {
           "id": {
             "description": "The Id of the sent update request.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "columnIds": {
             "description": "The Ids of columns included in the request.",
@@ -17825,7 +18621,11 @@
           },
           "updateRequestId": {
             "description": "The Id of the originating update request.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "includeAttachments": {
             "description": "Indicates whether the attachments were included in the email.",
@@ -17841,15 +18641,27 @@
           },
           "sentAt": {
             "description": "The date and time for when the sent update request was sent to the recipient.",
-            "$ref": "#/components/schemas/DateUnion"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DateUnion"
+              }
+            ]
           },
           "sentBy": {
             "description": "`User` object containing `name` and `email` of the sender.\n",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "sentTo": {
             "description": "Recipient object.",
-            "$ref": "#/components/schemas/EmailOrGroupId"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailOrGroupId"
+              }
+            ]
           },
           "status": {
             "description": "The status of the sent update request.",
@@ -17896,11 +18708,19 @@
           },
           "groupId": {
             "description": "Group Id if the share is a group share, else null.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "userId": {
             "description": "User Id if the share is a user share, else null.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "description": "The type of this share. One of the following values: GROUP or USER.\n",
@@ -17961,22 +18781,38 @@
         "properties": {
           "id": {
             "description": "Sheet Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "fromId": {
             "description": "The Id of the template from which to create the sheet. This attribute can be specified in a request, but is never present in a response.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "ownerId": {
             "description": "User Id of the sheet owner.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
           },
           "attachments": {
             "description": "Array of Attachment objects.\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **attachments**.\n",
-            "$ref": "#/components/schemas/AttachmentArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentArray"
+              }
+            ]
           },
           "cellImageUploadEnabled": {
             "description": "The sheet is enabled for cell images to be uploaded.\n",
@@ -17990,7 +18826,11 @@
           },
           "crossSheetReferences": {
             "description": "Array of CrossSheetReference objects.\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **crossSheetReferences**.\n",
-            "$ref": "#/components/schemas/CrossSheetReferenceArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CrossSheetReferenceArray"
+              }
+            ]
           },
           "dependenciesEnabled": {
             "description": "Indicates whether dependencies are enabled.",
@@ -17998,7 +18838,11 @@
           },
           "discussions": {
             "description": "Array of Discussion objects\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **discussions**.\n",
-            "$ref": "#/components/schemas/DiscussionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DiscussionArray"
+              }
+            ]
           },
           "effectiveAttachmentOptions": {
             "description": "Array of enum strings (see [Attachment.attachmentType](../../tag/attachmentsDescription) indicating the allowable attachment options for the current user and sheet.\n",
@@ -18041,7 +18885,11 @@
           },
           "projectSettings": {
             "description": "Represents the project settings dependencies for a specific sheet. Project settings may be updated on sheets that the user has editor access.",
-            "$ref": "#/components/schemas/ProjectSettings"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ProjectSettings"
+              }
+            ]
           },
           "readOnly": {
             "description": "Returned only if the sheet belongs to an expired trial (value = **true**).",
@@ -18076,7 +18924,11 @@
             "properties": {
               "fields": {
                 "description": "Array of summary (or metadata) fields defined on the sheet.",
-                "$ref": "#/components/schemas/SummaryFieldArray"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SummaryFieldArray"
+                  }
+                ]
               }
             }
           },
@@ -18385,7 +19237,11 @@
         "properties": {
           "fields": {
             "description": "Array of summary (or metadata) fields defined on the sheet.",
-            "$ref": "#/components/schemas/SummaryFieldArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SummaryFieldArray"
+              }
+            ]
           }
         }
       },
@@ -18402,7 +19258,11 @@
                   "$ref": "#/components/schemas/AutoNumberFormat"
                 },
                 "contactOptions": {
-                  "$ref": "#/components/schemas/ContactOptionArray",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ContactOptionArray"
+                    }
+                  ],
                   "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
                 },
                 "options": {
@@ -18421,7 +19281,11 @@
                   "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
                 },
                 "systemColumnType": {
-                  "$ref": "#/components/schemas/ColumnType_system",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ColumnType_system"
+                    }
+                  ],
                   "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
                 },
                 "title": {
@@ -18429,7 +19293,11 @@
                   "description": "Column title."
                 },
                 "type": {
-                  "$ref": "#/components/schemas/ColumnType",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ColumnType"
+                    }
+                  ],
                   "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
                 },
                 "width": {
@@ -18450,7 +19318,11 @@
         "properties": {
           "fromId": {
             "description": "Template Id from which to create the sheet.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "type": "string"
@@ -18620,7 +19492,11 @@
           },
           "widgets": {
             "readOnly": true,
-            "$ref": "#/components/schemas/WidgetArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WidgetArray"
+              }
+            ]
           },
           "workspace": {
             "$ref": "#/components/schemas/Workspace"
@@ -18638,7 +19514,11 @@
         "properties": {
           "id": {
             "description": "Dashboard Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "readOnly": true
           },
           "accessLevel": {
@@ -18709,7 +19589,11 @@
         "properties": {
           "sortCriteria": {
             "description": "Specifies sort order. Array is in priority order.",
-            "$ref": "#/components/schemas/SortCriterionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SortCriterionArray"
+              }
+            ]
           }
         }
       },
@@ -18718,7 +19602,11 @@
         "properties": {
           "id": {
             "description": "The Id of the dashboard, report, sheet, or template from which the enclosing dashboard, report, sheet, or template was created.\n",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
@@ -18760,11 +19648,19 @@
         "properties": {
           "id": {
             "description": "SummaryField Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "contactOptions": {
             "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column type must be CONTACT_LIST.",
-            "$ref": "#/components/schemas/ContactOptionArray"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ContactOptionArray"
+              }
+            ]
           },
           "createdAt": {
             "$ref": "#/components/schemas/DateUnion"
@@ -18772,7 +19668,11 @@
           "createdBy": {
             "description": "User object containing name and email of the creator of this summary field.",
             "type": "object",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "displayValue": {
             "description": "Visual representation of cell contents, as presented to the user in the UI.",
@@ -18809,7 +19709,11 @@
           },
           "modifiedBy": {
             "description": "User object containing name and email of the user who most recently modified this summary field.",
-            "$ref": "#/components/schemas/NameAndEmail"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NameAndEmail"
+              }
+            ]
           },
           "objectValue": {
             "$ref": "#/components/schemas/CellObjectValue"
@@ -18850,7 +19754,11 @@
         "properties": {
           "id": {
             "description": "Template Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "description": "Type of template. Only applicable to public templates.",
@@ -19072,7 +19980,11 @@
           },
           "expires_in": {
             "description": "Number of seconds token is valid once issued.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "default": 604799,
             "readOnly": true
           },
@@ -19102,23 +20014,43 @@
             "properties": {
               "id": {
                 "description": "Id of the update request.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}]
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ]
               },
               "createdAt": {
                 "description": "The date and time for when this request was originally created. Read-only.",
-                "$ref": "#/components/schemas/DateUnion"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DateUnion"
+                  }
+                ]
               },
               "modifiedAt": {
                 "description": "The date and time for when the last change was made to this request. Read-only.",
-                "$ref": "#/components/schemas/DateUnion"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/DateUnion"
+                  }
+                ]
               },
               "schedule": {
                 "description": "The schedule for which update requests are sent out.",
-                "$ref": "#/components/schemas/Schedule"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Schedule"
+                  }
+                ]
               },
               "sentBy": {
                 "description": "`User` object containing `name` and `email` of the sender.\n",
-                "$ref": "#/components/schemas/NameAndEmail"
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/NameAndEmail"
+                  }
+                ]
               }
             }
           }
@@ -19141,7 +20073,11 @@
           },
           "attachmentType": {
             "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "$ref": "#/components/schemas/AttachmentType_trello"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentType_trello"
+              }
+            ]
           },
           "description": {
             "type": "string"
@@ -19160,7 +20096,11 @@
         "properties": {
           "id": {
             "description": "User Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "readOnly": true
           },
           "admin": {
@@ -19249,7 +20189,11 @@
         "properties": {
           "id": {
             "description": "Current user's Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "example": 48569348493401200
           },
           "account": {
@@ -19257,7 +20201,11 @@
             "properties": {
               "id": {
                 "description": "Account Id.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ],
                 "example": 122454719915908
               },
               "name": {
@@ -19413,7 +20361,11 @@
           },
           "id": {
             "description": "User Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
             "readOnly": true,
             "example": 48569348493401200
           }
@@ -19493,7 +20445,11 @@
             "properties": {
               "id": {
                 "description": "Webhook Id.",
-                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ],
                 "readOnly": true,
                 "example": 8444254503626628
               },
@@ -19504,7 +20460,11 @@
                 "example": 555555
               },
               "scopeObjectId": {
-                "allOf":[{"$ref": "#/components/schemas/Int64"}],
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/Int64"
+                  }
+                ],
                 "description": "Id of the object that is subscribed to. Specified when a webhook is created and cannot be changed.",
                 "example": 3285357287499652
               },
@@ -19620,7 +20580,11 @@
           },
           "sheetId": {
             "description": "Sheet Id from which the cell data originates.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "cellData": {
             "type": "array",
@@ -19648,7 +20612,11 @@
           },
           "reportId": {
             "description": "Report Id denoting container source.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "htmlContent": {
             "description": "HTMl snippet to render report.",
@@ -19670,7 +20638,11 @@
         "properties": {
           "id": {
             "description": "Widget Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "type": {
             "description": "Type of widget.",
@@ -19744,7 +20716,11 @@
           },
           "version": {
             "description": "Widget version number.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "viewMode": {
             "description": "Indicates the content layout. Must use a query parameter of level=2 to see this information.\n * 1 - centered\n * 2 - left aligned\n",
@@ -19790,19 +20766,35 @@
           },
           "folderId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the folder to open.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "reportId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the report to open.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sheetId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the sheet to open.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "sightId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the dashboard to open.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "url": {
             "description": "If interactionType = WEB this is the URL to launch.",
@@ -19810,7 +20802,11 @@
           },
           "workspaceId": {
             "description": "If interactionType = SMARTSHEET_ITEM this is the workspace to open.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           }
         }
       },
@@ -19820,7 +20816,11 @@
         "properties": {
           "id": {
             "description": "Workspace Id.",
-            "allOf":[{"$ref": "#/components/schemas/Int64"}]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "name": {
             "description": "Workspace name.",
