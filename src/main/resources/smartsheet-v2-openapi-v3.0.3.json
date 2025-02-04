@@ -4904,7 +4904,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1columns/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/ColumnObject"
               }
             }
           }
