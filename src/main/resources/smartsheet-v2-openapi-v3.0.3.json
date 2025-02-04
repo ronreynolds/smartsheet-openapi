@@ -1325,10 +1325,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/Folder"
-                          }
+                          "$ref": "#/components/schemas/FolderArray"
                         }
                       }
                     }
@@ -1681,34 +1678,19 @@
                   "type": "object",
                   "properties": {
                     "folders": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Folder"
-                      }
+                      "$ref": "#/components/schemas/FolderArray"
                     },
                     "reports": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Report"
-                      }
+                      "$ref": "#/components/schemas/ReportArray"
                     },
                     "sheets": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Sheet"
-                      }
+                      "$ref": "#/components/schemas/SheetArray"
                     },
                     "sights": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Sight"
-                      }
+                      "$ref": "#/components/schemas/SightArray"
                     },
                     "templates": {
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/Template"
-                      }
+                      "$ref": "#/components/schemas/TemplateArray"
                     }
                   }
                 }
@@ -3615,7 +3597,8 @@
                       "$ref": "#/components/schemas/Sheet"
                     },
                     {
-                      "$ref": "#/components/schemas/SheetVersion"                    }
+                      "$ref": "#/components/schemas/SheetVersion"
+                    }
                   ]
                 },
                 "example": {
@@ -4711,77 +4694,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "title": {
-                    "type": "string",
-                    "description": "Column title."
-                  },
-                  "type": {
-                    "$ref": "#/components/schemas/ColumnType"
-                  },
-                  "formula": {
-                    "type": "string",
-                    "description": "The formula for a column, if set, for instance **=data@row**."
-                  },
-                  "hidden": {
-                    "type": "boolean",
-                    "description": "Indicates whether the column is hidden."
-                  },
-                  "index": {
-                    "type": "integer",
-                    "description": "Column index or position. This number is zero-based."
-                  },
-                  "autoNumberFormat": {
-                    "$ref": "#/components/schemas/AutoNumberFormat"
-                  },
-                  "contactOptions": {
-                    "$ref": "#/components/schemas/ContactOption"
-                  },
-                  "description": {
-                    "type": "string",
-                    "description": "Column description."
-                  },
-                  "format": {
-                    "type": "string",
-                    "description": "The format descriptor (see [Formatting](../#section/API-Basics/Formatting)). Only returned if the **include** query string parameter contains **format** and this column has a non-default format applied to it."
-                  },
-                  "locked": {
-                    "type": "boolean",
-                    "description": "Indicates whether the column is locked. In a response, a value of **true** indicates that the column has been locked by the sheet owner or the admin."
-                  },
-                  "lockedForUser": {
-                    "type": "boolean",
-                    "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
-                  },
-                  "options": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "description": "Array of the options available for the column."
-                    }
-                  },
-                  "symbol": {
-                    "type": "string",
-                    "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                  },
-                  "systemColumnType": {
-                    "$ref": "#/components/schemas/ColumnType_system",
-                    "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)"
-                  },
-                  "validation": {
-                    "type": "boolean",
-                    "description": "Indicates whether validation has been enabled for the column (value = **true**)"
-                  },
-                  "version": {
-                    "type": "integer",
-                    "description": "Read only. The level of the column type. Each element in the array is set to one of the following values:\n * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST\n * **1**: MULTI_CONTACT_LIST\n * **2**: MULTI_PICKLIST\n\nSee [Versioning and Changes](#section/API-Basics/Versioning-and-Changes).\n"
-                  },
-                  "width": {
-                    "type": "integer",
-                    "description": "Display width of the column in pixels."
-                  }
-                }
+                "$ref": "#/components/schemas/ColumnObject"
               }
             }
           }
@@ -4981,7 +4894,10 @@
                               "description": "Column index or position. This number is zero-based."
                             },
                             "options": {
-                              "$ref": "#/components/schemas/StringArray",
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
                               "description": "Array of the options available for the column."
                             },
                             "title": {
@@ -6303,7 +6219,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D/get/responses/200/content/application~1json/schema/allOf/0"
+                      "$ref": "#/components/schemas/Proof"
                     }
                   ]
                 }
@@ -6428,7 +6344,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Attachment"
                         }
                       }
                     }
@@ -6577,7 +6493,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1proofs~1%7BproofId%7D~1discussions/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Discussion"
                         }
                       }
                     }
@@ -7204,35 +7120,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "type": "object",
-                                  "properties": {
-                                    "columnId": {
-                                      "$ref": "#/components/schemas/Int64",
-                                      "description": "The Id of the column that the cell is located in."
-                                    },
-                                    "columnType": {
-                                      "type": "string",
-                                      "description": "Only returned if the include query string parameter contains **columnType**."
-                                    },
-                                    "value": {
-                                      "anyOf": [
-                                        {
-                                          "type": "string"
-                                        },
-                                        {
-                                          "type": "number"
-                                        },
-                                        {
-                                          "type": "boolean"
-                                        }
-                                      ],
-                                      "description": "A string, number, or a Boolean value -- depending on the cell type and the data in the cell. Cell values larger than 4000 characters are silently truncated. An empty cell returns no value."
-                                    },
-                                    "displayValue": {
-                                      "type": "string",
-                                      "description": "Visual representation of cell contents, as presented to the user in the UI."
-                                    }
-                                  }
+                                  "$ref": "#/components/schemas/CellLite"
                                 }
                               },
                               "version": {
@@ -7312,7 +7200,10 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Int64Array"
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Int64"
+                          }
                         }
                       }
                     }
@@ -7416,7 +7307,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/1/properties/result/items/properties/cells/items"
+                                  "$ref": "#/components/schemas/CellLite"
                                 }
                               },
                               "version": {
@@ -7563,16 +7454,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "type": "object",
-                "properties": {
-                  "rowIds": {
-                    "description": "The Ids of the rows to move or copy from the source sheet.",
-                    "$ref": "#/components/schemas/Int64Array"
-                  },
-                  "to": {
-                    "$ref": "#/components/schemas/CopyOrMoveRowDirective/properties/to"
-                  }
-                }
+                "$ref": "#/components/schemas/CopyOrMoveRowDirective"
               }
             }
           }
@@ -7583,20 +7465,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "destinationSheetId": {
-                      "description": "The Id of the destination sheet.",
-                      "$ref": "#/components/schemas/Int64"
-                    },
-                    "rowMappings": {
-                      "description": "Array of rowMapping objects.",
-                      "type": "array",
-                      "items": {
-                        "$ref": "#/components/schemas/RowMapping"
-                      }
-                    }
-                  }
+                  "$ref": "#/components/schemas/CopyOrMoveRowResult"
                 }
               }
             }
@@ -7660,7 +7529,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/requestBody/content/application~1json/schema"
+                "$ref": "#/components/schemas/CopyOrMoveRowDirective"
               }
             }
           }
@@ -7671,7 +7540,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1copy/post/responses/200/content/application~1json/schema"
+                  "$ref": "#/components/schemas/CopyOrMoveRowResult"
                 }
               }
             }
@@ -7762,7 +7631,7 @@
                           "description": "Cells objects.",
                           "type": "array",
                           "items": {
-                            "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows/post/responses/200/content/application~1json/schema/allOf/1/properties/result/items/properties/cells/items"
+                            "$ref": "#/components/schemas/CellLite"
                           }
                         },
                         "createdAt": {
@@ -7915,7 +7784,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1rows~1%7BrowId%7D~1attachments/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+                          "$ref": "#/components/schemas/Attachment"
                         }
                       }
                     }
@@ -8229,7 +8098,7 @@
             },
             "multipart/form-data": {
               "schema": {
-                "$ref": "#/paths/~1sheets~1%7BsheetId%7D~1discussions/post/requestBody/content/multipart~1form-data/schema"
+                "$ref": "#/components/schemas/DiscussionAndFile"
               },
               "encoding": {
                 "discussion": {
@@ -8848,7 +8717,10 @@
                       "description": "A list of fieldIds corresponding to all summary fields that were successfully deleted.",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/Int64Array"
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Int64"
+                          }
                         }
                       }
                     }
@@ -11070,7 +10942,13 @@
           },
           "default": {
             "description": "If an error occurs because the request specified the alternate email address (that is, not the primary email address) of an existing Smartsheet user (to invite the user into the org), the Error object returned contains a detail attribute set to an array of objects, each object in the array having the following attributes:\n\n  * alternateEmailAddress: User's alternate email address that was specified\nin the request\n  * primaryEmailAddress: User's primary email address that must instead\nbe specified for the operation\nFor example:\n```\n{\n  \"errorCode\": 5xxx,\n  \"message\": \"The specified email address (u1+1@smartsheet.com) is an\nalternate address for a user with the primary email address of u1@smartsheet.com. Please retry using their primary address.\"\n  \"detail\": [\n      {\n        \"alternateEmailAddress\": \"u1+1@smartsheet.com\",\n        \"primaryEmailAddress\": \"u1@smartsheet.com\"\n      }\n  ]\n}\n```\n",
-            "$ref": "#/components/responses/Error_Generic"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -11547,7 +11425,13 @@
           },
           "default": {
             "description": "If a single email address is specified in the request and an error occurs, the response contains an Error object.\n\nIf multiple email addresses are specified in the request and an error occurs, the Error object returned contains a detail attribute set to an array of objects, each object in the array having the following attributes:\n  * email: Problematic email address specified in the request\n  * errorCode: Smartsheet error code\n  * message: Message that describes the problem with the specified email\naddress\nFor example:\n```\n{\n  \"errorCode\": 1160,\n  \"message\": \"Invalid bulk request. See detail for more information.\"\n  \"detail\": [\n      {\n        \"email\": \"altEmail1@smartsheet.com\",\n        \"errorCode\": 1157,\n        \"message\": \"This address is already associated with another Smartsheet\naccount, so it cannot be added as an alternate address for this account.\"\n      }\n  ]\n}\n```\n",
-            "$ref": "#/components/responses/Error_Generic"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -12027,7 +11911,13 @@
           },
           "default": {
             "description": "Error Payload",
-            "$ref": "#/components/responses/Error_Generic"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
           }
         }
       }
@@ -14080,28 +13970,16 @@
             "$ref": "#/components/schemas/Int64"
           },
           "cells": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Cell"
-            }
+            "$ref": "#/components/schemas/CellArray"
           },
           "discussions": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Discussion"
-            }
+            "$ref": "#/components/schemas/DiscussionArray"
           },
           "attachments": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "columns": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Column"
-            }
+            "$ref": "#/components/schemas/ColumnArray"
           },
           "createdAt": {
             "$ref": "#/components/schemas/Int64"
@@ -14346,7 +14224,10 @@
         "properties": {
           "includedColumnIds": {
             "description": "Specifies which columns to include in message.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "type": {
             "type": "string",
@@ -14407,7 +14288,10 @@
             "properties": {
               "recipientColumnIds": {
                 "description": "Array of column Ids from which to collect email recipients.",
-                "$ref": "#/components/schemas/Int64Array"
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Int64"
+                }
               }
             }
           }
@@ -14909,6 +14793,37 @@
           }
         }
       },
+      "CellLite": {
+        "type": "object",
+        "properties": {
+          "columnId": {
+            "$ref": "#/components/schemas/Int64",
+            "description": "The Id of the column that the cell is located in."
+          },
+          "columnType": {
+            "type": "string",
+            "description": "Only returned if the include query string parameter contains **columnType**."
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "description": "A string, number, or a Boolean value -- depending on the cell type and the data in the cell. Cell values larger than 4000 characters are silently truncated. An empty cell returns no value."
+          },
+          "displayValue": {
+            "type": "string",
+            "description": "Visual representation of cell contents, as presented to the user in the UI."
+          }
+        }
+      },
       "CellObjectValue": {
         "description": "The base object for values found in the **Cell.objectValue** attribute. Its **objectType** attribute indicates the type of the object. This object itself is not used directly.",
         "required": [
@@ -15043,7 +14958,10 @@
           },
           "includedColumnIds": {
             "description": "Array of column Ids if the range was selected through the UI.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "legend": {
             "type": "object",
@@ -15304,7 +15222,10 @@
           },
           "options": {
             "description": "Array of the options available for the column.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "primary": {
             "type": "boolean",
@@ -15530,7 +15451,10 @@
           },
           "options": {
             "description": "Array of the options available for the column.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "symbol": {
             "type": "string",
@@ -15746,7 +15670,10 @@
         "properties": {
           "rowIds": {
             "description": "The Ids of the rows to move or copy from the source sheet.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "to": {
             "type": "object",
@@ -16004,7 +15931,7 @@
           }
         }
       },
-      "DiscussionAndFile" : {
+      "DiscussionAndFile": {
         "type": "object",
         "properties": {
           "discussion": {
@@ -16877,12 +16804,6 @@
         "type": "integer",
         "format": "int64"
       },
-      "Int64Array": {
-        "type": "array",
-        "items": {
-          "$ref": "#/components/schemas/Int64"
-        }
-      },
       "LabelFont": {
         "description": "List of supported fonts in Dashboards",
         "type": "string",
@@ -16947,7 +16868,10 @@
         "properties": {
           "rowIds": {
             "description": "The Ids of rows to be included.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           }
         }
       },
@@ -17246,10 +17170,7 @@
           },
           "attachments": {
             "description": "Array of Attachment objects. Only returned if the include query string parameter contains attachments.",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Attachment"
-            }
+            "$ref": "#/components/schemas/AttachmentArray"
           },
           "discussions": {
             "description": "Array of Discussion objects. Only returned if the include query string parameter contains discussions.",
@@ -17376,10 +17297,7 @@
               },
               "workspaces": {
                 "description": "Array of Workspace objects (containing just the workspace Id) that the requester has access to that make up the report.\n",
-                "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/Workspace"
-                }
+                "$ref": "#/components/schemas/WorkspaceArray"
               }
             }
           },
@@ -17677,7 +17595,10 @@
         "properties": {
           "columnIds": {
             "description": "The Id of the columns to be included.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "includeAttachments": {
             "description": "Indicates whether to include attachments in the email.",
@@ -17890,11 +17811,17 @@
           },
           "columnIds": {
             "description": "The Ids of columns included in the request.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "rowIds": {
             "description": "The Ids of rows where an update is requested.",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           },
           "updateRequestId": {
             "description": "The Id of the originating update request.",
@@ -17953,7 +17880,10 @@
           },
           "supportedLocales": {
             "description": "Array of strings representing all Smartsheet-supported locales.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -18072,7 +18002,10 @@
           },
           "effectiveAttachmentOptions": {
             "description": "Array of enum strings (see [Attachment.attachmentType](../../tag/attachmentsDescription) indicating the allowable attachment options for the current user and sheet.\n",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked this sheet as a favorite in their Home tab (value = **true**).",
@@ -18473,7 +18406,10 @@
                   "description": "Array of ContactOption objects to specify a pre-defined list of values for the column. Column **type** must be **CONTACT_LIST**."
                 },
                 "options": {
-                  "$ref": "#/components/schemas/StringArray",
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
                   "description": "Array of the options available for the column."
                 },
                 "primary": {
@@ -18806,19 +18742,16 @@
           }
         }
       },
-      "StringArray": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
       "Subscope": {
         "description": "An object that contains an array of column Ids if you want to limit the subscription to a subscope. Specified when a webhook is created and cannot be changed.",
         "type": "object",
         "properties": {
           "columnIds": {
             "description": "A column Id or Ids",
-            "$ref": "#/components/schemas/Int64Array"
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
           }
         }
       },
@@ -18883,7 +18816,10 @@
           },
           "options": {
             "description": "When applicable for PICKLIST column type. Array of the options available for the field.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "symbol": {
             "description": "When applicable for PICKLIST column type.",
@@ -18933,7 +18869,10 @@
           },
           "categories": {
             "description": "Indicates whether the template is blank. Only applicable to public templates.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           },
           "description": {
             "description": "Template description.",
@@ -19073,7 +19012,10 @@
           },
           "tags": {
             "description": "List of search tags for this template. Only applicable to non-blank public templates.",
-            "$ref": "#/components/schemas/StringArray"
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
           }
         }
       },
@@ -19648,7 +19590,10 @@
                 "properties": {
                   "columnIds": {
                     "description": "A column Id or Ids",
-                    "$ref": "#/components/schemas/Int64Array"
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/components/schemas/Int64"
+                    }
                   }
                 }
               }
