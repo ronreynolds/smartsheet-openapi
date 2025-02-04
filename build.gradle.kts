@@ -95,7 +95,12 @@ openApiGenerate {
 }
 
 tasks.compileJava {
+    options.encoding = "UTF-8"
     dependsOn(tasks.openApiGenerate)
+}
+
+tasks.compileTestJava {
+    options.encoding = "UTF-8"
 }
 
 tasks.test {

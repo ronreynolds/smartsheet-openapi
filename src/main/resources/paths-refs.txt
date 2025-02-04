@@ -26,6 +26,7 @@
 
 "$ref": "#/paths/~1webhooks/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
 "$ref": "#/paths/~1webhooks/get/responses/200/content/application~1json/schema/allOf/1/properties/data/items"
+
 "$ref": "#/paths/~1webhooks~1%7BwebhookId%7D/get/responses/200/content/application~1json/schema"
 
 "$ref": "#/paths/~1workspaces~1%7BworkspaceId%7D/get/responses/200/content/application~1json/schema"
