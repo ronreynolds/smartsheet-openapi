@@ -105,6 +105,8 @@ openApiGenerate {
         // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java
         "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
         "hideGenerationTimestamp"           to "true",  // seems kinda pointless
+        "generateBuilders"                  to "true",
+
     //  "useGzipFeature"                    to "true", // save on bandwidth in exchange for perf hit?  (requests only)
     //  "useJakartaEe"                      to "true"    // for Java-17+
     //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
