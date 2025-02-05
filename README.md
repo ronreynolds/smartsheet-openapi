@@ -41,7 +41,19 @@ must wrap the `$ref` in `"allOf":[{"$ref": "..."}]` or something similar - https
   * note, this straight-forward solution doesn't work for path responses
     * there you have to nest the `$ref` within `"content": { "application/json": { "schema": { ... }}}` and reference a SCHEMA, not a RESPONSE. :(
     * i actually found it easier to inline the schema data back into the few (all error) responses that had descriptions
-
+#### `default` for `Int64` type
+had to remove the default because the Java won't compile (the value is `int` can won't be converted to `long`)
+```json
+          "expires_in": {
+            "description": "Number of seconds token is valid once issued.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
+            "default": 604799,
+            "readOnly": true
+```
 #### Path refs
 * the path-schema refs were often addressed by reusing existing or creating new types for those requests or responses.
   * this only adds value when a type is used at least twice; otherwise leaving it "inline" seemed fine
