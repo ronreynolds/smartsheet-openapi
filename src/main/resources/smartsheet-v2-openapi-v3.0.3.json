@@ -4269,8 +4269,22 @@
                 "type": "string",
                 "format": "binary"
               }
+            },
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
             }
           }
+        }
         },
         "responses": {
           "200": {
@@ -5656,6 +5670,19 @@
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
               }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
+              }
             }
           }
         },
@@ -5879,6 +5906,36 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CommentText"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "description": "Comment.",
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "description": "Comment text.",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "file": {
+                    "description": "File to attach to the new comment. Only used with an attachment.",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "comment": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }
@@ -6476,6 +6533,19 @@
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
               }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
+              }
             }
           }
         },
@@ -6874,6 +6944,20 @@
               "schema": {
                 "type": "string",
                 "format": "binary"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             },
             "application/json": {
@@ -8102,6 +8186,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }
@@ -11734,6 +11831,20 @@
               "schema": {
                 "type": "string",
                 "format": "binary"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             },
             "application/json": {
