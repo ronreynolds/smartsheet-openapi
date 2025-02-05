@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("org.openapi.generator").version("7.7.0") // latest as of 2024-07-02
+    id("org.openapi.generator").version("7.11.0") // latest as of 2025-01-20
     id("jacoco")
 }
 
@@ -20,11 +20,9 @@ val javaxAnnotationVersion  = "1.3.2"
 val jUnitJupiterVersion     = "5.10.2"  // from build/generated/api/build.gradle
 val lombokVersion           = "1.18.32"
 val slf4jVersion            = "1.7.25"
-val buildDirectory          = layout.buildDirectory.get()
 
-//val openapiSource           = "$rootDir/src/main/resources/openapi-3.1.0-smartsheet-v2.yaml"
-//val openapiSource           = "$rootDir/src/main/resources/smartsheet-openapi-v2.json"
-val openapiSource           = "$rootDir/src/main/resources/smartsheet-openapi-minimal-v2.json"
+val buildDirectory          = layout.buildDirectory.get()
+val openapiSource           = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -78,24 +76,33 @@ openApiValidate {
     inputSpec.set(openapiSource)
 }
 
+// https://openapi-generator.tech/docs/configuration/
+// https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-gradle-plugin/README.adoc
 openApiGenerate {
     generatorName.set("java")
     inputSpec.set(openapiSource)
     outputDir.set("$buildDirectory/generated/api")
     library.set("native")
     configOptions.set(mutableMapOf(
-        "invokerPackage"          to "com.ronreynolds.smartsheet",
-        "apiPackage"              to "com.ronreynolds.smartsheet.api",
-        "modelPackage"            to "com.ronreynolds.smartsheet.model",
-        "openApiNullable"         to "false",
-        "hideGenerationTimestamp" to "true",
-        "useEnumCaseInsensitive"  to "true", // some endpoints return enums in slightly different case than specified
-//        "additionalModelTypeAnnotations" to "@lombok.Value @lombok.NoArgsConstructor @lombok.Builder"
+        "invokerPackage"            to "com.ronreynolds.smartsheet",
+        "apiPackage"                to "com.ronreynolds.smartsheet.api",
+        "modelPackage"              to "com.ronreynolds.smartsheet.model",
+        "library"                   to "native",    // consider "okhttp-gson"
+        "openApiNullable"           to "false",
+        "hideGenerationTimestamp"   to "true",
+        "useEnumCaseInsensitive"    to "true", // some endpoints return enums in slightly different case than specified
+        "serializationLibrary"      to "jackson" // consider gson instead of jackson to serialize
+        //        "additionalModelTypeAnnotations" to "@lombok.Value @lombok.NoArgsConstructor @lombok.Builder"
     ))
 }
 
 tasks.compileJava {
+    options.encoding = "UTF-8"
     dependsOn(tasks.openApiGenerate)
+}
+
+tasks.compileTestJava {
+    options.encoding = "UTF-8"
 }
 
 tasks.test {
