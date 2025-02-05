@@ -4022,20 +4022,6 @@
                 "format": "binary"
               }
             },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "filename": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              }
-            },
             "application/json": {
               "schema": {
                 "type": "object",
@@ -5145,20 +5131,6 @@
               "schema": {
                 "type": "string",
                 "format": "binary"
-              }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "filename": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
               }
             },
             "application/json": {
@@ -7797,20 +7769,6 @@
               "schema": {
                 "type": "string",
                 "format": "binary"
-              }
-            },
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "name": {
-                    "type": "string"
-                  },
-                  "filename": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
               }
             },
             "application/json": {
