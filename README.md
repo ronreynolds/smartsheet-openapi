@@ -4,24 +4,13 @@
 the purpose of this project is to replace the need for the various language-specific Smartsheet-SDK projects with one
 generated from the OpenAPI spec file.  the current OpenAPI spec file at https://smartsheet.redoc.ly/ is unusable as-is
 so this project contains a heavily modified version of that OpenAPI spec and a gradle build script that will generate
-the classes needed to invoke the API.
-
-## Process
-### https://editor.swagger.io/
-* because the Smartsheet API uses DELETE operations with a request body we must bump the spec to 3.1.0 (the first 
-version to support DELETE requests with a body)
-  * i'm not sure if this is 100% true; still TBD (currently still on spec 3.0.3)
-  
-### org.openapi.generator
-#### openApiValidate
-* working thru issues 
-  * mostly it seems to not like endpoints with multiple parameter refs to parameters of other endpoints
+the Java classes needed to invoke the API.
 
 ## Changes
 ### Fixes
 the general process of fixing the original OpenAPI spec is primarily to replace all `#/paths/...` and many
-`#/components/schemas/` field refs with type-specific refs (refs to the actual type, typically a top-level `schemas`
-element)
+`#/components/schemas/<type>/<inner-bits>/...` field refs with type-specific refs (refs to the actual type, typically a 
+top-level `#/components/schemas/` element)
 
 there are also a few bits that seem like actual bugs (so far fields that MUST (?) be the wrong type); this section is 
 intended to list those changes.
@@ -40,17 +29,18 @@ any collection/array of items has a plural name whereas single items have a sing
 looks like a similar issue to `contactOptions` above
 
 ### Replacements
-this is a list of just SOME of the replacements needed to address OpenAPI-generator parser errors of the form
+this is a list of just SOME replacements needed to address OpenAPI-generator parser errors of the form
 `paths.'/favorites'(get).parameters. There are duplicate parameter values` (which happens mostly when a ref points to an
 element of another path definition; e.g., one path pointing to the parameters, request-schema, or response-schema of 
-another path definition).
+another path definition).  
 
 #### `$ref` caveat
 * (this note may only apply to OpenAPI versions <3.1) - https://stackoverflow.com/questions/69173235/how-to-reference-response-components-in-openapi
-* the `$ref` directive replaces ALL it sibling nodes so any time you want to add, say, a `description` to a `$ref` you 
+* the `$ref` directive replaces ALL its sibling nodes so any time you want to add, say, a `description` to a `$ref` you 
 must wrap the `$ref` in `"allOf":[{"$ref": "..."}]` or something similar - https://swagger.io/docs/specification/v3_0/using-ref/
   * note, this straight-forward solution doesn't work for path responses
     * there you have to nest the `$ref` within `"content": { "application/json": { "schema": { ... }}}` and reference a SCHEMA, not a RESPONSE. :(
+    * i actually found it easier to inline the schema data back into the few (all error) responses that had descriptions
 
 #### Path refs
 * the path-schema refs were often addressed by reusing existing or creating new types for those requests or responses.
@@ -190,11 +180,5 @@ used).  in short most of these issues start with the assumptions passed into or 
 #### General replacements
 some types are so common (the int-64 long type used for almost all IDs, long[], and string[]) that it saved typing to 
 create types for these common patterns.
-```
-"type":"number|integer"[, "format":"int64"] = "$ref": "#/components/schemas/Int64"
-"type":"array", "items":{"type":"number"}   = "$ref": "#/components/schemas/Int64Array"
-"type":"array", "items":{"type":"string"}   = "$ref": "#/components/schemas/StringArray"
-
-"type":"number" = "type":"integer" for many types 
-("type":"number" maps to a `java.math.BigDecimal` which is almost NEVER what you want/mean)
-```
+* `"type":"number|integer"[, "format":"int64"]` = `"$ref": "#/components/schemas/Int64"`
+* `"type":"number"` = `"type":"integer"` for many types (`"type":"number"` maps to a `java.math.BigDecimal` which is almost NEVER what you want/mean)

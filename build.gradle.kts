@@ -76,6 +76,8 @@ openApiValidate {
     inputSpec.set(openapiSource)
 }
 
+// https://openapi-generator.tech/docs/configuration/
+// https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-gradle-plugin/README.adoc
 openApiGenerate {
     generatorName.set("java")
     inputSpec.set(openapiSource)
