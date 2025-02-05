@@ -7012,15 +7012,18 @@
                           "$ref": "#/components/schemas/Proof"
                         }
                       }
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "version": {
+                          "description": "New version of the sheet. Applicable only for operations which update sheet data.",
+                          "type": "integer",
+                          "nullable": true
+                        }
+                      }
                     }
-                  ],
-                  "properties": {
-                    "version": {
-                      "description": "New version of the sheet. Applicable only for operations which update sheet data.",
-                      "type": "integer",
-                      "nullable": true
-                    }
-                  }
+                  ]
                 }
               }
             }
@@ -15987,6 +15990,19 @@
           }
         }
       },
+      "CommentAndTitle": {
+        "type": "object",
+        "description": "Discussion.",
+        "properties": {
+          "comment": {
+            "$ref": "#/components/schemas/CommentText"
+          },
+          "title": {
+            "description": "Title for the attachment. Only used with an attachment.",
+            "type": "string"
+          }
+        }
+      },
       "CommentArray": {
         "type": "array",
         "items": {
@@ -16459,17 +16475,7 @@
         "type": "object",
         "properties": {
           "discussion": {
-            "type": "object",
-            "description": "Discussion.",
-            "properties": {
-              "comment": {
-                "$ref": "#/components/schemas/CommentText"
-              },
-              "title": {
-                "description": "Title for the attachment. Only used with an attachment.",
-                "type": "string"
-              }
-            }
+            "$ref": "#/components/schemas/CommentAndTitle"
           },
           "file": {
             "description": "File to attach to the new comment. Only used with an attachment.",

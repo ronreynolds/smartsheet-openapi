@@ -157,3 +157,359 @@ import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheetRequest;
 ```json
 
 ```
+
+## TBD Warnings
+```
+Failed to get the schema name: null
+allOf schema `null` containing multiple types (not model) is not supported at the moment.
+allOf schema `null` containing multiple types (not model) is not supported at the moment.
+allOf schema `null` containing multiple types (not model) is not supported at the moment.
+allOf schema `null` containing multiple types (not model) is not supported at the moment.
+allOf schema `null` containing multiple types (not model) is not supported at the moment.
+'oneOf' is intended to include only the additional optional OAS extension discriminator object. For more details, see https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.9.2.1.3 and the OAS section on 'Composition and Inheritance'.
+'oneOf' is intended to include only the additional optional OAS extension discriminator object. For more details, see https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.9.2.1.3 and the OAS section on 'Composition and Inheritance'.
+'oneOf' is intended to include only the additional optional OAS extension discriminator object. For more details, see https://json-schema.org/draft/2019-09/json-schema-core.html#rfc.section.9.2.1.3 and the OAS section on 'Composition and Inheritance'.
+Failed to obtain schema from cell
+Failed to obtain schema from cell
+Failed to obtain schema from cell
+```
+
+## paths known to produce compile-errors
+```json
+    "/sheets/{sheetId}/proofs/{proofId}/discussions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/sheetIdInPath"
+        },
+        {
+          "$ref": "#/components/parameters/proofIdInPath"
+        },
+        {
+          "$ref": "#/components/parameters/authorizationHeader"
+        }
+      ],
+      "get": {
+        "summary": "List Proof Discussions",
+        "description": "Gets a list of all discussions that are in the proof.\n",
+        "operationId": "proofs-listDiscussions",
+        "tags": [
+          "proofs"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/include_discussion"
+          },
+          {
+            "$ref": "#/components/parameters/pageNumber"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          },
+          {
+            "$ref": "#/components/parameters/includeAllBoolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PagedResult"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "description": "list of proof discussions",
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/DiscussionArray"
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Proof Discussion",
+        "description": "Creates a discussion on a proof.\n",
+        "operationId": "proofs-createDiscussion",
+        "tags": [
+          "proofs"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "WRITE_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CommentLite"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SUCCESS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResultPrefix"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/Discussion"
+                        }
+                      }
+                    }
+                  ],
+                  "properties": {
+                    "version": {
+                      "description": "New version of the sheet. Applicable only for operations which update sheet data.",
+                      "type": "integer",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+```
+and
+```json
+    "/sheets/{sheetId}/proofs/{proofId}/versions": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/sheetIdInPath"
+        },
+        {
+          "$ref": "#/components/parameters/proofIdInPath"
+        },
+        {
+          "$ref": "#/components/parameters/authorizationHeader"
+        }
+      ],
+      "get": {
+        "summary": "List Proof Versions",
+        "description": "Gets a list of all versions of the given proofId in order from newest to oldest.\n",
+        "operationId": "proofs-getVersions",
+        "tags": [
+          "proofs"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "READ_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pageNumber"
+          },
+          {
+            "$ref": "#/components/parameters/pageSize"
+          },
+          {
+            "$ref": "#/components/parameters/includeAllBoolean"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/PagedResult"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "description": "list of proof versions",
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/Proof"
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete Proof Version",
+        "description": "Deletes a proof version. Proof Id must be a current version proof Id.\n",
+        "operationId": "proofs-deleteVersion",
+        "tags": [
+          "proofs"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "WRITE_SHEETS"
+            ]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SUCCESS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPrefix"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Create Proof Version",
+        "description": "Creates a proof version. Proof Id must be for the original proof.\n",
+        "operationId": "proofs-createVersion",
+        "tags": [
+          "proofs"
+        ],
+        "security": [
+          {
+            "APIToken": []
+          },
+          {
+            "OAuth2": [
+              "WRITE_SHEETS"
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/octet-stream": {
+              "schema": {
+                "type": "string",
+                "format": "binary"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/URLAttachmentRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "SUCCESS",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResultPrefix"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "result": {
+                          "$ref": "#/components/schemas/Proof"
+                        }
+                      }
+                    }
+                  ],
+                  "properties": {
+                    "version": {
+                      "description": "New version of the sheet. Applicable only for operations which update sheet data.",
+                      "type": "integer",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+```
