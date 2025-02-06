@@ -1,7 +1,6 @@
 plugins {
     id("java")
     id("org.openapi.generator").version("7.11.0") // latest as of 2025-01-20
-    id("jacoco")
 }
 
 group   = "com.ronreynolds"
@@ -85,17 +84,18 @@ openApiGenerate {
     inputSpec.set(openapiSource)
     outputDir.set("$buildDirectory/generated/api")
 
+    // packages to generate
+    invokerPackage.set("$group.smartsheet")
+    apiPackage.set("$group.smartsheet.api")
+    modelPackage.set("$group.smartsheet.model")
+
     generatorName.set("java")   // language for client (duh)
     library.set("native")   // the HTTP client lib; see java-generator docs for full list
-    // packages to generate
-    invokerPackage.set("com.ronreynolds.smartsheet")
-    apiPackage.set("com.ronreynolds.smartsheet.api")
-    modelPackage.set("com.ronreynolds.smartsheet.model")
 
-    cleanupOutput.set(true)
-    enablePostProcessFile.set(true)
+    cleanupOutput.set(true) // output directory should be cleaned up before generating the output
     generateApiTests.set(true)
-    generateModelDocumentation.set(true)
+    generateApiDocumentation.set(false)     // for now no point
+    generateModelDocumentation.set(false)   // for now no point
 
     // when they say "verbose" they REALLY mean it (crank up your terminal buffer if you set this to true)
     verbose.set(false)
@@ -106,9 +106,7 @@ openApiGenerate {
         "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
         "hideGenerationTimestamp"           to "true",  // seems kinda pointless
         "generateBuilders"                  to "true",
-
-    //  "useGzipFeature"                    to "true", // save on bandwidth in exchange for perf hit?  (requests only)
-    //  "useJakartaEe"                      to "true"    // for Java-17+
+    //  "useJakartaEe"                      to "true"   // for Java-17+
     //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
     ))
 }
@@ -120,14 +118,6 @@ tasks.compileJava {
 
 tasks.compileTestJava {
     options.encoding = "UTF-8"
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
 }
 
 tasks.withType<Test> {
