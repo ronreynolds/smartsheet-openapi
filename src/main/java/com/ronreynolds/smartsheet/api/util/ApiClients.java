@@ -4,6 +4,7 @@ import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
 import com.ronreynolds.util.string.ToString;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 
@@ -38,7 +39,9 @@ public class ApiClients {
 
     private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
     // simple logging flags for now
+    @Setter
     private static volatile boolean logRequest = Settings.getBool("LOG_REQUEST", false);
+    @Setter
     private static volatile boolean logResponse = Settings.getBool("LOG_RESPONSE", false);
 
     private static volatile String authToken;
@@ -53,6 +56,7 @@ public class ApiClients {
         setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
         setServer(Servers.US);
         setUserAgent(null);
+        // getDefaultClient() so that Configuration.getDefaultApiClient() returns a properly configured client?
     }
 
     public static ApiClient getDefaultClient() {
@@ -104,14 +108,6 @@ public class ApiClients {
         // should call again - see {@code com.smartsheet.api.internal.http.DefaultHttpClient#shouldRetry}
         timeoutDuration = Duration.ofMillis(millis);
         resetClient();
-    }
-
-    public static void setLogRequest(boolean log) {
-        logRequest = true;
-    }
-
-    public static void setLogResponse(boolean log) {
-        logResponse = true;
     }
 
     // TODO - trace logging of request and response parts and whole

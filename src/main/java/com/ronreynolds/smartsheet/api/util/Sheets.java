@@ -120,12 +120,12 @@ public class Sheets {
     static final Integer ALL_PAGE_NUMBERS = null;
     static final String ALL_ROW_IDS = null;
     static final String ALL_ROW_NUMBERS = null;
-    static final DateUnion SINCE_EPOCH = new DateUnion(0L);
+    static final DateUnion ROWS_MODIFIED_SINCE = new DateUnion(0L);
 
     public static Sheet getWholeSheet(@NonNull SheetsApi client, long sheetId) throws ApiException {
         return client.getSheet(sheetId, AUTH_IN_CLIENT, null, null, ALL_SHEET_INCLUSIONS, NO_SHEET_EXCLUSIONS, ALL_COLUMN_IDS,
                         ALL_FILTERS, null, null, NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, 
-                        SINCE_EPOCH)
+                        ROWS_MODIFIED_SINCE)
                 .getSheet();
     }
 
