@@ -24,26 +24,12 @@ public class ApiClients {
     private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String HEADER_ASSUME_USER = "Assume-User";
     private static final String HEADER_CHANGE_AGENT = "Smartsheet-Change-Agent";
-
-    public enum Servers {
-        US("https://api.smartsheet.com/2.0"),
-        GOV_US("https://api.smartsheetgov.com/2.0"),
-        EU("https://api.smartsheet.eu/2.0");
-
-        Servers(String url) {
-            baseUrl = url;
-        }
-
-        private final String baseUrl;
-    }
-
     private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
     // simple logging flags for now
     @Setter
     private static volatile boolean logRequest = Settings.getBool("LOG_REQUEST", false);
     @Setter
     private static volatile boolean logResponse = Settings.getBool("LOG_RESPONSE", false);
-
     private static volatile String authToken;
     private static volatile Servers server;
     private static volatile String assumedUser;
@@ -110,8 +96,19 @@ public class ApiClients {
         resetClient();
     }
 
-    // TODO - trace logging of request and response parts and whole
-    // TODO - max trace logging length
+    /**
+     * create and return an {@code ApiClient} configured with the current settings; exposed so code can create a new
+     * {@code ApiClient} without replacing the current default client.
+     */
+    public static ApiClient createNewClient() {
+        ApiClient client = new ApiClient();
+        client.updateBaseUri(server.baseUrl);
+
+        client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
+        client.setResponseInterceptor(ApiClients::processResponse);
+
+        return client;
+    }
 
     private static Map<String, String> getHeaderMap() {
         Map<String, String> headers = new HashMap<>();
@@ -136,16 +133,6 @@ public class ApiClients {
         return headers;
     }
 
-    private static ApiClient createNewClient() {
-        ApiClient client = new ApiClient();
-        client.updateBaseUri(server.baseUrl);
-
-        client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
-        client.setResponseInterceptor(ApiClients::processResponse);
-
-        return client;
-    }
-
     private static void prepRequest(HttpRequest.Builder requestBuilder, Map<String, String> headerMap) {
         headerMap.forEach(requestBuilder::setHeader);
         // not the same as retry (see com.smartsheet.api.internal.http.DefaultHttpClient#shouldRetry for retry logic)
@@ -156,6 +143,9 @@ public class ApiClients {
             log.info("request - {}", ToString.toString(requestBuilder.build()));
         }
     }
+
+    // TODO - trace logging of request and response parts and whole
+    // TODO - max trace logging length
 
     private static void processResponse(HttpResponse<InputStream> response) {
         if (logResponse) {
@@ -219,4 +209,15 @@ public class ApiClients {
                 System.getProperty("java.version");
     }
 
+    public enum Servers {
+        US("https://api.smartsheet.com/2.0"),
+        GOV_US("https://api.smartsheetgov.com/2.0"),
+        EU("https://api.smartsheet.eu/2.0");
+
+        private final String baseUrl;
+
+        Servers(String url) {
+            baseUrl = url;
+        }
+    }
 }
