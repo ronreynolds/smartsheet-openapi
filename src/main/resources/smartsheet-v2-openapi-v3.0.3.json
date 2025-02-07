@@ -6405,26 +6405,7 @@
                           "description": "list of proof request actions",
                           "type": "array",
                           "items": {
-                            "type": "object",
-                            "properties": {
-                              "user": {
-                                "description": "`User` object containing `name` and `email` of the user performing the action.\n",
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/NameAndEmail"
-                                  }
-                                ]
-                              },
-                              "actionStatus": {
-                                "description": "Proof request action status.",
-                                "type": "string",
-                                "enum": [
-                                  "APPROVED",
-                                  "PENDING",
-                                  "REJECTED"
-                                ]
-                              }
-                            }
+                            "$ref": "#/components/schemas/ProofRequestAction"
                           }
                         }
                       }
@@ -6521,54 +6502,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "allOf": [
-                            {
-                              "$ref": "#/components/schemas/ProofRequestBody"
-                            }
-                          ],
-                          "type": "object",
-                          "properties": {
-                            "id": {
-                              "description": "Proof request Id.",
-                              "allOf": [
-                                {
-                                  "$ref": "#/components/schemas/Int64"
-                                }
-                              ]
-                            },
-                            "proofId": {
-                              "description": "Proof Id of the original proof.",
-                              "allOf": [
-                                {
-                                  "$ref": "#/components/schemas/Int64"
-                                }
-                              ]
-                            },
-                            "sentBy": {
-                              "description": "`User` object containing `name` and `email` of the sender.\n",
-                              "allOf": [
-                                {
-                                  "$ref": "#/components/schemas/NameAndEmail"
-                                }
-                              ]
-                            },
-                            "sentAt": {
-                              "$ref": "#/components/schemas/DateUnion"
-                            },
-                            "isDownloadable": {
-                              "description": "Indicates whether the description is downloadable.",
-                              "type": "boolean"
-                            },
-                            "status": {
-                              "description": "Proof request status.",
-                              "type": "string",
-                              "enum": [
-                                "ACTIVE",
-                                "EXPIRED",
-                                "PROOF_DELETED"
-                              ]
-                            }
-                          }
+                          "$ref": "#/components/schemas/ProofRequest"
                         }
                       }
                     }
@@ -17435,15 +17369,18 @@
             "type": "boolean"
           },
           "status": {
-            "description": "Proof request status.",
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "EXPIRED",
-              "PROOF_DELETED"
-            ]
+            "$ref": "#/components/schemas/ProofRequestStatus"
           }
         }
+      },
+      "ProofRequestStatus": {
+        "description": "Proof request status.",
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "EXPIRED",
+          "PROOF_DELETED"
+        ]
       },
       "ProofRequestAction": {
         "type": "object",
@@ -17457,15 +17394,18 @@
             ]
           },
           "actionStatus": {
-            "description": "Proof request action status.",
-            "type": "string",
-            "enum": [
-              "APPROVED",
-              "PENDING",
-              "REJECTED"
-            ]
+            "$ref": "#/components/schemas/ProofRequestActionStatus"
           }
         }
+      },
+      "ProofRequestActionStatus": {
+        "description": "Proof request action status.",
+        "type": "string",
+        "enum": [
+          "APPROVED",
+          "PENDING",
+          "REJECTED"
+        ]
       },
       "ProofRequestBody": {
         "allOf": [
