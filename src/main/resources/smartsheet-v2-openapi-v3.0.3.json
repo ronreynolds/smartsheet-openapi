@@ -541,11 +541,6 @@
   ],
   "paths": {
     "/contacts": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "list-contacts",
         "summary": "List Contacts",
@@ -623,9 +618,6 @@
     "/contacts/{contactId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/contactIdInPath"
         }
       ],
@@ -697,9 +689,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/acceptEncodingHeader"
-          },
-          {
-            "$ref": "#/components/parameters/authorizationHeader"
           },
           {
             "$ref": "#/components/parameters/sinceDate"
@@ -797,9 +786,6 @@
     },
     "/favorites": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/actorIdHeader"
         }
@@ -931,9 +917,6 @@
           "$ref": "#/components/parameters/favoriteTypeInPath"
         },
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/actorIdHeader"
         }
       ],
@@ -995,9 +978,6 @@
           },
           "required": true,
           "description": "Favorite Id, e.g., sheet Id, report Id."
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         },
         {
           "$ref": "#/components/parameters/actorIdHeader"
@@ -1077,9 +1057,6 @@
     },
     "/folders/{folderId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/folderIdInPath"
         }
@@ -1213,9 +1190,6 @@
     "/folders/{folderId}/copy": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/folderIdInPath"
         }
       ],
@@ -1280,9 +1254,6 @@
     },
     "/folders/{folderId}/folders": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/folderIdInPath"
         }
@@ -1417,9 +1388,6 @@
     "/folders/{folderId}/move": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/folderIdInPath"
         }
       ],
@@ -1475,9 +1443,6 @@
     },
     "/folders/{folderId}/sheets": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/folderIdInPath"
         }
@@ -1564,9 +1529,6 @@
     "/folders/{folderId}/sheets/import": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/folderIdInPath"
         }
       ],
@@ -1645,11 +1607,6 @@
       }
     },
     "/folders/personal": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "summary": "List Contents",
         "description": "Gets a nested list of all Home objects shared to the user, including dashboards, folders, reports, sheets, and templates, as shown on the \"Home\" tab.",
@@ -1708,11 +1665,6 @@
       }
     },
     "/groups": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "list-groups",
         "summary": "List Org Groups",
@@ -1866,9 +1818,6 @@
     },
     "/groups/{groupId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/groupIdInPath"
         }
@@ -2043,9 +1992,6 @@
     "/groups/{groupId}/members": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/groupIdInPath"
         }
       ],
@@ -2114,9 +2060,6 @@
     "/groups/{groupId}/members/{userId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/groupIdInPath"
         },
         {
@@ -2158,11 +2101,6 @@
       }
     },
     "/home/folders": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "summary": "List Folders in Home",
         "description": "Gets a list of folders in your Home tab. The list contains an abbreviated Folder object for each folder.",
@@ -2284,9 +2222,6 @@
     "/imageurls": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
@@ -2358,11 +2293,6 @@
       }
     },
     "/reports": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "getReports",
         "summary": "List Reports",
@@ -2445,9 +2375,6 @@
     },
     "/reports/{reportId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/acceptHeader"
         },
@@ -2562,9 +2489,6 @@
     "/reports/{reportId}/emails": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/reportIdInPath"
         }
       ],
@@ -2618,9 +2542,6 @@
     },
     "/reports/{reportId}/publish": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/reportIdInPath"
         }
@@ -2720,9 +2641,6 @@
     },
     "/reports/{reportId}/shares": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/reportIdInPath"
         }
@@ -2874,9 +2792,6 @@
         },
         {
           "$ref": "#/components/parameters/accessApiLevel"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -3012,11 +2927,6 @@
       }
     },
     "/search": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "summary": "Search Everything",
         "description": "Searches all sheets that the user can access, for the specified text. If you have not used the public API in a while, we will need to provision your data. This could take up to 24 hours so please check back later!",
@@ -3118,9 +3028,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -3201,9 +3108,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/accessApiLevel"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -3355,11 +3259,6 @@
       }
     },
     "/sheets/import": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "post": {
         "summary": "Import Sheet from CSV / XLSX",
         "description": "Imports CSV or XLSX data into a new sheet in the top-level \"Sheets\" folder.\n\nNote the following:\n* Both sheetName and the file name must use ASCII characters.\n* The source data must be basic text. To include rich formula data, import and create a sheet first, and then use Update Rows. To work with images, see Cell Images.\n* XLS is not supported. You must use XLSX.\n* Hierarchical relationships between rows in an external file won't import.\n",
@@ -3436,9 +3335,6 @@
     },
     "/sheets/{sheetId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/sheetIdInPath"
         }
@@ -3869,9 +3765,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4039,9 +3932,6 @@
         },
         {
           "$ref": "#/components/parameters/attachmentIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4116,9 +4006,6 @@
         },
         {
           "$ref": "#/components/parameters/attachmentIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4292,9 +4179,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4442,9 +4326,6 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4568,9 +4449,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4733,9 +4611,6 @@
         },
         {
           "$ref": "#/components/parameters/columnIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -4904,9 +4779,6 @@
         },
         {
           "$ref": "#/components/parameters/commentIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -5051,9 +4923,6 @@
         },
         {
           "$ref": "#/components/parameters/commentIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -5132,9 +5001,6 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/contentTypeHeader_JSON"
         },
         {
@@ -5205,9 +5071,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -5453,9 +5316,6 @@
     "/sheets/{sheetId}/crosssheetreferences/{crossSheetReferenceId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
@@ -5506,9 +5366,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -5665,9 +5522,6 @@
         },
         {
           "$ref": "#/components/parameters/discussionIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -5742,9 +5596,6 @@
         },
         {
           "$ref": "#/components/parameters/discussionIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -5813,9 +5664,6 @@
         },
         {
           "$ref": "#/components/parameters/discussionIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -5911,9 +5759,6 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
@@ -5962,9 +5807,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         },
         {
           "$ref": "#/components/parameters/contentTypeHeader_JSON"
@@ -6051,9 +5893,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6121,9 +5960,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6243,9 +6079,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6378,9 +6211,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6528,9 +6358,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6617,9 +6444,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "delete": {
@@ -6763,9 +6587,6 @@
         },
         {
           "$ref": "#/components/parameters/proofIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -6946,9 +6767,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -7049,9 +6867,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -7377,9 +7192,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -7436,9 +7248,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -7513,9 +7322,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -7591,9 +7397,6 @@
         },
         {
           "$ref": "#/components/parameters/rowIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -7701,9 +7504,6 @@
         },
         {
           "$ref": "#/components/parameters/rowIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -7844,9 +7644,6 @@
         },
         {
           "$ref": "#/components/parameters/columnIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -7929,9 +7726,6 @@
         },
         {
           "$ref": "#/components/parameters/columnIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8032,9 +7826,6 @@
         },
         {
           "$ref": "#/components/parameters/rowIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8182,9 +7973,6 @@
         },
         {
           "$ref": "#/components/parameters/rowIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -8256,9 +8044,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8387,9 +8172,6 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8458,9 +8240,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8509,9 +8288,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -8918,9 +8694,6 @@
           },
           "required": true,
           "description": "Summary Field Id of the sheet summary field being accessed."
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "post": {
@@ -9049,9 +8822,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -9231,9 +9001,6 @@
           "schema": {
             "type": "string"
           }
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -9347,9 +9114,6 @@
     },
     "/sheets/{sheetId}/shares": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/sheetIdInPath"
         },
@@ -9498,9 +9262,6 @@
         },
         {
           "$ref": "#/components/parameters/accessApiLevel"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -9641,9 +9402,6 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
@@ -9711,9 +9469,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -9751,11 +9506,6 @@
       }
     },
     "/sights": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "list-sights",
         "summary": "List Dashboards",
@@ -9841,9 +9591,6 @@
     },
     "/sights/{sightId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/sightIdInPath"
         }
@@ -10026,9 +9773,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/authorizationHeader"
-          },
-          {
             "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
@@ -10093,9 +9837,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/authorizationHeader"
-          },
-          {
             "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
@@ -10142,9 +9883,6 @@
     },
     "/sights/{sightId}/publish": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/sightIdInPath"
         }
@@ -10244,9 +9982,6 @@
     },
     "/sights/{sightId}/shares": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/accessApiLevel"
         },
@@ -10392,9 +10127,6 @@
         },
         {
           "$ref": "#/components/parameters/shareIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -10540,11 +10272,6 @@
       }
     },
     "/templates": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "summary": "List User-Created Templates",
         "description": "Gets a list of user-created templates that the user has access to.",
@@ -10598,11 +10325,6 @@
       }
     },
     "/templates/public": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "summary": "List Public Templates",
         "description": "Gets a list of public templates that the user has access to.",
@@ -10759,9 +10481,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/authorizationHeader"
-          },
-          {
             "name": "deleteAllForApiClient",
             "in": "query",
             "schema": {
@@ -10789,11 +10508,6 @@
       }
     },
     "/users": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "list-users",
         "summary": "List Users",
@@ -11055,9 +10769,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/authorizationHeader"
-          },
-          {
             "name": "include",
             "description": "When specified with a value of 'groups', response includes an array of groups (groupId, name, and description only) that the user is a member of.",
             "in": "query",
@@ -11122,9 +10833,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/authorizationHeader"
-          },
           {
             "$ref": "#/components/parameters/modifiedSince"
           }
@@ -11219,9 +10927,6 @@
     },
     "/users/{userId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/userIdInPath"
         }
@@ -11425,9 +11130,6 @@
     "/users/{userId}/alternateemails": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/userIdInPath"
         }
       ],
@@ -11551,9 +11253,6 @@
     "/users/{userId}/alternateemails/{alternateEmailId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/userIdInPath"
         },
         {
@@ -11630,9 +11329,6 @@
     "/users/{userId}/alternateemails/{alternateEmailId}/makeprimary": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/userIdInPath"
         },
         {
@@ -11693,9 +11389,6 @@
     "/users/{userId}/deactivate": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/userIdInPath"
         }
       ],
@@ -11735,9 +11428,6 @@
     },
     "/users/{userId}/profileimage": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/userIdInPath"
         }
@@ -11830,9 +11520,6 @@
     "/users/{userId}/reactivate": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/userIdInPath"
         }
       ],
@@ -11871,11 +11558,6 @@
       }
     },
     "/webhooks": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        }
-      ],
       "get": {
         "operationId": "list-webhooks",
         "summary": "List Webhooks",
@@ -12049,9 +11731,6 @@
     "/webhooks/{webhookId}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/webhookIdInPath"
         }
       ],
@@ -12216,9 +11895,6 @@
     "/webhooks/{webhookId}/resetSharedSecret": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/webhookIdInPath"
         }
       ],
@@ -12278,9 +11954,6 @@
     },
     "/workspaces": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/accessApiLevel"
         }
@@ -12411,9 +12084,6 @@
     },
     "/workspaces/{workspaceId}": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/workspaceIdInPath"
         }
@@ -12570,9 +12240,6 @@
     "/workspaces/{workspaceId}/copy": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
@@ -12634,9 +12301,6 @@
     },
     "/workspaces/{workspaceId}/folders": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/workspaceIdInPath"
         }
@@ -12801,9 +12465,6 @@
     "/workspaces/{workspaceId}/shares": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/accessApiLevel"
         },
         {
@@ -12945,9 +12606,6 @@
         },
         {
           "$ref": "#/components/parameters/shareIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
         }
       ],
       "get": {
@@ -13095,9 +12753,6 @@
     "/workspaces/{workspaceId}/sheets": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
-        {
           "$ref": "#/components/parameters/workspaceIdInPath"
         }
       ],
@@ -13185,9 +12840,6 @@
     },
     "/workspaces/{workspaceId}/sheets/import": {
       "parameters": [
-        {
-          "$ref": "#/components/parameters/authorizationHeader"
-        },
         {
           "$ref": "#/components/parameters/workspaceIdInPath"
         }
@@ -13340,15 +12992,6 @@
         "description": "ID of the attachment",
         "schema": {
           "type": "string"
-        }
-      },
-      "authorizationHeader": {
-        "name": "Authorization",
-        "in": "header",
-        "description": "API Access Token used to authenticate requests to Smartsheet APIs.\n",
-        "schema": {
-          "type": "string",
-          "example": "Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789"
         }
       },
       "columnIdInPath": {

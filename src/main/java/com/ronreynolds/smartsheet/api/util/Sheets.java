@@ -111,7 +111,6 @@ public class Sheets {
         return buf.toString();
     }
 
-    static final String AUTH_IN_CLIENT = null;
     static final SheetInclude ALL_SHEET_INCLUSIONS = null;
     static final SheetExclude NO_SHEET_EXCLUSIONS = null;
     static final String ALL_COLUMN_IDS = null;
@@ -123,7 +122,7 @@ public class Sheets {
     static final DateUnion ROWS_MODIFIED_SINCE = new DateUnion(0L);
 
     public static Sheet getWholeSheet(@NonNull SheetsApi client, long sheetId) throws ApiException {
-        return client.getSheet(sheetId, AUTH_IN_CLIENT, null, null, ALL_SHEET_INCLUSIONS, NO_SHEET_EXCLUSIONS, ALL_COLUMN_IDS,
+        return client.getSheet(sheetId, null, null, ALL_SHEET_INCLUSIONS, NO_SHEET_EXCLUSIONS, ALL_COLUMN_IDS,
                         ALL_FILTERS, null, null, NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, 
                         ROWS_MODIFIED_SINCE)
                 .getSheet();
@@ -131,7 +130,7 @@ public class Sheets {
 
     public static Sheet getSheetNoRows(@NonNull SheetsApi client, long sheetId) throws ApiException {
         // FIXME - need to support a comma-sep list of enum values; not just a single value (or null)
-        return client.getSheet(sheetId, AUTH_IN_CLIENT, null, null, SheetInclude.COLUMN_TYPE, SheetExclude.LINK_IN_FROM_CELL_DETAILS,
+        return client.getSheet(sheetId, null, null, SheetInclude.COLUMN_TYPE, SheetExclude.LINK_IN_FROM_CELL_DETAILS,
                         ALL_COLUMN_IDS, ALL_FILTERS, null, null, NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, null)
                 .getSheet();
     }
@@ -139,7 +138,7 @@ public class Sheets {
     @NonNull
     public static List<SheetListingDataInner> findByName(@NonNull SheetsApi client, @NonNull String sheetName) throws ApiException {
         return Objects.requireNonNull(
-                        client.listSheets(null, AUTH_IN_CLIENT, null, true, null, false, null, null).getData())
+                        client.listSheets(null, null, true, null, false, null, null).getData())
                 .stream()
                 .filter(sheet -> sheetName.equals(sheet.getName()))
                 .collect(Collectors.toList());
