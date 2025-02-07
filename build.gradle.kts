@@ -106,6 +106,7 @@ openApiGenerate {
         "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
         "hideGenerationTimestamp"           to "true",  // seems kinda pointless
         "generateBuilders"                  to "true",
+        "dateLibrary"                       to "java8", // should trigger loading of a JavaTimeFormatter.mustache i have yet TODO
     //  "useJakartaEe"                      to "true"   // for Java-17+
     //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
     ))

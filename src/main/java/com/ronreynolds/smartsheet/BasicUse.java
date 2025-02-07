@@ -5,15 +5,20 @@ import com.ronreynolds.smartsheet.api.SheetsApi;
 import com.ronreynolds.smartsheet.api.UsersApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
 import com.ronreynolds.smartsheet.api.util.Sheets;
-import com.ronreynolds.smartsheet.model.DateUnion;
 import com.ronreynolds.smartsheet.model.Sheet;
+import com.ronreynolds.smartsheet.model.SheetInclude;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.EnumSet;
+import java.util.List;
 
 @Slf4j
 public class BasicUse {
     public static void main(String[] args) {
         // we need SOMETHING for this because the APIs don't support a null value
-        DateUnion modifiedSince = new DateUnion(0L);    // epoch (1970-01-01T00:00:00.000Z)
+        OffsetDateTime modifiedSince = OffsetDateTime.now();
         ApiClient client = ApiClients.getDefaultClient();
         try {
             log.info("server info - {}", new ServerInfoApi(client).serverinfoGet());
@@ -27,10 +32,10 @@ public class BasicUse {
             log.info("user list - {}", userList);
 
             // WIP
-            if (false) {
+            if (true) {
                 SheetsApi sheetsApi = new SheetsApi(client);
-                var sheet = sheetsApi.getSheet(7290900052922244L, null, null, null, null, null, null, null, null, null,
-                        null, null, null, null, modifiedSince);
+                var sheet = sheetsApi.getSheet(7290900052922244L, null, null, List.copyOf(EnumSet.allOf(SheetInclude.class)),
+                        null, null, null, null, null, null, null, null, null, null, modifiedSince);
                 log.info("sheet - {}", sheet);
             }
         } catch (ApiException e) {

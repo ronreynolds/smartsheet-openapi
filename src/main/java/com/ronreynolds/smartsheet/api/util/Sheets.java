@@ -3,13 +3,15 @@ package com.ronreynolds.smartsheet.api.util;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.SheetsApi;
 import com.ronreynolds.smartsheet.model.Column;
-import com.ronreynolds.smartsheet.model.DateUnion;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
 import com.ronreynolds.smartsheet.model.SheetListingDataInner;
 import lombok.NonNull;
 
+import java.time.OffsetDateTime;
+import java.util.Date;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -111,15 +113,15 @@ public class Sheets {
         return buf.toString();
     }
 
-    static final SheetInclude ALL_SHEET_INCLUSIONS = null;
-    static final SheetExclude NO_SHEET_EXCLUSIONS = null;
-    static final String ALL_COLUMN_IDS = null;
+    static final List<SheetInclude> ALL_SHEET_INCLUSIONS = List.copyOf(EnumSet.allOf(SheetInclude.class));
+    static final List<SheetExclude> NO_SHEET_EXCLUSIONS = List.of();
+    static final List<Long> ALL_COLUMN_IDS = null;
     static final String ALL_FILTERS = null;
     static final Integer NO_PAGE_SIZE_LIMIT = null;
     static final Integer ALL_PAGE_NUMBERS = null;
-    static final String ALL_ROW_IDS = null;
-    static final String ALL_ROW_NUMBERS = null;
-    static final DateUnion ROWS_MODIFIED_SINCE = new DateUnion(0L);
+    static final List<Long> ALL_ROW_IDS = null;
+    static final List<Integer> ALL_ROW_NUMBERS = null;
+    static final OffsetDateTime ROWS_MODIFIED_SINCE = OffsetDateTime.now();
 
     public static Sheet getWholeSheet(@NonNull SheetsApi client, long sheetId) throws ApiException {
         return client.getSheet(sheetId, null, null, ALL_SHEET_INCLUSIONS, NO_SHEET_EXCLUSIONS, ALL_COLUMN_IDS,
@@ -130,7 +132,7 @@ public class Sheets {
 
     public static Sheet getSheetNoRows(@NonNull SheetsApi client, long sheetId) throws ApiException {
         // FIXME - need to support a comma-sep list of enum values; not just a single value (or null)
-        return client.getSheet(sheetId, null, null, SheetInclude.COLUMN_TYPE, SheetExclude.LINK_IN_FROM_CELL_DETAILS,
+        return client.getSheet(sheetId, null, null, List.of(SheetInclude.COLUMN_TYPE), List.of(SheetExclude.LINK_IN_FROM_CELL_DETAILS),
                         ALL_COLUMN_IDS, ALL_FILTERS, null, null, NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, null)
                 .getSheet();
     }

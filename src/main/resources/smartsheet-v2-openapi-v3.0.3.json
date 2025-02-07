@@ -644,10 +644,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **profileImage**\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "profileImage"
-              ]
+              "$ref": "#/components/schemas/GetContactInclude"
             }
           }
         ],
@@ -2398,11 +2395,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to not include in the response\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "linkInFromCellDetails",
-                "linksOutToCellsDetails"
-              ]
+              "$ref": "#/components/schemas/GetReportExclude"
             }
           },
           {
@@ -2983,19 +2976,7 @@
             "schema": {
               "type": "array",
               "items": {
-                "type": "string",
-                "enum": [
-                  "attachments",
-                  "cellData",
-                  "comments",
-                  "folderNames",
-                  "reportNames",
-                  "sheetNames",
-                  "sightNames",
-                  "summaryFields",
-                  "templateNames",
-                  "workspaceNames"
-                ]
+                "$ref": "#/components/schemas/SearchScope"
               }
             }
           }
@@ -3133,11 +3114,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n* **sheetVersion** - current version number of each sheet, should not be combined with pagination\n* **source** - the Source object for any sheet that was created from another sheet, if any\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "sheetVersion",
-                "source"
-              ]
+              "$ref": "#/components/schemas/ListSheetInclude"
             }
           },
           {
@@ -3355,7 +3332,10 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - includes the metadata for sheet-level and row-level\nattachments. To include discussion attachments, both attachments and discussions must be present in the include list.\n  * **columnType** -includes columnType attribute in the row's cells indicating\nthe type of the column the cell resides in.\n  * **crossSheetReferences** - includes the cross-sheet references\n  * **discussions** - includes sheet-level and row-level discussions. To\ninclude discussion attachments, both attachments and discussions must be present in the include list.\n  * **filters** - includes filteredOut attribute indicating if the row should\nbe displayed or hidden according to the sheet's filters.\n  * **filterDefinitions** - includes type of filter, operators used, and\ncriteria\n  * **format** -  includes column, row, cell, and summary fields formatting.\n  * **ganttConfig** - includes Gantt chart details.\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data.\n  * **ownerInfo** - includes the owner's email address and the owner's user\nId.\n  * **rowPermalink** - includes permalink attribute that represents a direct\nlink to the row in the Smartsheet application.\n  * **source** - adds the Source object indicating which report, sheet  Sight\n(aka dashboard), or template the sheet was created from, if any.\n  * **writerInfo** - includes createdBy and modifiedBy attributes on the\nrow or summary fields, indicating the row or summary field's creator, and last modifier.\n",
             "schema": {
-              "$ref": "#/components/schemas/SheetInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/SheetInclude"
+              }
             }
           },
           {
@@ -3366,7 +3346,10 @@
             "in": "query",
             "description": "A comma-separated list of column ids. The response contains only the specified columns in the \"columns\" array, and individual rows' \"cells\" array only contains cells in the specified columns.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Int64"
+              }
             }
           },
           {
@@ -3407,7 +3390,10 @@
             "in": "query",
             "description": "A comma-separated list of row Ids on which to filter the rows included in the result.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Int64"
+              }
             }
           },
           {
@@ -3415,7 +3401,10 @@
             "in": "query",
             "description": "A comma-separated list of row numbers on which to filter the rows included in the result. Non-existent row numbers are ignored.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "integer"
+              }
             }
           },
           {
@@ -3424,7 +3413,7 @@
             "description": "Filter to return only rows that have been modified since the date/time provided. Date should be in ISO-8601 format.",
             "example": "2020-01-30T13:25:32-07:00",
             "schema": {
-              "$ref": "#/components/schemas/DateUnion"
+              "$ref": "#/components/schemas/Datetime"
             }
           }
         ],
@@ -3859,24 +3848,10 @@
                 "type": "object",
                 "properties": {
                   "attachmentSubType": {
-                    "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
-                    "type": "string",
-                    "enum": [
-                      "DOCUMENT",
-                      "DRAWING",
-                      "FOLDER",
-                      "PDF",
-                      "PRESENTATION",
-                      "SPREADSHEET"
-                    ]
+                    "$ref": "#/components/schemas/AttachmentSubType"
                   },
                   "attachmentType": {
-                    "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-                    "allOf": [
-                      {
-                        "$ref": "#/components/schemas/AttachmentType_trello"
-                      }
-                    ]
+                    "$ref": "#/components/schemas/AttachmentType_trello"
                   },
                   "description": {
                     "type": "string"
@@ -4096,21 +4071,21 @@
                 "format": "binary"
               }
             },
-          "multipart/form-data": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "name": {
-                  "type": "string"
-                },
-                "filename": {
-                  "type": "string",
-                  "format": "binary"
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
                 }
               }
             }
           }
-        }
         },
         "responses": {
           "200": {
@@ -4243,7 +4218,7 @@
                                 "description": "A timestamp of when the rule was originally added.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/DateUnion"
+                                    "$ref": "#/components/schemas/Datetime"
                                   }
                                 ]
                               },
@@ -4256,17 +4231,7 @@
                                 ]
                               },
                               "disabledReason": {
-                                "description": "Machine-readable reason a rule is disabled:\n* `APPROVAL_COLUMN_MISSING` This rule's approval status column has been deleted.\n\n* `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a dropdown column.\n\n* `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated actions,\nyou need to upgrade your organization account to a Business or Enterprise plan.\n\n* `COLUMN_MISSING` A column referenced by this rule has been deleted.\n\n* `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has been changed to an incompatible column type.\n\n* `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be able to receive\nnotifications based on this sheet's permission settings or this account's approved domain sharing list.\n\n* `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule have been deleted.\n",
-                                "type": "string",
-                                "enum": [
-                                  "APPROVAL_COLUMN_MISSING",
-                                  "APPROVAL_COLUMN_WRONG_TYPE",
-                                  "AUTOMATION_NOT_ENABLED_FOR_ORG",
-                                  "COLUMN_MISSING",
-                                  "COLUMN_TYPE_INCOMPATIBLE",
-                                  "NO_POTENTIAL_RECIPIENTS",
-                                  "NO_VALID_SELECTED_COLUMNS"
-                                ]
+                                "$ref": "#/components/schemas/RuleDisabledReason"
                               },
                               "disabledReasonText": {
                                 "description": "Descriptive reason a rule is disabled.",
@@ -4280,7 +4245,7 @@
                                 "description": "The datetime for when the change was made to the rule.",
                                 "allOf": [
                                   {
-                                    "$ref": "#/components/schemas/DateUnion"
+                                    "$ref": "#/components/schemas/Datetime"
                                   }
                                 ]
                               },
@@ -5391,11 +5356,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - effective only if comments is present, otherwise ignored\n  * **comments** - include all comments in threads\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "attachments",
-                "comments"
-              ]
+              "$ref": "#/components/schemas/DiscussionsInclude"
             }
           },
           {
@@ -5846,14 +5807,7 @@
                     ]
                   },
                   "destinationType": {
-                    "description": "Type of the destination container.",
-                    "type": "string",
-                    "nullable": true,
-                    "enum": [
-                      "folder",
-                      "home",
-                      "workspace"
-                    ]
+                    "$ref": "#/components/schemas/DestinationContainerType"
                   }
                 }
               }
@@ -6888,10 +6842,10 @@
                                 "type": "boolean"
                               },
                               "createdAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "cells": {
                                 "description": "Cells objects.",
@@ -7083,10 +7037,10 @@
                                 "type": "boolean"
                               },
                               "createdAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "cells": {
                                 "description": "Cells objects.",
@@ -7210,13 +7164,7 @@
             "in": "query",
             "description": "A comma-separated list of row elements to copy in addition to the cell data:\n  * **all** - specify a value of **all** to include everything (attachments,\nchildren, and discussions).\n  * **attachments**\n  * **children** -  if specified, any child rows of the rows specified in\nthe request are also copied to the destination sheet, and parent-child relationships amongst rows are preserved within the destination sheet; if not specified, only the rows specified in the request are copied.\n  * **discussions**\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "all",
-                "attachments",
-                "children",
-                "discussions"
-              ]
+              "$ref": "#/components/schemas/CopyRowsInclude"
             }
           },
           {
@@ -7284,11 +7232,7 @@
             "in": "query",
             "description": "A comma-separate list of row elements to move in addition to the cell data.\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "attachments",
-                "discussions"
-              ]
+              "$ref": "#/components/schemas/MoveRowsInclude"
             }
           },
           {
@@ -7346,11 +7290,7 @@
             "in": "query",
             "description": "A comma-separated list of elements to include in the response.\n\nSee [Row Include Flags](../../tag/rowsRelated#section/Row-Include-Flags).\n\nAlso supports the **columns** include flag, which adds a columns array that specifies all of the columns for the sheet. This enables you to have the full context of the cells in the row.\n\nThe **filters** include flag returns a **filteredOut** attribute indicating if the row should be displayed or hidden according to the sheet's filters.\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "columns",
-                "filters"
-              ]
+              "$ref": "#/components/schemas/GetRowInclude"
             }
           },
           {
@@ -7416,10 +7356,10 @@
                           }
                         },
                         "createdAt": {
-                          "$ref": "#/components/schemas/DateUnion"
+                          "$ref": "#/components/schemas/Datetime"
                         },
                         "modifiedAt": {
-                          "$ref": "#/components/schemas/DateUnion"
+                          "$ref": "#/components/schemas/Datetime"
                         }
                       }
                     }
@@ -7672,11 +7612,7 @@
             "in": "query",
             "description": "A comma-separated list of elements to copy:\n  * **columnType** - includes the columnType attribute for each Cell object\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for a multi-contact cell.\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "columnType",
-                "objectValue"
-              ]
+              "$ref": "#/components/schemas/CellHistoryInclude"
             }
           },
           {
@@ -7727,7 +7663,7 @@
                             ],
                             "properties": {
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "modifiedBy": {
                                 "description": "User object containing the name and email of the user that made the change.",
@@ -8728,10 +8664,10 @@
                               "$ref": "#/components/schemas/Image"
                             },
                             "createdAt": {
-                              "$ref": "#/components/schemas/DateUnion"
+                              "$ref": "#/components/schemas/Datetime"
                             },
                             "modifiedAt": {
-                              "$ref": "#/components/schemas/DateUnion"
+                              "$ref": "#/components/schemas/Datetime"
                             },
                             "version": {
                               "description": "Sheet version number that is incremented every time a sheet is modified.",
@@ -8823,7 +8759,7 @@
                                     "description": "The date and time for when this request was originally created. Read-only.",
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/DateUnion"
+                                        "$ref": "#/components/schemas/Datetime"
                                       }
                                     ]
                                   },
@@ -8831,7 +8767,7 @@
                                     "description": "The date and time for when the last change was made to this request. Read-only.",
                                     "allOf": [
                                       {
-                                        "$ref": "#/components/schemas/DateUnion"
+                                        "$ref": "#/components/schemas/Datetime"
                                       }
                                     ]
                                   },
@@ -9502,10 +9438,10 @@
                             ],
                             "properties": {
                               "createdAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               },
                               "modifiedAt": {
-                                "$ref": "#/components/schemas/DateUnion"
+                                "$ref": "#/components/schemas/Datetime"
                               }
                             }
                           }
@@ -9542,11 +9478,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **objectValue** - when used in combination with a **level** query parameter,\nincludes the email addresses for multi-contact data.\n  * **source** - the Source object for any Sight that was created from another\nSight, if any\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "objectValue",
-                "source"
-              ]
+              "$ref": "#/components/schemas/GetDashboardInclude"
             }
           },
           {
@@ -10355,11 +10287,7 @@
             "in": "query",
             "name": "grant_type",
             "schema": {
-              "type": "string",
-              "enum": [
-                "authorization_code",
-                "refresh_token"
-              ]
+              "$ref": "#/components/schemas/GrantType"
             },
             "required": true,
             "description": "Must be set to \"authorization_code\"."
@@ -10530,8 +10458,11 @@
                               },
                               "customWelcomeScreenViewed": {
                                 "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-                                "type": "string",
-                                "format": "date-time",
+                                "oneOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Datetime"
+                                  }
+                                ],
                                 "readOnly": true,
                                 "example": "2020-08-25T12:15:47Z"
                               },
@@ -10554,8 +10485,11 @@
                               },
                               "lastLogin": {
                                 "description": "Last login time of the current user.",
-                                "type": "string",
-                                "format": "date-time",
+                                "oneOf": [
+                                  {
+                                    "$ref": "#/components/schemas/Datetime"
+                                  }
+                                ],
                                 "readOnly": true,
                                 "example": "2020-10-04T18:32:47Z"
                               },
@@ -10593,12 +10527,10 @@
                               },
                               "status": {
                                 "description": "User status, set to one of the listed enum values.",
-                                "type": "string",
-                                "enum": [
-                                  "ACTIVE",
-                                  "DECLINED",
-                                  "PENDING",
-                                  "DEACTIVATED"
+                                "oneOf": [
+                                  {
+                                    "$ref": "#/components/schemas/UserStatus"
+                                  }
                                 ],
                                 "example": "ACTIVE"
                               }
@@ -10707,10 +10639,7 @@
             "description": "When specified with a value of 'groups', response includes an array of groups (groupId, name, and description only) that the user is a member of.",
             "in": "query",
             "schema": {
-              "type": "string",
-              "enum": [
-                "groups"
-              ]
+              "$ref": "#/components/schemas/GetUserInclude"
             }
           }
         ],
@@ -12868,11 +12797,7 @@
         "in": "header",
         "description": "Strongly recommended to make sure payload is compressed. Must be set to one of the following values:\n* deflate\n* gzip\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "deflate",
-            "gzip"
-          ]
+          "$ref": "#/components/schemas/AcceptEncoding"
         }
       },
       "accessApiLevel": {
@@ -12949,15 +12874,8 @@
       "compatibilityLevel": {
         "name": "level",
         "in": "query",
-        "description": "Specifies compatibility level for multi-contact/picklist data; 0 (default) = text/number; 1 = multi-contact list uses multi-contact data, multi-picklist data uses text/number; 2 = multi-contact list uses multi-contact data, multi-picklist uses multi-picklist data.",
         "schema": {
-          "type": "integer",
-          "default": 0,
-          "enum": [
-            0,
-            1,
-            2
-          ]
+          "$ref": "#/components/schemas/CompatibilityLevel"
         }
       },
       "contentDispositionHeader": {
@@ -12993,11 +12911,7 @@
         "required": true,
         "description": "Required for POST request to import a sheet from CSV/XLSX file.\n* For CSV files, use: Content-Type: text/csv\n* For XLSX files, use: Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "text/csv",
-            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          ]
+          "$ref": "#/components/schemas/SheetContentType"
         }
       },
       "contentTypeHeader_FORM": {
@@ -13034,10 +12948,7 @@
         "in": "query",
         "description": "When specified with a value of **sheetHyperlinks**, excludes this category from the response",
         "schema": {
-          "type": "string",
-          "enum": [
-            "sheetHyperlinks"
-          ]
+          "$ref": "#/components/schemas/FolderCopyExclude"
         }
       },
       "exclude_sheet": {
@@ -13045,29 +12956,28 @@
         "in": "query",
         "description": "A comma-separated list of element types to exclude from the response:\n  * **filteredOutRows** - excludes filtered-out rows from response payload\nif a sheet filter is applied; includes total number of filtered rows\n  * **linkInFromCellDetails** - excludes the following attributes from the\n**cell.linkInFromCell** object: `columnId`, `rowId`, `status`\n  * **linksOutToCellsDetails** - excludes the following attributes from\nthe **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`\n  * **nonexistentCells** - excludes empty cells\n",
         "schema": {
-          "$ref": "#/components/schemas/SheetExclude"        }
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SheetExclude"
+          }
+        }
       },
       "exclude_sheetSummary": {
         "name": "exclude",
         "in": "query",
         "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
         "schema": {
-          "$ref": "#/components/schemas/SheetSummaryExclude"
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SheetSummaryExclude"
+          }
         }
       },
       "favoriteTypeInPath": {
         "name": "favoriteType",
         "in": "path",
         "schema": {
-          "type": "string",
-          "enum": [
-            "folder",
-            "report",
-            "sheet",
-            "sight",
-            "template",
-            "workspace"
-          ]
+          "$ref": "#/components/schemas/FavoriteType"
         },
         "required": true,
         "description": "The favorite type."
@@ -13103,11 +13013,10 @@
         "in": "query",
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "attachments",
-            "discussions"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/DiscussionInclude"
+          }
         }
       },
       "include_favorite": {
@@ -13115,11 +13024,10 @@
         "in": "query",
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "directId",
-            "name"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/FavoriteInclude"
+          }
         }
       },
       "include_folder": {
@@ -13127,14 +13035,10 @@
         "in": "query",
         "description": "A comma-separated list of optional elements to include in the response:\n  * **source** - adds the Source object indicating which object the folder\nwas created from, if any\n  * **distributionLink**\n  * **ownerInfo**\n  * **sheetVersion**\n  * **permalinks**\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "source",
-            "distributionLink",
-            "ownerInfo",
-            "sheetVersion",
-            "permalinks"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/FolderInclude"
+          }
         }
       },
       "include_folder_copy": {
@@ -13142,18 +13046,10 @@
         "in": "query",
         "description": "A comma-separated list of elements to copy:\n  * **attachments**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients** -- includes notification recipients, must also include\nrules when using this attribute\n  * **rules** -- includes notifications and workflow rules\n  * **shares** |\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "attachments",
-            "cellLinks",
-            "data",
-            "discussions",
-            "filters",
-            "forms",
-            "ruleRecipients",
-            "rules",
-            "shares"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/CopyFolderInclude"
+          }
         }
       },
       "include_report": {
@@ -13161,17 +13057,10 @@
         "in": "query",
         "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments**\n  * **discussions**\n  * **proofs**\n  * **format**\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data\n  * **scope** - adds the report's scope to the response\n  * **source** - adds the Source object indicating which report the report\nwas created from, if any\n  * **sourceSheets**\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "attachments",
-            "discussions",
-            "proofs",
-            "format",
-            "objectValue",
-            "scope",
-            "source",
-            "sourceSheets"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/ReportInclude"
+          }
         }
       },
       "include_sheet": {
@@ -13179,17 +13068,10 @@
         "in": "query",
         "description": "Additional parameter to create a sheet from template.\nA comma-separated list of elements to copy from the template.\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "attachments",
-            "cellLinks",
-            "data",
-            "discussions",
-            "filters",
-            "forms",
-            "ruleRecipients",
-            "rules"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SheetFromTemplateInclude"
+          }
         }
       },
       "include_sheetSummary": {
@@ -13197,11 +13079,10 @@
         "in": "query",
         "description": "A comma-separated list of elements to include in the response.\n* **format**: includes format info for cells, rows, and summary fields\n* **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "format",
-            "writerInfo"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/SheetSummaryInclude"
+          }
         }
       },
       "include_workspace": {
@@ -13209,20 +13090,10 @@
         "in": "query",
         "description": "A comma-separated list of elements to include:\n  * **all**\n  * **attachments**\n  * **brand**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients**\n  * **rules**\n  * **shares**\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "all",
-            "attachments",
-            "brand",
-            "cellLinks",
-            "data",
-            "discussions",
-            "filters",
-            "forms",
-            "ruleRecipients",
-            "rules",
-            "shares"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/WorkspaceInclude"
+          }
         }
       },
       "includeAllBoolean": {
@@ -13237,10 +13108,8 @@
       "level": {
         "name": "level",
         "in": "query",
-        "description": "specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format (level=0, default), multi-contact data (level=1), or multi-picklist data (level=3).",
         "schema": {
-          "type": "integer",
-          "default": 0
+          "$ref": "#/components/schemas/CompatibilityLevel"
         }
       },
       "modifiedSince": {
@@ -13248,7 +13117,7 @@
         "in": "query",
         "description": "When specified with a date and time value, response only includes the objects that are modified on or after the date and time specified. If you need to keep track of frequent changes, it may be more useful to use Get Sheet Version.",
         "schema": {
-          "$ref": "#/components/schemas/DateUnion"
+          "$ref": "#/components/schemas/Datetime"
         }
       },
       "numericDates": {
@@ -13355,11 +13224,7 @@
         "in": "query",
         "description": "When applicable for the specific object this parameter defines the scope of the share. Possible values are ITEM or WORKSPACE. ITEM is an item-level share (that is, the specific object to which the share applies is shared with the user or group). WORKSPACE is a workspace-level share (that is, the workspace that contains the object to which the share applies is shared with the user or group).",
         "schema": {
-          "type": "string",
-          "enum": [
-            "ITEM",
-            "WORKSPACE"
-          ]
+          "$ref": "#/components/schemas/SharingInclude"
         }
       },
       "sheetIdInPath": {
@@ -13385,8 +13250,7 @@
         "in": "query",
         "description": "The earliest time from which events are included in the response. Events before this time are excluded. This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nYou must pass in a value for either `since` or `streamPosition` and never both.",
         "schema": {
-          "type": "string",
-          "format": "date-time"
+          "$ref": "#/components/schemas/Datetime"
         }
       },
       "sightIdInPath": {
@@ -13403,13 +13267,10 @@
         "in": "query",
         "description": "A comma-separated list of references to NOT re-map for the newly created folder.",
         "schema": {
-          "type": "string",
-          "enum": [
-            "cellLinks",
-            "reports",
-            "sheetHyperlinks",
-            "sights"
-          ]
+          "type": "array",
+          "items": {
+            "$ref": "#/components/schemas/FolderCopySkipRemap"
+          }
         }
       },
       "streamPosition": {
@@ -13426,12 +13287,7 @@
         "in": "query",
         "description": "Level of public template types. 0 refers to only Sheet types, 1 refers to all types.",
         "schema": {
-          "type": "integer",
-          "enum": [
-            0,
-            1
-          ],
-          "default": 0
+          "$ref": "#/components/schemas/TemplateType"
         }
       },
       "toDate": {
@@ -13439,8 +13295,7 @@
         "in": "query",
         "description": "The latest time up to which events are included in the response. Events after this time are excluded. The `to` parameter requires using the `since` query parameter (above). This parameter is intended for use when backfilling data at client startup or recovery--don't use it for fine-grained date-based queries. Therefore, resolution is limited to the nearest hour. The value is interpreted as ISO-8601 format, unless `numericDates` is specified (see details about `numericDates` below).\n\nIf `to` is a future time, the current time is used. If `to` equals the `since` time, an empty data value is returned. If `to` is before the `since` time, an error is returned.",
         "schema": {
-          "type": "string",
-          "format": "date-time"
+          "$ref": "#/components/schemas/Datetime"
         }
       },
       "userIdInPath": {
@@ -13745,14 +13600,24 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "type": "string",
-            "format": "date-time"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ]
           }
         },
         "example": {
           "objectType": "ABSTRACT_DATETIME",
           "value": "2025-03-03T16:59:59"
         }
+      },
+      "AcceptEncoding": {
+        "type": "string",
+        "enum": [
+          "deflate",
+          "gzip"
+        ]
       },
       "AccessLevel": {
         "type": "string",
@@ -13833,12 +13698,7 @@
             ]
           },
           "attachmentType": {
-            "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AttachmentType_trello"
-              }
-            ]
+            "$ref": "#/components/schemas/AttachmentType_trello"
           },
           "attachmentSubType": {
             "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
@@ -13867,7 +13727,7 @@
             ]
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "createdBy": {
             "$ref": "#/components/schemas/NameAndEmail"
@@ -13890,6 +13750,18 @@
           }
         }
       },
+      "AttachmentSubType": {
+        "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
+        "type": "string",
+        "enum": [
+          "DOCUMENT",
+          "DRAWING",
+          "FOLDER",
+          "PDF",
+          "PRESENTATION",
+          "SPREADSHEET"
+        ]
+      },
       "AttachmentArray": {
         "type": "array",
         "items": {
@@ -13911,6 +13783,7 @@
         ]
       },
       "AttachmentType_trello": {
+        "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
         "type": "string",
         "enum": [
           "BOX_COM",
@@ -14020,7 +13893,7 @@
             "description": "A timestamp of when the rule was originally added.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -14057,7 +13930,7 @@
             "description": "The datetime for when the change was made to the rule.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -14253,9 +14126,12 @@
                   ]
                 },
                 "timestamp": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request."
+                  "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Datetime"
+                    }
+                  ]
                 }
               }
             }
@@ -14277,9 +14153,12 @@
             ]
           },
           "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time that the callback was generated."
+            "description": "Time that the callback was generated.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ]
           }
         }
       },
@@ -14347,9 +14226,12 @@
             ]
           },
           "timestamp": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request."
+            "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ]
           }
         }
       },
@@ -14520,7 +14402,7 @@
         "type": "object",
         "properties": {
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "modifiedBy": {
             "description": "User object containing the name and email of the user that made the change.",
@@ -14532,6 +14414,13 @@
             ]
           }
         }
+      },
+      "CellHistoryInclude": {
+        "type": "string",
+        "enum": [
+          "columnType",
+          "objectValue"
+        ]
       },
       "CellLink": {
         "type": "object",
@@ -15417,7 +15306,7 @@
             ]
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this comment.",
@@ -15444,7 +15333,7 @@
             ]
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "text": {
             "description": "Comment body.",
@@ -15512,6 +15401,16 @@
             "type": "string"
           }
         }
+      },
+      "CompatibilityLevel": {
+        "description": "Specifies compatibility level for multi-contact/picklist data; 0 (default) = text/number; 1 = multi-contact list uses multi-contact data, multi-picklist data uses text/number; 2 = multi-contact list uses multi-contact data, multi-picklist uses multi-picklist data.",
+        "type": "integer",
+        "default": 0,
+        "enum": [
+          0,
+          1,
+          2
+        ]
       },
       "Contact": {
         "type": "object",
@@ -15614,6 +15513,20 @@
           }
         }
       },
+      "CopyFolderInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "cellLinks",
+          "data",
+          "discussions",
+          "filters",
+          "forms",
+          "ruleRecipients",
+          "rules",
+          "shares"
+        ]
+      },
       "CopyOrMoveRowDestination": {
         "type": "object",
         "properties": {
@@ -15667,6 +15580,15 @@
             "$ref": "#/components/schemas/RowMappingArray"
           }
         }
+      },
+      "CopyRowsInclude": {
+        "type": "string",
+        "enum": [
+          "all",
+          "attachments",
+          "children",
+          "discussions"
+        ]
       },
       "Criteria": {
         "type": "object",
@@ -15802,6 +15724,13 @@
           "$ref": "#/components/schemas/CrossSheetReference"
         }
       },
+      "SheetContentType": {
+        "type": "string",
+        "enum": [
+          "text/csv",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ]
+      },
       "Currency": {
         "type": "object",
         "properties": {
@@ -15838,19 +15767,10 @@
           "value": "2025-01-14"
         }
       },
-      "DateUnion": {
-        "description": "supports date-time in ISO-8601 or epoch-millis",
-        "type": "object",
-        "oneOf": [
-          {
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "$ref": "#/components/schemas/Int64"
-          }
-        ],
-        "readOnly": true
+      "Datetime": {
+        "type": "string",
+        "format": "date-time",
+        "example": "1971-02-13T02:30:00Z"
       },
       "DatetimeObjectValue": {
         "description": "Object representing a datetime",
@@ -15864,14 +15784,27 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "type": "string",
-            "format": "date-time"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ]
           }
         },
         "example": {
           "objectType": "DATETIME",
           "value": "2025-03-03T16:59:59"
         }
+      },
+      "DestinationContainerType": {
+        "description": "Type of the destination container.",
+        "type": "string",
+        "nullable": true,
+        "enum": [
+          "folder",
+          "home",
+          "workspace"
+        ]
       },
       "Discussion": {
         "type": "object",
@@ -15916,7 +15849,7 @@
             ]
           },
           "lastCommentedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "lastCommentedUser": {
             "description": "`User` object containing `name` and `email` of the user who last commented on the discussion.\n",
@@ -15971,6 +15904,20 @@
         "items": {
           "$ref": "#/components/schemas/Discussion"
         }
+      },
+      "DiscussionInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "discussions"
+        ]
+      },
+      "DiscussionsInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "comments"
+        ]
       },
       "Duration": {
         "description": "In a project sheet, represents a value in a duration cell, or a lag value of a predecessor.",
@@ -16161,8 +16108,11 @@
           },
           "eventTimeStamp": {
             "description": "Date and time of the event. Defaults to ISO-8601 format. See dates and times for more information.",
-            "type": "string",
-            "format": "date-time"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ]
           },
           "userId": {
             "description": "User assumed as the one who initiated the event. Usually the userId property and the requestUserId property (below) have the same value. However, if the request is an API call with Assume-User header then the userId property identifies the user whose email matches the value in the Assume-User header.",
@@ -16240,6 +16190,24 @@
         "items": {
           "$ref": "#/components/schemas/Favorite"
         }
+      },
+      "FavoriteInclude": {
+        "type": "string",
+        "enum": [
+          "directId",
+          "name"
+        ]
+      },
+      "FavoriteType": {
+        "type": "string",
+        "enum": [
+          "folder",
+          "report",
+          "sheet",
+          "sight",
+          "template",
+          "workspace"
+        ]
       },
       "Filters": {
         "description": "Smartsheet users can define and save personal column filters on sheets they can view.",
@@ -16404,6 +16372,31 @@
           "$ref": "#/components/schemas/Folder"
         }
       },
+      "FolderCopyExclude": {
+        "type": "string",
+        "enum": [
+          "sheetHyperlinks"
+        ]
+      },
+      "FolderCopySkipRemap": {
+        "type": "string",
+        "enum": [
+          "cellLinks",
+          "reports",
+          "sheetHyperlinks",
+          "sights"
+        ]
+      },
+      "FolderInclude": {
+        "type": "string",
+        "enum": [
+          "source",
+          "distributionLink",
+          "ownerInfo",
+          "sheetVersion",
+          "permalinks"
+        ]
+      },
       "FontFamily": {
         "type": "object",
         "properties": {
@@ -16554,6 +16547,46 @@
           }
         }
       },
+      "GetContactInclude": {
+        "type": "string",
+        "enum": [
+          "profileImage"
+        ]
+      },
+      "GetRowInclude": {
+        "type": "string",
+        "enum": [
+          "columns",
+          "filters"
+        ]
+      },
+      "GetDashboardInclude": {
+        "type": "string",
+        "enum": [
+          "objectValue",
+          "source"
+        ]
+      },
+      "GetReportExclude": {
+        "type": "string",
+        "enum": [
+          "linkInFromCellDetails",
+          "linksOutToCellsDetails"
+        ]
+      },
+      "GetUserInclude": {
+        "type": "string",
+        "enum": [
+          "groups"
+        ]
+      },
+      "GrantType": {
+        "type": "string",
+        "enum": [
+          "authorization_code",
+          "refresh_token"
+        ]
+      },
       "GridLines": {
         "type": "object",
         "properties": {
@@ -16598,10 +16631,10 @@
             ]
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           }
         }
       },
@@ -16894,6 +16927,20 @@
           "Tahoma",
           "Times New Roman",
           "Verdana"
+        ]
+      },
+      "ListSheetInclude": {
+        "type": "string",
+        "enum": [
+          "sheetVersion",
+          "source"
+        ]
+      },
+      "MoveRowsInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "discussions"
         ]
       },
       "MultiContactObjectValue": {
@@ -17297,7 +17344,7 @@
             "type": "integer"
           },
           "lastUpdatedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "lastUpdatedBy": {
             "description": "`User` object containing `name` and `email` of the user who last updated the proof.\n",
@@ -17362,7 +17409,7 @@
             ]
           },
           "sentAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "isDownloadable": {
             "description": "Indicates whether the description is downloadable.",
@@ -17541,6 +17588,19 @@
             "type": "boolean"
           }
         }
+      },
+      "ReportInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "discussions",
+          "proofs",
+          "format",
+          "objectValue",
+          "scope",
+          "source",
+          "sourceSheets"
+        ]
       },
       "ReportPublish": {
         "type": "object",
@@ -17747,7 +17807,7 @@
             "example": ",,1,1,,,,,,,,,,,,,"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this row.",
@@ -17799,7 +17859,7 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "modifiedBy": {
             "description": "User object containing name and email of the last person to modify this row.",
@@ -17887,6 +17947,19 @@
           "$ref": "#/components/schemas/RowMapping"
         }
       },
+      "RuleDisabledReason": {
+        "description": "Machine-readable reason a rule is disabled:\n* `APPROVAL_COLUMN_MISSING` This rule's approval status column has been deleted.\n\n* `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a dropdown column.\n\n* `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated actions,\nyou need to upgrade your organization account to a Business or Enterprise plan.\n\n* `COLUMN_MISSING` A column referenced by this rule has been deleted.\n\n* `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has been changed to an incompatible column type.\n\n* `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be able to receive\nnotifications based on this sheet's permission settings or this account's approved domain sharing list.\n\n* `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule have been deleted.\n",
+        "type": "string",
+        "enum": [
+          "APPROVAL_COLUMN_MISSING",
+          "APPROVAL_COLUMN_WRONG_TYPE",
+          "AUTOMATION_NOT_ENABLED_FOR_ORG",
+          "COLUMN_MISSING",
+          "COLUMN_TYPE_INCOMPATIBLE",
+          "NO_POTENTIAL_RECIPIENTS",
+          "NO_VALID_SELECTED_COLUMNS"
+        ]
+      },
       "Schedule": {
         "type": "object",
         "properties": {
@@ -17947,7 +18020,7 @@
             "description": "The date, time, and time zone at which the delivery schedule ends.\n\nThe value is either in a string format or a numeric format:\n\n* When the value is a string, it must be a valid ISO-8601 date and time with an offset (YYYY-MM-DDThh:mm:ssTZD).\n* When the value is a number, it represents a date and time with no offset (UTC time zone). See Dates and Times for more information.\n\nThe value must be later than startAt and the current date and time.\n\nThe value must contain zero hours, zero minutes, and zero seconds.\n\nThe offset (time zone) value must be the same as the offset (time zone) value in startAt.\n\nThis attribute is applicable to the following schedule types: DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the Table of Schedule Object’s Attributes below.\n",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -17955,7 +18028,7 @@
             "description": "The date and time for when the last request was sent.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -17963,7 +18036,7 @@
             "description": "The date and time for when the next request is scheduled to send.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -17971,7 +18044,7 @@
             "description": "The date, time, and time zone at which the first delivery starts.\n\nThe value is either in a string format or a numeric format:\n\n *   When the value is a string, it must be a valid ISO-8601 date and\ntime with an offset (YYYY-MM-DDThh:mm:ssTZD).\n *   When the value is a number, it represents a date and time with\nno offset (UTC time zone). See [Dates and Times](../../#section/API-Basics/Dates-and-Times) for more information.\nFor ONCE schedule type, it must be later than the current date time.\n\nFor all other schedule types, it must be later than “2000-01-01T00:00:00Z” in string format or 946684800000 in numeric format.\n\nThe value must contain zero minutes and zero seconds.\n\nThis attribute is applicable to all schedule types.\n\nFor more details, refer to the Table of Schedule Object’s Attributes below.\n",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           }
@@ -18016,6 +18089,21 @@
         "items": {
           "$ref": "#/components/schemas/SearchResultItem"
         }
+      },
+      "SearchScope": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "cellData",
+          "comments",
+          "folderNames",
+          "reportNames",
+          "sheetNames",
+          "sightNames",
+          "summaryFields",
+          "templateNames",
+          "workspaceNames"
+        ]
       },
       "SearchResultItem": {
         "type": "object",
@@ -18152,7 +18240,7 @@
             "description": "The date and time for when the sent update request was sent to the recipient.",
             "allOf": [
               {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             ]
           },
@@ -18243,7 +18331,7 @@
             "type": "boolean"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "email": {
             "description": "User's primary email address for user shares; null for group shares.",
@@ -18254,7 +18342,7 @@
             "type": "string"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "name": {
             "description": "If a user share and user is also a contact, the user's full name. If a group share, the group's name.",
@@ -18284,6 +18372,13 @@
             "type": "string"
           }
         }
+      },
+      "SharingInclude": {
+        "type": "string",
+        "enum": [
+          "ITEM",
+          "WORKSPACE"
+        ]
       },
       "Sheet": {
         "type": "object",
@@ -18331,7 +18426,7 @@
             "$ref": "#/components/schemas/ColumnArray"
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "crossSheetReferences": {
             "description": "Array of CrossSheetReference objects.\nOnly returned if the [include](../../tag/sheets#operation/getSheet) query string parameter contains **crossSheetReferences**.\n",
@@ -18378,7 +18473,7 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "name": {
             "description": "Sheet name.",
@@ -18534,6 +18629,19 @@
           "nonexistentCells"
         ]
       },
+      "SheetFromTemplateInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "cellLinks",
+          "data",
+          "discussions",
+          "filters",
+          "forms",
+          "ruleRecipients",
+          "rules"
+        ]
+      },
       "SheetImportResult": {
         "type": "object",
         "description": "Sheet imported from CSV / XLSX file.",
@@ -18589,10 +18697,10 @@
                   "$ref": "#/components/schemas/AccessLevel"
                 },
                 "createdAt": {
-                  "$ref": "#/components/schemas/DateUnion"
+                  "$ref": "#/components/schemas/Datetime"
                 },
                 "modifiedAt": {
-                  "$ref": "#/components/schemas/DateUnion"
+                  "$ref": "#/components/schemas/Datetime"
                 },
                 "name": {
                   "type": "string"
@@ -18826,6 +18934,13 @@
           "imageAltText"
         ]
       },
+      "SheetSummaryInclude": {
+        "type": "string",
+        "enum": [
+          "format",
+          "writerInfo"
+        ]
+      },
       "SheetTemplate": {
         "type": "object",
         "description": "Sheet to create from scratch using the specified columns.",
@@ -19038,10 +19153,10 @@
             ],
             "properties": {
               "createdAt": {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               },
               "modifiedAt": {
-                "$ref": "#/components/schemas/DateUnion"
+                "$ref": "#/components/schemas/Datetime"
               }
             }
           }
@@ -19244,7 +19359,7 @@
             ]
           },
           "createdAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "createdBy": {
             "description": "User object containing name and email of the creator of this summary field.",
@@ -19286,7 +19401,7 @@
             "type": "boolean"
           },
           "modifiedAt": {
-            "$ref": "#/components/schemas/DateUnion"
+            "$ref": "#/components/schemas/Datetime"
           },
           "modifiedBy": {
             "description": "User object containing name and email of the user who most recently modified this summary field.",
@@ -19514,17 +19629,13 @@
           "$ref": "#/components/schemas/Template"
         }
       },
-      "Timestamp": {
-        "oneOf": [
-          {
-            "type": "string",
-            "format": "date-time"
-          },
-          {
-            "$ref": "#/components/schemas/Int64"
-          }
+      "TemplateType": {
+        "type": "integer",
+        "enum": [
+          0,
+          1
         ],
-        "readOnly": true
+        "default": 0
       },
       "TitleWidgetContent": {
         "type": "object",
@@ -19604,7 +19715,7 @@
                 "description": "The date and time for when this request was originally created. Read-only.",
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/DateUnion"
+                    "$ref": "#/components/schemas/Datetime"
                   }
                 ]
               },
@@ -19612,7 +19723,7 @@
                 "description": "The date and time for when the last change was made to this request. Read-only.",
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/DateUnion"
+                    "$ref": "#/components/schemas/Datetime"
                   }
                 ]
               },
@@ -19652,12 +19763,7 @@
             ]
           },
           "attachmentType": {
-            "description": "Attachment type. Note--Dropbox, Egnyte, and Evernote are not supported for Smartsheet.gov accounts.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/AttachmentType_trello"
-              }
-            ]
+            "$ref": "#/components/schemas/AttachmentType_trello"
           },
           "description": {
             "type": "string"
@@ -19690,8 +19796,11 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "type": "string",
-            "format": "date-time",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ],
             "readOnly": true,
             "example": "2020-08-25T12:15:47Z"
           },
@@ -19714,8 +19823,11 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "type": "string",
-            "format": "date-time",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ],
             "readOnly": true,
             "example": "2020-10-04T18:32:47Z"
           },
@@ -19810,8 +19922,11 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "type": "string",
-            "format": "date-time",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ],
             "example": "2020-08-25T12:15:47Z"
           },
           "department": {
@@ -19841,8 +19956,11 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "type": "string",
-            "format": "date-time",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/Datetime"
+              }
+            ],
             "example": "2020-10-31T12:15:47Z"
           },
           "lastName": {
@@ -19957,6 +20075,15 @@
           "$ref": "#/components/schemas/UserProfileImageResponse"
         }
       },
+      "UserStatus": {
+        "type": "string",
+        "enum": [
+          "ACTIVE",
+          "DECLINED",
+          "PENDING",
+          "DEACTIVATED"
+        ]
+      },
       "WebContentWidgetContent": {
         "type": "object",
         "title": "Web Content",
@@ -20058,7 +20185,7 @@
                 "readOnly": true,
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/DateUnion"
+                    "$ref": "#/components/schemas/Datetime"
                   }
                 ]
               },
@@ -20071,7 +20198,7 @@
                 "readOnly": true,
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/DateUnion"
+                    "$ref": "#/components/schemas/Datetime"
                   }
                 ]
               },
@@ -20091,8 +20218,11 @@
                 "readOnly": true,
                 "properties": {
                   "lastCallbackAttempt": {
-                    "type": "string",
-                    "format": "date-time",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Datetime"
+                      }
+                    ],
                     "readOnly": true,
                     "description": "When this webhook last made a callback attempt."
                   },
@@ -20102,8 +20232,11 @@
                     "description": "The number of retries the webhook had performed as of the last callback attempt."
                   },
                   "lastSuccessfulCallback": {
-                    "type": "string",
-                    "format": "date-time",
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/Datetime"
+                      }
+                    ],
                     "readOnly": true,
                     "description": "When this webhook last made a successful callback."
                   }
@@ -20420,6 +20553,22 @@
         "items": {
           "$ref": "#/components/schemas/Workspace"
         }
+      },
+      "WorkspaceInclude": {
+        "type": "string",
+        "enum": [
+          "all",
+          "attachments",
+          "brand",
+          "cellLinks",
+          "data",
+          "discussions",
+          "filters",
+          "forms",
+          "ruleRecipients",
+          "rules",
+          "shares"
+        ]
       }
     },
     "securitySchemes": {
