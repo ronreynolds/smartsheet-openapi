@@ -19,17 +19,17 @@ public class BasicUse {
             log.info("server info - {}", new ServerInfoApi(client).serverinfoGet());
 
             UsersApi usersApi = new UsersApi(client);
-            var currentUser = usersApi.getCurrentUser(null, null);
+            var currentUser = usersApi.getCurrentUser(null);
             log.info("current user - {}", currentUser);
-            var sameUser = usersApi.getUser(currentUser.getId(), null);
+            var sameUser = usersApi.getUser(currentUser.getId());
             log.info("same user? - {}", sameUser);
-            var userList = usersApi.listUsers(null, null, null, null, modifiedSince, null, null, null);
+            var userList = usersApi.listUsers(null, null, null, modifiedSince, null, null, null);
             log.info("user list - {}", userList);
 
             // WIP
             if (false) {
                 SheetsApi sheetsApi = new SheetsApi(client);
-                var sheet = sheetsApi.getSheet(7290900052922244L, null, null, null, null, null, null, null, null, null, null,
+                var sheet = sheetsApi.getSheet(7290900052922244L, null, null, null, null, null, null, null, null, null,
                         null, null, null, null, modifiedSince);
                 log.info("sheet - {}", sheet);
             }
