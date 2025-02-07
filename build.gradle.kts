@@ -1,7 +1,6 @@
 plugins {
     id("java")
     id("org.openapi.generator").version("7.11.0") // latest as of 2025-01-20
-    id("jacoco")
 }
 
 group   = "com.ronreynolds"
@@ -62,6 +61,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion")
     testImplementation("org.assertj:assertj-core:$assertJVersion")
+
+    // used by our own code
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    runtimeOnly("org.slf4j:slf4j-simple:$slf4jVersion")
 }
 
 sourceSets {
@@ -76,23 +79,35 @@ openApiValidate {
     inputSpec.set(openapiSource)
 }
 
-// https://openapi-generator.tech/docs/configuration/
 // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator-gradle-plugin/README.adoc
 openApiGenerate {
-    generatorName.set("java")
     inputSpec.set(openapiSource)
     outputDir.set("$buildDirectory/generated/api")
-    library.set("native")
+
+    // packages to generate
+    invokerPackage.set("$group.smartsheet")
+    apiPackage.set("$group.smartsheet.api")
+    modelPackage.set("$group.smartsheet.model")
+
+    generatorName.set("java")   // language for client (duh)
+    library.set("native")   // the HTTP client lib; see java-generator docs for full list
+
+    cleanupOutput.set(true) // output directory should be cleaned up before generating the output
+    generateApiTests.set(true)
+    generateApiDocumentation.set(false)     // for now no point
+    generateModelDocumentation.set(false)   // for now no point
+
+    // when they say "verbose" they REALLY mean it (crank up your terminal buffer if you set this to true)
+    verbose.set(false)
+
     configOptions.set(mutableMapOf(
-        "invokerPackage"            to "com.ronreynolds.smartsheet",
-        "apiPackage"                to "com.ronreynolds.smartsheet.api",
-        "modelPackage"              to "com.ronreynolds.smartsheet.model",
-        "library"                   to "native",    // consider "okhttp-gson"
-        "openApiNullable"           to "false",
-        "hideGenerationTimestamp"   to "true",
-        "useEnumCaseInsensitive"    to "true", // some endpoints return enums in slightly different case than specified
-        "serializationLibrary"      to "jackson" // consider gson instead of jackson to serialize
-        //        "additionalModelTypeAnnotations" to "@lombok.Value @lombok.NoArgsConstructor @lombok.Builder"
+        // some generator-specific config options - https://openapi-generator.tech/docs/generators/java/
+        // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java
+        "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
+        "hideGenerationTimestamp"           to "true",  // seems kinda pointless
+        "generateBuilders"                  to "true",
+    //  "useJakartaEe"                      to "true"   // for Java-17+
+    //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
     ))
 }
 
@@ -103,14 +118,6 @@ tasks.compileJava {
 
 tasks.compileTestJava {
     options.encoding = "UTF-8"
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
-}
-
-tasks.jacocoTestReport {
-    dependsOn(tasks.test) // tests are required to run before generating the report
 }
 
 tasks.withType<Test> {

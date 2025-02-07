@@ -3263,41 +3263,7 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "type": "object",
-                      "properties": {
-                        "data": {
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "$ref": "#/components/schemas/Int64"
-                              },
-                              "accessLevel": {
-                                "$ref": "#/components/schemas/AccessLevel"
-                              },
-                              "createdAt": {
-                                "$ref": "#/components/schemas/DateUnion"
-                              },
-                              "modifiedAt": {
-                                "$ref": "#/components/schemas/DateUnion"
-                              },
-                              "name": {
-                                "type": "string"
-                              },
-                              "permalink": {
-                                "type": "string"
-                              },
-                              "version": {
-                                "type": "integer"
-                              },
-                              "source": {
-                                "$ref": "#/components/schemas/Source"
-                              }
-                            }
-                          }
-                        }
-                      }
+                      "$ref": "#/components/schemas/SheetListing"
                     }
                   ]
                 }
@@ -3493,22 +3459,7 @@
             "in": "query",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - includes the metadata for sheet-level and row-level\nattachments. To include discussion attachments, both attachments and discussions must be present in the include list.\n  * **columnType** -includes columnType attribute in the row's cells indicating\nthe type of the column the cell resides in.\n  * **crossSheetReferences** - includes the cross-sheet references\n  * **discussions** - includes sheet-level and row-level discussions. To\ninclude discussion attachments, both attachments and discussions must be present in the include list.\n  * **filters** - includes filteredOut attribute indicating if the row should\nbe displayed or hidden according to the sheet's filters.\n  * **filterDefinitions** - includes type of filter, operators used, and\ncriteria\n  * **format** -  includes column, row, cell, and summary fields formatting.\n  * **ganttConfig** - includes Gantt chart details.\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data.\n  * **ownerInfo** - includes the owner's email address and the owner's user\nId.\n  * **rowPermalink** - includes permalink attribute that represents a direct\nlink to the row in the Smartsheet application.\n  * **source** - adds the Source object indicating which report, sheet  Sight\n(aka dashboard), or template the sheet was created from, if any.\n  * **writerInfo** - includes createdBy and modifiedBy attributes on the\nrow or summary fields, indicating the row or summary field's creator, and last modifier.\n",
             "schema": {
-              "type": "string",
-              "enum": [
-                "attachments",
-                "columnType",
-                "crossSheetReferences",
-                "discussions",
-                "filters",
-                "filterDefinitions",
-                "format",
-                "ganttConfig",
-                "objectValue",
-                "ownerInfo",
-                "rowPermalink",
-                "source",
-                "writerInfo"
-              ]
+              "$ref": "#/components/schemas/SheetInclude"
             }
           },
           {
@@ -3552,19 +3503,7 @@
             "in": "query",
             "description": "applies to PDF format only",
             "schema": {
-              "type": "string",
-              "enum": [
-                "LETTER",
-                "LEGAL",
-                "WIDE",
-                "ARCHD",
-                "A4",
-                "A3",
-                "A2",
-                "A1",
-                "A0"
-              ],
-              "default": "LETTER"
+              "$ref": "#/components/schemas/PaperSize"
             }
           },
           {
@@ -4269,8 +4208,22 @@
                 "type": "string",
                 "format": "binary"
               }
+            },
+          "multipart/form-data": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "filename": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
             }
           }
+        }
         },
         "responses": {
           "200": {
@@ -5656,6 +5609,19 @@
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
               }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
+              }
             }
           }
         },
@@ -5879,6 +5845,36 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CommentText"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "comment": {
+                    "description": "Comment.",
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "description": "Comment text.",
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "file": {
+                    "description": "File to attach to the new comment. Only used with an attachment.",
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "comment": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }
@@ -6476,6 +6472,19 @@
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
               }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
+              }
             }
           }
         },
@@ -6874,6 +6883,20 @@
               "schema": {
                 "type": "string",
                 "format": "binary"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
               }
             },
             "application/json": {
@@ -8102,6 +8125,19 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/CommentLite"
+              }
+            },
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/DiscussionAndFile"
+              },
+              "encoding": {
+                "discussion": {
+                  "contentType": "application/json"
+                },
+                "file": {
+                  "contentType": "application/octet-stream"
+                }
               }
             }
           }
@@ -11736,6 +11772,20 @@
                 "format": "binary"
               }
             },
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            },
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/URLAttachmentRequest"
@@ -13418,26 +13468,14 @@
         "in": "query",
         "description": "A comma-separated list of element types to exclude from the response:\n  * **filteredOutRows** - excludes filtered-out rows from response payload\nif a sheet filter is applied; includes total number of filtered rows\n  * **linkInFromCellDetails** - excludes the following attributes from the\n**cell.linkInFromCell** object: `columnId`, `rowId`, `status`\n  * **linksOutToCellsDetails** - excludes the following attributes from\nthe **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`\n  * **nonexistentCells** - excludes empty cells\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "filteredOutRows",
-            "linkInFromCellDetails",
-            "linksOutToCellsDetails",
-            "nonexistentCells"
-          ]
-        }
+          "$ref": "#/components/schemas/SheetExclude"        }
       },
       "exclude_sheetSummary": {
         "name": "exclude",
         "in": "query",
         "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
         "schema": {
-          "type": "string",
-          "enum": [
-            "displayValue",
-            "image",
-            "imageAltText"
-          ]
+          "$ref": "#/components/schemas/SheetSummaryExclude"
         }
       },
       "favoriteTypeInPath": {
@@ -17461,6 +17499,21 @@
           }
         }
       },
+      "PaperSize": {
+        "type": "string",
+        "enum": [
+          "LETTER",
+          "LEGAL",
+          "WIDE",
+          "ARCHD",
+          "A4",
+          "A3",
+          "A2",
+          "A1",
+          "A0"
+        ],
+        "default": "LETTER"
+      },
       "Predecessor": {
         "type": "object",
         "properties": {
@@ -18889,6 +18942,15 @@
           }
         }
       },
+      "SheetExclude": {
+        "type": "string",
+        "enum": [
+          "filteredOutRows",
+          "linkInFromCellDetails",
+          "linksOutToCellsDetails",
+          "nonexistentCells"
+        ]
+      },
       "SheetImportResult": {
         "type": "object",
         "description": "Sheet imported from CSV / XLSX file.",
@@ -18908,6 +18970,61 @@
           },
           "permalink": {
             "type": "string"
+          }
+        }
+      },
+      "SheetInclude": {
+        "type": "string",
+        "enum": [
+          "attachments",
+          "columnType",
+          "crossSheetReferences",
+          "discussions",
+          "filters",
+          "filterDefinitions",
+          "format",
+          "ganttConfig",
+          "objectValue",
+          "ownerInfo",
+          "rowPermalink",
+          "source",
+          "writerInfo"
+        ]
+      },
+      "SheetListing": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/Int64"
+                },
+                "accessLevel": {
+                  "$ref": "#/components/schemas/AccessLevel"
+                },
+                "createdAt": {
+                  "$ref": "#/components/schemas/DateUnion"
+                },
+                "modifiedAt": {
+                  "$ref": "#/components/schemas/DateUnion"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "permalink": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "integer"
+                },
+                "source": {
+                  "$ref": "#/components/schemas/Source"
+                }
+              }
+            }
           }
         }
       },
@@ -19117,6 +19234,14 @@
             ]
           }
         }
+      },
+      "SheetSummaryExclude": {
+        "type": "string",
+        "enum": [
+          "displayValue",
+          "image",
+          "imageAltText"
+        ]
       },
       "SheetTemplate": {
         "type": "object",
