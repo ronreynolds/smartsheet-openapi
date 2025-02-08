@@ -47,7 +47,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
  */
 {{>generatedAnnotation}}
 public class ApiClient {
-  // "yyyy-MM-dd'T'HH:mm:ss'Z'" - same format as used by Smartsheet-SDK
+  // same as https://github.com/smartsheet/smartsheet-java-sdk/blob/mainline/src/main/java/com/smartsheet/api/internal/json/JacksonJsonSerializer.java#L81
   private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
   private HttpClient.Builder builder;
   private ObjectMapper mapper;

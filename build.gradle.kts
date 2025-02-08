@@ -4,24 +4,24 @@ plugins {
 }
 
 group   = "com.ronreynolds"
-version = "0.0.1-SNAPSHOT"
+version = "0.1.0-SNAPSHOT"
 
 // library versions
-val assertJVersion          = "3.24.2"
-val commonsLangVersion      = "3.14.0"
-val findBugsVersion         = "3.0.2"
-val guavaVersion            = "33.2.1-jre"
-val httpComponentsVersion   = "4.5.14"
-val jacocoVersion           = "0.8.10"
-val jacksonVersion          = "2.17.1"  // from build/generated/api/build.gradle
-val jakartaAnnotationVersion= "1.3.5"   // from build/generated/api/build.gradle
-val javaxAnnotationVersion  = "1.3.2"
-val jUnitJupiterVersion     = "5.10.2"  // from build/generated/api/build.gradle
-val lombokVersion           = "1.18.32"
-val slf4jVersion            = "1.7.25"
+val assertJVersion           = "3.24.2"
+val commonsLangVersion       = "3.14.0"
+val findBugsVersion          = "3.0.2"
+val guavaVersion             = "33.2.1-jre"
+val httpComponentsVersion    = "4.5.14"
+val jacksonVersion           = "2.17.1"  // from build/generated/api/build.gradle
+val jacocoVersion            = "0.8.10"
+val jakartaAnnotationVersion = "1.3.5"   // from build/generated/api/build.gradle
+val javaxAnnotationVersion   = "1.3.2"
+val jUnitJupiterVersion      = "5.10.2"  // from build/generated/api/build.gradle
+val lombokVersion            = "1.18.32"
+val slf4jVersion             = "1.7.25"
 
-val buildDirectory          = layout.buildDirectory.get()
-val openapiSource           = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
+val buildDirectory           = layout.buildDirectory.get()
+val openapiSource            = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -93,22 +93,21 @@ openApiGenerate {
     generatorName.set("java")   // language for client (duh)
     library.set("native")   // the HTTP client lib; see java-generator docs for full list
 
-//    cleanupOutput.set(true) // output directory should be cleaned up before generating the output
     generateApiTests.set(true)
     generateApiDocumentation.set(false)     // for now no point
     generateModelDocumentation.set(false)   // for now no point
 
-    // when they say "verbose" they REALLY mean it (crank up your terminal buffer if you set this to true)
+    // when they say "verbose" they REALLY mean it (pipe to file if you set this to true)
     verbose.set(false)
+
+    // some generator-specific config options - https://openapi-generator.tech/docs/generators/java/
+    // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java
     configOptions.set(mutableMapOf(
-        // some generator-specific config options - https://openapi-generator.tech/docs/generators/java/
-        // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java
-        "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
-        "hideGenerationTimestamp"           to "true",  // seems kinda pointless
-        "generateBuilders"                  to "true",
-        "dateLibrary"                       to "java8", // should trigger loading of a JavaTimeFormatter.mustache; but isn't :(
-    //  "useJakartaEe"                      to "true"   // for Java-17+
-    //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
+        "openApiNullable"         to "false", // OpenAPI Jackson Nullable library (not needed?)
+        "hideGenerationTimestamp" to "true",  // seems kinda pointless
+        "generateBuilders"        to "true",
+    //  "useJakartaEe"            to "true"   // for Java-17+
+    //  "asyncNative"             to "true" - async clients rather than synchronous blocking ones?
     ))
 }
 
