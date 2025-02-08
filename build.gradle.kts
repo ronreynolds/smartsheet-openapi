@@ -83,6 +83,7 @@ openApiValidate {
 openApiGenerate {
     inputSpec.set(openapiSource)
     outputDir.set("$buildDirectory/generated/api")
+    templateDir.set("$rootDir/src/main/resources/templates") // where the custom mustaches live...
 
     // packages to generate
     invokerPackage.set("$group.smartsheet")
@@ -99,14 +100,13 @@ openApiGenerate {
 
     // when they say "verbose" they REALLY mean it (crank up your terminal buffer if you set this to true)
     verbose.set(false)
-
     configOptions.set(mutableMapOf(
         // some generator-specific config options - https://openapi-generator.tech/docs/generators/java/
         // https://github.com/OpenAPITools/openapi-generator/blob/master/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java
         "openApiNullable"                   to "false", // OpenAPI Jackson Nullable library (not needed?)
         "hideGenerationTimestamp"           to "true",  // seems kinda pointless
         "generateBuilders"                  to "true",
-        "dateLibrary"                       to "java8", // should trigger loading of a JavaTimeFormatter.mustache i have yet TODO
+        "dateLibrary"                       to "java8", // should trigger loading of a JavaTimeFormatter.mustache; but isn't :(
     //  "useJakartaEe"                      to "true"   // for Java-17+
     //  "asyncNative"                       to "true" - async clients rather than synchronous blocking ones?
     ))

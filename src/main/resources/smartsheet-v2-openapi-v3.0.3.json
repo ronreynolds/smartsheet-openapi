@@ -642,9 +642,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **profileImage**\n",
             "schema": {
-              "$ref": "#/components/schemas/GetContactInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GetContactInclude"
+              }
             }
           }
         ],
@@ -939,9 +943,13 @@
             "name": "objectIds",
             "in": "query",
             "required": true,
+            "style": "simple",
             "description": "A comma-separated list of Ids of the favorited item.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Int64"
+              }
             }
           }
         ],
@@ -2393,9 +2401,13 @@
           {
             "name": "exclude",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to not include in the response\n",
             "schema": {
-              "$ref": "#/components/schemas/GetReportExclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GetReportExclude"
+              }
             }
           },
           {
@@ -2972,6 +2984,7 @@
           {
             "name": "scopes",
             "in": "query",
+            "style": "simple",
             "description": "If search fails, try using an array for each type of this comma-separated list of search filters.",
             "schema": {
               "type": "array",
@@ -3112,9 +3125,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to include in the response:\n* **sheetVersion** - current version number of each sheet, should not be combined with pagination\n* **source** - the Source object for any sheet that was created from another sheet, if any\n",
             "schema": {
-              "$ref": "#/components/schemas/ListSheetInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ListSheetInclude"
+              }
             }
           },
           {
@@ -3330,6 +3347,7 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - includes the metadata for sheet-level and row-level\nattachments. To include discussion attachments, both attachments and discussions must be present in the include list.\n  * **columnType** -includes columnType attribute in the row's cells indicating\nthe type of the column the cell resides in.\n  * **crossSheetReferences** - includes the cross-sheet references\n  * **discussions** - includes sheet-level and row-level discussions. To\ninclude discussion attachments, both attachments and discussions must be present in the include list.\n  * **filters** - includes filteredOut attribute indicating if the row should\nbe displayed or hidden according to the sheet's filters.\n  * **filterDefinitions** - includes type of filter, operators used, and\ncriteria\n  * **format** -  includes column, row, cell, and summary fields formatting.\n  * **ganttConfig** - includes Gantt chart details.\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data.\n  * **ownerInfo** - includes the owner's email address and the owner's user\nId.\n  * **rowPermalink** - includes permalink attribute that represents a direct\nlink to the row in the Smartsheet application.\n  * **source** - adds the Source object indicating which report, sheet  Sight\n(aka dashboard), or template the sheet was created from, if any.\n  * **writerInfo** - includes createdBy and modifiedBy attributes on the\nrow or summary fields, indicating the row or summary field's creator, and last modifier.\n",
             "schema": {
               "type": "array",
@@ -3344,6 +3362,7 @@
           {
             "name": "columnIds",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of column ids. The response contains only the specified columns in the \"columns\" array, and individual rows' \"cells\" array only contains cells in the specified columns.\n",
             "schema": {
               "type": "array",
@@ -3388,6 +3407,7 @@
           {
             "name": "rowIds",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of row Ids on which to filter the rows included in the result.\n",
             "schema": {
               "type": "array",
@@ -3399,6 +3419,7 @@
           {
             "name": "rowNumbers",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of row numbers on which to filter the rows included in the result. Non-existent row numbers are ignored.\n",
             "schema": {
               "type": "array",
@@ -5354,9 +5375,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments** - effective only if comments is present, otherwise ignored\n  * **comments** - include all comments in threads\n",
             "schema": {
-              "$ref": "#/components/schemas/DiscussionsInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DiscussionsInclude"
+              }
             }
           },
           {
@@ -6902,9 +6927,13 @@
             "name": "ids",
             "in": "query",
             "required": true,
+            "style": "simple",
             "description": "A comma-separated list of row Ids.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Int64"
+              }
             }
           },
           {
@@ -7162,9 +7191,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of row elements to copy in addition to the cell data:\n  * **all** - specify a value of **all** to include everything (attachments,\nchildren, and discussions).\n  * **attachments**\n  * **children** -  if specified, any child rows of the rows specified in\nthe request are also copied to the destination sheet, and parent-child relationships amongst rows are preserved within the destination sheet; if not specified, only the rows specified in the request are copied.\n  * **discussions**\n",
             "schema": {
-              "$ref": "#/components/schemas/CopyRowsInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CopyRowsInclude"
+              }
             }
           },
           {
@@ -7288,9 +7321,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of elements to include in the response.\n\nSee [Row Include Flags](../../tag/rowsRelated#section/Row-Include-Flags).\n\nAlso supports the **columns** include flag, which adds a columns array that specifies all of the columns for the sheet. This enables you to have the full context of the cells in the row.\n\nThe **filters** include flag returns a **filteredOut** attribute indicating if the row should be displayed or hidden according to the sheet's filters.\n",
             "schema": {
-              "$ref": "#/components/schemas/GetRowInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GetRowInclude"
+              }
             }
           },
           {
@@ -7610,9 +7647,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of elements to copy:\n  * **columnType** - includes the columnType attribute for each Cell object\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for a multi-contact cell.\n",
             "schema": {
-              "$ref": "#/components/schemas/CellHistoryInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/CellHistoryInclude"
+              }
             }
           },
           {
@@ -8380,9 +8421,13 @@
             "name": "ids",
             "in": "query",
             "required": true,
+            "style": "simple",
             "description": "A comma-separated list of Sheet Summary Field Ids.\n",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/Int64"
+              }
             }
           },
           {
@@ -9476,9 +9521,13 @@
           {
             "name": "include",
             "in": "query",
+            "style": "simple",
             "description": "A comma-separated list of optional elements to include in the response:\n  * **objectValue** - when used in combination with a **level** query parameter,\nincludes the email addresses for multi-contact data.\n  * **source** - the Source object for any Sight that was created from another\nSight, if any\n",
             "schema": {
-              "$ref": "#/components/schemas/GetDashboardInclude"
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/GetDashboardInclude"
+              }
             }
           },
           {
@@ -10390,10 +10439,14 @@
         "parameters": [
           {
             "name": "email",
-            "description": "Comma-separated list of email addresses on which to filter the results.",
             "in": "query",
+            "style": "simple",
+            "description": "Comma-separated list of email addresses on which to filter the results.",
             "schema": {
-              "type": "string"
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
           },
           {
@@ -12954,6 +13007,7 @@
       "exclude_sheet": {
         "name": "exclude",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of element types to exclude from the response:\n  * **filteredOutRows** - excludes filtered-out rows from response payload\nif a sheet filter is applied; includes total number of filtered rows\n  * **linkInFromCellDetails** - excludes the following attributes from the\n**cell.linkInFromCell** object: `columnId`, `rowId`, `status`\n  * **linksOutToCellsDetails** - excludes the following attributes from\nthe **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`\n  * **nonexistentCells** - excludes empty cells\n",
         "schema": {
           "type": "array",
@@ -12965,6 +13019,7 @@
       "exclude_sheetSummary": {
         "name": "exclude",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of elements to not include in the response.\n* **displayValue**: excludes displayValue info for cells, rows, and summary fields\n* **image**: excludes image attributes for cells and summary fields\n* **imageAltText**: excludes alt text for cells and summary fields\n",
         "schema": {
           "type": "array",
@@ -13011,6 +13066,7 @@
       "include_discussion": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
           "type": "array",
@@ -13022,6 +13078,7 @@
       "include_favorite": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of optional elements to include in the response.\n",
         "schema": {
           "type": "array",
@@ -13033,6 +13090,7 @@
       "include_folder": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of optional elements to include in the response:\n  * **source** - adds the Source object indicating which object the folder\nwas created from, if any\n  * **distributionLink**\n  * **ownerInfo**\n  * **sheetVersion**\n  * **permalinks**\n",
         "schema": {
           "type": "array",
@@ -13044,6 +13102,7 @@
       "include_folder_copy": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of elements to copy:\n  * **attachments**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients** -- includes notification recipients, must also include\nrules when using this attribute\n  * **rules** -- includes notifications and workflow rules\n  * **shares** |\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
           "type": "array",
@@ -13055,6 +13114,7 @@
       "include_report": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of optional elements to include in the response:\n  * **attachments**\n  * **discussions**\n  * **proofs**\n  * **format**\n  * **objectValue** - when used in combination with a level query parameter,\nincludes the email addresses for multi-contact data\n  * **scope** - adds the report's scope to the response\n  * **source** - adds the Source object indicating which report the report\nwas created from, if any\n  * **sourceSheets**\n",
         "schema": {
           "type": "array",
@@ -13066,6 +13126,7 @@
       "include_sheet": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "Additional parameter to create a sheet from template.\nA comma-separated list of elements to copy from the template.\n",
         "schema": {
           "type": "array",
@@ -13077,6 +13138,7 @@
       "include_sheetSummary": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of elements to include in the response.\n* **format**: includes format info for cells, rows, and summary fields\n* **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields\n",
         "schema": {
           "type": "array",
@@ -13088,6 +13150,7 @@
       "include_workspace": {
         "name": "include",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of elements to include:\n  * **all**\n  * **attachments**\n  * **brand**\n  * **cellLinks** - includes cross-sheet references\n  * **data** - includes formatting\n  * **discussions** - includes comments\n  * **filters**\n  * **forms**\n  * **ruleRecipients**\n  * **rules**\n  * **shares**\nNOTE: Cell history is not copied, regardless of which include parameter values are specified.\n",
         "schema": {
           "type": "array",
@@ -13265,6 +13328,7 @@
       "skipRemap_folder_copy": {
         "name": "skipRemap",
         "in": "query",
+        "style": "simple",
         "description": "A comma-separated list of references to NOT re-map for the newly created folder.",
         "schema": {
           "type": "array",
@@ -17552,7 +17616,7 @@
       "ReportCell": {
         "allOf": [
           {
-            "$ref": "#/components/schemas/CellDataItem/properties/cell"
+            "$ref": "#/components/schemas/Cell"
           }
         ],
         "type": "object",
