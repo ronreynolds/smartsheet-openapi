@@ -93,7 +93,7 @@ openApiGenerate {
     generatorName.set("java")   // language for client (duh)
     library.set("native")   // the HTTP client lib; see java-generator docs for full list
 
-    cleanupOutput.set(true) // output directory should be cleaned up before generating the output
+//    cleanupOutput.set(true) // output directory should be cleaned up before generating the output
     generateApiTests.set(true)
     generateApiDocumentation.set(false)     // for now no point
     generateModelDocumentation.set(false)   // for now no point
