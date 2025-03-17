@@ -6,7 +6,6 @@ import com.ronreynolds.util.config.Settings;
 import com.ronreynolds.util.string.ToString;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.http.HttpHeaders;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +22,10 @@ import java.util.concurrent.atomic.AtomicReference;
 public class ApiClients {
     private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String HEADER_ASSUME_USER = "Assume-User";
+    private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String HEADER_CHANGE_AGENT = "Smartsheet-Change-Agent";
+    private static final String HEADER_USER_AGENT = "User-Agent";
+
     private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
     // simple logging flags for now
     @Setter
@@ -45,6 +47,12 @@ public class ApiClients {
         // getDefaultClient() so that Configuration.getDefaultApiClient() returns a properly configured client?
     }
 
+    /**
+     * this method uses its own ref to store the ApiClient and overwrites the one in Configuration if it has to create a new one;
+     * this behavior will change with future openapi-configgen when we can set the defaultApiClientFactory to lazy-create our own ApiClient
+     *
+     * @return the ApiClient with proper auth headers
+     */
     public static ApiClient getDefaultClient() {
         ApiClient client = defaultClient.get();
         if (client == null) {
@@ -54,7 +62,7 @@ public class ApiClients {
                 }
                 return val;
             });
-            // Configuration makes no attempts at thread-safety (and i'm not sure we can add it to generated code)
+            // overwrite the global singleton; FIXME with future config-gen version
             Configuration.setDefaultApiClient(client);
         }
         return client;
@@ -110,12 +118,16 @@ public class ApiClients {
         return client;
     }
 
+    /**
+     * this makes a copy of our current header values so that we can provide the request-interceptor with a copy
+     * @return a new Map containing all the headers we want to set (auth, assume-user, change-agent, user-agent)
+     */
     private static Map<String, String> getHeaderMap() {
         Map<String, String> headers = new HashMap<>();
-        headers.put(HttpHeaders.AUTHORIZATION, "Bearer " + authToken); // FIXME - what if OAuth is being used?
+        headers.put(HEADER_AUTHORIZATION, "Bearer " + authToken);
 //        headers.put(HttpHeaders.CONTENT_TYPE, JSON_CONTENT_TYPE);   // FIXME - this can't ALWAYS be true according to spec
 
-        // copy volatiles to avoid concurrent mod
+        // copy volatiles to local immutables to avoid concurrent mod
         final String assumedUser = ApiClients.assumedUser;
         final String changeAgent = ApiClients.changeAgent;
         final String userAgent = ApiClients.userAgent;
@@ -128,7 +140,7 @@ public class ApiClients {
             headers.put(HEADER_CHANGE_AGENT, ApiClient.urlEncode(changeAgent));
         }
         if (userAgent != null) {
-            headers.put(HttpHeaders.USER_AGENT, userAgent);
+            headers.put(HEADER_USER_AGENT, userAgent);
         }
         return headers;
     }

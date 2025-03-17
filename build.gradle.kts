@@ -1,27 +1,22 @@
 plugins {
     id("java")
-    id("org.openapi.generator").version("7.11.0") // latest as of 2025-01-20
+    id("maven-publish")
+    id("org.openapi.generator").version("7.12.0") // latest as of 2025-02-28
 }
 
-group   = "com.ronreynolds"
-version = "0.1.0-SNAPSHOT"
+group               = "com.ronreynolds"
+version             = "0.1.1-SNAPSHOT"
+val buildDirectory  = layout.buildDirectory.get()
+val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 // library versions
-val assertJVersion           = "3.24.2"
-val commonsLangVersion       = "3.14.0"
-val findBugsVersion          = "3.0.2"
-val guavaVersion             = "33.2.1-jre"
-val httpComponentsVersion    = "4.5.14"
-val jacksonVersion           = "2.17.1"  // from build/generated/api/build.gradle
-val jacocoVersion            = "0.8.10"
-val jakartaAnnotationVersion = "1.3.5"   // from build/generated/api/build.gradle
-val javaxAnnotationVersion   = "1.3.2"
-val jUnitJupiterVersion      = "5.10.2"  // from build/generated/api/build.gradle
-val lombokVersion            = "1.18.32"
-val slf4jVersion             = "1.7.25"
-
-val buildDirectory           = layout.buildDirectory.get()
-val openapiSource            = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
+val assertJVersion                  = "3.27.3"     // 2025-01-18
+val findBugsVersion                 = "3.0.2"      // from build/generated/api/build.gradle
+val jacksonVersion                  = "2.17.1"     // from build/generated/api/build.gradle
+val jakartaAnnotationVersion        = "1.3.5"      // from build/generated/api/build.gradle
+val jUnitJupiterVersion             = "5.10.2"     // from build/generated/api/build.gradle
+val lombokVersion                   = "1.18.32"
+val slf4jVersion                    = "1.7.25"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -29,42 +24,36 @@ java {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
+    //
     // needed by openapi-generated code (javax.annotation.Generated, apache.http.*)
-    implementation("javax.annotation:javax.annotation-api:$javaxAnnotationVersion")
-    implementation("com.google.code.findbugs:jsr305:$findBugsVersion")    // javax.annotation.Nullable (not in javax-api)
-    implementation("org.apache.httpcomponents:httpmime:$httpComponentsVersion")
-    implementation("org.apache.httpcomponents:httpclient:$httpComponentsVersion") {   // request-building (even with native client)
-        exclude(group = "commons-logging", module = "commons-logging")
-    }
+    implementation("com.google.code.findbugs:jsr305:$findBugsVersion")    // for javax.annotation.Nullable
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-//    // for com.fasterxml.jackson.dataformat.yaml.YAMLFactory
-//    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonVersion")
-    implementation("org.openapitools:jackson-databind-nullable:0.2.1")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion")
 
-    // Lombok dependencies
-    compileOnly("org.projectlombok:lombok:$lombokVersion")
-    annotationProcessor("org.projectlombok:lombok:$lombokVersion")
-    testCompileOnly("org.projectlombok:lombok:$lombokVersion")
-    testAnnotationProcessor("org.projectlombok:lombok:$lombokVersion")
-
-    // test dependencies
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion")
-    testImplementation("org.assertj:assertj-core:$assertJVersion")
-
-    // used by our own code
+    //
+    // needed by our code
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    runtimeOnly("org.slf4j:slf4j-simple:$slf4jVersion")
+
+    //
+    // test dependencies
+    testRuntimeOnly     ("org.junit.platform:junit-platform-launcher")
+    testImplementation  ("org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion")
+    testImplementation  ("org.assertj:assertj-core:$assertJVersion")
+
+    //
+    // Lombok dependencies
+    compileOnly             ("org.projectlombok:lombok:$lombokVersion")
+    annotationProcessor     ("org.projectlombok:lombok:$lombokVersion")
+    testCompileOnly         ("org.projectlombok:lombok:$lombokVersion")
+    testAnnotationProcessor ("org.projectlombok:lombok:$lombokVersion")
 }
 
 sourceSets {
@@ -122,4 +111,12 @@ tasks.compileTestJava {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+        }
+    }
 }

@@ -2,6 +2,16 @@
 * based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
 
+## 0.1.1 - unreleased
+### Added
+* publish task so can start using this lib in other projects
+### Changed
+* upgraded to latest (7.12.0) openapi-codegen plugin
+### Removed
+* some library deps 
+  * some possibly left-over from previous config-gen code
+  * some possibly assumed and/or copy-pasta from other projects
+
 ## 0.1.0 - 2025-02-08
 felt like a land-mark version; a LOT of things work; MANY things don't but technically this is a MVP for at least 3 
 (of 109+) endpoints. :) 
