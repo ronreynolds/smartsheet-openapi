@@ -61,6 +61,12 @@ public class ApiClient {
   private Duration readTimeout;
   private Duration connectTimeout;
 
+  /**
+   * convert the provided {@code value} Object into a String.
+   *
+   * @param value Object to convert to String
+   * @return String representation of {@code value}
+   */
   public static String valueToString(Object value) {
     if (value == null) {
       return "";
