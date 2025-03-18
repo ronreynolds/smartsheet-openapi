@@ -5,6 +5,8 @@
 ## 0.1.1 - unreleased
 ### Added
 * publish task so can start using this lib in other projects
+* `com.ronreynolds.smartsheet.api.util.Attachments`, `Cells`, `Columns`, `Rows`, `Workspaces`
+  * collections of util methods to help with specific model types received/returned with the Smartsheet API
 ### Changed
 * upgraded to latest (7.12.0) openapi-codegen plugin
 ### Removed

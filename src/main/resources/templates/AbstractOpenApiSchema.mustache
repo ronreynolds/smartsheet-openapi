@@ -51,6 +51,16 @@ public abstract class AbstractOpenApiSchema {
     public void setActualInstance(Object instance) {this.instance = instance;}
 
     /**
+     * Set the actual instance and return this case to the expected derived type
+     *
+     * @param instance the actual instance of the schema/object
+     */
+    public <T extends AbstractOpenApiSchema> T actualInstance(Object instance) {
+        setActualInstance(instance);
+        return (T) this;
+    }
+
+    /**
      * Get the instant recursively when the schemas defined in oneOf/anyof happen to be oneOf/anyOf schema as well
      *
      * @return an instance of the actual schema/object

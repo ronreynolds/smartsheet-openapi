@@ -56,6 +56,7 @@ import java.util.concurrent.CompletableFuture;
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+  private final ApiClient apiClient;
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
   private final String memberVarBaseUri;
@@ -69,6 +70,7 @@ public class {{classname}} {
   }
 
   public {{classname}}(ApiClient apiClient) {
+    this.apiClient = apiClient;
     memberVarHttpClient = apiClient.getHttpClient();
     memberVarObjectMapper = apiClient.getObjectMapper();
     memberVarBaseUri = apiClient.getBaseUri();
@@ -76,6 +78,10 @@ public class {{classname}} {
     memberVarReadTimeout = apiClient.getReadTimeout();
     memberVarResponseInterceptor = apiClient.getResponseInterceptor();
     memberVarAsyncResponseInterceptor = apiClient.getAsyncResponseInterceptor();
+  }
+
+  public ApiClient getApiClient() {
+    return apiClient;
   }
   {{#asyncNative}}
 
