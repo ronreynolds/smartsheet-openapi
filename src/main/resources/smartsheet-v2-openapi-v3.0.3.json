@@ -3460,9 +3460,6 @@
                   "oneOf": [
                     {
                       "$ref": "#/components/schemas/Sheet"
-                    },
-                    {
-                      "$ref": "#/components/schemas/SheetVersion"
                     }
                   ]
                 },
