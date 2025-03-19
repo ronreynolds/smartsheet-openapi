@@ -13561,97 +13561,6 @@
       }
     },
     "schemas": {
-      "AbstractRow": {
-        "type": "object",
-        "properties": {
-          "sheetId": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "rowNumber": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "parentRowNumber": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "cells": {
-            "$ref": "#/components/schemas/CellArray"
-          },
-          "discussions": {
-            "$ref": "#/components/schemas/DiscussionArray"
-          },
-          "attachments": {
-            "$ref": "#/components/schemas/AttachmentArray"
-          },
-          "columns": {
-            "$ref": "#/components/schemas/ColumnArray"
-          },
-          "createdAt": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "modifiedAt": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "expanded": {
-            "type": "boolean"
-          },
-          "version": {
-            "type": "integer"
-          },
-          "accessLevel": {
-            "$ref": "#/components/schemas/AccessLevel"
-          },
-          "locked": {
-            "type": "boolean",
-            "default": false
-          },
-          "lockedForUser": {
-            "type": "boolean",
-            "default": false
-          },
-          "format": {
-            "$ref": "#/components/schemas/Format"
-          },
-          "parentId": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "siblingId": {
-            "$ref": "#/components/schemas/Int64"
-          },
-          "permalink": {
-            "type": "string"
-          },
-          "filteredOut": {
-            "type": "boolean"
-          },
-          "inCriticalPath": {
-            "type": "boolean"
-          },
-          "conditionalFormat": {
-            "$ref": "#/components/schemas/Format"
-          },
-          "toTop": {
-            "type": "boolean"
-          },
-          "toBottom": {
-            "type": "boolean"
-          },
-          "above": {
-            "type": "boolean"
-          },
-          "indent": {
-            "type": "integer"
-          },
-          "outdent": {
-            "type": "integer"
-          },
-          "createdBy": {
-            "$ref": "#/components/schemas/User"
-          },
-          "modifiedBy": {
-            "$ref": "#/components/schemas/User"
-          }
-        }
-      },
       "AbstractDatetimeObjectValue": {
         "description": "Object representing a calculated datetime",
         "type": "object",
@@ -17944,6 +17853,29 @@
           },
           "version": {
             "description": "Sheet version number that is incremented every time a sheet is modified.",
+            "type": "integer"
+          },
+          "parentId" :  {
+            "description": "Parent row Id.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "toTop" :  {
+            "type": "boolean"
+          },
+          "toBottom" :  {
+            "type": "boolean"
+          },
+          "above": {
+            "type": "boolean"
+          },
+          "indent": {
+            "type": "integer"
+          },
+          "outdent": {
             "type": "integer"
           }
         }
