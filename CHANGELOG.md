@@ -2,17 +2,33 @@
 * based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
 
-## 0.1.1 - unreleased
+## 0.1.1 - 2025-03-19
 ### Added
 * publish task so can start using this lib in other projects
-* `com.ronreynolds.smartsheet.api.util.Attachments`, `Cells`, `Columns`, `Rows`, `Workspaces`
-  * collections of util methods to help with specific model types received/returned with the Smartsheet API
+* `com.ronreynolds.smartsheet.api.util.`
+  * `Attachments`, `Cells`, `Columns`, `Folders`, `Rows`, `Workspaces` (all based on my smartsheet-sdk-ex project)
+    * collections of util methods to help with specific model types received/returned with the Smartsheet API
+  * `Converters` for converting between types (typically responses into cleaner models)
+  * `Constants` is a collection of fixed values useful for working with the API
+* logback lib for logging (works great with spring-boot et al)
+* private ctors to all the utility classes so they can't be created nor extended
+* `State` assertion-util class for ensuring certain state conditions are met before proceeding
+* location fields to `#/components/schemas/Row` which are missing from original Smartsheet OpenAPI spec
 ### Changed
 * upgraded to latest (7.12.0) openapi-codegen plugin
+* user-agent string used by `ApiClient`
+* changed `Sheets` to take `ApiClient` rather than `SheetsApi` and various other improvements
+### Fixed
+* processing of get-sheet response (issue was the one-of that included SheetVersion which couldn't be determined in the response)
 ### Removed
 * some library deps 
   * some possibly left-over from previous config-gen code
   * some possibly assumed and/or copy-pasta from other projects
+* `JavaTimeFormatter` - not used (currently) by lib:native and this isn't how it's done anyway (would need to use `.mustache`)
+* `SheetVersion` from `oneOf` in get-sheet response
+* `package-info.java`; not sure why i added it in the first place
+* `AbstractRow` from `#/components/schemas` as it's not used
+* `SheetVersion` from get-sheet-by-id responses as it will never (AFAIK) be returned and it breaks Jackson parsing
 
 ## 0.1.0 - 2025-02-08
 felt like a land-mark version; a LOT of things work; MANY things don't but technically this is a MVP for at least 3 
