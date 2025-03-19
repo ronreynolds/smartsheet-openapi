@@ -10,13 +10,14 @@ val buildDirectory  = layout.buildDirectory.get()
 val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 // library versions
-val assertJVersion                  = "3.27.3"     // 2025-01-18
-val findBugsVersion                 = "3.0.2"      // from build/generated/api/build.gradle
-val jacksonVersion                  = "2.17.1"     // from build/generated/api/build.gradle
-val jakartaAnnotationVersion        = "1.3.5"      // from build/generated/api/build.gradle
-val jUnitJupiterVersion             = "5.10.2"     // from build/generated/api/build.gradle
-val lombokVersion                   = "1.18.32"
-val slf4jVersion                    = "1.7.25"
+val assertJVersion              = "3.27.3"      // 2025-01-18
+val findBugsVersion             = "3.0.2"       // from build/generated/api/build.gradle
+val jacksonVersion              = "2.17.1"      // from build/generated/api/build.gradle
+val jakartaAnnotationVersion    = "1.3.5"       // from build/generated/api/build.gradle
+val jUnitJupiterVersion         = "5.10.2"      // from build/generated/api/build.gradle
+val logbackVersion              = "1.5.17"      // 2025-02-25
+val lombokVersion               = "1.18.32"
+val slf4jVersion                = "1.7.25"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -41,6 +42,7 @@ dependencies {
     //
     // needed by our code
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    runtimeOnly   ("ch.qos.logback:logback-classic:$logbackVersion")
 
     //
     // test dependencies
