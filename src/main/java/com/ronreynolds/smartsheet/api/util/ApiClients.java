@@ -176,40 +176,11 @@ public class ApiClients {
      * @return a User-Agent string
      */
     private static String generateUserAgent(String userAgent) {
-        String title = null;
-        String thisVersion = null;
+        String title = "Ron was here :)";
+        String thisVersion = "no-version";
 
         if (userAgent == null) {
-            StackTraceElement[] callers = Thread.currentThread().getStackTrace();
-            String module = null;
-            String callerClass = null;
-            int stackIdx;
-            for (stackIdx = callers.length - 1; stackIdx >= 0; stackIdx--) {
-                callerClass = callers[stackIdx].getClassName();
-                try {
-                    Class<?> clazz = Class.forName(callerClass);
-                    ClassLoader classLoader = clazz.getClassLoader();
-                    // skip JRE classes
-                    if (classLoader == null) {
-                        continue;
-                    }
-                    String classFilePath = callerClass.replace(".", "/") + ".class";
-                    URL classUrl = classLoader.getResource(classFilePath);
-                    if (classUrl != null) {
-                        String classUrlPath = classUrl.getPath();
-                        int jarSeparator = classUrlPath.indexOf('!');
-                        if (jarSeparator > 0) {
-                            module = classUrlPath.substring(0, jarSeparator);
-                            // extract the last path element (the jar name only)
-                            module = module.substring(module.lastIndexOf('/') + 1);
-                            break;
-                        }
-                    }
-                } catch (Exception ex) {
-                    // Empty Catch Block
-                }
-            }
-            userAgent = module + "!" + callerClass;
+            userAgent = "OpenAPI-3.0.3/SmartsheetAPI-" + Configuration.VERSION;
         }
         final Properties properties = new Properties();
         try (InputStream stream = ClassLoader.getSystemResourceAsStream("sdk.properties")) {
@@ -223,6 +194,40 @@ public class ApiClients {
         return title + "/" + thisVersion + "/" + userAgent + "/" + System.getProperty("os.name") + " " +
                 System.getProperty("java.vm.name") + " " + System.getProperty("java.vendor") + " " +
                 System.getProperty("java.version");
+    }
+
+    // used for old user-agent; seems kinda excessive
+    private static String getModuleAndCallerClass() {
+        StackTraceElement[] callers = Thread.currentThread().getStackTrace();
+        String module = null;
+        String callerClass = null;
+        int stackIdx;
+        for (stackIdx = callers.length - 1; stackIdx >= 0; stackIdx--) {
+            callerClass = callers[stackIdx].getClassName();
+            try {
+                Class<?> clazz = Class.forName(callerClass);
+                ClassLoader classLoader = clazz.getClassLoader();
+                // skip JRE classes
+                if (classLoader == null) {
+                    continue;
+                }
+                String classFilePath = callerClass.replace(".", "/") + ".class";
+                URL classUrl = classLoader.getResource(classFilePath);
+                if (classUrl != null) {
+                    String classUrlPath = classUrl.getPath();
+                    int jarSeparator = classUrlPath.indexOf('!');
+                    if (jarSeparator > 0) {
+                        module = classUrlPath.substring(0, jarSeparator);
+                        // extract the last path element (the jar name only)
+                        module = module.substring(module.lastIndexOf('/') + 1);
+                        break;
+                    }
+                }
+            } catch (Exception ex) {
+                // Empty Catch Block
+            }
+        }
+        return module + "!" + callerClass;
     }
 
     public enum Servers {
