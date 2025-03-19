@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Columns {
+    private Columns() {
+    }
+
     /**
      * @param sheet - sheet from which we want a map of all the columns by title
      * @return a Map of all columns in the specified sheet by column title

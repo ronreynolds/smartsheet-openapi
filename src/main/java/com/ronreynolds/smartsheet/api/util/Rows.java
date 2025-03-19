@@ -9,9 +9,13 @@ import lombok.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 public class Rows {
+    private Rows() {
+    }
+
     /**
      * create a Row object, which is composed of a few flags and a list of Cell objects
      */
@@ -24,49 +28,40 @@ public class Rows {
         return row;
     }
 
-/* uses a lot of things not available in the openapi spec model (specifically builders)
-    public static Row updateRow(Row originalRow, Consumer<Row> rowUpdate,
-                                BiConsumer<Row, List<Cell>> cellUpdate) {
-        Row.UpdateRowBuilder builder = new Row.UpdateRowBuilder();
-        builder.setRowId(originalRow.getId());
-        builder.setToTop(originalRow.getToTop());
-        builder.setToBottom(originalRow.getToBottom());
-        builder.setParentId(originalRow.getParentId());
-        builder.setSiblingId(originalRow.getSiblingId());
-        builder.setAbove(originalRow.getAbove());
-        builder.setIndent(originalRow.getIndent());
-        builder.setOutdent(originalRow.getOutdent());
-        builder.setFormat(originalRow.getFormat());
-        builder.setExpanded(originalRow.isExpanded());
-        builder.setLocked(originalRow.isLocked());
+    /**
+     * update the provided row using the provided callbacks to modify the row and provide the Cells
+     *
+     * @param originalRow the starting point for the new Row
+     * @param rowUpdate   if provided is invoked with the new row before the Cells are added
+     * @param cellUpdate
+     * @return
+     */
+    public static Row updateRow(Row originalRow, Consumer<Row.Builder> rowUpdate, BiConsumer<Row.Builder, List<Cell>> cellUpdate) {
+        Row.Builder builder = originalRow.toBuilder();
         if (rowUpdate != null) {
             rowUpdate.accept(builder);
         }
         if (cellUpdate != null) {
-            Cell.UpdateRowCellsBuilder cellsBuilder = new Cell.UpdateRowCellsBuilder();
-            cellUpdate.accept(cellsBuilder, originalRow.getCells());
-            builder.setCells(cellsBuilder.build());
+            cellUpdate.accept(builder, originalRow.getCells());
         }
-
         return builder.build();
     }
-*/
 
     public static CharSequence toString(@NonNull Row row) {
         StringBuilder buf = new StringBuilder();
         buf.append("{id:").append(row.getId())
                 .append(", rowNum:").append(row.getRowNumber())
                 .append(", sheetId:").append(row.getSheetId())
-//                .append(", parentId:").append(row.getParentId())
-//                .append(", parentRowNum:").append(row.getParentRowNumber())
+                .append(", parentId:").append(row.getParentId())
+//                .append(", parentRowNum:").append(row.getParentRowNumber()) - deprecated (v1.1) and removed in v2
                 .append(", siblingId:").append(row.getSiblingId())
                 .append(", permalink:").append(row.getPermaLink())
                 .append(", version:").append(row.getVersion())
                 .append(", created:{by:").append(row.getCreatedBy()).append(", at:").append(row.getCreatedAt()).append('}')
                 .append(", modified:{by:").append(row.getModifiedBy()).append(", at:").append(row.getModifiedAt()).append('}')
-//                .append(", above:").append(row.getAbove())
-//                .append(", toBottom:").append(row.getToBottom()).append(", toTop:").append(row.getToTop())
-//                .append(", indent:").append(row.getIndent()).append(", outdent:").append(row.getOutdent())
+                .append(", above:").append(row.getAbove())
+                .append(", toBottom:").append(row.getToBottom()).append(", toTop:").append(row.getToTop())
+                .append(", indent:").append(row.getIndent()).append(", outdent:").append(row.getOutdent())
                 .append(", accessLevel:").append(row.getAccessLevel())
                 .append(", format:").append(row.getFormat()).append(", condFormat:").append(row.getConditionalFormat());
 
@@ -89,13 +84,11 @@ public class Rows {
     public static void clearLocations(@NonNull Row row) {
         row.setRowNumber(null);
         row.setSiblingId(null);
-
-        // none of these are in the openapi spec model?
-//        row.setToTop(null);
-//        row.setToBottom(null);
-//        row.setAbove(null);
-//        row.setIndent(null);
-//        row.setOutdent(null);
-//        row.setParentId(null);
+        row.setToTop(null);
+        row.setToBottom(null);
+        row.setAbove(null);
+        row.setIndent(null);
+        row.setOutdent(null);
+        row.setParentId(null);
     }
 }

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class Converters {
     private Converters() {
     }
+
     public static Row convert(RowsAddToSheet200ResponseAllOfResultInner result) {
         return new Row()
                 .id(result.getId())

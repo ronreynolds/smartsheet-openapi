@@ -26,6 +26,9 @@ import java.util.stream.Collectors;
  */
 @SuppressWarnings("unused")
 public class Sheets {
+    private Sheets() {
+    }
+
     public static Row addRow(@NonNull ApiClient client, long sheetId, @NonNull Supplier<Row> rowProvider) throws ApiException {
         List<Row> rows = addRows(client, sheetId, List.of(rowProvider.get()), null);
         return rows.isEmpty() ? null : rows.get(0);

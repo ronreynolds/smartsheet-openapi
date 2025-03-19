@@ -11,6 +11,9 @@ import java.util.Optional;
 
 @Slf4j
 public class Workspaces {
+    private Workspaces() {
+    }
+
     /**
      * @return the first Workspace with the provided name; Optional.empty if no workspace has the provided name
      */

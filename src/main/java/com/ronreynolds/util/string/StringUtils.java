@@ -9,6 +9,9 @@ import java.util.concurrent.ThreadLocalRandom;
  * this version was actually stolen from Micrometer's version (which is probably based on common-lang's version)
  */
 public final class StringUtils {
+    private StringUtils() {
+    }
+
     public static boolean isBlank(@Nullable String string) {
         if (isEmpty(string)) {
             return true;
@@ -70,9 +73,5 @@ public final class StringUtils {
                 .ints(length, 0, RANDOM_ASCII_CHARS.length)
                 .forEach(i -> buf.append(RANDOM_ASCII_CHARS[i]));
         return buf;
-    }
-
-    // can't create this
-    private StringUtils() {
     }
 }

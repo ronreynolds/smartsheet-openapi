@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Cells {
+    private Cells() {
+    }
     public static CellValue makeCellValue(Object value) {
         CellValue cellValue = new CellValue();
         cellValue.setActualInstance(value);

@@ -20,6 +20,9 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ApiClients {
+    private ApiClients() {
+    }
+
     private static final String JSON_CONTENT_TYPE = "application/json";
     private static final String HEADER_ASSUME_USER = "Assume-User";
     private static final String HEADER_AUTHORIZATION = "Authorization";
@@ -120,6 +123,7 @@ public class ApiClients {
 
     /**
      * this makes a copy of our current header values so that we can provide the request-interceptor with a copy
+     *
      * @return a new Map containing all the headers we want to set (auth, assume-user, change-agent, user-agent)
      */
     private static Map<String, String> getHeaderMap() {
