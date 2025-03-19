@@ -37,7 +37,8 @@ public class Settings {
 
     /**
      * convenience method for getting boolean properties
-     * @param key property key
+     *
+     * @param key    property key
      * @param ifNull value to return if the key isn't found or its value is null
      * @return the property value as a boolean or {@code ifNull} if property key not found
      */
