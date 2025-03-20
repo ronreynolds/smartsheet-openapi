@@ -1,5 +1,6 @@
 package com.ronreynolds.smartsheet.api.util;
 
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
@@ -30,6 +31,7 @@ public class ApiClients {
     private static final String HEADER_USER_AGENT = "User-Agent";
 
     private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
+
     // simple logging flags for now
     @Setter
     private static volatile boolean logRequest = Settings.getBool("LOG_REQUEST", false);
@@ -113,8 +115,9 @@ public class ApiClients {
      */
     public static ApiClient createNewClient() {
         ApiClient client = new ApiClient();
+        // disable this feature; breaks parsing of more complex objects
+        client.setObjectMapper(client.getObjectMapper().disable(MapperFeature.ALLOW_COERCION_OF_SCALARS));
         client.updateBaseUri(server.baseUrl);
-
         client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
         client.setResponseInterceptor(ApiClients::processResponse);
 
