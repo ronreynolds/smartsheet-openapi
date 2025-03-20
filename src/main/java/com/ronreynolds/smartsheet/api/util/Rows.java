@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class Rows {
     private Rows() {
     }
@@ -33,8 +34,8 @@ public class Rows {
      *
      * @param originalRow the starting point for the new Row
      * @param rowUpdate   if provided is invoked with the new row before the Cells are added
-     * @param cellUpdate
-     * @return
+     * @param cellUpdate  used to update Cells in the new Row
+     * @return the newly-built Row
      */
     public static Row updateRow(Row originalRow, Consumer<Row.Builder> rowUpdate, BiConsumer<Row.Builder, List<Cell>> cellUpdate) {
         Row.Builder builder = originalRow.toBuilder();
@@ -55,7 +56,7 @@ public class Rows {
                 .append(", parentId:").append(row.getParentId())
 //                .append(", parentRowNum:").append(row.getParentRowNumber()) - deprecated (v1.1) and removed in v2
                 .append(", siblingId:").append(row.getSiblingId())
-                .append(", permalink:").append(row.getPermaLink())
+                .append(", permalink:").append(row.getPermalink())
                 .append(", version:").append(row.getVersion())
                 .append(", created:{by:").append(row.getCreatedBy()).append(", at:").append(row.getCreatedAt()).append('}')
                 .append(", modified:{by:").append(row.getModifiedBy()).append(", at:").append(row.getModifiedAt()).append('}')
