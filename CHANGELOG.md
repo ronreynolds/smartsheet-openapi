@@ -2,7 +2,7 @@
 * based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
 
-## 0.1.2 - unreleased
+## 0.1.3 - unreleased
 ### Added
 * .
 ### Changed
@@ -11,6 +11,29 @@
 * .
 ### Removed
 * .
+
+## 0.1.2 - 2025-03-20
+### Added
+* `logback.xml`
+* code and library to redirect `java.util.logging` (used by generated code) into SLF4J
+    * `JULIntoSLF4J.install()` should be used by other libraries to enable this behavior (idempotent)
+* `get-sheet.sh` for testing SMAR API via curl
+* a bit more logging to the generated code to help with debugging API/JSON issues
+* more `Constants` fields
+* `Sheet.ganntConfig`, `filters`, `Filter`, `FilterCriterion` to match Sheet JSON response
+* `oneof_model.mustache` to allow changes (mostly logging and some code cleanup) to how JSON is parsed
+### Changed
+* `ApiClient.mustache` to generate somewhat cleaner code
+* `api.mustache` to log the response body at finest level
+* `Row.getPermaLink()` to `Row.getPermalink()` to match field name case in JSON
+* `CellObjectValue` -> `CellObjectValueObj` to avoid name conflict with generated class for `Cell.objectValue` field value type
+### Fixed
+* parsing of Sheet JSON
+    * added `CellObjectValueObj` to avoid conflict with generated `CellObjectValue` type for `Cell.objectValue` field value
+    * disabled `MapperFeature.ALLOW_COERCION_OF_SCALARS` in `ApiClient`'s `ObjectMapper` to avoid parsing conflicts
+### Removed
+* `MapperFeature.ALLOW_COERCION_OF_SCALARS` to avoid scalar type conflicts when parsing certain JSON fields
+* copying of `Folder.favorite` (now deprecated)
 
 ## 0.1.1 - 2025-03-19
 ### Added
