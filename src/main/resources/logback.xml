@@ -1,0 +1,27 @@
+<configuration>
+    <timestamp key="timestamp" datePattern="yyyyMMdd-HHmmss" timeReference="contextBirth"/>
+
+    <contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+        <resetJUL>true</resetJUL>         <!-- reset all previous level configurations of all j.u.l. loggers -->
+    </contextListener>
+
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>/tmp/smar-openapi-${timestamp}.log</file> <!-- /tmp/ cleanup should keep the disk use down -->
+        <encoder>
+            <pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <logger name="com.ronreynolds.smartsheet" level="info"/>
+
+    <root level="info">
+        <appender-ref ref="stdout" />
+        <appender-ref ref="file" />
+    </root>
+</configuration>
