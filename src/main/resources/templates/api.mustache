@@ -48,14 +48,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
-{{#asyncNative}}
+import java.util.logging.Logger;
 
+{{#asyncNative}}
 import java.util.concurrent.CompletableFuture;
 {{/asyncNative}}
 
 {{>generatedAnnotation}}
 {{#operations}}
 public class {{classname}} {
+  private static final Logger log = Logger.getLogger({{classname}}.class.getName());
+
   private final ApiClient apiClient;
   private final HttpClient memberVarHttpClient;
   private final ObjectMapper memberVarObjectMapper;
@@ -298,6 +301,7 @@ public class {{classname}} {
 
         String responseBody = new String(localVarResponse.body().readAllBytes());
         localVarResponse.body().close();
+        log.finest("response-body:\n" + responseBody);
 
         return new ApiResponse<{{{returnType}}}>(
             localVarResponse.statusCode(),
