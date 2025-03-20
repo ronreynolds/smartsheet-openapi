@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 /**
  * utility methods for working with Folders in the Smartsheet API
  */
+@SuppressWarnings("unused")
 public class Folders {
     private Folders() {
     }
@@ -47,7 +48,6 @@ public class Folders {
             Folder folderData = new FoldersApi(api).getFolder(folder.getId(), Constants.allFolderIncludes);
             if (folderData != null) {
                 // even tho the ref within an Optional is immutable our Folder type is not
-                folder.setFavorite(folderData.getFavorite());   // FIXME (deprecated)
                 folder.setFolders(folderData.getFolders());
                 folder.setReports(folderData.getReports());
                 folder.setSheets(folderData.getSheets());
