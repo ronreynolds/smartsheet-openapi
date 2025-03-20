@@ -20,6 +20,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import static com.ronreynolds.smartsheet.api.util.Constants.*;
+
 /**
  * a collection of utility methods for working with Sheets (and Rows and Cells); note, heavily commented out as i need
  * to rework most of this code to work with the OpenAPI-generated code instead of the Smartsheet-SDK code
@@ -87,28 +89,18 @@ public class Sheets {
         return buf.toString();
     }
 
-    static final List<SheetInclude> ALL_SHEET_INCLUSIONS = List.copyOf(EnumSet.allOf(SheetInclude.class));
-    static final List<SheetExclude> NO_SHEET_EXCLUSIONS = List.of();
-    static final List<Long> ALL_COLUMN_IDS = null;
-    static final String ALL_FILTERS = null;
-    static final Integer NO_PAGE_SIZE_LIMIT = null;
-    static final Integer ALL_PAGE_NUMBERS = null;
-    static final List<Long> ALL_ROW_IDS = null;
-    static final List<Integer> ALL_ROW_NUMBERS = null;
-    static final OffsetDateTime ROWS_MODIFIED_SINCE = OffsetDateTime.now();
-
     public static Sheet getWholeSheet(@NonNull ApiClient client, long sheetId) throws ApiException {
         return new SheetsApi(client)
-                .getSheet(sheetId, null, null, ALL_SHEET_INCLUSIONS, NO_SHEET_EXCLUSIONS, ALL_COLUMN_IDS, ALL_FILTERS, null, null,
-                        NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, ROWS_MODIFIED_SINCE)
+                .getSheet(sheetId, null, null, allSheetIncludes, noSheetExcludes, allColumnIds, allFilters, noVersionAfter,
+                        noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize, allRowIds, allRowNumbers, noModifiedSince)
                 .getSheet();
     }
 
     public static Sheet getSheetNoRows(@NonNull ApiClient client, long sheetId) throws ApiException {
-        // FIXME - need to support a comma-sep list of enum values; not just a single value (or null)
         return new SheetsApi(client)
                 .getSheet(sheetId, null, null, List.of(SheetInclude.COLUMN_TYPE), List.of(SheetExclude.LINK_IN_FROM_CELL_DETAILS),
-                        ALL_COLUMN_IDS, ALL_FILTERS, null, null, NO_PAGE_SIZE_LIMIT, ALL_PAGE_NUMBERS, null, ALL_ROW_IDS, ALL_ROW_NUMBERS, null)
+                        allColumnIds, allFilters, noVersionAfter, noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize,
+                        allRowIds, allRowNumbers, noModifiedSince)
                 .getSheet();
     }
 
