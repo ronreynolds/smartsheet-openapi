@@ -1,14 +1,16 @@
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -26,6 +28,7 @@ import {{invokerPackage}}.JSON;
 @JsonSerialize(using = {{classname}}.{{classname}}Serializer.class)
 public class {{classname}} extends AbstractOpenApiSchema{{#vendorExtensions.x-implements}} implements {{{.}}}{{^-last}}, {{/-last}}{{/vendorExtensions.x-implements}} {
     private static final Logger log = Logger.getLogger({{classname}}.class.getName());
+    private static final Set<Class<?>> scalarTypes = Set.of(Integer.class, Long.class, Float.class, Double.class, Boolean.class, String.class);
 
     public static class {{classname}}Serializer extends StdSerializer<{{classname}}> {
         public {{classname}}Serializer(Class<{{classname}}> t) {
@@ -53,35 +56,38 @@ public class {{classname}} extends AbstractOpenApiSchema{{#vendorExtensions.x-im
 
         @Override
         public {{classname}} deserialize(JsonParser jp, DeserializationContext ctxt) throws IOException, JsonProcessingException {
-            JsonNode tree = jp.readValueAsTree();
-            Object deserialized = null;
+            final JsonNode tree = jp.readValueAsTree();
+            final ObjectCodec codec = jp.getCodec();
             {{#useOneOfDiscriminatorLookup}}
             {{#discriminator}}
             {{classname}} new{{classname}} = new {{classname}}();
-            Map<String,Object> result2 = tree.traverse(jp.getCodec()).readValueAs(new TypeReference<Map<String, Object>>() {});
+            Map<String,Object> result2 = tree.traverse(codec).readValueAs(new TypeReference<Map<String, Object>>() {});
             String discriminatorValue = (String)result2.get("{{{propertyBaseName}}}");
             switch (discriminatorValue) {
             {{#mappedModels}}
                 case "{{{mappingName}}}":
-                    deserialized = tree.traverse(jp.getCodec()).readValueAs({{{modelName}}}.class);
-                    new{{classname}}.setActualInstance(deserialized);
-                    return new{{classname}};
+                    return new{{classname}}.actualInstance(tree.traverse(codec).readValueAs({{{modelName}}}.class));
             {{/mappedModels}}
                 default:
-                    log.log(Level.WARNING, String.format("Failed to lookup discriminator value `%s` for {{classname}}. Possible values:{{#mappedModels}} {{{mappingName}}}{{/mappedModels}}", discriminatorValue));
+                    log.warning(String.format(
+                        "Failed to lookup discriminator value `%s` for {{classname}}. Possible values:{{#mappedModels}} {{{mappingName}}}{{/mappedModels}}",
+                        discriminatorValue));
             }
 
             {{/discriminator}}
             {{/useOneOfDiscriminatorLookup}}
-            boolean typeCoercion = ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS);
-            int match = 0;
-            JsonToken token = tree.traverse(jp.getCodec()).nextToken();
+            final boolean typeCoercion = ctxt.isEnabled(MapperFeature.ALLOW_COERCION_OF_SCALARS);
+            final List<String> matchingTypes = new ArrayList<>();
+            final JsonToken token = tree.traverse(codec).nextToken();
+            Object deserialized = null;
+
+            log.fine("parsing token:" + token + " tree:'" + tree + "'");
             {{#oneOf}}
             // deserialize {{{.}}}
             try {
                 boolean attemptParsing = true;
                 // ensure that we respect type coercion as set on the client ObjectMapper
-                if ({{{.}}}.class.equals(Integer.class) || {{{.}}}.class.equals(Long.class) || {{{.}}}.class.equals(Float.class) || {{{.}}}.class.equals(Double.class) || {{{.}}}.class.equals(Boolean.class) || {{{.}}}.class.equals(String.class)) {
+                if (scalarTypes.contains({{{.}}}.class)) {
                     attemptParsing = typeCoercion;
                     if (!attemptParsing) {
                         attemptParsing |= (({{{.}}}.class.equals(Integer.class) || {{{.}}}.class.equals(Long.class)) && token == JsonToken.VALUE_NUMBER_INT);
@@ -94,25 +100,23 @@ public class {{classname}} extends AbstractOpenApiSchema{{#vendorExtensions.x-im
                     }
                 }
                 if (attemptParsing) {
-                    deserialized = tree.traverse(jp.getCodec()).readValueAs({{{.}}}.class);
+                    deserialized = tree.traverse(codec).readValueAs({{{.}}}.class);
                     // TODO: there is no validation against JSON schema constraints
                     // (min, max, enum, pattern...), this does not perform a strict JSON
                     // validation, which means the 'match' count may be higher than it should be.
-                    match++;
-                    log.log(Level.FINER, "Input data matches schema '{{{.}}}'");
+                    matchingTypes.add("{{{.}}}");
+                    log.finer("Input data matches schema '{{{.}}}'");
                 }
             } catch (Exception e) {
                 // deserialization failed, continue
-                log.log(Level.FINER, "Input data does not match schema '{{{.}}}'", e);
+                log.finer("Input data does not match schema '{{{.}}}'");
             }
 
             {{/oneOf}}
-            if (match == 1) {
-                {{classname}} ret = new {{classname}}();
-                ret.setActualInstance(deserialized);
-                return ret;
+            if (matchingTypes.size() == 1) {
+                return new {{classname}}().actualInstance(deserialized);
             }
-            throw new IOException(String.format("Failed deserialization for {{classname}}: %d classes match result, expected 1", match));
+            throw new IOException(String.format("Failed deserialization for {{classname}}: matching types:%s, expected 1", matchingTypes));
         }
 
         /**
