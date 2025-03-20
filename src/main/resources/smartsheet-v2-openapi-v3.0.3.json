@@ -8696,7 +8696,7 @@
                               "type": "boolean"
                             },
                             "objectValue": {
-                              "$ref": "#/components/schemas/CellObjectValue"
+                              "$ref": "#/components/schemas/CellObjectValueObj"
                             },
                             "formula": {
                               "description": "The formula for a cell, if set.",
@@ -14252,7 +14252,20 @@
             }
           },
           "objectValue": {
-            "$ref": "#/components/schemas/CellObjectValue"
+            "oneOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              },
+              {
+                "$ref": "#/components/schemas/CellObjectValueObj"
+              }
+            ]
           },
           "overrideValidation": {
             "type": "boolean",
@@ -14263,7 +14276,7 @@
             "description": "Set to **false** to enable lenient parsing. Defaults to **true**. You can specify this attribute in a request, but it is never present in a response."
           },
           "value": {
-            "anyOf": [
+            "oneOf": [
               {
                 "type": "string"
               },
@@ -14485,7 +14498,7 @@
             "description": "Only returned if the include query string parameter contains **columnType**."
           },
           "value": {
-            "anyOf": [
+            "oneOf": [
               {
                 "type": "string"
               },
@@ -14504,7 +14517,8 @@
           }
         }
       },
-      "CellObjectValue": {
+      "CellObjectValueObj": {
+        "type": "object",
         "description": "The base object for values found in the **Cell.objectValue** attribute. Its **objectType** attribute indicates the type of the object. This object itself is not used directly.",
         "required": [
           "objectType"
@@ -14921,40 +14935,40 @@
             ]
           },
           "description": {
-            "type": "string",
-            "description": "Column description."
+            "description": "Column description.",
+            "type": "string"
           },
           "format": {
-            "type": "string",
-            "description": "The format descriptor (see [Formatting](../../#section/API-Basics/Formatting)). Only returned if the **include** query string parameter contains **format** and this column has a non-default format applied to it."
+            "description": "The format descriptor (see [Formatting](../../#section/API-Basics/Formatting)). Only returned if the **include** query string parameter contains **format** and this column has a non-default format applied to it.",
+            "type": "string"
           },
           "formula": {
             "description": "The formula for the column, if set.",
             "type": "string"
           },
           "hidden": {
-            "type": "boolean",
-            "description": "Indicates whether the column is hidden."
+            "description": "Indicates whether the column is hidden.",
+            "type": "boolean"
           },
           "id": {
+            "description": "Column Id.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
               }
-            ],
-            "description": "Column Id."
+            ]
           },
           "index": {
-            "type": "integer",
-            "description": "Column index or position. This number is zero-based."
+            "description": "Column index or position. This number is zero-based.",
+            "type": "integer"
           },
           "locked": {
-            "type": "boolean",
-            "description": "Indicates whether the column is locked. In a response, a value of **true** indicates that the column has been locked by the sheet owner or the admin."
+            "description": "Indicates whether the column is locked. In a response, a value of **true** indicates that the column has been locked by the sheet owner or the admin.",
+            "type": "boolean"
           },
           "lockedForUser": {
-            "type": "boolean",
-            "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request."
+            "description": "Indicates whether the column is locked for the requesting user. This attribute may be present in a response, but cannot be specified in a request.",
+            "type": "boolean"
           },
           "options": {
             "description": "Array of the options available for the column.",
@@ -14964,22 +14978,23 @@
             }
           },
           "primary": {
-            "type": "boolean",
-            "description": "Returned only if the column is the Primary Column (value = **true**)."
+            "description": "Returned only if the column is the Primary Column (value = **true**).",
+            "type": "boolean"
           },
           "symbol": {
-            "type": "string",
-            "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+            "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns).",
+            "type": "string"
           },
           "systemColumnType": {
+            "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types).",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ColumnType_system"
               }
-            ],
-            "description": "See [System Columns](../../tag/columnsRelated#section/Column-Types)."
+            ]
           },
           "tags": {
+            "description": "Set of tags to indicate special columns. Each element in the array is set to one of the listed enum values.",
             "type": "array",
             "items": {
               "type": "string",
@@ -14999,37 +15014,36 @@
                 "BASELINE_END_DATE",
                 "BASELINE_VARIANCE"
               ]
-            },
-            "description": "Set of tags to indicate special columns. Each element in the array is set to one of the listed enum values."
+            }
           },
           "title": {
-            "type": "string",
-            "description": "Column title."
+            "description": "Column title.",
+            "type": "string"
           },
           "type": {
+            "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)",
             "allOf": [
               {
                 "$ref": "#/components/schemas/ColumnType"
               }
-            ],
-            "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+            ]
           },
           "validation": {
-            "type": "boolean",
-            "description": "Indicates whether validation has been enabled for the column (value = **true**)."
+            "description": "Indicates whether validation has been enabled for the column (value = **true**).",
+            "type": "boolean"
           },
           "version": {
+            "description": "* `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.\n* `1`: MULTI_CONTACT_LIST.\n* `2`: MULTI_PICKLIST.\n",
             "type": "integer",
             "enum": [
               0,
               1,
               2
-            ],
-            "description": "* `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.\n* `1`: MULTI_CONTACT_LIST.\n* `2`: MULTI_PICKLIST.\n"
+            ]
           },
           "width": {
-            "type": "integer",
-            "description": "Display width of the column in pixels."
+            "description": "Display width of the column in pixels.",
+            "type": "integer"
           }
         }
       },
@@ -15766,6 +15780,18 @@
           "value": "2025-03-03T16:59:59"
         }
       },
+      "DayOfWeek": {
+        "type": "string",
+        "enum": [
+          "MONDAY",
+          "TUESDAY",
+          "WEDNESDAY",
+          "THURSDAY",
+          "FRIDAY",
+          "SATURDAY",
+          "SUNDAY"
+        ]
+      },
       "DestinationContainerType": {
         "description": "Type of the destination container.",
         "type": "string",
@@ -15946,7 +15972,7 @@
           },
           "days": {
             "description": "Number of days",
-            "type": "integer",
+            "type": "number",
             "format": "float"
           }
         },
@@ -16178,6 +16204,64 @@
           "template",
           "workspace"
         ]
+      },
+      "Filter": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "id": {
+            "$ref": "#/components/schemas/Int64"
+          },
+          "filterType": {
+            "type": "string"
+          },
+          "query": {
+            "type": "object",
+            "properties": {
+              "operator": {
+                "type": "string"
+              },
+              "criteria": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/FilterCriterion"
+                }
+              },
+              "includeParent": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      },
+      "FilterCriterion": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "oneOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          },
+          "columnId": {
+            "$ref": "#/components/schemas/Int64"
+          }
+        }
       },
       "Filters": {
         "description": "Smartsheet users can define and save personal column filters on sheets they can view.",
@@ -16906,6 +16990,23 @@
           "source"
         ]
       },
+      "Month": {
+        "type": "string",
+        "enum": [
+          "JANUARY",
+          "FEBRUARY",
+          "MARCH",
+          "APRIL",
+          "MAY",
+          "JUNE",
+          "JULY",
+          "AUGUST",
+          "SEPTEMBER",
+          "OCTOBER",
+          "NOVEMBER",
+          "DECEMBER"
+        ]
+      },
       "MoveRowsInclude": {
         "type": "string",
         "enum": [
@@ -16979,6 +17080,9 @@
           "name": {
             "type": "string",
             "readOnly": true
+          },
+          "systemUserType": {
+            "type": "string"
           }
         }
       },
@@ -17236,16 +17340,7 @@
           "workingDays": {
             "type": "array",
             "items": {
-              "type": "string",
-              "enum": [
-                "MONDAY",
-                "TUESDAY",
-                "WEDNESDAY",
-                "THURSDAY",
-                "FRIDAY",
-                "SATURDAY",
-                "SUNDAY"
-              ]
+              "$ref": "#/components/schemas/DayOfWeek"
             }
           }
         }
@@ -17839,7 +17934,7 @@
               }
             ]
           },
-          "permaLink": {
+          "permalink": {
             "description": "URL that represents a direct link to the row in Smartsheet. Only returned if the include query string parameter contains rowPermalink.",
             "type": "string"
           },
@@ -17852,7 +17947,7 @@
             "description": "Sheet version number that is incremented every time a sheet is modified.",
             "type": "integer"
           },
-          "parentId" :  {
+          "parentId": {
             "description": "Parent row Id.",
             "allOf": [
               {
@@ -17860,10 +17955,10 @@
               }
             ]
           },
-          "toTop" :  {
+          "toTop": {
             "type": "boolean"
           },
-          "toBottom" :  {
+          "toBottom": {
             "type": "boolean"
           },
           "above": {
@@ -18376,6 +18471,9 @@
       "Sheet": {
         "type": "object",
         "properties": {
+          "source": {
+            "$ref": "#/components/schemas/Source"
+          },
           "id": {
             "description": "Sheet Id.",
             "allOf": [
@@ -18384,16 +18482,12 @@
               }
             ]
           },
+          "name": {
+            "description": "Sheet name.",
+            "type": "string"
+          },
           "fromId": {
             "description": "The Id of the template from which to create the sheet. This attribute can be specified in a request, but is never present in a response.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ]
-          },
-          "ownerId": {
-            "description": "User Id of the sheet owner.",
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
@@ -18453,6 +18547,61 @@
             "type": "boolean",
             "deprecated": true
           },
+          "filters": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Filter"
+            }
+          },
+          "ganttConfig": {
+            "type": "object",
+            "properties": {
+              "workingDays": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DayOfWeek"
+                }
+              },
+              "holidays": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "hoursInWorkingDay": {
+                "type": "number",
+                "format": "float"
+              },
+              "primaryHeading": {
+                "type": "object",
+                "properties": {
+                  "scale": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "type": "string"
+                  }
+                }
+              },
+              "secondaryHeading": {
+                "type": "object",
+                "properties": {
+                  "scale": {
+                    "type": "string"
+                  },
+                  "format": {
+                    "type": "string"
+                  }
+                }
+              },
+              "firstDayOfWeek": {
+                "$ref": "#/components/schemas/DayOfWeek"
+              },
+              "fiscalYearBegins": {
+                "$ref": "#/components/schemas/Month"
+              }
+            }
+          },
           "ganttEnabled": {
             "description": "Indicates whether \"Gantt View\" is enabled.",
             "type": "boolean"
@@ -18468,13 +18617,17 @@
           "modifiedAt": {
             "$ref": "#/components/schemas/Datetime"
           },
-          "name": {
-            "description": "Sheet name.",
-            "type": "string"
-          },
           "owner": {
             "description": "Email address of the sheet owner.",
             "type": "string"
+          },
+          "ownerId": {
+            "description": "User Id of the sheet owner.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
           },
           "permalink": {
             "description": "URL that represents a direct link to the sheet in Smartsheet.",
@@ -18511,9 +18664,6 @@
           "showParentRowsForFilters": {
             "description": "Returned only if there are column filters on the sheet. Value = **true** if \"show parent rows\" is enabled for the filters.",
             "type": "boolean"
-          },
-          "source": {
-            "$ref": "#/components/schemas/Source"
           },
           "summary": {
             "type": "object",
@@ -19405,7 +19555,7 @@
             ]
           },
           "objectValue": {
-            "$ref": "#/components/schemas/CellObjectValue"
+            "$ref": "#/components/schemas/CellObjectValueObj"
           },
           "options": {
             "description": "When applicable for PICKLIST column type. Array of the options available for the field.",
