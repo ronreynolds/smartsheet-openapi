@@ -86,15 +86,14 @@ public class {{classname}} {
   public ApiClient getApiClient() {
     return apiClient;
   }
-  {{#asyncNative}}
 
+  {{#asyncNative}}
   private ApiException getApiException(String operationId, HttpResponse<String> response) {
     String message = formatExceptionMessage(operationId, response.statusCode(), response.body());
     return new ApiException(response.statusCode(), message, response.headers(), response.body());
   }
   {{/asyncNative}}
   {{^asyncNative}}
-
   protected ApiException getApiException(String operationId, HttpResponse<InputStream> response) throws IOException {
     String body = response.body() == null ? null : new String(response.body().readAllBytes());
     String message = formatExceptionMessage(operationId, response.statusCode(), body);

@@ -7,6 +7,8 @@ plugins {
 group               = "com.ronreynolds"
 version             = "0.1.2"
 val buildDirectory  = layout.buildDirectory.get()
+//val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.json"
+//val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.yaml"
 val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 // library versions
