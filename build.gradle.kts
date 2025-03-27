@@ -45,7 +45,7 @@ dependencies {
     // needed by our code
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("org.slf4j:jul-to-slf4j:$slf4jVersion") // openapi-gen logs to java.util.logging; route it into slf4j/logback
-    runtimeOnly   ("ch.qos.logback:logback-classic:$logbackVersion")
+//    runtimeOnly   ("ch.qos.logback:logback-classic:$logbackVersion")
 
     //
     // test dependencies
