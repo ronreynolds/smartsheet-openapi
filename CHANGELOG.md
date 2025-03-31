@@ -1,16 +1,24 @@
 # Smartsheet-OpenAPI 
-* based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/
+* based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/ and https://www.conventionalcommits.org/en/v1.0.0/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
+* commit messages: `<type>(<scope>): <description>`
+  * prefixes: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci
+  * scope is optional; describes the package/area/file of the change
 
-## 0.1.3 - unreleased
+## 0.1.4 - unreleased
 ### Added
-* `get-fresh-spec` script to download lasted Smartsheet OpenAPI specs (json and yaml)
+* .
+### Changed
+* fleshing out integration-tests
+
+## 0.1.3 - 2025-03-31
+### Added
+* `get-fresh-spec` script to download latest Smartsheet OpenAPI specs (json and yaml)
 * stub integration tests for all API classes
 ### Changed
 * slightly tighter code in `ApiClients.getDefaultClient()`
-* `BasicUse` to a test class so that published lib contains no runtime classes
-  * and logback to a test-runtime dep
-  * also moved `logback.xml` into test/resources
+* moved `BasicUse` to a test class so that published lib contains no runtime classes
+  * and moved logback to a test-runtime dep and `logback.xml` into test/resources
 
 ## 0.1.2 - 2025-03-20
 ### Added
