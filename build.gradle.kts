@@ -7,6 +7,9 @@ plugins {
 group               = "com.ronreynolds"
 version             = "0.1.2"
 val buildDirectory  = layout.buildDirectory.get()
+// testing out newest specs
+//val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.json"
+//val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.yaml"
 val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
 
 // library versions
@@ -30,7 +33,6 @@ repositories {
 }
 
 dependencies {
-    //
     // needed by openapi-generated code (javax.annotation.Generated, apache.http.*)
     implementation("com.google.code.findbugs:jsr305:$findBugsVersion")    // for javax.annotation.Nullable
     implementation("com.fasterxml.jackson.core:jackson-core:$jacksonVersion")
@@ -39,19 +41,16 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("jakarta.annotation:jakarta.annotation-api:$jakartaAnnotationVersion")
 
-    //
     // needed by our code
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("org.slf4j:jul-to-slf4j:$slf4jVersion") // openapi-gen logs to java.util.logging; route it into slf4j/logback
-    runtimeOnly   ("ch.qos.logback:logback-classic:$logbackVersion")
 
-    //
     // test dependencies
     testRuntimeOnly     ("org.junit.platform:junit-platform-launcher")
+    testRuntimeOnly     ("ch.qos.logback:logback-classic:$logbackVersion")
     testImplementation  ("org.junit.jupiter:junit-jupiter:$jUnitJupiterVersion")
     testImplementation  ("org.assertj:assertj-core:$assertJVersion")
 
-    //
     // Lombok dependencies
     compileOnly             ("org.projectlombok:lombok:$lombokVersion")
     annotationProcessor     ("org.projectlombok:lombok:$lombokVersion")

@@ -1,5 +1,7 @@
-package com.ronreynolds.smartsheet;
+package com.ronreynolds.smartsheet.examples;
 
+import com.ronreynolds.smartsheet.ApiClient;
+import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ServerInfoApi;
 import com.ronreynolds.smartsheet.api.UsersApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;

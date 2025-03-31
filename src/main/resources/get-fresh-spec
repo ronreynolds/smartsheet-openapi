@@ -1,0 +1,9 @@
+#! /bin/bash -x
+JSON_SPEC_URL="https://developers.smartsheet.com/_spec/api/smartsheet/openapi.json?download"
+YAML_SPEC_URL="https://developers.smartsheet.com/_spec/api/smartsheet/openapi.yaml?download"
+    TIMESTAMP=$(date +"%Y%m%d")
+    SPEC_FILE=$(dirname ${0})/smartsheet-v2-openapi-v3.0.3-${TIMESTAMP}
+
+curl -o ${SPEC_FILE}.json ${JSON_SPEC_URL}
+curl -o ${SPEC_FILE}.yaml ${YAML_SPEC_URL}
+

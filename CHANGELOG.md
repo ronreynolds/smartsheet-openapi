@@ -4,13 +4,13 @@
 
 ## 0.1.3 - unreleased
 ### Added
-* .
+* `get-fresh-spec` script to download lasted Smartsheet OpenAPI specs (json and yaml)
+* stub integration tests for all API classes
 ### Changed
-* .
-### Fixed
-* .
-### Removed
-* .
+* slightly tighter code in `ApiClients.getDefaultClient()`
+* `BasicUse` to a test class so that published lib contains no runtime classes
+  * and logback to a test-runtime dep
+  * also moved `logback.xml` into test/resources
 
 ## 0.1.2 - 2025-03-20
 ### Added

@@ -61,12 +61,7 @@ public class ApiClients {
     public static ApiClient getDefaultClient() {
         ApiClient client = defaultClient.get();
         if (client == null) {
-            client = defaultClient.updateAndGet(val -> {
-                if (val == null) {
-                    val = createNewClient();
-                }
-                return val;
-            });
+            client = defaultClient.updateAndGet(val -> val == null ? createNewClient() : val);
             // overwrite the global singleton; FIXME with future config-gen version
             Configuration.setDefaultApiClient(client);
         }
