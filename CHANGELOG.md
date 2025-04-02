@@ -7,9 +7,17 @@
 
 ## 0.1.4 - unreleased
 ### Added
-* .
+* `BeforeAllTests` JUnit5 extension to prep the default ApiClient before any integration-tests (or other tests) start
+* `src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension` to load our `BeforeAllTests` extension
+* `TestIDs` to collect together IDs of testing resources
+  * `SMARTSHEET_ACCESS_TOKEN` MUST be part of the environment (or a system-prop) for any API integration tests to pass
+* `Constants.allOf(Class<T extends Enum>)` to return a `List` of all values for a particular enum
+* MDC to logback pattern used by unit-tests (in case i start adding `LogContext` variables)
 ### Changed
+* `ApiClients` updated to use non-deprecated Jackson code to disable coercion of scalars feature
+* added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
 * fleshing out integration-tests
+  * `ServerInfoApiTest` is done
 
 ## 0.1.3 - 2025-03-31
 ### Added
