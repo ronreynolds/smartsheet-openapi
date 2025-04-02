@@ -112,6 +112,7 @@ tasks.compileTestJava {
 }
 
 tasks.withType<Test> {
+    environment("junit.jupiter.extensions.autodetection.enabled", "true")
     useJUnitPlatform()
 }
 
