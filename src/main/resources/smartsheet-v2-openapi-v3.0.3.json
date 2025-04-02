@@ -18381,6 +18381,14 @@
             "items": {
               "type": "string"
             }
+          },
+          "featureInfo": {
+            "type": "object",
+            "properties": {
+              "symbolsVersion": {
+                "type": "integer"
+              }
+            }
           }
         }
       },
