@@ -1,6 +1,7 @@
 package com.ronreynolds.smartsheet.api.util;
 
 import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
@@ -54,7 +55,8 @@ public class ApiClients {
 
     /**
      * this method uses its own ref to store the ApiClient and overwrites the one in Configuration if it has to create a new one;
-     * this behavior will change with future openapi-configgen when we can set the defaultApiClientFactory to lazy-create our own ApiClient
+     * this behavior will change with future openapi-configgen when we can set the defaultApiClientFactory to lazy-create our
+     * own ApiClient
      *
      * @return the ApiClient with proper auth headers
      */
@@ -111,7 +113,10 @@ public class ApiClients {
     public static ApiClient createNewClient() {
         ApiClient client = new ApiClient();
         // disable this feature; breaks parsing of more complex objects
-        client.setObjectMapper(client.getObjectMapper().disable(MapperFeature.ALLOW_COERCION_OF_SCALARS));
+        client.setObjectMapper(
+                JsonMapper.builder(client.getObjectMapper().getFactory())
+                        .disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
+                        .build());
         client.updateBaseUri(server.baseUrl);
         client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
         client.setResponseInterceptor(ApiClients::processResponse);
