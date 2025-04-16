@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
+import com.ronreynolds.util.logging.JULIntoSLF4J;
 import com.ronreynolds.util.string.ToString;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +23,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ApiClients {
-    private ApiClients() {
+    static {
+        // route codegen code logging into slf4j
+        JULIntoSLF4J.install();
+
+        // same as Java SDK (mostly; SDK doesn't support system-props, only env-vars, for auth token)
+        setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
+        setServer(Servers.US);
+        setUserAgent(null);
     }
 
     private static final String JSON_CONTENT_TYPE = "application/json";
@@ -31,6 +39,7 @@ public class ApiClients {
     private static final String HEADER_CHANGE_AGENT = "Smartsheet-Change-Agent";
     private static final String HEADER_USER_AGENT = "User-Agent";
 
+    // FIXME - this will be obsolete with future OpenAPI-codegen Configuration that supports ApiClient Supplier
     private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
 
     // simple logging flags for now
@@ -45,17 +54,10 @@ public class ApiClients {
     private static volatile String userAgent;
     private static volatile Duration timeoutDuration;
 
-    static {
-        // same as Java SDK
-        setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
-        setServer(Servers.US);
-        setUserAgent(null);
-        // getDefaultClient() so that Configuration.getDefaultApiClient() returns a properly configured client?
-    }
 
     /**
      * this method uses its own ref to store the ApiClient and overwrites the one in Configuration if it has to create a new one;
-     * this behavior will change with future openapi-configgen when we can set the defaultApiClientFactory to lazy-create our
+     * this behavior will change with future openapi-codegen when we can set the defaultApiClientFactory to lazy-create our
      * own ApiClient
      *
      * @return the ApiClient with proper auth headers
@@ -243,5 +245,8 @@ public class ApiClients {
         Servers(String url) {
             baseUrl = url;
         }
+    }
+
+    private ApiClients() {
     }
 }
