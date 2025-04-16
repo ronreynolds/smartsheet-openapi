@@ -741,7 +741,7 @@ import java.util.List;
 /**
  * API tests for FavoritesApi
  */
-@Disabled
+@Disabled("FavoritesApiTest not yet implemented")
 public class FavoritesApiTest {
 
     private final FavoritesApi api = new FavoritesApi();

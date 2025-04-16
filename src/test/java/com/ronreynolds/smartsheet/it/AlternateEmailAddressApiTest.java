@@ -741,7 +741,7 @@ import java.util.List;
 /**
  * API tests for AlternateEmailAddressApi
  */
-@Disabled
+@Disabled("AlternateEmailAddressApiTest not yet implemented")
 public class AlternateEmailAddressApiTest {
 
     private final AlternateEmailAddressApi api = new AlternateEmailAddressApi();

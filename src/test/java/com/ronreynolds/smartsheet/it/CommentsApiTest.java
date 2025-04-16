@@ -738,7 +738,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for CommentsApi
  */
-@Disabled
+@Disabled("CommentsApiTest not yet implemented")
 public class CommentsApiTest {
 
     private final CommentsApi api = new CommentsApi();

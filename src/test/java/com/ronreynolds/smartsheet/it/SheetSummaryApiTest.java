@@ -746,7 +746,7 @@ import java.util.List;
 /**
  * API tests for SheetSummaryApi
  */
-@Disabled
+@Disabled("SheetSummaryApiTest not yet implemented")
 public class SheetSummaryApiTest {
 
     private final SheetSummaryApi api = new SheetSummaryApi();

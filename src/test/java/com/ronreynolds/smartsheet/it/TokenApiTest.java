@@ -736,7 +736,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for TokenApi
  */
-@Disabled
+@Disabled("TokenApiTest not yet implemented")
 public class TokenApiTest {
 
     private final TokenApi api = new TokenApi();

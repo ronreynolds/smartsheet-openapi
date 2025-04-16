@@ -739,7 +739,7 @@ import java.util.List;
 /**
  * API tests for CellImagesApi
  */
-@Disabled
+@Disabled("CellImagesApiTest not yet implemented")
 public class CellImagesApiTest {
 
     private final CellImagesApi api = new CellImagesApi();

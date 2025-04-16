@@ -742,7 +742,7 @@ import java.util.List;
 /**
  * API tests for DiscussionsApi
  */
-@Disabled
+@Disabled("DiscussionsApiTest not yet implemented")
 public class DiscussionsApiTest {
 
     private final DiscussionsApi api = new DiscussionsApi();

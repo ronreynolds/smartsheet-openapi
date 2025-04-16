@@ -735,7 +735,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for TemplatesApi
  */
-@Disabled
+@Disabled("TemplatesApiTest not yet implemented")
 public class TemplatesApiTest {
 
     private final TemplatesApi api = new TemplatesApi();

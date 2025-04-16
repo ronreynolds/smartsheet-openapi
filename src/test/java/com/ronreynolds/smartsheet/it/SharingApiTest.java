@@ -742,7 +742,7 @@ import java.util.List;
 /**
  * API tests for SharingApi
  */
-@Disabled
+@Disabled("SharingApiTest not yet implemented")
 public class SharingApiTest {
 
     private final SharingApi api = new SharingApi();

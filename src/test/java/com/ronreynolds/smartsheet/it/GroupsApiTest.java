@@ -741,7 +741,7 @@ import java.time.OffsetDateTime;
 /**
  * API tests for GroupsApi
  */
-@Disabled
+@Disabled("GroupsApiTest not yet implemented")
 public class GroupsApiTest {
 
     private final GroupsApi api = new GroupsApi();

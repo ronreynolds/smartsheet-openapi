@@ -737,7 +737,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for AutomationRulesApi
  */
-@Disabled
+@Disabled("AutomationRulesApiTest not yet implemented")
 public class AutomationRulesApiTest {
 
     private final AutomationRulesApi api = new AutomationRulesApi();

@@ -751,7 +751,7 @@ import java.util.List;
 /**
  * API tests for RowsApi
  */
-@Disabled
+@Disabled("RowsApiTest not yet implemented")
 public class RowsApiTest {
 
     private final RowsApi api = new RowsApi();

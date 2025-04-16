@@ -738,7 +738,7 @@ import java.util.List;
 /**
  * API tests for GroupMembersApi
  */
-@Disabled
+@Disabled("GroupMembersApiTest not yet implemented")
 public class GroupMembersApiTest {
 
     private final GroupMembersApi api = new GroupMembersApi();

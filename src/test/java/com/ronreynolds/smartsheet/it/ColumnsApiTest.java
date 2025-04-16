@@ -740,7 +740,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for ColumnsApi
  */
-@Disabled
+@Disabled("ColumnsApiTest not yet implemented")
 public class ColumnsApiTest {
 
     private final ColumnsApi api = new ColumnsApi();

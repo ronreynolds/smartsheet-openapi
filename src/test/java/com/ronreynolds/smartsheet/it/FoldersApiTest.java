@@ -745,7 +745,7 @@ import java.util.List;
 /**
  * API tests for FoldersApi
  */
-@Disabled
+@Disabled("FoldersApiTest not yet implemented")
 public class FoldersApiTest {
 
     private final FoldersApi api = new FoldersApi();

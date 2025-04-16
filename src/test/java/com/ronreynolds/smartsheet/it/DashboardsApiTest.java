@@ -754,7 +754,7 @@ import java.util.List;
 /**
  * API tests for DashboardsApi
  */
-@Disabled
+@Disabled("DashboardsApiTest not yet implemented")
 public class DashboardsApiTest {
 
     private final DashboardsApi api = new DashboardsApi();

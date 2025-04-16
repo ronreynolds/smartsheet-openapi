@@ -739,7 +739,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for UpdateRequestsApi
  */
-@Disabled
+@Disabled("UpdateRequestsApiTest not yet implemented")
 public class UpdateRequestsApiTest {
 
     private final UpdateRequestsApi api = new UpdateRequestsApi();

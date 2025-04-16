@@ -739,7 +739,7 @@ import java.util.List;
 /**
  * API tests for ContactsApi
  */
-@Disabled
+@Disabled("ContactsApiTest not yet implemented")
 public class ContactsApiTest {
 
     private final ContactsApi api = new ContactsApi();

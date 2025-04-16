@@ -751,7 +751,7 @@ import java.util.List;
 /**
  * API tests for ReportsApi
  */
-@Disabled
+@Disabled("ReportsApiTest not yet implemented")
 public class ReportsApiTest {
 
     private final ReportsApi api = new ReportsApi();

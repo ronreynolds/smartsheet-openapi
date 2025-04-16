@@ -740,7 +740,7 @@ import org.junit.jupiter.api.Test;
 /**
  * API tests for WebhooksApi
  */
-@Disabled
+@Disabled("WebhooksApiTest not yet implemented")
 public class WebhooksApiTest {
 
     private final WebhooksApi api = new WebhooksApi();

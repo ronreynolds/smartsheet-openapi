@@ -738,7 +738,7 @@ import java.util.List;
 /**
  * API tests for CellsApi
  */
-@Disabled
+@Disabled("CellsApiTest not yet implemented")
 public class CellsApiTest {
 
     private final CellsApi api = new CellsApi();

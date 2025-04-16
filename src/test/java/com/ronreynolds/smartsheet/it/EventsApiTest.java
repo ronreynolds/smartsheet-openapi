@@ -737,7 +737,7 @@ import java.time.OffsetDateTime;
 /**
  * API tests for EventsApi
  */
-@Disabled
+@Disabled("EventsApiTest not yet implemented")
 public class EventsApiTest {
 
     private final EventsApi api = new EventsApi();

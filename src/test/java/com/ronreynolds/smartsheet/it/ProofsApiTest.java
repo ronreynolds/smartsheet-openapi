@@ -752,7 +752,7 @@ import java.util.List;
 /**
  * API tests for ProofsApi
  */
-@Disabled
+@Disabled("ProofsApiTest not yet implemented")
 public class ProofsApiTest {
 
     private final ProofsApi api = new ProofsApi();

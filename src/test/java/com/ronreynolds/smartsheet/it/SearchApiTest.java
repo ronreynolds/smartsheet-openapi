@@ -739,7 +739,7 @@ import java.util.List;
 /**
  * API tests for SearchApi
  */
-@Disabled
+@Disabled("SearchApiTest not yet implemented")
 public class SearchApiTest {
 
     private final SearchApi api = new SearchApi();

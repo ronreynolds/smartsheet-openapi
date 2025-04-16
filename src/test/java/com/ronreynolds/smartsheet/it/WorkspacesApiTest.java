@@ -754,7 +754,7 @@ import java.util.List;
 /**
  * API tests for WorkspacesApi
  */
-@Disabled
+@Disabled("WorkspacesApiTest not yet implemented")
 public class WorkspacesApiTest {
 
     private final WorkspacesApi api = new WorkspacesApi();

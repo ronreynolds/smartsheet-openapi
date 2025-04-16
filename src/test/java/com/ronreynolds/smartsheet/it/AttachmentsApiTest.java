@@ -740,7 +740,7 @@ import java.io.File;
 /**
  * API tests for AttachmentsApi
  */
-@Disabled
+@Disabled("AttachmentsApiTest not yet implemented")
 public class AttachmentsApiTest {
 
     private final AttachmentsApi api = new AttachmentsApi();

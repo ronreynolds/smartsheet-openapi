@@ -740,7 +740,7 @@ import java.util.List;
 /**
  * API tests for HomeApi
  */
-@Disabled
+@Disabled("HomeApiTest not yet implemented")
 public class HomeApiTest {
 
     private final HomeApi api = new HomeApi();
