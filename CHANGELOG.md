@@ -1,9 +1,8 @@
 # Smartsheet-OpenAPI 
-* based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/ and https://www.conventionalcommits.org/en/v1.0.0/
+* based on https://keepachangelog.com/en/1.0.0/, https://semver.org/, and https://www.conventionalcommits.org/en/v1.0.0/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
-* commit messages: `<type>(<scope>): <description>`
-  * prefixes: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs
-  * scope is optional; describes the package/area/file of the change
+* commit messages: `<type>[(<scope>)]: <description>`
+  * types: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs
 
 ## 0.1.4 - unreleased
 ### Added
@@ -13,11 +12,15 @@
   * `SMARTSHEET_ACCESS_TOKEN` MUST be part of the environment (or a system-prop) for any API integration tests to pass
 * `Constants.allOf(Class<T extends Enum>)` to return a `List` of all values for a particular enum
 * MDC to logback pattern used by unit-tests (in case i start adding `LogContext` variables)
+* routing of JUL logs into SLF4J as soon as ApiClients is loaded (codegen code uses java-util-logging (yuck!))
 ### Changed
 * `ApiClients` updated to use non-deprecated Jackson code to disable coercion of scalars feature
 * added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
 * fleshing out integration-tests
   * `ServerInfoApiTest` is done
+### Removed
+* `BasicUse` in favor of individual api-specific tests
+* renamed `TestIDs` to `TestData` to more accurately reflect its contents: static inner-interfaces for each resource type
 
 ## 0.1.3 - 2025-03-31
 ### Added
