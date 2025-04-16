@@ -18389,6 +18389,46 @@
                 "type": "integer"
               }
             }
+          },
+          "appleAuthInfos": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "clientId":{
+                  "type": "integer"
+                },
+                "signInAllowed":{
+                  "type": "boolean"
+                },
+                "signUpAllowed":{
+                  "type": "boolean"
+                },
+                "level":{
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "azureAuthInfo":{
+            "type":"object",
+            "properties":{
+              "clientId": {
+                "description": "GUID",
+                "type": "string"
+              },
+              "resource": {
+                "description": "GUID",
+                "type": "string"
+              },
+              "authority": {
+                "description": "url; probably https://login.microsoftonline.com/common",
+                "type": "string"
+              }
+            }
+          },
+          "serverVersion": {
+            "type": "string"
           }
         }
       },
