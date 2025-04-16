@@ -13,7 +13,8 @@
 * `Constants.allOf(Class<T extends Enum>)` to return a `List` of all values for a particular enum
 * MDC to logback pattern used by unit-tests (in case i start adding `LogContext` variables)
 * routing of JUL logs into SLF4J as soon as ApiClients is loaded (codegen code uses java-util-logging (yuck!))
-### Changed
+* `Configuration.mustache` to match future (unreleased) OpenApi-codegen code
+### Changed 
 * `ApiClients` updated to use non-deprecated Jackson code to disable coercion of scalars feature
 * added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
 * fleshing out integration-tests
