@@ -771,7 +771,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for SheetsApi
  */
-@Disabled
+@Disabled("SheetsApiTest not yet implemented")
 public class SheetsApiTest {
 
     private final SheetsApi api = new SheetsApi();
@@ -786,13 +786,12 @@ public class SheetsApiTest {
      */
     @Test
     public void copySheetTest() throws ApiException {
-        Long sheetId = TestIDs.sheetID;
         ContainerDestination containerDestination = null;
         String contentType = null;
         List<CopyFolderInclude> include = Constants.allOf(CopyFolderInclude.class);
         FolderCopyExclude exclude = null;
         CopySheet200Response response =
-                api.copySheet(sheetId, containerDestination, contentType, include, exclude);
+                api.copySheet(TestData.SheetData.id, containerDestination, contentType, include, exclude);
 
         // TODO: test validations
         assertThat(response).isNotNull();
@@ -888,10 +887,9 @@ public class SheetsApiTest {
      */
     @Test
     public void deleteSheetShareTest() throws ApiException {
-        Long sheetId = TestIDs.sheetID;
         String shareId = null;
         Integer accessApiLevel = null;
-        Result response = api.deleteSheetShare(sheetId, shareId, accessApiLevel);
+        Result response = api.deleteSheetShare(TestData.SheetData.id, shareId, accessApiLevel);
 
         // TODO: test validations
         assertThat(response).isNotNull();
@@ -906,7 +904,7 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetTest() throws ApiException {
-        Long sheetId = TestIDs.sheetID;
+        Long sheetId = TestData.SheetData.id;
         String accept = null;
         Integer accessApiLevel = null;
         List<SheetInclude> include = null;
@@ -938,7 +936,7 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetPublishTest() throws ApiException {
-        Long sheetId = TestIDs.sheetID;
+        Long sheetId = TestData.SheetData.id;
         SheetPublish response = api.getSheetPublish(sheetId);
 
         // TODO: test validations
@@ -956,7 +954,7 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetVersionTest() throws ApiException {
-        Long sheetId = TestIDs.sheetID;
+        Long sheetId = TestData.SheetData.id;
         SheetVersion response = api.getSheetVersion(sheetId);
 
         // TODO: test validations
