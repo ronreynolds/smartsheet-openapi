@@ -18,7 +18,7 @@ public class BeforeAllTests implements BeforeAllCallback, CloseableResource {
     public void beforeAll(final ExtensionContext context) throws Exception {
         if (!setupDone) {
             // lock-out concurrent threads attempting to do setup
-            synchronized (this) {
+            synchronized (BeforeAllTests.class) {
                 // check if another thread finished the setup while we were stuck at synchronized
                 if (!setupDone) {
                     doSetup();
@@ -38,6 +38,7 @@ public class BeforeAllTests implements BeforeAllCallback, CloseableResource {
 
     @Override
     public void close() {
+        // not necessary; just verifying things seem to be working as expected
         log.info("completed all tests");
     }
 }
