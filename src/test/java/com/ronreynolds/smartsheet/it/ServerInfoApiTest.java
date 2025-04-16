@@ -756,7 +756,6 @@ public class ServerInfoApiTest {
     public void serverinfoGetTest() throws ApiException {
         ServerInfo response = api.serverinfoGet();
         assertThat(response).isNotNull();
-//        System.out.println(response);
 
         String[] noneOn = {"none", "on"};  // value for many format fields
         Predicate<String> onlyDigits = Pattern.compile("\\d+").asMatchPredicate();
