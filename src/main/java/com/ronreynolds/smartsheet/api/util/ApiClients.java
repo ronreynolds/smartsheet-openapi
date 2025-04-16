@@ -23,6 +23,18 @@ import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ApiClients {
+    public enum Servers {
+        US("https://api.smartsheet.com/2.0"),
+        GOV_US("https://api.smartsheetgov.com/2.0"),
+        EU("https://api.smartsheet.eu/2.0");
+
+        public final String baseUrl;
+
+        Servers(String url) {
+            baseUrl = url;
+        }
+    }
+
     static {
         // route codegen code logging into slf4j
         JULIntoSLF4J.install();
@@ -31,6 +43,9 @@ public class ApiClients {
         setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
         setServer(Servers.US);
         setUserAgent(null);
+
+        // register our factory method with Configuration
+        Configuration.setApiClientFactory(ApiClients::createNewClient);
     }
 
     private static final String JSON_CONTENT_TYPE = "application/json";
@@ -38,9 +53,6 @@ public class ApiClients {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String HEADER_CHANGE_AGENT = "Smartsheet-Change-Agent";
     private static final String HEADER_USER_AGENT = "User-Agent";
-
-    // FIXME - this will be obsolete with future OpenAPI-codegen Configuration that supports ApiClient Supplier
-    private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
 
     // simple logging flags for now
     @Setter
@@ -54,26 +66,18 @@ public class ApiClients {
     private static volatile String userAgent;
     private static volatile Duration timeoutDuration;
 
-
     /**
-     * this method uses its own ref to store the ApiClient and overwrites the one in Configuration if it has to create a new one;
-     * this behavior will change with future openapi-codegen when we can set the defaultApiClientFactory to lazy-create our
-     * own ApiClient
-     *
-     * @return the ApiClient with proper auth headers
+     * return the ApiClient with proper auth headers
      */
     public static ApiClient getDefaultClient() {
-        ApiClient client = defaultClient.get();
-        if (client == null) {
-            client = defaultClient.updateAndGet(val -> val == null ? createNewClient() : val);
-            // overwrite the global singleton; FIXME with future config-gen version
-            Configuration.setDefaultApiClient(client);
-        }
-        return client;
+        return Configuration.getDefaultApiClient();
     }
 
+    /**
+     * force next request for a client to trigger a rebuild
+     */
     public static void resetClient() {
-        defaultClient.set(null);    // force next request for a client to trigger a rebuild
+        Configuration.setDefaultApiClient(null);
     }
 
     public static void setServer(Servers newServer) {
@@ -233,18 +237,6 @@ public class ApiClients {
             }
         }
         return module + "!" + callerClass;
-    }
-
-    public enum Servers {
-        US("https://api.smartsheet.com/2.0"),
-        GOV_US("https://api.smartsheetgov.com/2.0"),
-        EU("https://api.smartsheet.eu/2.0");
-
-        private final String baseUrl;
-
-        Servers(String url) {
-            baseUrl = url;
-        }
     }
 
     private ApiClients() {
