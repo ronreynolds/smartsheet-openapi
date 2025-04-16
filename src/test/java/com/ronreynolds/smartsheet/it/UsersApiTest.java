@@ -743,11 +743,12 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * API tests for UsersApi
  */
-@Disabled
+@Disabled("UsersApiTest not yet implemented")
 public class UsersApiTest {
 
     private final UsersApi api = new UsersApi();
@@ -769,8 +770,7 @@ public class UsersApiTest {
     public void addUserTest() throws ApiException {
         Boolean sendEmail = null;
         User user = null;
-        AddUser200Response response =
-                api.addUser(sendEmail, user);
+        AddUser200Response response = api.addUser(sendEmail, user);
 
         // TODO: test validations
     }
@@ -792,8 +792,7 @@ public class UsersApiTest {
     @Test
     public void deactivateUserTest() throws ApiException {
         Long userId = null;
-        ResultPrefix response =
-                api.deactivateUser(userId);
+        ResultPrefix response = api.deactivateUser(userId);
 
         // TODO: test validations
     }
@@ -811,11 +810,14 @@ public class UsersApiTest {
      */
     @Test
     public void getCurrentUserTest() throws ApiException {
-        GetUserInclude include = null;
-        GetCurrentUser200Response response =
-                api.getCurrentUser(include);
+        GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);  // TODO - how does this include change response?
 
-        // TODO: test validations
+        // test validation
+        assertThat(currentUser).isNotNull();
+
+        // also tests getUser and User.equals methods
+        var sameUser = api.getUser(currentUser.getId());
+        assertThat(sameUser).isEqualTo(currentUser);
     }
 
     /**
@@ -833,8 +835,7 @@ public class UsersApiTest {
     @Test
     public void getUserTest() throws ApiException {
         Long userId = null;
-        UserProfile response =
-                api.getUser(userId);
+        UserProfile response = api.getUser(TestData.UserData.id);
 
         // TODO: test validations
     }
@@ -864,8 +865,7 @@ public class UsersApiTest {
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListUsers200Response response =
-                api.listUsers(email, include, includeAll, modifiedSince, numericDates, page, pageSize);
+        ListUsers200Response response = api.listUsers(email, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
     }
