@@ -753,8 +753,7 @@ public class TokenApiTest {
     @Test
     public void tokensDeleteTest() throws ApiException {
         Boolean deleteAllForApiClient = null;
-        Result response =
-                api.tokensDelete(deleteAllForApiClient);
+        Result response = api.tokensDelete(deleteAllForApiClient);
 
         // TODO: test validations
     }

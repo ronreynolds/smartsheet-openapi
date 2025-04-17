@@ -760,8 +760,7 @@ public class WebhooksApiTest {
     public void createWebhookTest() throws ApiException {
         String contentType = null;
         CreateWebhookRequest createWebhookRequest = null;
-        CreateWebhook200Response response =
-                api.createWebhook(contentType, createWebhookRequest);
+        CreateWebhook200Response response = api.createWebhook(contentType, createWebhookRequest);
 
         // TODO: test validations
     }
@@ -777,8 +776,7 @@ public class WebhooksApiTest {
     @Test
     public void deleteWebhookTest() throws ApiException {
         String webhookId = null;
-        Result response =
-                api.deleteWebhook(webhookId);
+        Result response = api.deleteWebhook(webhookId);
 
         // TODO: test validations
     }
@@ -793,8 +791,7 @@ public class WebhooksApiTest {
     @Test
     public void getWebhookTest() throws ApiException {
         String webhookId = null;
-        Webhook response =
-                api.getWebhook(webhookId);
+        Webhook response = api.getWebhook(webhookId);
 
         // TODO: test validations
     }
@@ -813,8 +810,7 @@ public class WebhooksApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListWebhooks200Response response =
-                api.listWebhooks(includeAll, page, pageSize);
+        ListWebhooks200Response response = api.listWebhooks(includeAll, page, pageSize);
 
         // TODO: test validations
     }
@@ -832,8 +828,7 @@ public class WebhooksApiTest {
     public void resetSharedSecretTest() throws ApiException {
         String webhookId = null;
         String contentType = null;
-        ResetSharedSecret200Response response =
-                api.resetSharedSecret(webhookId, contentType);
+        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, contentType);
 
         // TODO: test validations
     }
@@ -853,8 +848,7 @@ public class WebhooksApiTest {
         String webhookId = null;
         String contentType = null;
         UpdateWebhookRequest updateWebhookRequest = null;
-        CreateWebhook200Response response =
-                api.updateWebhook(webhookId, contentType, updateWebhookRequest);
+        CreateWebhook200Response response = api.updateWebhook(webhookId, contentType, updateWebhookRequest);
 
         // TODO: test validations
     }

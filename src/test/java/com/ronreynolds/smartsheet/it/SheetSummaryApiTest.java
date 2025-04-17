@@ -761,7 +761,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void addImageSummaryFieldTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long fieldId = null;
         String contentType = null;
         String contentDisposition = null;
@@ -785,7 +785,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void addSummaryFieldsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<AddSummaryFieldsRequestInner> addSummaryFieldsRequestInner = null;
         Boolean renameIfConflict = null;
         AddSummaryFields200Response response =
@@ -803,7 +803,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void deleteSummaryFieldsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<Long> ids = null;
         Boolean ignoreSummaryFieldsNotFound = null;
         DeleteSummaryFields200Response response =
@@ -821,7 +821,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void listSummaryFieldsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<SheetSummaryInclude> include = null;
         List<SheetSummaryExclude> exclude = null;
         SheetSummary response =
@@ -839,7 +839,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void listSummaryFieldsPaginatedTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
@@ -860,7 +860,7 @@ public class SheetSummaryApiTest {
      */
     @Test
     public void updateSummaryFieldsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<UpdateSummaryFieldsRequestInner> updateSummaryFieldsRequestInner = null;
         Boolean renameIfConflict = null;
         UpdateSummaryFields200Response response =
