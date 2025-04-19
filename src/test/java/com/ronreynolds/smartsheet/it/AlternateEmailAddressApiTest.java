@@ -733,7 +733,10 @@ import com.ronreynolds.smartsheet.model.ListAlternateEmails200Response;
 import com.ronreynolds.smartsheet.model.PromoteAlternateEmail200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.List;
 
@@ -742,8 +745,8 @@ import java.util.List;
  * API tests for AlternateEmailAddressApi
  */
 @Disabled("AlternateEmailAddressApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class AlternateEmailAddressApiTest {
-
     private final AlternateEmailAddressApi api = new AlternateEmailAddressApi();
 
 
@@ -756,9 +759,12 @@ public class AlternateEmailAddressApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(1)
     public void addAlternateEmailTest() throws ApiException {
-        Long userId = null;
-        List<EmailAddress> emailAddress = null;
+        Long userId = TestData.UserData.id;
+        List<EmailAddress> emailAddress = List.of(
+                EmailAddress.builder().email("fred@example.com").build(),
+                EmailAddress.builder().email("barney@example.com").build());
         AddAlternateEmail200Response response = api.addAlternateEmail(userId, emailAddress);
 
         // TODO: test validations
@@ -772,6 +778,7 @@ public class AlternateEmailAddressApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(5)   // last test - cleans up data added by other tests
     public void deleteAlternateEmailTest() throws ApiException {
         Long userId = null;
         Long alternateEmailId = null;
@@ -788,6 +795,7 @@ public class AlternateEmailAddressApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(2)
     public void getAlternateEmailTest() throws ApiException {
         Long userId = null;
         Long alternateEmailId = null;
@@ -804,6 +812,7 @@ public class AlternateEmailAddressApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(4)
     public void listAlternateEmailsTest() throws ApiException {
         Long userId = null;
         ListAlternateEmails200Response response = api.listAlternateEmails(userId);
@@ -822,6 +831,7 @@ public class AlternateEmailAddressApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(3)
     public void promoteAlternateEmailTest() throws ApiException {
         Long userId = null;
         Long alternateEmailId = null;
