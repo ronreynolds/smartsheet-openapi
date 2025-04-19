@@ -10561,7 +10561,7 @@
                                 "example": "Jane Doe"
                               },
                               "profileImage": {
-                                "$ref": "#/components/schemas/User/properties/profileImage"
+                                "$ref": "#/components/schemas/ProfileImage"
                               },
                               "resourceViewer": {
                                 "description": "Indicates whether the user is a resource viewer (can access resource views).",
@@ -20175,7 +20175,7 @@
             "example": "555-867-5309"
           },
           "profileImage": {
-            "$ref": "#/components/schemas/User/properties/profileImage"
+            "$ref": "#/components/schemas/ProfileImage"
           },
           "resourceViewer": {
             "description": "Indicates whether the user is a resource viewer (can access resource views).",
@@ -20201,6 +20201,9 @@
             "description": "Typically, the number of sheets owned by the current user within the organization account. For GET /users/me, this returns a static '0'.",
             "type": "integer",
             "example": 0
+          },
+          "status": {
+            "$ref": "#/components/schemas/UserStatus"
           },
           "timeZone": {
             "description": "Current user's time zone Id.",
@@ -20246,7 +20249,7 @@
             "example": "Doe"
           },
           "profileImage": {
-            "$ref": "#/components/schemas/User/properties/profileImage"
+            "$ref": "#/components/schemas/ProfileImage"
           },
           "id": {
             "description": "User Id.",
