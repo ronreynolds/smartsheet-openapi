@@ -1,7 +1,5 @@
 package com.ronreynolds.smartsheet.api.util;
 
-import com.fasterxml.jackson.databind.MapperFeature;
-import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
@@ -19,7 +17,6 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ApiClients {
@@ -113,16 +110,20 @@ public class ApiClients {
     }
 
     /**
+     * convenience method; typically you want both
+     */
+    public static void setLogAll(boolean log) {
+        setLogRequest(log);
+        setLogResponse(log);
+    }
+
+    /**
      * create and return an {@code ApiClient} configured with the current settings; exposed so code can create a new
      * {@code ApiClient} without replacing the current default client.
      */
     public static ApiClient createNewClient() {
         ApiClient client = new ApiClient();
-        // disable this feature; breaks parsing of more complex objects
-        client.setObjectMapper(
-                JsonMapper.builder(client.getObjectMapper().getFactory())
-                        .disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)
-                        .build());
+        client.setObjectMapper(JacksonUtil.modifyObjectMapper(client.getObjectMapper()).build());
         client.updateBaseUri(server.baseUrl);
         client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
         client.setResponseInterceptor(ApiClients::processResponse);
