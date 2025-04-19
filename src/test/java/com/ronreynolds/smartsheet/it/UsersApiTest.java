@@ -726,6 +726,8 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.UsersApi;
+import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.api.util.Converters;
 import com.ronreynolds.smartsheet.model.AddUser200Response;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetUserInclude;
@@ -748,9 +750,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for UsersApi
  */
-@Disabled("UsersApiTest not yet implemented")
 public class UsersApiTest {
-
     private final UsersApi api = new UsersApi();
 
 
@@ -767,9 +767,10 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void addUserTest() throws ApiException {
-        Boolean sendEmail = null;
-        User user = null;
+        Boolean sendEmail = false;
+        User user = null;   // TODO
         AddUser200Response response = api.addUser(sendEmail, user);
 
         // TODO: test validations
@@ -790,6 +791,7 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void deactivateUserTest() throws ApiException {
         Long userId = null;
         ResultPrefix response = api.deactivateUser(userId);
@@ -810,14 +812,25 @@ public class UsersApiTest {
      */
     @Test
     public void getCurrentUserTest() throws ApiException {
-        GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);  // TODO - how does this include change response?
-
+        GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);
         // test validation
         assertThat(currentUser).isNotNull();
+        assertThat(currentUser.getAccount().getId()).isEqualTo(TestData.UserData.accountId);
+        assertThat(currentUser.getAccount().getName()).isEqualTo(TestData.UserData.accountName);
+        assertThat(currentUser.getAdmin()).isEqualTo(TestData.UserData.isAdmin);
+        assertThat(currentUser.getAlternateEmails()).isEqualTo(TestData.UserData.alternateEmails);
+        assertThat(currentUser.getFirstName()).isEqualTo(TestData.UserData.firstName);
+        assertThat(currentUser.getGroupAdmin()).isEqualTo(TestData.UserData.isGroupAdmin);
+        assertThat(currentUser.getLastName()).isEqualTo(TestData.UserData.lastName);
+        assertThat(currentUser.getLicensedSheetCreator()).isEqualTo(TestData.UserData.isLicensedSheetCreator);
+        assertThat(currentUser.getLocale()).isEqualTo(TestData.UserData.locale);
+        assertThat(currentUser.getTimeZone()).isEqualTo(TestData.UserData.timezone);
 
         // also tests getUser and User.equals methods
-        var sameUser = api.getUser(currentUser.getId());
-        assertThat(sameUser).isEqualTo(currentUser);
+        UserProfile sameUser = api.getUser(currentUser.getId());
+        // for whatever reason getCurrentUser does not return status but getUser does. :-?
+        sameUser.setStatus(null);
+        assertThat(sameUser).isEqualTo(Converters.convert(currentUser));
     }
 
     /**
@@ -834,10 +847,20 @@ public class UsersApiTest {
      */
     @Test
     public void getUserTest() throws ApiException {
-        Long userId = null;
-        UserProfile response = api.getUser(TestData.UserData.id);
-
-        // TODO: test validations
+        Long userId = TestData.UserData.id;
+        UserProfile response = api.getUser(userId);
+        // test validations
+        assertThat(response.getId()).isEqualTo(userId);
+        assertThat(response.getAccount().getId()).isEqualTo(TestData.UserData.accountId);
+        assertThat(response.getAccount().getName()).isEqualTo(TestData.UserData.accountName);
+        assertThat(response.getAdmin()).isEqualTo(TestData.UserData.isAdmin);
+        assertThat(response.getAlternateEmails()).isEqualTo(TestData.UserData.alternateEmails);
+        assertThat(response.getFirstName()).isEqualTo(TestData.UserData.firstName);
+        assertThat(response.getGroupAdmin()).isEqualTo(TestData.UserData.isGroupAdmin);
+        assertThat(response.getLastName()).isEqualTo(TestData.UserData.lastName);
+        assertThat(response.getLicensedSheetCreator()).isEqualTo(TestData.UserData.isLicensedSheetCreator);
+        assertThat(response.getLocale()).isEqualTo(TestData.UserData.locale);
+        assertThat(response.getTimeZone()).isEqualTo(TestData.UserData.timezone);
     }
 
     /**
@@ -884,10 +907,10 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void reactivateUserTest() throws ApiException {
         Long userId = null;
-        ResultPrefix response =
-                api.reactivateUser(userId);
+        ResultPrefix response = api.reactivateUser(userId);
 
         // TODO: test validations
     }
@@ -905,11 +928,11 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void removeUserTest() throws ApiException {
         Long userId = null;
         RemoveUserRequest removeUserRequest = null;
-        ResultPrefix response =
-                api.removeUser(userId, removeUserRequest);
+        ResultPrefix response = api.removeUser(userId, removeUserRequest);
 
         // TODO: test validations
     }
@@ -922,11 +945,11 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void updateUserTest() throws ApiException {
         Long userId = null;
         UpdateUserRequest updateUserRequest = null;
-        UpdateUser200Response response =
-                api.updateUser(userId, updateUserRequest);
+        UpdateUser200Response response = api.updateUser(userId, updateUserRequest);
 
         // TODO: test validations
     }
@@ -935,23 +958,24 @@ public class UsersApiTest {
      * Update User Profile Image
      * <p>
      * Uploads an image to the user profile.  Uploading a profile image differs from Adding an Image to a Cell in the following
-     * ways:   * A **Content-Length** header is not required   * Allowable file types are limited to: gif, jpg, and png   *
-     * Maximum file size is determined by the following rules:       * If you have not defined a custom size and the image is
-     * larger than 1050 x 1050 pixels, Smartsheet scales the image down to 1050 x 1050       * If you have defined a custom
-     * size, Smartsheet uses that as the file size max   * If the image is not square, Smartsheet uses a solid color to pad the
-     * image
+     * ways:
+     * A **Content-Length** header is not required
+     * Allowable file types are limited to: gif, jpg, and png
+     * Maximum file size is determined by the following rules:
+     * If you have not defined a custom size and the image is larger than 1050 x 1050 pixels, Smartsheet scales the image down to 1050 x 1050
+     * If you have defined a custom size, Smartsheet uses that as the file size max
+     * If the image is not square, Smartsheet uses a solid color to pad the image
      *
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void updateUserProfileImageTest() throws ApiException {
         Long userId = null;
         String contentType = null;
         File body = null;
-        UpdateUser200Response response =
-                api.updateUserProfileImage(userId, contentType, body);
+        UpdateUser200Response response = api.updateUserProfileImage(userId, contentType, body);
 
         // TODO: test validations
     }
-
 }
