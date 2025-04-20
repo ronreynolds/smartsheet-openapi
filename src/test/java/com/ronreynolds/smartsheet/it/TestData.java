@@ -1,15 +1,15 @@
 package com.ronreynolds.smartsheet.it;
 
+import com.ronreynolds.smartsheet.model.Sheet;
+
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
- * the IDs of various test resources
+ * various bits of test constants
  */
 public class TestData {
-    public interface SheetData {
-        long id = 6971132763656068L;    // 7290900052922244L
-        String name = "";  // TODO
-    }
     public interface UserData {
         long id = 829865629902724L;
         String firstName = "Ron";
@@ -24,7 +24,69 @@ public class TestData {
         List<String> alternateEmails = List.of();
     }
 
-    public static final long workspaceId = 0L;
-    public static final long folderId = 0L;
-    public static final long reportId = 0L;
+    public interface SheetData {
+        long id = 6971132763656068L;
+        String name = "Test Sheet 1";
+        OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
+        List<String> effectiveAttachmentOptions =
+                List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
+    }
+
+    public interface RowData {
+        long id = 6139161318133636L;
+    }
+
+    public interface ColumnData {
+        interface PrimaryColumn {
+            long id = 6606505816313732L;
+            String name = "Primary Column";
+            String type = "TEXT_NUMBER";
+        }
+        interface ImageColumn {
+            long id = 4354706002628484L;
+            String name = "Images";
+            String type = "TEXT_NUMBER";
+        }
+        // created these to keep track of the IDs which should not change as the column names, types, and so forth do
+        interface Column3 {
+            long id = 8858305629998980L;
+            String name = "Column3";
+            String type = "TEXT_NUMBER";
+        }
+        interface Column4 {
+            long id = 273318840323972L;
+            String name = "Column4";
+            String type = "TEXT_NUMBER";
+        }
+        interface Column5 {
+            long id = 4776918467694468L;
+            String name = "Column5";
+            String type = "TEXT_NUMBER";
+        }
+        interface Column6 {
+            long id = 2525118654009220L;
+            String name = "Column6";
+            String type = "TEXT_NUMBER";
+        }
+    }
+
+    public interface CellData {
+        long id = 0L;
+        Object value = 42;
+    }
+
+    public interface FolderData {
+        long id = 0L;
+        String name = "Test Folder";
+    }
+
+    public interface ReportData {
+        long id = 0L;
+        String name = "Test Report";
+    }
+
+    public interface WorkspaceData {
+        long id = 4931918228678532L;
+        String name = "Test Workspace";
+    }
 }
