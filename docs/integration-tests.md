@@ -4,101 +4,392 @@ track the progress of their implementations.  all such tests live in `src/test/j
 the package also contains a `TestData` class in an attempt to consolidate constants used to query or validate the API.
 
 ### AlternateEmailAddressApiTest 
-* not yet started
+* To-Do
+  * `addAlternateEmailTest`
+  * `deleteAlternateEmailTest`
+  * `getAlternateEmailTest`
+  * `listAlternateEmailsTest`
+  * `promoteAlternateEmailTest`
+* In-Progress
+* Blocked
+* Done
 
 ### AttachmentsApiTest
-* not yet started
+* To-Do
+  * `attachmentsAttachToCommentTest`
+  * `attachmentsAttachToSheetTest`
+  * `attachmentsDeleteTest`
+  * `attachmentsGetTest`
+  * `attachmentsListOnRowTest`
+  * `attachmentsListOnSheetTest`
+  * `attachmentsVersionListTest`
+  * `attachmentsVersionUploadTest`
+  * `attachmentsVersionsDeleteTest`
+  * `discussionListAttachmentsTest`
+  * `rowAttachmentsAttachFileTest`
+* In-Progress
+* Blocked
+* Done
 
 ### AutomationRulesApiTest
-* not yet started
+* To-Do
+  * `automationruleDeleteTest`
+  * `automationruleGetTest`
+  * `automationruleUpdateTest`
+  * `automationrulesListTest`
+* In-Progress
+* Blocked
+* Done
 
 ### CellImagesApiTest
-* not yet started
+* To-Do
+  * `addImageToCellTest`
+  * `listImageUrlsTest`
+* In-Progress
+* Blocked
+* Done
 
 ### CellsApiTest
-* not yet started
+* In-Progress
+  * `cellHistoryGetTest`
+    * works; just needs more validation
+* Blocked
+* Done
 
 ### ColumnsApiTest
-* not yet started
+* To-Do
+  * `columnDeleteTest`
+  * `columnGetTest`
+  * `columnUpdateColumnTest`
+  * `columnsAddToSheetTest`
+  * `columnsListOnSheetTest`
+* In-Progress
+* Blocked
+* Done
 
 ### CommentsApiTest
-* not yet started
+* To-Do
+  * `commentDeleteTest`
+  * `commentEditTest`
+  * `commentGetTest`
+  * `commentsCreateTest`
+* In-Progress
+* Blocked
+* Done
 
 ### ContactsApiTest
-* not yet started
+* To-Do
+  * `getContactTest`
+  * `listContactsTest`
+* In-Progress
+* Blocked
+* Done
 
 ### CrossSheetReferencesApiTest
-* not yet started
+* To-Do
+  * `addCrosssheetReferenceTest`
+  * `getCrosssheetReferenceTest`
+  * `listCrosssheetReferencesTest`
+* In-Progress
+* Blocked
+* Done
 
 ### DashboardsApiTest
-* not yet started
+* To-Do
+  * `copySightTest`
+  * `deleteSightTest`
+  * `deleteSightShareTest`
+  * `getSightTest`
+  * `getSightPublishStatusTest`
+  * `listSightSharesTest`
+  * `listSightsTest`
+  * `moveSightTest`
+  * `setSightPublishStatusTest`
+  * `shareSightTest`
+  * `shareSightGetTest`
+  * `updateSightTest`
+  * `updateSightShareTest`
+* In-Progress
+* Blocked
+* Done
 
 ### DiscussionsApiTest
-* not yet started
+* To-Do
+  * `discussionDeleteTest`
+  * `discussionGetTest`
+  * `discussionsCreateTest`
+  * `discussionsListTest`
+  * `rowDiscussionsCreateTest`
+  * `rowDiscussionsListTest`
+* In-Progress
+* Blocked
+* Done
 
-### EventsApiTest
-* not yet started
+### EventsApiTest :party:
+* Done
+  * `listEventsTest`
+    * however it fails (expectedly) because our account plan doesn't support this operation :shrug:
 
 ### FavoritesApiTest
-* not yet started
+* To-Do
+  * `addFavoriteTest`
+  * `deleteFavoritesByTypeTest`
+  * `deleteFavoritesByTypeAndIdTest`
+  * `getFavoritesTest`
+  * `isFavoriteTest`
+* In-Progress
+* Blocked
+* Done
 
 ### FoldersApiTest
-* not yet started
+* To-Do
+  * `copyFolderTest`
+  * `createFolderFolderTest`
+  * `deleteFolderTest`
+  * `getFolderTest`
+  * `listFoldersTest`
+  * `moveFolderTest`
+  * `updateFolderTest`
+* In-Progress
+* Blocked
+* Done
 
 ### GroupMembersApiTest
-* not yet started
+* To-Do
+  * `addGroupMembersTest`
+  * `deleteGroupMembersTest`
+* In-Progress
+* Blocked
+* Done
 
 ### GroupsApiTest
-* not yet started
+* To-Do
+  * `addGroupTest`
+  * `deleteGroupTest`
+  * `getGroupTest`
+  * `listGroupsTest`
+  * `updateGroupTest`
+* In-Progress
+* Blocked
+* Done
 
 ### HomeApiTest
-* not yet started
+* To-Do
+  * `createHomeFolderTest`
+  * `homeListFoldersTest`
+  * `listHomeContentsTest`
+* In-Progress
+* Blocked
+* Done
 
 ### ImportApiTest
-* not yet started
+* To-Do
+  * `importSheetIntoFolderTest`
+  * `importSheetIntoSheetsFolderTest`
+  * `importSheetIntoWorkspaceTest`
+* In-Progress
+* Blocked
+* Done
 
 ### ProofsApiTest
-* not yet started
+* To-Do
+  * `proofsAttachToProofTest`
+  * `proofsCreateTest`
+  * `proofsCreateDiscussionTest`
+  * `proofsCreateProofRequestsTest`
+  * `proofsCreateVersionTest`
+  * `proofsDeleteTest`
+  * `proofsDeleteProofRequestsTest`
+  * `proofsDeleteVersionTest`
+  * `proofsGetTest`
+  * `proofsGetAllProofsTest`
+  * `proofsGetVersionsTest`
+  * `proofsListAttachmentsTest`
+  * `proofsListDiscussionsTest`
+  * `proofsListRequestActionsTest`
+  * `proofsUpdateTest`
+* In-Progress
+* Blocked
+* Done
 
 ### ReportsApiTest
-* not yet started
+* To-Do
+  * `deleteReportShareTest`
+  * `getReportTest`
+  * `getReportPublishTest`
+  * `getReportsTest`
+  * `listReportSharesTest`
+  * `sendReportViaEmailTest`
+  * `setReportPublishTest`
+  * `shareReportTest`
+  * `shareReportGetTest`
+  * `updateReportShareTest`
+* In-Progress
+* Blocked
+* Done
 
 ### RowsApiTest
-* not yet started
+* To-Do
+  * `copyRowsTest`
+  * `deleteRowsTest`
+  * `moveRowsTest`
+  * `rowGetTest`
+  * `rowsAddToSheetTest`
+  * `rowsSendTest`
+  * `rowsSortTest`
+  * `updateRowsTest`
+* In-Progress
+* Blocked
+* Done
 
 ### SearchApiTest
-* not yet started
+* To-Do
+  * `listSearchTest`
+  * `listSearchSheetTest`
+* In-Progress
+* Blocked
+* Done
 
-### ServerInfoApiTest
-* DONE! :) (gotta start somewhere)
+### ServerInfoApiTest :party:
+* Done
+  * `serverinfoGetTest`
 
 ### SharingApiTest
-* not yet started
+* To-Do
+  * `deleteReportShareTest`
+  * `deleteSheetShareTest`
+  * `deleteSightShareTest`
+  * `deleteWorkspaceShareTest`
+  * `listReportSharesTest`
+  * `listSheetSharesTest`
+  * `listSightSharesTest`
+  * `listWorkspaceSharesTest`
+  * `shareReportTest`
+  * `shareReportGetTest`
+  * `shareSheetTest`
+  * `shareSheetGetTest`
+  * `shareSightTest`
+  * `shareSightGetTest`
+  * `shareWorkspaceTest`
+  * `shareWorkspaceGetTest`
+  * `updateReportShareTest`
+  * `updateSheetShareTest`
+  * `updateSightShareTest`
+  * `updateWorkspaceShareTest`
+* In-Progress
+* Blocked
+* Done
 
 ### SheetsApiTest
-* not yet started
+* To-Do
+  * `copySheetTest`
+  * `createSheetInFolderTest`
+  * `createSheetInSheetsFolderTest`
+  * `createSheetInWorkspaceTest`
+  * `deleteSheetTest`
+  * `deleteSheetShareTest`
+  * `getSheetPublishTest`
+  * `getSheetVersionTest`
+  * `listOrgSheetsTest`
+  * `listSheetSharesTest`
+  * `listSheetsTest`
+  * `moveSheetTest`
+  * `setSheetPublishTest`
+  * `shareSheetTest`
+  * `shareSheetGetTest`
+  * `sheetSendTest`
+  * `updateSheetTest`
+  * `updateSheetShareTest`
+* In-Progress
+    * `getSheetTest`
+      * works; just haven't added much validation logic yet
+* Blocked
+* Done
 
 ### SheetSummaryApiTest
-* not yet started
+* To-Do
+  * `addImageSummaryFieldTest`
+  * `addSummaryFieldsTest`
+  * `deleteSummaryFieldsTest`
+  * `listSummaryFieldsTest`
+  * `listSummaryFieldsPaginatedTest`
+  * `updateSummaryFieldsTest`
+* In-Progress
+* Blocked
+* Done
 
 ### TemplatesApiTest
-* not yet started
+* To-Do
+  * `templatesListTest`
+  * `templatesListPublicTest`
+* In-Progress
+* Blocked
+* Done
 
 ### TokenApiTest
-* not yet started
+* To-Do
+  * `tokensDeleteTest`
+  * `tokensGetOrRefreshTest`
+* In-Progress
+* Blocked
+* Done
 
 ### UpdateRequestsApiTest
-* not yet started
+* To-Do
+  * `sentupdaterequestDeleteTest`
+  * `sentupdaterequestGetTest`
+  * `sentupdaterequestsListTest`
+  * `updaterequestsCreateTest`
+  * `updaterequestsDeleteTest`
+  * `updaterequestsGetTest`
+  * `updaterequestsListTest`
+  * `updaterequestsUpdateTest`
+* In-Progress
+* Blocked
+* Done
 
 ### UsersApiTest
-* DONE
+* To-Do
+  * `addUserTest`
+  * `deactivateUserTest`
+  * `listUsersTest`
+  * `reactivateUserTest`
+  * `removeUserTest`
+  * `updateUserTest`
+  * `updateUserProfileImageTest`
+* In-Progress
+* Blocked
+* Done
   * `getCurrentUserTest`
   * `getUserTest`
-* in-progress
-  * ...
 
 ### WebhooksApiTest
-* not yet started
+* To-Do
+  * `createWebhookTest`
+  * `deleteWebhookTest`
+  * `getWebhookTest`
+  * `listWebhooksTest`
+  * `resetSharedSecretTest`
+  * `updateWebhookTest`
+* In-Progress
+* Blocked
+* Done
 
 ### WorkspacesApiTest
-* not yet started
+* To-Do
+  * `copyWorkspaceTest`
+  * `createWorkspaceTest`
+  * `createWorkspaceFolderTest`
+  * `deleteWorkspaceTest`
+  * `deleteWorkspaceShareTest`
+  * `getWorkspaceTest`
+  * `getWorkspaceFoldersTest`
+  * `listWorkspaceSharesTest`
+  * `listWorkspacesTest`
+  * `shareWorkspaceTest`
+  * `shareWorkspaceGetTest`
+  * `updateWorkspaceTest`
+  * `updateWorkspaceShareTest`
+* In-Progress
+* Blocked
+* Done
