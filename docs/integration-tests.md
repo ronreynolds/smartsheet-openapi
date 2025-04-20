@@ -125,8 +125,8 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Blocked
 * Done
 
-### EventsApiTest :party:
-* Done
+### EventsApiTest
+* Done :party:
   * `listEventsTest`
     * however it fails (expectedly) because our account plan doesn't support this operation :shrug:
 
