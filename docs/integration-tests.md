@@ -125,8 +125,8 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Blocked
 * Done
 
-### EventsApiTest
-* Done :party:
+### EventsApiTest :partying_face:
+* Done
   * `listEventsTest`
     * however it fails (expectedly) because our account plan doesn't support this operation :shrug:
 
@@ -250,7 +250,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Blocked
 * Done
 
-### ServerInfoApiTest :party:
+### ServerInfoApiTest :partying_face:
 * Done
   * `serverinfoGetTest`
 
