@@ -738,6 +738,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for DiscussionsApi
@@ -761,6 +763,7 @@ public class DiscussionsApiTest {
         String discussionId = null;
         ResultPrefix response =
                 api.discussionDelete(sheetId, discussionId);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

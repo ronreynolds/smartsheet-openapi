@@ -732,6 +732,8 @@ import com.ronreynolds.smartsheet.model.Token;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for TokenApi
@@ -777,6 +779,7 @@ public class TokenApiTest {
         String redirectUrl = null;
         Token response =
                 api.tokensGetOrRefresh(clientId, grantType, contentType, clientSecret, code, hash, refreshToken, redirectUrl);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

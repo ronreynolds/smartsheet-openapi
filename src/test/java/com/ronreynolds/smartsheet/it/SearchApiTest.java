@@ -735,6 +735,8 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for SearchApi
@@ -762,6 +764,7 @@ public class SearchApiTest {
         List<SearchScope> scopes = null;
         ListSearch200Response response =
                 api.listSearch(query, location, modifiedSince, include, scopes);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

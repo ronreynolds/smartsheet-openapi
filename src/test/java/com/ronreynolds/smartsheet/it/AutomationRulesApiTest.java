@@ -733,6 +733,8 @@ import com.ronreynolds.smartsheet.model.Result;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for AutomationRulesApi
@@ -756,6 +758,7 @@ public class AutomationRulesApiTest {
         String automationRuleId = null;
         Result response =
                 api.automationruleDelete(sheetId, automationRuleId);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

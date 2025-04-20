@@ -761,9 +761,12 @@ import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSheet200Response;
 import com.ronreynolds.smartsheet.model.UpdateSheetRequest;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -772,10 +775,10 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for SheetsApi
  */
 @Disabled("SheetsApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class SheetsApiTest {
-
+    private static final List<Long> sheetsToDelete = new ArrayList<>();
     private final SheetsApi api = new SheetsApi();
-
 
     /**
      * Copy Sheet
@@ -907,7 +910,7 @@ public class SheetsApiTest {
         Long sheetId = TestData.SheetData.id;
         String accept = null;
         Integer accessApiLevel = null;
-        List<SheetInclude> include = null;
+        List<SheetInclude> include = Constants.allSheetIncludes;
         List<SheetExclude> exclude = null;
         List<Long> columnIds = null;
         String filterId = null;
@@ -925,6 +928,7 @@ public class SheetsApiTest {
 
         // TODO: test validations
         assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**

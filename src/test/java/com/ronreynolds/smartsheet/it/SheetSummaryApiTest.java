@@ -742,6 +742,8 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for SheetSummaryApi
@@ -772,6 +774,7 @@ public class SheetSummaryApiTest {
         AddImageSummaryField200Response response =
                 api.addImageSummaryField(sheetId, fieldId, contentType, contentDisposition, contentLength, altText,
                         overrideValidation, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

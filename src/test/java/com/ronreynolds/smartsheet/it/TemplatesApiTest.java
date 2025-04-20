@@ -731,6 +731,8 @@ import com.ronreynolds.smartsheet.model.TemplatesList200Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for TemplatesApi
@@ -756,6 +758,7 @@ public class TemplatesApiTest {
         Integer pageSize = null;
         TemplatesList200Response response =
                 api.templatesList(accessApiLevel, includeAll, page, pageSize);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

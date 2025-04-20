@@ -734,6 +734,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for GroupMembersApi
@@ -762,6 +764,7 @@ public class GroupMembersApiTest {
         List<GroupMember> groupMember = null;
         AddGroupMembers200Response response =
                 api.addGroupMembers(groupId, groupMember);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

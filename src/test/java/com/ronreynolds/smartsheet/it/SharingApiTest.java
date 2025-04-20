@@ -738,6 +738,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for SharingApi
@@ -762,6 +764,7 @@ public class SharingApiTest {
         Integer accessApiLevel = null;
         Result response =
                 api.deleteReportShare(reportId, shareId, accessApiLevel);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

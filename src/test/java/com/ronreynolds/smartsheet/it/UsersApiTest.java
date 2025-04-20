@@ -772,6 +772,7 @@ public class UsersApiTest {
         Boolean sendEmail = false;
         User user = null;   // TODO
         AddUser200Response response = api.addUser(sendEmail, user);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

@@ -739,6 +739,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
@@ -766,6 +767,7 @@ public class AlternateEmailAddressApiTest {
                 EmailAddress.builder().email("fred@example.com").build(),
                 EmailAddress.builder().email("barney@example.com").build());
         AddAlternateEmail200Response response = api.addAlternateEmail(userId, emailAddress);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

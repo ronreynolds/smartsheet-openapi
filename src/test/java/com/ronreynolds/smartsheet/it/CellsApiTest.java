@@ -726,6 +726,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CellsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CellHistoryGet200Response;
 import com.ronreynolds.smartsheet.model.CellHistoryInclude;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
@@ -733,16 +734,14 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  * API tests for CellsApi
  */
-@Disabled("CellsApiTest not yet implemented")
 public class CellsApiTest {
-
     private final CellsApi api = new CellsApi();
-
 
     /**
      * List Cell History
@@ -753,17 +752,18 @@ public class CellsApiTest {
      */
     @Test
     public void cellHistoryGetTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
-        Long columnId = null;
-        List<CellHistoryInclude> include = null;
+        Long sheetId = TestData.SheetData.id;
+        Long rowId = TestData.RowData.id;
+        Long columnId = TestData.ColumnData.PrimaryColumn.id;
+        List<CellHistoryInclude> include = Constants.allOf(CellHistoryInclude.class);
         Integer pageSize = null;
         Integer page = null;
         CompatibilityLevel level = null;
-        CellHistoryGet200Response response =
-                api.cellHistoryGet(sheetId, rowId, columnId, include, pageSize, page, level);
+        CellHistoryGet200Response response = api.cellHistoryGet(sheetId, rowId, columnId, include, pageSize, page, level);
 
-        // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
+        // TODO: more test validations
     }
 
 }

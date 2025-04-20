@@ -736,6 +736,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for AttachmentsApi
@@ -765,6 +767,7 @@ public class AttachmentsApiTest {
         File body = null;
         AttachmentsAttachToSheet200Response response =
                 api.attachmentsAttachToComment(sheetId, commentId, contentType, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

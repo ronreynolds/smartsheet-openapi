@@ -732,16 +732,15 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
-
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * API tests for EventsApi
  */
-@Disabled("EventsApiTest not yet implemented")
+//@Disabled("EventsApiTest not yet implemented")
 public class EventsApiTest {
-
     private final EventsApi api = new EventsApi();
-
 
     /**
      * List Events
@@ -764,10 +763,15 @@ public class EventsApiTest {
         Integer maxCount = null;
         Boolean numericDates = null;
         Long managedPlanId = null;
-        ListEvents200Response response =
-                api.listEvents(acceptEncoding, since, to, streamPosition, maxCount, numericDates, managedPlanId);
+//        ListEvents200Response response =
+        ApiException expectedFailure = assertThrows(ApiException.class, () ->
+                api.listEvents(acceptEncoding, since, to, streamPosition, maxCount, numericDates, managedPlanId));
 
-        // TODO: test validations
+        // test validations (sorta)
+        assertThat(expectedFailure)
+                .hasMessageContaining("listEvents call failed with: 403")
+                .hasMessageContaining("The operation you are attempting to perform is not supported by your plan.");
+
     }
 
 }

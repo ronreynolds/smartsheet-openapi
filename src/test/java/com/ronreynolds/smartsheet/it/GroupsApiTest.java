@@ -737,6 +737,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for GroupsApi
@@ -759,6 +761,7 @@ public class GroupsApiTest {
         AddGroupRequest addGroupRequest = null;
         AddGroup200Response response =
                 api.addGroup(addGroupRequest);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

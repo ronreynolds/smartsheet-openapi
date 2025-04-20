@@ -735,6 +735,8 @@ import com.ronreynolds.smartsheet.model.UpdaterequestsList200Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for UpdateRequestsApi
@@ -759,6 +761,7 @@ public class UpdateRequestsApiTest {
         String sentUpdateRequestId = null;
         Result response =
                 api.sentupdaterequestDelete(sheetId, sentUpdateRequestId);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

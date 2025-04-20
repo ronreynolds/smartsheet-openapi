@@ -734,6 +734,8 @@ import com.ronreynolds.smartsheet.model.CommentsCreate200Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for CommentsApi
@@ -757,6 +759,7 @@ public class CommentsApiTest {
         String commentId = null;
         CommentDelete200Response response =
                 api.commentDelete(sheetId, commentId);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

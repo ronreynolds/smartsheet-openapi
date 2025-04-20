@@ -736,6 +736,8 @@ import com.ronreynolds.smartsheet.model.ResultPrefix;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ColumnsApi
@@ -759,6 +761,7 @@ public class ColumnsApiTest {
         Long columnId = null;
         ResultPrefix response =
                 api.columnDelete(sheetId, columnId);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

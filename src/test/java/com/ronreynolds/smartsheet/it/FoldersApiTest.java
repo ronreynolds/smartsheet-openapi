@@ -741,6 +741,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for FoldersApi
@@ -768,6 +770,7 @@ public class FoldersApiTest {
         List<FolderCopySkipRemap> skipRemap = null;
         ContainerDestination response =
                 api.copyFolder(folderId, containerDestination, contentType, include, exclude, skipRemap);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

@@ -735,6 +735,8 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ContactsApi
@@ -758,6 +760,7 @@ public class ContactsApiTest {
         List<GetContactInclude> include = null;
         Contact response =
                 api.getContact(contactId, include);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

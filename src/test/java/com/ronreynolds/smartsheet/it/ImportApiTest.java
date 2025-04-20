@@ -733,6 +733,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ImportApi
@@ -765,6 +767,7 @@ public class ImportApiTest {
         ImportSheetIntoFolder200Response response =
                 api.importSheetIntoFolder(folderId, contentType, sheetName, contentDisposition, headerRowIndex,
                         primaryColumnIndex, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

@@ -750,6 +750,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for WorkspacesApi
@@ -776,6 +778,7 @@ public class WorkspacesApiTest {
         List<FolderCopySkipRemap> skipRemap = null;
         ContainerDestination response =
                 api.copyWorkspace(workspaceId, containerDestination, contentType, include, skipRemap);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

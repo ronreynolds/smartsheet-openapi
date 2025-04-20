@@ -736,6 +736,8 @@ import com.ronreynolds.smartsheet.model.Webhook;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for WebhooksApi
@@ -761,6 +763,7 @@ public class WebhooksApiTest {
         String contentType = null;
         CreateWebhookRequest createWebhookRequest = null;
         CreateWebhook200Response response = api.createWebhook(contentType, createWebhookRequest);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
