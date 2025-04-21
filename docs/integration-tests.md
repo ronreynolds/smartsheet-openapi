@@ -8,16 +8,15 @@ the package also contains a `TestData` class in an attempt to consolidate consta
     * `addAlternateEmailTest`
       * failed with a 500; oops!
     * `deleteAlternateEmailTest`
-      * need to add alternate email to test with
-    * `getAlternateEmailTest`
-      * need to add alternate email to test with
+      * need to add alternate email to delete
     * `promoteAlternateEmailTest`
       * need to add alternate email to test with
 * Blocked
   * unable to create new alternate-email so makes it difficult to continue testing
     * `addAlternateEmail call failed with: 500 - { "errorCode" : 4000, "message" : "An unexpected error has occurred. Please contact the Support team at https://help.smartsheet.com/contact for assistance.", "refId" : "8ocvwq"}`
 * Done
-    * `listAlternateEmailsTest`
+  * `listAlternateEmailsTest`
+  * `getAlternateEmailTest`
 
 ### AttachmentsApiTest
 * To-Do
