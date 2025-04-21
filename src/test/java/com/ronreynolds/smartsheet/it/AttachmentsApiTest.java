@@ -732,7 +732,9 @@ import com.ronreynolds.smartsheet.model.AttachmentsListOnSheet200Response;
 import com.ronreynolds.smartsheet.model.AttachmentsVersionList200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 
@@ -743,6 +745,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for AttachmentsApi
  */
 @Disabled("AttachmentsApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class AttachmentsApiTest {
 
     private final AttachmentsApi api = new AttachmentsApi();

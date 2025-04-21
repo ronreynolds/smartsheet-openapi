@@ -32,7 +32,9 @@ public class BeforeAllTests implements BeforeAllCallback, CloseableResource {
 
     private void doSetup() {
         // no API calls will succeed without this token (except maybe server-info)
-        assertThat(Settings.get("SMARTSHEET_ACCESS_TOKEN")).as("SMARTSHEET_ACCESS_TOKEN is blank").isNotBlank();
+        assertThat(Settings.get("SMARTSHEET_ACCESS_TOKEN"))
+                .as("SMARTSHEET_ACCESS_TOKEN is blank")
+                .isNotBlank();
         Configuration.setDefaultApiClient(ApiClients.createNewClient());
     }
 

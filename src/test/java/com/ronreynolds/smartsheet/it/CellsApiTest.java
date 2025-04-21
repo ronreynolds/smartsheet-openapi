@@ -765,5 +765,4 @@ public class CellsApiTest {
         System.out.println(response);
         // TODO: more test validations
     }
-
 }

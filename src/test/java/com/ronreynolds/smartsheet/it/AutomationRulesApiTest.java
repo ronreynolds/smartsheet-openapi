@@ -731,7 +731,10 @@ import com.ronreynolds.smartsheet.model.AutomationruleUpdate200Response;
 import com.ronreynolds.smartsheet.model.AutomationrulesList200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -740,10 +743,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for AutomationRulesApi
  */
 @Disabled("AutomationRulesApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class AutomationRulesApiTest {
-
     private final AutomationRulesApi api = new AutomationRulesApi();
-
 
     /**
      * Delete an Automation Rule
@@ -753,14 +755,15 @@ public class AutomationRulesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(4) // last test
     public void automationruleDeleteTest() throws ApiException {
-        Long sheetId = null;
-        String automationRuleId = null;
-        Result response =
-                api.automationruleDelete(sheetId, automationRuleId);
-        assertThat(response).isNotNull();
+        Long sheetId = TestData.SheetData.id;
+        String automationRuleId = TestData.WorkflowData.id;
+        Result response = api.automationruleDelete(sheetId, automationRuleId);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -771,13 +774,15 @@ public class AutomationRulesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(1)
     public void automationruleGetTest() throws ApiException {
-        Long sheetId = null;
-        String automationRuleId = null;
-        AutomationRule response =
-                api.automationruleGet(sheetId, automationRuleId);
+        Long sheetId = TestData.SheetData.id;
+        String automationRuleId = TestData.WorkflowData.id;
+        AutomationRule response = api.automationruleGet(sheetId, automationRuleId);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -789,15 +794,20 @@ public class AutomationRulesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(2)
     public void automationruleUpdateTest() throws ApiException {
-        Long sheetId = null;
-        String automationRuleId = null;
+        Long sheetId = TestData.SheetData.id;
+        String automationRuleId = TestData.WorkflowData.id;
         String contentType = null;
-        AutomationRule automationRule = null;
-        AutomationruleUpdate200Response response =
-                api.automationruleUpdate(sheetId, automationRuleId, contentType, automationRule);
+        AutomationRule automationRule = AutomationRule.builder()
+                .name("Test Workflow rename")
+                .enabled(false)
+                .build();
+        AutomationruleUpdate200Response response = api.automationruleUpdate(sheetId, automationRuleId, contentType, automationRule);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -811,15 +821,16 @@ public class AutomationRulesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(3)
     public void automationrulesListTest() throws ApiException {
-        Long sheetId = null;
-        Boolean includeAll = null;
+        Long sheetId = TestData.SheetData.id;
+        Boolean includeAll = true;
         Integer page = null;
         Integer pageSize = null;
-        AutomationrulesList200Response response =
-                api.automationrulesList(sheetId, includeAll, page, pageSize);
+        AutomationrulesList200Response response = api.automationrulesList(sheetId, includeAll, page, pageSize);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
-
 }
