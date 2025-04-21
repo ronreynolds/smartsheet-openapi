@@ -5,12 +5,13 @@ import com.ronreynolds.smartsheet.model.Sheet;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Set;
 
 /**
  * various bits of test constants
  */
 public class TestData {
-    public interface UserData {
+    interface UserData {
         long id = 829865629902724L;
         String firstName = "Ron";
         String lastName = "Reynolds";
@@ -22,9 +23,12 @@ public class TestData {
         boolean isLicensedSheetCreator = true;
         boolean isGroupAdmin = true;
         List<String> alternateEmails = List.of();
+        interface AlternateEmailData {
+            long id = 3036181538596740L;
+        }
     }
 
-    public interface SheetData {
+    interface SheetData {
         long id = 6971132763656068L;
         String name = "Test Sheet 1";
         OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
@@ -32,11 +36,12 @@ public class TestData {
                 List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
     }
 
-    public interface RowData {
+    interface RowData {
         long id = 6139161318133636L;
     }
 
-    public interface ColumnData {
+    interface ColumnData {
+        Set<Long> columnIds = Set.of(PrimaryColumn.id, ImageColumn.id, Column3.id, Column4.id, Column5.id, Column6.id);
         interface PrimaryColumn {
             long id = 6606505816313732L;
             String name = "Primary Column";
@@ -70,22 +75,26 @@ public class TestData {
         }
     }
 
-    public interface CellData {
+    interface CellData {
         long id = 0L;
         Object value = 42;
     }
 
-    public interface FolderData {
+    interface FolderData {
         long id = 0L;
         String name = "Test Folder";
     }
 
-    public interface ReportData {
+    interface ReportData {
         long id = 0L;
         String name = "Test Report";
     }
 
-    public interface WorkspaceData {
+    interface WorkflowData {
+        String id = "Test Workflow";
+    }
+
+    interface WorkspaceData {
         long id = 4931918228678532L;
         String name = "Test Workspace";
     }
