@@ -4,15 +4,20 @@ track the progress of their implementations.  all such tests live in `src/test/j
 the package also contains a `TestData` class in an attempt to consolidate constants used to query or validate the API.
 
 ### AlternateEmailAddressApiTest 
-* To-Do
-  * `addAlternateEmailTest`
-  * `deleteAlternateEmailTest`
-  * `getAlternateEmailTest`
-  * `listAlternateEmailsTest`
-  * `promoteAlternateEmailTest`
 * In-Progress
+    * `addAlternateEmailTest`
+      * failed with a 500; oops!
+    * `deleteAlternateEmailTest`
+      * need to add alternate email to test with
+    * `getAlternateEmailTest`
+      * need to add alternate email to test with
+    * `promoteAlternateEmailTest`
+      * need to add alternate email to test with
 * Blocked
+  * unable to create new alternate-email so makes it difficult to continue testing
+    * `addAlternateEmail call failed with: 500 - { "errorCode" : 4000, "message" : "An unexpected error has occurred. Please contact the Support team at https://help.smartsheet.com/contact for assistance.", "refId" : "8ocvwq"}`
 * Done
+    * `listAlternateEmailsTest`
 
 ### AttachmentsApiTest
 * To-Do
@@ -33,12 +38,17 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 
 ### AutomationRulesApiTest
 * To-Do
-  * `automationruleDeleteTest`
-  * `automationruleGetTest`
-  * `automationruleUpdateTest`
-  * `automationrulesListTest`
 * In-Progress
+    * `automationruleDeleteTest`
+      * need to add ID; unfortunately can't create automation-rules via API so will have to create via Web-UI
+    * `automationruleGetTest`
+      * failing with 404; not sure why (possibly replication delay?)
+    * `automationruleUpdateTest`
+      * failing with 404; also possibly replication delay
+    * `automationrulesListTest`
+      * needs more validation logic but response is parsing but is currently empty (even tho rule created via Web-UI)
 * Blocked
+  * possibly replication-delay of newly-created rule to be visible via API
 * Done
 
 ### CellImagesApiTest
@@ -243,10 +253,10 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Done
 
 ### SearchApiTest
-* To-Do
-  * `listSearchTest`
-  * `listSearchSheetTest`
 * In-Progress
+    * `listSearchTest`
+    * `listSearchSheetTest`
+      * responses parsing; just need to add more validation logic
 * Blocked
 * Done
 
