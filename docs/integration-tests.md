@@ -23,17 +23,19 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `attachmentsAttachToCommentTest`
   * `attachmentsAttachToSheetTest`
   * `attachmentsDeleteTest`
-  * `attachmentsGetTest`
-  * `attachmentsListOnRowTest`
-  * `attachmentsListOnSheetTest`
-  * `attachmentsVersionListTest`
   * `attachmentsVersionUploadTest`
   * `attachmentsVersionsDeleteTest`
   * `discussionListAttachmentsTest`
   * `rowAttachmentsAttachFileTest`
 * In-Progress
 * Blocked
+  * need to add more test data
+    * file to upload as attachment (which can then be deleted)
 * Done
+  * `attachmentsGetTest`
+  * `attachmentsListOnRowTest`
+  * `attachmentsListOnSheetTest`
+  * `attachmentsVersionListTest`
 
 ### AutomationRulesApiTest
 * To-Do
@@ -80,11 +82,11 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * To-Do
   * `commentDeleteTest`
   * `commentEditTest`
-  * `commentGetTest`
   * `commentsCreateTest`
 * In-Progress
 * Blocked
 * Done
+    * `commentGetTest`
 
 ### ContactsApiTest
 * To-Do
@@ -361,12 +363,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * To-Do
   * `addUserTest`
   * `deactivateUserTest`
-  * `listUsersTest`
   * `reactivateUserTest`
   * `removeUserTest`
   * `updateUserTest`
   * `updateUserProfileImageTest`
 * In-Progress
+  * `listUsersTest`
 * Blocked
 * Done
   * `getCurrentUserTest`
