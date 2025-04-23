@@ -726,6 +726,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DiscussionsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CommentLite;
 import com.ronreynolds.smartsheet.model.Discussion;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
@@ -759,10 +760,9 @@ public class DiscussionsApiTest {
      */
     @Test
     public void discussionDeleteTest() throws ApiException {
-        Long sheetId = null;
-        String discussionId = null;
-        ResultPrefix response =
-                api.discussionDelete(sheetId, discussionId);
+        Long sheetId = TestData.SheetData.id;
+        Long discussionId = null;
+        ResultPrefix response = api.discussionDelete(sheetId, discussionId);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -777,10 +777,9 @@ public class DiscussionsApiTest {
      */
     @Test
     public void discussionGetTest() throws ApiException {
-        Long sheetId = null;
-        String discussionId = null;
-        Discussion response =
-                api.discussionGet(sheetId, discussionId);
+        Long sheetId = TestData.SheetData.id;
+        Long discussionId = null;
+        Discussion response = api.discussionGet(sheetId, discussionId);
 
         // TODO: test validations
     }
@@ -795,7 +794,7 @@ public class DiscussionsApiTest {
      */
     @Test
     public void discussionsCreateTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         String contentType = null;
         CommentLite commentLite = null;
         DiscussionsCreate200Response response =
@@ -814,7 +813,7 @@ public class DiscussionsApiTest {
      */
     @Test
     public void discussionsListTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<DiscussionsInclude> include = null;
         Integer page = null;
         Integer pageSize = null;
@@ -835,12 +834,11 @@ public class DiscussionsApiTest {
      */
     @Test
     public void rowDiscussionsCreateTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
+        Long sheetId = TestData.SheetData.id;
+        Long rowId = TestData.RowData.id;
         String contentType = null;
         CommentLite commentLite = null;
-        DiscussionsCreate200Response response =
-                api.rowDiscussionsCreate(sheetId, rowId, contentType, commentLite);
+        DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, contentType, commentLite);
 
         // TODO: test validations
     }
@@ -855,14 +853,13 @@ public class DiscussionsApiTest {
      */
     @Test
     public void rowDiscussionsListTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
-        List<DiscussionInclude> include = null;
+        Long sheetId = TestData.SheetData.id;
+        Long rowId = TestData.RowData.id;
+        List<DiscussionInclude> include = Constants.allOf(DiscussionInclude.class);
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
-        DiscussionsList200Response response =
-                api.rowDiscussionsList(sheetId, rowId, include, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        DiscussionsList200Response response = api.rowDiscussionsList(sheetId, rowId, include, page, pageSize, includeAll);
 
         // TODO: test validations
     }

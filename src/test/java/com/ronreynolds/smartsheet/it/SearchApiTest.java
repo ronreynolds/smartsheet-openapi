@@ -729,10 +729,7 @@ import com.ronreynolds.smartsheet.api.SearchApi;
 import com.ronreynolds.smartsheet.model.ListSearch200Response;
 import com.ronreynolds.smartsheet.model.ListSearchSheet200Response;
 import com.ronreynolds.smartsheet.model.SearchScope;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -743,10 +740,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for SearchApi
  */
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class SearchApiTest {
     private final SearchApi api = new SearchApi();
-
 
     /**
      * Search Everything

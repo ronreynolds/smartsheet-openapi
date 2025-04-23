@@ -737,17 +737,25 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.CommentAttachment;
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.RowAttachment;
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.SheetAttachment;
+import com.ronreynolds.smartsheet.it.TestData.RowData;
+import com.ronreynolds.smartsheet.it.TestData.CommentData;
+import com.ronreynolds.smartsheet.it.TestData.SheetData;
 import static org.assertj.core.api.Assertions.assertThat;
-
 
 /**
  * API tests for AttachmentsApi
  */
-@Disabled("AttachmentsApiTest not yet implemented")
+//@Disabled("AttachmentsApiTest not yet implemented")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class AttachmentsApiTest {
-
     private final AttachmentsApi api = new AttachmentsApi();
 
 
@@ -763,13 +771,12 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void attachmentsAttachToCommentTest() throws ApiException {
-        Long sheetId = null;
-        String commentId = null;
         String contentType = null;
         File body = null;
         AttachmentsAttachToSheet200Response response =
-                api.attachmentsAttachToComment(sheetId, commentId, contentType, body);
+                api.attachmentsAttachToComment(SheetData.id, CommentData.id, contentType, body);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -787,12 +794,11 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void attachmentsAttachToSheetTest() throws ApiException {
-        Long sheetId = null;
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response =
-                api.attachmentsAttachToSheet(sheetId, contentType, body);
+        AttachmentsAttachToSheet200Response response = api.attachmentsAttachToSheet(SheetData.id, contentType, body);
 
         // TODO: test validations
     }
@@ -805,11 +811,10 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void attachmentsDeleteTest() throws ApiException {
-        Long sheetId = null;
-        String attachmentId = null;
-        ResultPrefix response =
-                api.attachmentsDelete(sheetId, attachmentId);
+        Long attachmentId = null;
+        ResultPrefix response = api.attachmentsDelete(SheetData.id, attachmentId);
 
         // TODO: test validations
     }
@@ -824,12 +829,9 @@ public class AttachmentsApiTest {
      */
     @Test
     public void attachmentsGetTest() throws ApiException {
-        Long sheetId = null;
-        String attachmentId = null;
-        Attachment response =
-                api.attachmentsGet(sheetId, attachmentId);
-
-        // TODO: test validations
+        CommentAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, CommentAttachment.id)).isNotNull().actual());
+        RowAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, RowAttachment.id)).isNotNull().actual());
+        SheetAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, SheetAttachment.id)).isNotNull().actual());
     }
 
     /**
@@ -841,15 +843,25 @@ public class AttachmentsApiTest {
      */
     @Test
     public void attachmentsListOnRowTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
+        Long sheetId = SheetData.id;
+        Long rowId = RowData.id;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
-        AttachmentsVersionList200Response response =
-                api.attachmentsListOnRow(sheetId, rowId, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        AttachmentsVersionList200Response response = api.attachmentsListOnRow(sheetId, rowId, page, pageSize, includeAll);
+        assertThat(response).isNotNull();
 
-        // TODO: test validations
+        Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
+        RowAttachment.assertEquals(
+                assertThat(attachmentMap.get(RowAttachment.id))
+                        .as("unable to find row attachment")
+                        .isNotNull()
+                        .actual());
+        CommentAttachment.assertEquals(
+                assertThat(attachmentMap.get(CommentAttachment.id))
+                        .as("unable to find comment attachment")
+                        .isNotNull()
+                        .actual());
     }
 
     /**
@@ -861,14 +873,29 @@ public class AttachmentsApiTest {
      */
     @Test
     public void attachmentsListOnSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = SheetData.id;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
-        AttachmentsListOnSheet200Response response =
-                api.attachmentsListOnSheet(sheetId, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        AttachmentsListOnSheet200Response response = api.attachmentsListOnSheet(sheetId, page, pageSize, includeAll);
+        assertThat(response).isNotNull();
 
-        // TODO: test validations
+        Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
+        RowAttachment.assertEquals(
+                assertThat(attachmentMap.get(RowAttachment.id))
+                        .as("unable to find row attachment")
+                        .isNotNull()
+                        .actual());
+        CommentAttachment.assertEquals(
+                assertThat(attachmentMap.get(CommentAttachment.id))
+                        .as("unable to find comment attachment")
+                        .isNotNull()
+                        .actual());
+        SheetAttachment.assertEquals(
+                assertThat(attachmentMap.get(SheetAttachment.id))
+                        .as("unable to find sheet attachment")
+                        .isNotNull()
+                        .actual());
     }
 
     /**
@@ -880,15 +907,14 @@ public class AttachmentsApiTest {
      */
     @Test
     public void attachmentsVersionListTest() throws ApiException {
-        Long sheetId = null;
-        String attachmentId = null;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         AttachmentsVersionList200Response response =
-                api.attachmentsVersionList(sheetId, attachmentId, page, pageSize, includeAll);
-
-        // TODO: test validations
+                api.attachmentsVersionList(SheetData.id, SheetAttachment.id, page, pageSize, includeAll);
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotEmpty();
+        SheetAttachment.assertEquals(response.getData().get(0));
     }
 
     /**
@@ -900,13 +926,15 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void attachmentsVersionUploadTest() throws ApiException {
-        Long sheetId = null;
-        String attachmentId = null;
+        Long sheetId = SheetData.id;
+        Long attachmentId = null;
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response =
-                api.attachmentsVersionUpload(sheetId, attachmentId, contentType, body);
+        AttachmentsAttachToSheet200Response response = api.attachmentsVersionUpload(sheetId, attachmentId, contentType, body);
+        assertThat(response).isNotNull();
+        System.out.println(response);
 
         // TODO: test validations
     }
@@ -920,11 +948,12 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void attachmentsVersionsDeleteTest() throws ApiException {
-        Long sheetId = null;
-        String attachmentId = null;
-        ResultPrefix response =
-                api.attachmentsVersionsDelete(sheetId, attachmentId);
+        Long attachmentId = null;
+        ResultPrefix response = api.attachmentsVersionsDelete(SheetData.id, attachmentId);
+        assertThat(response).isNotNull();
+        System.out.println(response);
 
         // TODO: test validations
     }
@@ -937,14 +966,18 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void discussionListAttachmentsTest() throws ApiException {
-        Long sheetId = null;
-        String discussionId = null;
+        Long discussionId = null;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         AttachmentsVersionList200Response response =
-                api.discussionListAttachments(sheetId, discussionId, page, pageSize, includeAll);
+                api.discussionListAttachments(SheetData.id, discussionId, page, pageSize, includeAll);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getData()).isNotNull();
+        System.out.println(response);
 
         // TODO: test validations
     }
@@ -961,15 +994,22 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void rowAttachmentsAttachFileTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
+        Long sheetId = SheetData.id;
+        Long rowId = RowData.id;
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response =
-                api.rowAttachmentsAttachFile(sheetId, rowId, contentType, body);
+
+        AttachmentsAttachToSheet200Response response = api.rowAttachmentsAttachFile(sheetId, rowId, contentType, body);
+        assertThat(response).isNotNull();
+        System.out.println(response);
 
         // TODO: test validations
     }
 
+    private static Map<Long, Attachment> attachmentListToMap(List<Attachment> list) {
+        assertThat(list).as("attachment list is null").isNotNull();
+        return list.stream().collect(Collectors.toMap(Attachment::getId, Function.identity()));
+    }
 }

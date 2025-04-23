@@ -745,6 +745,8 @@ import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.ronreynolds.smartsheet.it.TestData.UserData;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -752,7 +754,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UsersApiTest {
     private final UsersApi api = new UsersApi();
-
 
     /**
      * Add User
@@ -815,17 +816,7 @@ public class UsersApiTest {
     public void getCurrentUserTest() throws ApiException {
         GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);
         // test validation
-        assertThat(currentUser).isNotNull();
-        assertThat(currentUser.getAccount().getId()).isEqualTo(TestData.UserData.accountId);
-        assertThat(currentUser.getAccount().getName()).isEqualTo(TestData.UserData.accountName);
-        assertThat(currentUser.getAdmin()).isEqualTo(TestData.UserData.isAdmin);
-        assertThat(currentUser.getAlternateEmails()).isEqualTo(TestData.UserData.alternateEmails);
-        assertThat(currentUser.getFirstName()).isEqualTo(TestData.UserData.firstName);
-        assertThat(currentUser.getGroupAdmin()).isEqualTo(TestData.UserData.isGroupAdmin);
-        assertThat(currentUser.getLastName()).isEqualTo(TestData.UserData.lastName);
-        assertThat(currentUser.getLicensedSheetCreator()).isEqualTo(TestData.UserData.isLicensedSheetCreator);
-        assertThat(currentUser.getLocale()).isEqualTo(TestData.UserData.locale);
-        assertThat(currentUser.getTimeZone()).isEqualTo(TestData.UserData.timezone);
+        UserData.assertEquals(assertThat(currentUser).isNotNull().actual());
 
         // also tests getUser and User.equals methods
         UserProfile sameUser = api.getUser(currentUser.getId());
@@ -848,20 +839,10 @@ public class UsersApiTest {
      */
     @Test
     public void getUserTest() throws ApiException {
-        Long userId = TestData.UserData.id;
-        UserProfile response = api.getUser(userId);
-        // test validations
-        assertThat(response.getId()).isEqualTo(userId);
-        assertThat(response.getAccount().getId()).isEqualTo(TestData.UserData.accountId);
-        assertThat(response.getAccount().getName()).isEqualTo(TestData.UserData.accountName);
-        assertThat(response.getAdmin()).isEqualTo(TestData.UserData.isAdmin);
-        assertThat(response.getAlternateEmails()).isEqualTo(TestData.UserData.alternateEmails);
-        assertThat(response.getFirstName()).isEqualTo(TestData.UserData.firstName);
-        assertThat(response.getGroupAdmin()).isEqualTo(TestData.UserData.isGroupAdmin);
-        assertThat(response.getLastName()).isEqualTo(TestData.UserData.lastName);
-        assertThat(response.getLicensedSheetCreator()).isEqualTo(TestData.UserData.isLicensedSheetCreator);
-        assertThat(response.getLocale()).isEqualTo(TestData.UserData.locale);
-        assertThat(response.getTimeZone()).isEqualTo(TestData.UserData.timezone);
+        UserData.assertEquals(
+                assertThat(api.getUser(UserData.id))
+                        .isNotNull()
+                        .actual());
     }
 
     /**
@@ -892,6 +873,7 @@ public class UsersApiTest {
         ListUsers200Response response = api.listUsers(email, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
+        System.out.println(response);
     }
 
     /**
@@ -913,6 +895,7 @@ public class UsersApiTest {
         Long userId = null;
         ResultPrefix response = api.reactivateUser(userId);
 
+        System.out.println(response);
         // TODO: test validations
     }
 
@@ -935,6 +918,7 @@ public class UsersApiTest {
         RemoveUserRequest removeUserRequest = null;
         ResultPrefix response = api.removeUser(userId, removeUserRequest);
 
+        System.out.println(response);
         // TODO: test validations
     }
 
@@ -952,6 +936,7 @@ public class UsersApiTest {
         UpdateUserRequest updateUserRequest = null;
         UpdateUser200Response response = api.updateUser(userId, updateUserRequest);
 
+        System.out.println(response);
         // TODO: test validations
     }
 
@@ -977,6 +962,7 @@ public class UsersApiTest {
         File body = null;
         UpdateUser200Response response = api.updateUserProfileImage(userId, contentType, body);
 
+        System.out.println(response);
         // TODO: test validations
     }
 }
