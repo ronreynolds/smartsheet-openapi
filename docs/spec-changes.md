@@ -198,7 +198,7 @@ create types for these common patterns.
 `#/components/schemas/CellObjectValue` so i renamed the type `#/components/schemas/CellObjectValueObj`
 * any `anyOf`'s that contain only 1 type were changed to `oneOf` to simplify the generated code (and because it's more precise)
 
-#### missing or misnamed fields
+#### missing, misnamed, and mistyped fields
 some parts of the Spec don't match the server responses at all
 * `#/components/schemas/ServerInfo` missing fields `featureInfo`, `appleAuthInfos`, `azureAuthInfo`, and `serverVersion` 
 * `#/components/schemas/Row`'s field `permaLink` is actually `permalink`
@@ -208,3 +208,6 @@ some parts of the Spec don't match the server responses at all
   * `#/components/schemas/DayOfWeek`
   * `#/components/schemas/Month`
 * `#/components/schemas/UserProfile` missing field `status`
+* `#/components/parameters/commentIdInPath` defined as `string`; should have been `#/components/schemas/Int64` (i.e., `long`)
+  * also `#/components.parameters.discussionIdInPath` and `#/components.parameters.attachmentIdInPath`
+* ... 
