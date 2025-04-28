@@ -19,9 +19,11 @@
 * added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
 * fleshing out integration-tests
   * `ServerInfoApiTest` is done
+* upgraded openapi-codegen from 7.12.0 to 7.13.0
 ### Removed
 * `BasicUse` in favor of individual api-specific tests
 * renamed `TestIDs` to `TestData` to more accurately reflect its contents: static inner-interfaces for each resource type
+* `Configuration.mustache` as it's no longer needed with openapi-codegen upgrade
 
 ## 0.1.3 - 2025-03-31
 ### Added
