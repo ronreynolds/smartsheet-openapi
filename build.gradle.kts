@@ -1,7 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
-    id("org.openapi.generator").version("7.12.0") // latest as of 2025-02-28
+    id("org.openapi.generator").version("7.13.0") // latest as of 2025-04-28
 }
 
 group               = "com.ronreynolds"
