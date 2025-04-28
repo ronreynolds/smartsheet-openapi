@@ -735,7 +735,6 @@ import com.ronreynolds.smartsheet.model.CreateSheetInFolder200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolderRequest;
 import com.ronreynolds.smartsheet.model.DeleteSheet200Response;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
-import com.ronreynolds.smartsheet.model.GetSheet200Response;
 import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
 import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.ListSheetInclude;
@@ -922,7 +921,7 @@ public class SheetsApiTest {
         List<Long> rowIds = null;
         List<Integer> rowNumbers = null;
         OffsetDateTime rowsModifiedSince = null;
-        GetSheet200Response response =
+        var response =
                 api.getSheet(sheetId, accept, accessApiLevel, include, exclude, columnIds, filterId, ifVersionAfter, level,
                         pageSize, page, paperSize, rowIds, rowNumbers, rowsModifiedSince);
 
