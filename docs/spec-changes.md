@@ -210,4 +210,4 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/UserProfile` missing field `status`
 * `#/components/parameters/commentIdInPath` defined as `string`; should have been `#/components/schemas/Int64` (i.e., `long`)
   * also `#/components.parameters.discussionIdInPath` and `#/components.parameters.attachmentIdInPath`
-* ... 
+* `#/paths/templates` and `#/paths/templates/public` response needs to be altered to move the `TemplateArray` into a `data` field
