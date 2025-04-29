@@ -2,6 +2,7 @@ package com.ronreynolds.smartsheet.api.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -45,6 +46,8 @@ public class JacksonUtil {
         JsonMapper.Builder builder = JsonMapper.builder(mapper.getFactory());
         // disable type coercion of values; breaks parsing of more complex objects
         builder.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS);
+        // FIXME - for debugging JSON responses
+        builder.enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);
         // add our custom date handlers
         builder.addModules(new SimpleModule()
                 .addSerializer(dateSerializer)
