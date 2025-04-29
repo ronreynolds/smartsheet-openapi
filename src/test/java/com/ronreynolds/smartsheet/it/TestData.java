@@ -1,10 +1,12 @@
 package com.ronreynolds.smartsheet.it;
 
+import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
 import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
+import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.User;
 import com.ronreynolds.smartsheet.model.UserProfile;
 import lombok.NonNull;
@@ -181,6 +183,15 @@ public class TestData {
                 List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
     }
 
+    interface TemplateData {
+        Template template = Template.builder()
+                .id(6674172927233924L)
+                .accessLevel(AccessLevel.OWNER)
+                .categories(List.of())
+                .name("Template of Waiting List")
+                .tags(List.of())
+                .build();
+    }
     interface UserData {
         long id = 829865629902724L;
         String firstName = "Ron";
