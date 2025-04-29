@@ -5,7 +5,7 @@ plugins {
 }
 
 group               = "com.ronreynolds"
-version             = "0.1.2"
+version             = "0.1.4-SNAPSHOT"
 val buildDirectory  = layout.buildDirectory.get()
 // testing out newest specs
 //val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.json"
@@ -18,9 +18,9 @@ val findBugsVersion             = "3.0.2"       // from build/generated/api/buil
 val jacksonVersion              = "2.17.1"      // from build/generated/api/build.gradle
 val jakartaAnnotationVersion    = "1.3.5"       // from build/generated/api/build.gradle
 val jUnitJupiterVersion         = "5.10.2"      // from build/generated/api/build.gradle
-val logbackVersion              = "1.5.17"      // 2025-02-25
-val lombokVersion               = "1.18.32"
-val slf4jVersion                = "1.7.25"
+val logbackVersion              = "1.5.18"      // 2025-03-18
+val lombokVersion               = "1.18.38"     // 2025-03-31
+val slf4jVersion                = "2.0.17"      // 2025-02-25
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -43,7 +43,7 @@ dependencies {
 
     // needed by our code
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    implementation("org.slf4j:jul-to-slf4j:$slf4jVersion") // openapi-gen logs to java.util.logging; route it into slf4j/logback
+    implementation("org.slf4j:jul-to-slf4j:$slf4jVersion") // openapi-gen logs to java.util.logging; route it into slf4j
 
     // test dependencies
     testRuntimeOnly     ("org.junit.platform:junit-platform-launcher")
@@ -81,10 +81,9 @@ openApiGenerate {
     apiPackage.set("$group.smartsheet.api")
     modelPackage.set("$group.smartsheet.model")
 
-    generatorName.set("java")   // language for client (duh)
-    library.set("native")   // the HTTP client lib; see java-generator docs for full list
-
-    generateApiTests.set(true)
+    generatorName.set("java")               // language for client
+    library.set("native")                   // the HTTP client lib; see java-generator docs for full list
+    generateApiTests.set(false)             // copied these into src/test/.../it
     generateApiDocumentation.set(false)     // for now no point
     generateModelDocumentation.set(false)   // for now no point
 
