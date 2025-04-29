@@ -329,13 +329,10 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Blocked
 * Done
 
-### TemplatesApiTest
-* To-Do
+### TemplatesApiTest :partying_face:
+* Done
   * `templatesListTest`
   * `templatesListPublicTest`
-* In-Progress
-* Blocked
-* Done
 
 ### TokenApiTest
 * To-Do
@@ -343,6 +340,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `tokensGetOrRefreshTest`
 * In-Progress
 * Blocked
+  * requires use of OAuth tokens instead of API tokens
 * Done
 
 ### UpdateRequestsApiTest
