@@ -10226,7 +10226,12 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/TemplateArray"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TemplateArray"
+                        }
+                      }
                     }
                   ]
                 }
@@ -10282,7 +10287,12 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/TemplateArray"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "$ref": "#/components/schemas/TemplateArray"
+                        }
+                      }
                     }
                   ]
                 }
@@ -19822,6 +19832,7 @@
       },
       "TemplateType": {
         "type": "integer",
+        "description": "Level of public template types. 0 refers to only Sheet types, 1 refers to all types.",
         "enum": [
           0,
           1
