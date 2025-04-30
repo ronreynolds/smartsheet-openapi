@@ -185,12 +185,15 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Done
 
 ### HomeApiTest
-* To-Do
-  * `createHomeFolderTest`
-  * `homeListFoldersTest`
-  * `listHomeContentsTest`
 * In-Progress
+    * `homeListFoldersTest`
+      * unfortunately unable to create home-level folders (only folders in workspaces seem supported via UI)
+      * possibly we can revisit when we fix `createHomeFolderTest`
+    * `listHomeContentsTest`
+      * just needs more validation logic
 * Blocked
+    * `createHomeFolderTest`
+      * 400 error from server; wrong type for "sights" in request?
 * Done
 
 ### ImportApiTest
