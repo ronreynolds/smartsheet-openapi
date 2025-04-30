@@ -1643,6 +1643,9 @@
                   "description": "All objects a user has access to, including dashboards, folders, reports, sheets, and templates.",
                   "type": "object",
                   "properties": {
+                    "id": {"$ref": "#/components/schemas/Int64"},
+                    "name": {"type": "string"},
+                    "permalink": {"type": "string"},
                     "folders": {
                       "$ref": "#/components/schemas/FolderArray"
                     },
@@ -2147,7 +2150,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/FolderArray"
                         }
                       }
