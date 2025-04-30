@@ -211,3 +211,7 @@ some parts of the Spec don't match the server responses at all
 * `#/components/parameters/commentIdInPath` defined as `string`; should have been `#/components/schemas/Int64` (i.e., `long`)
   * also `#/components.parameters.discussionIdInPath` and `#/components.parameters.attachmentIdInPath`
 * `#/paths/templates` and `#/paths/templates/public` response needs to be altered to move the `TemplateArray` into a `data` field
+* `#/paths/folders/personal` - added `id`, `name`, and `permalink` to response schema
+* `#/paths/home/folders` - renamed response `result` to `data` to match response from servers
+  * not sure it's possible to create home folders any longer (?)
+* 
