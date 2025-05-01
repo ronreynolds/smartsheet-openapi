@@ -166,7 +166,8 @@ public class ApiClients {
             requestBuilder.timeout(timeoutDuration);
         }
         if (logRequest) {
-            log.info("request - {}", ToString.toString(requestBuilder.build()));
+            // pass in a copy of the request so we can log even those things generated via streams
+            log.info("request - {}", ToString.toString(requestBuilder.copy().build()));
         }
     }
 
