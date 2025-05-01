@@ -753,6 +753,7 @@ public class HomeApiTest {
     @Disabled("400 from server; 'sights' was of unexpected type; i.e., openapi-spec bug")
     @Test
     void createHomeFolderTest() throws ApiException {
+        ApiClients.setLogRequest(true);
         Folder folder = Folder.builder().name("test folder").build();
         String contentType = null;
         var response = api.createHomeFolder(folder, contentType);
@@ -760,6 +761,7 @@ public class HomeApiTest {
         assertThat(response).isNotNull();
         System.out.println(response);
         /*
+            body:{"id":null,"favorite":null,"folders":[],"name":"test folder","permalink":null,"reports":[],"sheets":[],"sights":[],"templates":[]}
         com.ronreynolds.smartsheet.ApiException: createHomeFolder call failed with: 400 - {
   "errorCode" : 1008,
   "message" : "Unable to parse request. The following error occurred: Field \"sights\" was of unexpected type.",
