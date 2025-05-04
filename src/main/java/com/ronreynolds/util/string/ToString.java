@@ -1,17 +1,11 @@
 package com.ronreynolds.util.string;
 
 import com.ronreynolds.smartsheet.ApiResponse;
+import com.ronreynolds.util.flow.ByteBufferSubscriber;
 
-import java.io.ByteArrayOutputStream;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Flow;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -67,41 +61,8 @@ public class ToString {
         return joinStringsWith(stream, " ");
     }
 
-    // java.net.http doesn't seem to provide a public type that can subscribe to the REQUEST side of things :-/
-    private static class ByteBufferSubscriber implements Flow.Subscriber<ByteBuffer> {
-        private Throwable error;
-        private final List<ByteBuffer> buffers = Collections.synchronizedList(new ArrayList<>());
-
-        @Override
-        public void onSubscribe(Flow.Subscription subscription) {
-            subscription.request(Long.MAX_VALUE);   // give us everything (now would be great)
-        }
-
-        @Override
-        public void onNext(ByteBuffer item) {
-            buffers.add(item);
-        }
-
-        @Override
-        public void onError(Throwable throwable) {
-            error = throwable;
-        }
-
-        @Override
-        public void onComplete() {
-        }
-
-        public byte[] getByteArray() throws Throwable {
-            if (error != null) {
-                throw error;
-            }
-            var byteStream = new ByteArrayOutputStream();
-            buffers.forEach(buffer -> byteStream.writeBytes(buffer.array()));
-            return byteStream.toByteArray();
-        }
-
-        public String asString() throws Throwable {
-            return new String(getByteArray(), StandardCharsets.UTF_8);
-        }
+    /** return enough info to get a deeper view of the object itself (useful for types with "dumb-down" toString()s) */
+    public static String deepToString(Object o) {
+        return o == null ? "null" : o.getClass() + "@" + System.identityHashCode(o) + " = " + o;
     }
 }
