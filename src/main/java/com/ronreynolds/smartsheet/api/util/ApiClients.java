@@ -3,6 +3,7 @@ package com.ronreynolds.smartsheet.api.util;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
+import com.ronreynolds.util.io.NoThrowAutoCloseable;
 import com.ronreynolds.util.logging.JULIntoSLF4J;
 import com.ronreynolds.util.string.ToString;
 import lombok.Setter;
@@ -110,11 +111,12 @@ public class ApiClients {
     }
 
     /**
-     * convenience method; typically you want both
+     * convenience method to enable logging the requests within a TWR block and set the setting back on close of the TWR block
      */
-    public static void setLogAll(boolean log) {
-        setLogRequest(log);
-        setLogResponse(log);
+    public static NoThrowAutoCloseable logRequestContext() {
+        final boolean originalLogRequest = logRequest;
+        setLogRequest(true);
+        return () -> setLogRequest(originalLogRequest);
     }
 
     /**
