@@ -1,16 +1,40 @@
 # Smartsheet-OpenAPI 
-* based on https://keepachangelog.com/en/1.0.0/ and https://semver.org/
+* based on https://keepachangelog.com/en/1.0.0/, https://semver.org/, and https://www.conventionalcommits.org/en/v1.0.0/
 * sections: Breaking Added Changed Deprecated Fixed Removed Security ToDo (in that order)
+* commit messages: `<type>[(<scope>)]: <description>`
+  * types: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs
 
-## 0.1.3 - unreleased
+## 0.1.4 - 2025-05-05
 ### Added
-* `get-fresh-spec` script to download lasted Smartsheet OpenAPI specs (json and yaml)
+* `BeforeAllTests` JUnit5 extension to prep the default ApiClient before any integration-tests (or other tests) start
+* `src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension` to load our `BeforeAllTests` extension
+* `TestIDs` to collect together IDs of testing resources
+  * `SMARTSHEET_ACCESS_TOKEN` MUST be part of the environment (or a system-prop) for any API integration tests to pass
+* `Constants.allOf(Class<T extends Enum>)` to return a `List` of all values for a particular enum
+* MDC to logback pattern used by unit-tests (in case i start adding `LogContext` variables)
+* routing of JUL logs into SLF4J as soon as ApiClients is loaded (codegen code uses java-util-logging (yuck!))
+### Changed 
+* `ApiClients` updated to use non-deprecated Jackson code to disable coercion of scalars feature
+* added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
+* fleshing out integration-tests
+  * see [Integration Tests Doc](docs/integration-tests.md) for details
+* upgraded openapi-codegen from 7.12.0 to 7.13.0
+### Fixed
+* malformed response for `/templates` and `/templates/public`
+  * moved `TemplateArray` into field called `"data"` to match actual response
+  * see [OpenAPI Spec Changes Doc](docs/spec-changes.md) for more details
+### Removed
+* `BasicUse` in favor of individual api-specific tests
+* renamed `TestIDs` to `TestData` to more accurately reflect its contents: static inner-interfaces for each resource type
+
+## 0.1.3 - 2025-03-31
+### Added
+* `get-fresh-spec` script to download latest Smartsheet OpenAPI specs (json and yaml)
 * stub integration tests for all API classes
 ### Changed
 * slightly tighter code in `ApiClients.getDefaultClient()`
-* `BasicUse` to a test class so that published lib contains no runtime classes
-  * and logback to a test-runtime dep
-  * also moved `logback.xml` into test/resources
+* moved `BasicUse` to a test class so that published lib contains no runtime classes
+  * and moved logback to a test-runtime dep and `logback.xml` into test/resources
 
 ## 0.1.2 - 2025-03-20
 ### Added

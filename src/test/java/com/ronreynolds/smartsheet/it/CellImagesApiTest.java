@@ -735,11 +735,13 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for CellImagesApi
  */
-@Disabled
+@Disabled("CellImagesApiTest not yet implemented")
 public class CellImagesApiTest {
 
     private final CellImagesApi api = new CellImagesApi();
@@ -754,8 +756,8 @@ public class CellImagesApiTest {
      */
     @Test
     public void addImageToCellTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
+        Long sheetId = TestData.SheetData.id;
+        Long rowId = TestData.RowData.id;
         Long columnId = null;
         String contentType = null;
         String contentDisposition = null;
@@ -766,6 +768,7 @@ public class CellImagesApiTest {
         AddImageToCell200Response response =
                 api.addImageToCell(sheetId, rowId, columnId, contentType, contentDisposition, contentLength, altText,
                         overrideValidation, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

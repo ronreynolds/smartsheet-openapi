@@ -15,6 +15,9 @@ reasons:
   * used to generate the `ApiClient.java` which wraps the request-, response- and JSON-handling logic and some utils
   * forcing the date format to match the SDK and API's format of `"yyyy-MM-dd'T'HH:mm:ss'Z'"`
   * some minor code cleanup (to be submitted to the OpenAPI-codegen project)
+* `Configuration.mustache`
+    * generates a singleton `ApiClient`-factory class used to hold a single `ApiClient` instance (which is typically all you need)
+    * upgraded to a version not yet released with OpenAPI-codegen that supports a `Supplier<ApiClient>` callback
 * `oneof_model.mustache`
   * implementation template for all `one-of` types in the schema
   * performance improvements around JSON deserializing (processing JSON server-response into fields of this type)

@@ -729,21 +729,19 @@ import com.ronreynolds.smartsheet.api.SearchApi;
 import com.ronreynolds.smartsheet.model.ListSearch200Response;
 import com.ronreynolds.smartsheet.model.ListSearchSheet200Response;
 import com.ronreynolds.smartsheet.model.SearchScope;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for SearchApi
  */
-@Disabled
 public class SearchApiTest {
-
     private final SearchApi api = new SearchApi();
-
 
     /**
      * Search Everything
@@ -755,15 +753,16 @@ public class SearchApiTest {
      */
     @Test
     public void listSearchTest() throws ApiException {
-        String query = null;
+        String query = "42";
         String location = null;
         OffsetDateTime modifiedSince = null;
         String include = null;
         List<SearchScope> scopes = null;
-        ListSearch200Response response =
-                api.listSearch(query, location, modifiedSince, include, scopes);
+        ListSearch200Response response = api.listSearch(query, location, modifiedSince, include, scopes);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -778,12 +777,13 @@ public class SearchApiTest {
      */
     @Test
     public void listSearchSheetTest() throws ApiException {
-        Long sheetId = null;
-        String query = null;
-        ListSearchSheet200Response response =
-                api.listSearchSheet(sheetId, query);
+        Long sheetId = TestData.SheetData.id;
+        String query = "42";
+        ListSearchSheet200Response response = api.listSearchSheet(sheetId, query);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
 }

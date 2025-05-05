@@ -737,13 +737,14 @@ import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for GroupsApi
  */
-@Disabled
+@Disabled("GroupsApiTest not yet implemented")
 public class GroupsApiTest {
-
     private final GroupsApi api = new GroupsApi();
 
 
@@ -757,10 +758,11 @@ public class GroupsApiTest {
     @Test
     public void addGroupTest() throws ApiException {
         AddGroupRequest addGroupRequest = null;
-        AddGroup200Response response =
-                api.addGroup(addGroupRequest);
+        AddGroup200Response response = api.addGroup(addGroupRequest);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -774,10 +776,11 @@ public class GroupsApiTest {
     @Test
     public void deleteGroupTest() throws ApiException {
         Long groupId = null;
-        ResultPrefix response =
-                api.deleteGroup(groupId);
+        ResultPrefix response = api.deleteGroup(groupId);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -791,10 +794,11 @@ public class GroupsApiTest {
     @Test
     public void getGroupTest() throws ApiException {
         Long groupId = null;
-        GetGroup200Response response =
-                api.getGroup(groupId);
+        GetGroup200Response response = api.getGroup(groupId);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -812,10 +816,11 @@ public class GroupsApiTest {
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListGroups200Response response =
-                api.listGroups(includeAll, modifiedSince, numericDates, page, pageSize);
+        ListGroups200Response response = api.listGroups(includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -830,10 +835,10 @@ public class GroupsApiTest {
     public void updateGroupTest() throws ApiException {
         Long groupId = null;
         UpdateGroupRequest updateGroupRequest = null;
-        AddGroup200Response response =
-                api.updateGroup(groupId, updateGroupRequest);
+        AddGroup200Response response = api.updateGroup(groupId, updateGroupRequest);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
-
 }

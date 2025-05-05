@@ -1,9 +1,10 @@
 package com.ronreynolds.smartsheet.api.util;
 
-import com.fasterxml.jackson.databind.MapperFeature;
 import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.Configuration;
 import com.ronreynolds.util.config.Settings;
+import com.ronreynolds.util.io.NoThrowAutoCloseable;
+import com.ronreynolds.util.logging.JULIntoSLF4J;
 import com.ronreynolds.util.string.ToString;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,11 +18,32 @@ import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.atomic.AtomicReference;
 
 @Slf4j
 public class ApiClients {
-    private ApiClients() {
+    public enum Servers {
+        US("https://api.smartsheet.com/2.0"),
+        GOV_US("https://api.smartsheetgov.com/2.0"),
+        EU("https://api.smartsheet.eu/2.0");
+
+        public final String baseUrl;
+
+        Servers(String url) {
+            baseUrl = url;
+        }
+    }
+
+    static {
+        // route codegen code logging into slf4j
+        JULIntoSLF4J.install();
+
+        // same as Java SDK (mostly; SDK doesn't support system-props, only env-vars, for auth token)
+        setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
+        setServer(Servers.US);
+        setUserAgent(null);
+
+        // register our factory method with Configuration
+        Configuration.setApiClientFactory(ApiClients::createNewClient);
     }
 
     private static final String JSON_CONTENT_TYPE = "application/json";
@@ -29,8 +51,6 @@ public class ApiClients {
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String HEADER_CHANGE_AGENT = "Smartsheet-Change-Agent";
     private static final String HEADER_USER_AGENT = "User-Agent";
-
-    private static final AtomicReference<ApiClient> defaultClient = new AtomicReference<>();
 
     // simple logging flags for now
     @Setter
@@ -44,32 +64,18 @@ public class ApiClients {
     private static volatile String userAgent;
     private static volatile Duration timeoutDuration;
 
-    static {
-        // same as Java SDK
-        setAuthToken(Settings.get("SMARTSHEET_ACCESS_TOKEN"));  // note, this supports system-props AND env-vars
-        setServer(Servers.US);
-        setUserAgent(null);
-        // getDefaultClient() so that Configuration.getDefaultApiClient() returns a properly configured client?
+    /**
+     * return the ApiClient with proper auth headers
+     */
+    public static ApiClient getDefaultClient() {
+        return Configuration.getDefaultApiClient();
     }
 
     /**
-     * this method uses its own ref to store the ApiClient and overwrites the one in Configuration if it has to create a new one;
-     * this behavior will change with future openapi-configgen when we can set the defaultApiClientFactory to lazy-create our own ApiClient
-     *
-     * @return the ApiClient with proper auth headers
+     * force next request for a client to trigger a rebuild
      */
-    public static ApiClient getDefaultClient() {
-        ApiClient client = defaultClient.get();
-        if (client == null) {
-            client = defaultClient.updateAndGet(val -> val == null ? createNewClient() : val);
-            // overwrite the global singleton; FIXME with future config-gen version
-            Configuration.setDefaultApiClient(client);
-        }
-        return client;
-    }
-
     public static void resetClient() {
-        defaultClient.set(null);    // force next request for a client to trigger a rebuild
+        Configuration.setDefaultApiClient(null);
     }
 
     public static void setServer(Servers newServer) {
@@ -105,13 +111,21 @@ public class ApiClients {
     }
 
     /**
+     * convenience method to enable logging the requests within a TWR block and set the setting back on close of the TWR block
+     */
+    public static NoThrowAutoCloseable logRequestContext() {
+        final boolean originalLogRequest = logRequest;
+        setLogRequest(true);
+        return () -> setLogRequest(originalLogRequest);
+    }
+
+    /**
      * create and return an {@code ApiClient} configured with the current settings; exposed so code can create a new
      * {@code ApiClient} without replacing the current default client.
      */
     public static ApiClient createNewClient() {
         ApiClient client = new ApiClient();
-        // disable this feature; breaks parsing of more complex objects
-        client.setObjectMapper(client.getObjectMapper().disable(MapperFeature.ALLOW_COERCION_OF_SCALARS));
+        client.setObjectMapper(JacksonUtil.modifyObjectMapper(client.getObjectMapper()).build());
         client.updateBaseUri(server.baseUrl);
         client.setRequestInterceptor(builder -> prepRequest(builder, getHeaderMap()));
         client.setResponseInterceptor(ApiClients::processResponse);
@@ -154,7 +168,8 @@ public class ApiClients {
             requestBuilder.timeout(timeoutDuration);
         }
         if (logRequest) {
-            log.info("request - {}", ToString.toString(requestBuilder.build()));
+            // pass in a copy of the request so we can log even those things generated via streams
+            log.info("request - {}", ToString.toString(requestBuilder.copy().build()));
         }
     }
 
@@ -228,15 +243,6 @@ public class ApiClients {
         return module + "!" + callerClass;
     }
 
-    public enum Servers {
-        US("https://api.smartsheet.com/2.0"),
-        GOV_US("https://api.smartsheetgov.com/2.0"),
-        EU("https://api.smartsheet.eu/2.0");
-
-        private final String baseUrl;
-
-        Servers(String url) {
-            baseUrl = url;
-        }
+    private ApiClients() {
     }
 }

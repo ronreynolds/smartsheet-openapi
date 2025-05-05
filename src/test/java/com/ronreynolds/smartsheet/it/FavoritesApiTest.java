@@ -737,11 +737,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for FavoritesApi
  */
-@Disabled
+@Disabled("FavoritesApiTest not yet implemented")
 public class FavoritesApiTest {
 
     private final FavoritesApi api = new FavoritesApi();
@@ -764,6 +766,7 @@ public class FavoritesApiTest {
         String contentType = null;
         AddFavorite200Response response =
                 api.addFavorite(favorite, xSmarScActorId, contentType);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

@@ -726,32 +726,44 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.UsersApi;
+import com.ronreynolds.smartsheet.api.util.Converters;
+import com.ronreynolds.smartsheet.it.TestData.UserData;
 import com.ronreynolds.smartsheet.model.AddUser200Response;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetUserInclude;
 import com.ronreynolds.smartsheet.model.ListUsers200Response;
+import com.ronreynolds.smartsheet.model.RemoveUser200Response;
 import com.ronreynolds.smartsheet.model.RemoveUserRequest;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.UpdateUser200Response;
+import com.ronreynolds.smartsheet.model.UpdateUserProfileImage200Response;
 import com.ronreynolds.smartsheet.model.UpdateUserRequest;
 import com.ronreynolds.smartsheet.model.User;
 import com.ronreynolds.smartsheet.model.UserProfile;
+import com.ronreynolds.smartsheet.model.UserProfileImageResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * API tests for UsersApi
  */
-@Disabled
+@Slf4j
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class UsersApiTest {
-
-    private final UsersApi api = new UsersApi();
-
+    private static final UsersApi api = new UsersApi();
 
     /**
      * Add User
@@ -766,13 +778,27 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(1)   // first test
     public void addUserTest() throws ApiException {
-        Boolean sendEmail = null;
-        User user = null;
-        AddUser200Response response =
-                api.addUser(sendEmail, user);
+        Boolean sendEmail = false;
+        String email = "test-user-" + System.currentTimeMillis() +"@example.com";
+        User user = User.builder()
+                .admin(false)
+                .email(email)
+                .firstName("Test")
+                .lastName("User")
+                .build();
+        AddUser200Response response = api.addUser(sendEmail, user);
+        assertThat(response).isNotNull();
+        User newUser = assertThat(response.getResult()).isNotNull().actual();
+        assertThat(newUser.getAdmin()).isFalse();
+        assertThat(newUser.getEmail()).isEqualTo(email);
+        assertThat(newUser.getFirstName()).isEqualTo("Test");
+        assertThat(newUser.getLastName()).isEqualTo("User");
+        assertThat(newUser.getName()).isEqualTo("Test User");
 
-        // TODO: test validations
+        log.info("added user {}", newUser.getId());
+        TestData.temporaryUserIds.add(newUser.getId());
     }
 
     /**
@@ -790,12 +816,22 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(2)
+    @Disabled("possibly issue with edge-case where newly-created users aren't yet visible for deactivation?")
     public void deactivateUserTest() throws ApiException {
-        Long userId = null;
-        ResultPrefix response =
-                api.deactivateUser(userId);
-
-        // TODO: test validations
+        // deactivate all temporary users (if any)
+        if (TestData.temporaryUserIds.isEmpty()) {
+            log.warn("no temporary users to deactivate");
+            return;
+        }
+        for (Long userId : TestData.temporaryUserIds) {
+            log.info("deactivating {}", userId);
+            ResultPrefix response = api.deactivateUser(userId);
+            assertThat(response).isNotNull();
+            assertThat(response.getResultCode())
+                    .isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);    // 0 = success, 3 = partial :-?
+            log.info("deactivate-user response:{}", response);
+        }
     }
 
     /**
@@ -811,11 +847,17 @@ public class UsersApiTest {
      */
     @Test
     public void getCurrentUserTest() throws ApiException {
-        GetUserInclude include = null;
-        GetCurrentUser200Response response =
-                api.getCurrentUser(include);
+        GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);
+        // test validation
+        assertThat(currentUser).isNotNull()
+                .satisfies(UserData::assertEquals);
 
-        // TODO: test validations
+        // also tests getUser and User.equals methods
+        UserProfile sameUser = api.getUser(currentUser.getId());
+        // for whatever reason getCurrentUser does not return status but getUser does. :-?
+        sameUser.setStatus(null);
+        assertThat(sameUser)
+                .isEqualTo(Converters.convert(currentUser));
     }
 
     /**
@@ -832,11 +874,9 @@ public class UsersApiTest {
      */
     @Test
     public void getUserTest() throws ApiException {
-        Long userId = null;
-        UserProfile response =
-                api.getUser(userId);
-
-        // TODO: test validations
+        UserProfile user = api.getUser(UserData.id);
+        assertThat(user).isNotNull()
+                .satisfies(UserData::assertEquals);
     }
 
     /**
@@ -856,6 +896,7 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(9)
     public void listUsersTest() throws ApiException {
         List<String> email = null;
         String include = null;
@@ -864,10 +905,11 @@ public class UsersApiTest {
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListUsers200Response response =
-                api.listUsers(email, include, includeAll, modifiedSince, numericDates, page, pageSize);
+        ListUsers200Response response = api.listUsers(email, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
+        log.info("list-users: {}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
     }
 
     /**
@@ -884,12 +926,22 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(5)
+    @Disabled("You are not authorized to perform this action.")
     public void reactivateUserTest() throws ApiException {
-        Long userId = null;
-        ResultPrefix response =
-                api.reactivateUser(userId);
-
-        // TODO: test validations
+        // reactivate all temporary users (if any)
+        if (TestData.temporaryUserIds.isEmpty()) {
+            log.warn("no temporary users to reactivate");
+            return;
+        }
+        for (Long userId : TestData.temporaryUserIds) {
+            log.info("reactivating {}", userId);
+            ResultPrefix response = api.reactivateUser(userId);
+            assertThat(response).isNotNull();
+            assertThat(response.getResultCode())
+                    .isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);    // 0 = success, 3 = partial :-?
+            log.info("{}", response);
+        }
     }
 
     /**
@@ -905,13 +957,30 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(10)
     public void removeUserTest() throws ApiException {
-        Long userId = null;
-        RemoveUserRequest removeUserRequest = null;
-        ResultPrefix response =
-                api.removeUser(userId, removeUserRequest);
+        // verify the expected 404
+        ApiException thrown = assertThrows(ApiException.class, () -> api.removeUser(42L, null));
+        assertThat(thrown).hasMessageContaining("User not found");
 
-        // TODO: test validations
+//        TestData.temporaryUserIds.add(3414752471869316L);
+//        TestData.temporaryUserIds.add(8582663280846724L);
+
+        // delete all temporary users (if any)
+        if (TestData.temporaryUserIds.isEmpty()) {
+            log.warn("no temporary users to delete");
+            return;
+        }
+        for (Long userId : TestData.temporaryUserIds) {
+            RemoveUserRequest removeUserRequest = RemoveUserRequest.builder()
+//                    .removeFromSharing().transferSheets().transferTo()
+                    .build();
+            RemoveUser200Response response = api.removeUser(userId, removeUserRequest);
+            assertThat(response).isNotNull();
+            assertThat(response.getResultCode()).isSameAs(RemoveUser200Response.ResultCodeEnum.NUMBER_0); // 0 = success, 3 = partial :-?
+            assertThat(response.getSheetsRemovedFromSharing()).isZero();
+            assertThat(response.getWorkspacesRemovedFromSharing()).isZero();
+        }
     }
 
     /**
@@ -922,36 +991,69 @@ public class UsersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(7)
     public void updateUserTest() throws ApiException {
-        Long userId = null;
-        UpdateUserRequest updateUserRequest = null;
-        UpdateUser200Response response =
-                api.updateUser(userId, updateUserRequest);
+        if (TestData.temporaryUserIds.isEmpty()) {
+            log.warn("no temporary users to update");
+            return;
+        }
 
-        // TODO: test validations
+        Long userId = TestData.temporaryUserIds.get(0);
+        // get previous user data
+        var user = api.getUser(userId);
+        log.info("updating {}", userId);
+
+        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+                .firstName("Fuzzy")
+                .lastName("Wuzzy")
+                .build();
+        UpdateUser200Response response = api.updateUser(userId, updateUserRequest);
+        log.info("update-user-response:{}", response);
+        assertThat(response).isNotNull();
+        assertThat(response.getResultCode()).isSameAs(UpdateUser200Response.ResultCodeEnum.NUMBER_0);
+
+        // put their data back as we found it
+        response = api.updateUser(userId,
+                UpdateUserRequest.builder().firstName(user.getFirstName()).lastName(user.getLastName()).build());
+        log.info("resetting updated-user-response:{}", response);
+        assertThat(response).isNotNull();
+        assertThat(response.getResultCode()).isSameAs(UpdateUser200Response.ResultCodeEnum.NUMBER_0);
     }
 
     /**
      * Update User Profile Image
      * <p>
      * Uploads an image to the user profile.  Uploading a profile image differs from Adding an Image to a Cell in the following
-     * ways:   * A **Content-Length** header is not required   * Allowable file types are limited to: gif, jpg, and png   *
-     * Maximum file size is determined by the following rules:       * If you have not defined a custom size and the image is
-     * larger than 1050 x 1050 pixels, Smartsheet scales the image down to 1050 x 1050       * If you have defined a custom
-     * size, Smartsheet uses that as the file size max   * If the image is not square, Smartsheet uses a solid color to pad the
-     * image
+     * ways:
+     * A **Content-Length** header is not required
+     * Allowable file types are limited to: gif, jpg, and png
+     * Maximum file size is determined by the following rules:
+     * If you have not defined a custom size and the image is larger than 1050 x 1050 pixels, Smartsheet scales the image down
+     * to 1050 x 1050
+     * If you have defined a custom size, Smartsheet uses that as the file size max
+     * If the image is not square, Smartsheet uses a solid color to pad the image
      *
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need image data")
     public void updateUserProfileImageTest() throws ApiException {
         Long userId = null;
         String contentType = null;
         File body = null;
-        UpdateUser200Response response =
-                api.updateUserProfileImage(userId, contentType, body);
+        UpdateUserProfileImage200Response response = api.updateUserProfileImage(userId, contentType, body);
 
+        log.info("update-user-profile-image response:{}", response);
         // TODO: test validations
     }
 
+    @BeforeAll
+    static void preListUsers() throws ApiException {
+        log.info("pre-test all users:{}", api.listUsers(null, null, true, null, null, null, null));
+    }
+
+    @AfterAll
+    static void postListUsers() throws ApiException {
+        log.info("post-test all users:{}", api.listUsers(null, null, true, null, null, null, null));
+    }
 }

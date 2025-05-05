@@ -733,11 +733,13 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ImportApi
  */
-@Disabled
+@Disabled("ImportApiTest not yet implemented")
 public class ImportApiTest {
 
     private final ImportApi api = new ImportApi();
@@ -765,6 +767,7 @@ public class ImportApiTest {
         ImportSheetIntoFolder200Response response =
                 api.importSheetIntoFolder(folderId, contentType, sheetName, contentDisposition, headerRowIndex,
                         primaryColumnIndex, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -806,7 +809,7 @@ public class ImportApiTest {
      */
     @Test
     public void importSheetIntoWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         SheetContentType contentType = null;
         String sheetName = null;
         String contentDisposition = null;

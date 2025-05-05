@@ -726,25 +726,22 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.HomeApi;
-import com.ronreynolds.smartsheet.model.CreateHomeFolder200Response;
+import com.ronreynolds.smartsheet.api.util.ApiClients;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.FolderInclude;
-import com.ronreynolds.smartsheet.model.ListFolders200Response;
-import com.ronreynolds.smartsheet.model.ListHomeContents200Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for HomeApi
  */
-@Disabled
 public class HomeApiTest {
-
     private final HomeApi api = new HomeApi();
-
 
     /**
      * Create Folder
@@ -753,14 +750,24 @@ public class HomeApiTest {
      *
      * @throws ApiException if the Api call fails
      */
+    @Disabled("400 from server; 'sights' was of unexpected type; i.e., openapi-spec bug")
     @Test
-    public void createHomeFolderTest() throws ApiException {
-        Folder folder = null;
+    void createHomeFolderTest() throws ApiException {
+        ApiClients.setLogRequest(true);
+        Folder folder = Folder.builder().name("test folder").build();
         String contentType = null;
-        CreateHomeFolder200Response response =
-                api.createHomeFolder(folder, contentType);
-
+        var response = api.createHomeFolder(folder, contentType);
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
+        /*
+            body:{"id":null,"favorite":null,"folders":[],"name":"test folder","permalink":null,"reports":[],"sheets":[],"sights":[],"templates":[]}
+        com.ronreynolds.smartsheet.ApiException: createHomeFolder call failed with: 400 - {
+  "errorCode" : 1008,
+  "message" : "Unable to parse request. The following error occurred: Field \"sights\" was of unexpected type.",
+  "refId" : "3nqzxd"
+}
+         */
     }
 
     /**
@@ -771,14 +778,16 @@ public class HomeApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void homeListFoldersTest() throws ApiException {
+    void homeListFoldersTest() throws ApiException {
+        ApiClients.setLogRequest(true);
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListFolders200Response response =
-                api.homeListFolders(includeAll, page, pageSize);
+        var response = api.homeListFolders(includeAll, page, pageSize);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -790,12 +799,12 @@ public class HomeApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    public void listHomeContentsTest() throws ApiException {
+    void listHomeContentsTest() throws ApiException {
         List<FolderInclude> include = null;
-        ListHomeContents200Response response =
-                api.listHomeContents(include);
+        var response = api.listHomeContents(include);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
-
 }

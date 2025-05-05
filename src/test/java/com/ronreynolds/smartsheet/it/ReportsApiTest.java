@@ -747,11 +747,13 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ReportsApi
  */
-@Disabled
+@Disabled("ReportsApiTest not yet implemented")
 public class ReportsApiTest {
 
     private final ReportsApi api = new ReportsApi();
@@ -771,6 +773,7 @@ public class ReportsApiTest {
         Integer accessApiLevel = null;
         Result response =
                 api.deleteReportShare(reportId, shareId, accessApiLevel);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

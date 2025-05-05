@@ -7,6 +7,7 @@ top-level `#/components/schemas/` element)
 
 there are also a few bits that seem like actual bugs (so far fields that MUST (?) be the wrong type); this section is
 intended to list those changes.
+
 #### Column.contactOptions pointed to single ContactOption
 ```
 #/components/schemas...
@@ -18,6 +19,7 @@ intended to list those changes.
 all references to `"contactOptions"` in the Java-SDK point to `List<Contact>` which would indicate that this type should
 be a `ContactOptionArray` and not a single `ContactOption` object.  this also is in keeping with the common theme that
 any collection/array of items has a plural name whereas single items have a singular name.
+
 #### UserProfile.alternateEmails is single AlternateEmail
 looks like a similar issue to `contactOptions` above
 
@@ -34,8 +36,9 @@ another path definition).
     * note, this straight-forward solution doesn't work for path responses
         * there you have to nest the `$ref` within `"content": { "application/json": { "schema": { ... }}}` and reference a SCHEMA, not a RESPONSE. :(
         * i actually found it easier to inline the schema data back into the few (all error) responses that had descriptions
+
 #### `default` for `Int64` type
-had to remove the default because the Java won't compile (the value is `int` can won't be converted to `long`)
+had to remove the default because the Java won't compile (the value `604799` is `int`; can't be converted to `Long`)
 ```json
           "expires_in": {
             "description": "Number of seconds token is valid once issued.",
@@ -47,6 +50,7 @@ had to remove the default because the Java won't compile (the value is `int` can
             "default": 604799,
             "readOnly": true
 ```
+
 #### Path refs
 * the path-schema refs were often addressed by reusing existing or creating new types for those requests or responses.
     * this only adds value when a type is used at least twice; otherwise leaving it "inline" seemed fine
@@ -186,4 +190,59 @@ used).  in short most of these issues start with the assumptions passed into or 
 some types are so common (the int-64 long type used for almost all IDs, long[], and string[]) that it saved typing to
 create types for these common patterns.
 * `"type":"number|integer"[, "format":"int64"]` = `"$ref": "#/components/schemas/Int64"`
-* `"type":"number"` = `"type":"integer"` for many types (`"type":"number"` maps to a `java.math.BigDecimal` which is almost NEVER what you want/mean)
+* `"type":"number"` = `"type":"integer"` for many types 
+  * `"type":"number"` maps to a `java.math.BigDecimal` which is almost NEVER what you want/mean
+
+#### CodeGen-limitation changes
+* because there's a `Cell.objectValue` field it generated a type which conflicted with the type generated for 
+`#/components/schemas/CellObjectValue` so i renamed the type `#/components/schemas/CellObjectValueObj`
+* any `anyOf`'s that contain only 1 type were changed to `oneOf` to simplify the generated code (and because it's more precise)
+
+#### missing, misnamed, and mistyped fields
+some parts of the Spec don't match the server responses at all
+* `#/components/schemas/ServerInfo` missing fields `featureInfo`, `appleAuthInfos`, `azureAuthInfo`, and `serverVersion` 
+* `#/components/schemas/Row`'s field `permaLink` is actually `permalink`
+  * like most programming languages the spec is case-sensitive
+* `#/components/schemas/Sheet` missing fields `filters` and `ganttConfig` which in turn required adding new types:
+  * `#/components/schemas/Filter`
+  * `#/components/schemas/DayOfWeek`
+  * `#/components/schemas/Month`
+* `#/components/schemas/UserProfile` missing field `status`
+* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
+  * `#/components/parameters/commentIdInPath` 
+  * `#/components/parameters/discussionIdInPath` 
+  * `#/components/parameters/attachmentIdInPath`
+  * `#/components/parameters/workspaceIdInPath`
+* `#/paths/templates` and `#/paths/templates/public` response 
+  * moved the `TemplateArray` into a `data` field
+* `#/paths/folders/personal` response
+  * added `id`, `name`, and `permalink` to response schema
+* `#/paths/users/{userId} DELETE` response
+  * missing fields `sheetsRemovedFromSharing` and `workspacesRemovedFromSharing`
+* `result` response fields renamed to `data`
+  * `#/paths/folders/{folderId}/folders GET`
+  * `#/paths/home/folders GET`
+  * `#/paths/workspaces/{workspaceId}/shares GET`
+* `data` response fields renamed to `result`
+  * `#/paths/workspaces POST` (create-workspace)
+  * `#/paths/users/{userId} PUT`
+  * `#/paths/workspaces POST`
+* `#/components/schemas/Workspace` 
+  * missing many fields, including:
+    * `sheets` - array of minimal Sheet records
+    * `folders` - array of minimal Folder records
+    * `reports` - array of minimal Report records
+* `#/paths/workspaces/{workspaceId}/folders POST` response 
+  * missing fields `id`(Int64) and `permalink`(string)
+* `#/paths/users/{userId} PUT` response 
+  * field `result` changed type `UserProfileImageResponseArray` to `User`
+* `#/paths/workspaces POST` request 
+  * type changed from `Workspace` to `WorkspaceLite`
+    * `Workspace` without child containers (which are not allowed in create-workspace request)
+* `#/components/schemas/Folder` added fields
+  * `accessLevel`, `createdAt`, `modifiedAt`
+
+#### further improvements
+* added `#/components/schemas/ShareScope` to replace `string` for `#/components/schemas/Share.scope`
+* added `#/components/schemas/ShareType` to replace `string` for `#/components/schemas/Share.type`
+* changed `#/components/schemas/User.status` from `string-enum` to `#/components/schemas/UserStatus`

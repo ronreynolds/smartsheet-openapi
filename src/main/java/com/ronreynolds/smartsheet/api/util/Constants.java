@@ -9,6 +9,8 @@ import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,8 +20,8 @@ public class Constants {
     }
 
     // all immutable Lists
-    public static final List<AccessLevel> accessLevelsWithoutOwner = Stream.of(AccessLevel.values())
-            .filter(v -> v == AccessLevel.OWNER).collect(Collectors.toUnmodifiableList());
+    public static final List<AccessLevel> accessLevelsWithoutOwner =
+            Stream.of(AccessLevel.values()).filter(v -> v == AccessLevel.OWNER).collect(Collectors.toUnmodifiableList());
     public static final List<FolderInclude> allFolderIncludes = List.of(FolderInclude.values());
     public static final List<ReportInclude> allReportIncludes = List.of(ReportInclude.values());
     public static final List<SheetInclude> allSheetIncludes = List.of(SheetInclude.values());
@@ -37,4 +39,19 @@ public class Constants {
     public static final OffsetDateTime noModifiedSince = null;
     public static final Integer noVersionAfter = null;
     public static final CompatibilityLevel noCompatibilityLevel = null;
+
+    /**
+     * general-purpose method to get all the values of a particular enum type as a List
+     * @param enumType the type of Enum for which we want a List
+     * @return a immutable {@code List<Enum<T>>} that contains all the values of that type in {@code values()} order
+     * @param <T> a type of Enum
+     */
+    public static <T extends Enum<T>> List<T> allOf(Class<T> enumType) {
+        try {
+            T[] allValues = (T[])enumType.getDeclaredMethod("values").invoke(null);
+            return List.of(allValues);
+        } catch (ReflectiveOperationException impossible) {
+            throw new RuntimeException(impossible);
+        }
+    }
 }

@@ -726,6 +726,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.SheetsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.CopyFolderInclude;
@@ -734,7 +735,6 @@ import com.ronreynolds.smartsheet.model.CreateSheetInFolder200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolderRequest;
 import com.ronreynolds.smartsheet.model.DeleteSheet200Response;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
-import com.ronreynolds.smartsheet.model.GetSheet200Response;
 import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
 import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.ListSheetInclude;
@@ -747,6 +747,7 @@ import com.ronreynolds.smartsheet.model.SetSheetPublish200Response;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareReport200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
+import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetEmail;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetFromTemplateInclude;
@@ -759,20 +760,24 @@ import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSheet200Response;
 import com.ronreynolds.smartsheet.model.UpdateSheetRequest;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  * API tests for SheetsApi
  */
-@Disabled
+@Disabled("SheetsApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class SheetsApiTest {
-
+    private static final List<Long> sheetsToDelete = new ArrayList<>();
     private final SheetsApi api = new SheetsApi();
-
 
     /**
      * Copy Sheet
@@ -783,15 +788,15 @@ public class SheetsApiTest {
      */
     @Test
     public void copySheetTest() throws ApiException {
-        Long sheetId = null;
         ContainerDestination containerDestination = null;
         String contentType = null;
-        List<CopyFolderInclude> include = null;
+        List<CopyFolderInclude> include = Constants.allOf(CopyFolderInclude.class);
         FolderCopyExclude exclude = null;
         CopySheet200Response response =
-                api.copySheet(sheetId, containerDestination, contentType, include, exclude);
+                api.copySheet(TestData.SheetData.id, containerDestination, contentType, include, exclude);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -811,6 +816,7 @@ public class SheetsApiTest {
                 api.createSheetInFolder(folderId, createSheetInFolderRequest, contentType, include);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -831,6 +837,7 @@ public class SheetsApiTest {
                 api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, contentType, include);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -843,7 +850,7 @@ public class SheetsApiTest {
      */
     @Test
     public void createSheetInWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
         String contentType = null;
@@ -852,6 +859,7 @@ public class SheetsApiTest {
                 api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, contentType, include);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -863,11 +871,13 @@ public class SheetsApiTest {
      */
     @Test
     public void deleteSheetTest() throws ApiException {
-        Long sheetId = null;
-        DeleteSheet200Response response =
-                api.deleteSheet(sheetId);
+        Sheet sheet = createTestSheet();
+        assertThat(sheet).isNotNull();
+        Long sheetId = sheet.getId();
+        DeleteSheet200Response response = api.deleteSheet(sheetId);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -879,13 +889,12 @@ public class SheetsApiTest {
      */
     @Test
     public void deleteSheetShareTest() throws ApiException {
-        Long sheetId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Result response =
-                api.deleteSheetShare(sheetId, shareId, accessApiLevel);
+        Result response = api.deleteSheetShare(TestData.SheetData.id, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -897,10 +906,10 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         String accept = null;
         Integer accessApiLevel = null;
-        List<SheetInclude> include = null;
+        List<SheetInclude> include = Constants.allSheetIncludes;
         List<SheetExclude> exclude = null;
         List<Long> columnIds = null;
         String filterId = null;
@@ -912,11 +921,13 @@ public class SheetsApiTest {
         List<Long> rowIds = null;
         List<Integer> rowNumbers = null;
         OffsetDateTime rowsModifiedSince = null;
-        GetSheet200Response response =
+        var response =
                 api.getSheet(sheetId, accept, accessApiLevel, include, exclude, columnIds, filterId, ifVersionAfter, level,
                         pageSize, page, paperSize, rowIds, rowNumbers, rowsModifiedSince);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+        System.out.println(response);
     }
 
     /**
@@ -928,11 +939,11 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetPublishTest() throws ApiException {
-        Long sheetId = null;
-        SheetPublish response =
-                api.getSheetPublish(sheetId);
+        Long sheetId = TestData.SheetData.id;
+        SheetPublish response = api.getSheetPublish(sheetId);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -946,11 +957,11 @@ public class SheetsApiTest {
      */
     @Test
     public void getSheetVersionTest() throws ApiException {
-        Long sheetId = null;
-        SheetVersion response =
-                api.getSheetVersion(sheetId);
+        Long sheetId = TestData.SheetData.id;
+        SheetVersion response = api.getSheetVersion(sheetId);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -966,10 +977,10 @@ public class SheetsApiTest {
     @Test
     public void listOrgSheetsTest() throws ApiException {
         OffsetDateTime modifiedSince = null;
-        ListOrgSheets200Response response =
-                api.listOrgSheets(modifiedSince);
+        ListOrgSheets200Response response = api.listOrgSheets(modifiedSince);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -992,6 +1003,8 @@ public class SheetsApiTest {
                 api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
+
     }
 
     /**
@@ -1014,6 +1027,7 @@ public class SheetsApiTest {
                 api.listSheets(accessApiLevel, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1029,10 +1043,10 @@ public class SheetsApiTest {
         Long sheetId = null;
         MoveSheetRequest moveSheetRequest = null;
         String contentType = null;
-        CopySheet200Response response =
-                api.moveSheet(sheetId, moveSheetRequest, contentType);
+        CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest, contentType);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -1047,10 +1061,10 @@ public class SheetsApiTest {
         Long sheetId = null;
         String contentType = null;
         SheetPublishSettings sheetPublishSettings = null;
-        SetSheetPublish200Response response =
-                api.setSheetPublish(sheetId, contentType, sheetPublishSettings);
+        SetSheetPublish200Response response =api.setSheetPublish(sheetId, contentType, sheetPublishSettings);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -1066,10 +1080,11 @@ public class SheetsApiTest {
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
+        ShareReport200Response response = api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+
     }
 
     /**
@@ -1084,10 +1099,11 @@ public class SheetsApiTest {
         Long sheetId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareSheetGet(sheetId, shareId, accessApiLevel);
+        Share response = api.shareSheetGet(sheetId, shareId, accessApiLevel);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+
     }
 
     /**
@@ -1102,10 +1118,11 @@ public class SheetsApiTest {
         Long sheetId = null;
         String contentType = null;
         SheetEmail sheetEmail = null;
-        ResultPrefix response =
-                api.sheetSend(sheetId, contentType, sheetEmail);
+        ResultPrefix response = api.sheetSend(sheetId, contentType, sheetEmail);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+
     }
 
     /**
@@ -1125,10 +1142,10 @@ public class SheetsApiTest {
         Long sheetId = null;
         Integer accessApiLevel = null;
         UpdateSheetRequest updateSheetRequest = null;
-        UpdateSheet200Response response =
-                api.updateSheet(sheetId, accessApiLevel, updateSheetRequest);
+        UpdateSheet200Response response = api.updateSheet(sheetId, accessApiLevel, updateSheetRequest);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -1148,6 +1165,12 @@ public class SheetsApiTest {
                 api.updateSheetShare(sheetId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        assertThat(response).isNotNull();
+
     }
 
+    private Sheet createTestSheet() {
+        // TODO
+        return null;
+    }
 }

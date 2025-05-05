@@ -13,14 +13,23 @@ import com.ronreynolds.smartsheet.model.SheetListingDataInner;
 import com.ronreynolds.util.assertions.State;
 import lombok.NonNull;
 
-import java.time.OffsetDateTime;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.ronreynolds.smartsheet.api.util.Constants.*;
+import static com.ronreynolds.smartsheet.api.util.Constants.allColumnIds;
+import static com.ronreynolds.smartsheet.api.util.Constants.allFilters;
+import static com.ronreynolds.smartsheet.api.util.Constants.allPageNumbers;
+import static com.ronreynolds.smartsheet.api.util.Constants.allRowIds;
+import static com.ronreynolds.smartsheet.api.util.Constants.allRowNumbers;
+import static com.ronreynolds.smartsheet.api.util.Constants.allSheetIncludes;
+import static com.ronreynolds.smartsheet.api.util.Constants.noCompatibilityLevel;
+import static com.ronreynolds.smartsheet.api.util.Constants.noModifiedSince;
+import static com.ronreynolds.smartsheet.api.util.Constants.noPageSize;
+import static com.ronreynolds.smartsheet.api.util.Constants.noPaperSize;
+import static com.ronreynolds.smartsheet.api.util.Constants.noSheetExcludes;
+import static com.ronreynolds.smartsheet.api.util.Constants.noVersionAfter;
 
 /**
  * a collection of utility methods for working with Sheets (and Rows and Cells); note, heavily commented out as i need
@@ -55,7 +64,8 @@ public class Sheets {
     public static List<Row> updateRows(@NonNull ApiClient client, long sheetId, @NonNull List<Row> rowData,
                                        Consumer<List<Row>> cb) throws ApiException {
         // be sure all forbidden fields are cleared
-        // InvalidRequestException: The attribute(s) row.rowNumber, row.createdAt, row.modifiedAt, row.sheetId are not allowed for this operation.
+        // InvalidRequestException: The attribute(s) row.rowNumber, row.createdAt, row.modifiedAt, row.sheetId are not allowed
+        // for this operation.
         rowData.forEach((row) -> {
             row.setRowNumber(null);
             row.setCreatedAt(null);
@@ -92,16 +102,14 @@ public class Sheets {
     public static Sheet getWholeSheet(@NonNull ApiClient client, long sheetId) throws ApiException {
         return new SheetsApi(client)
                 .getSheet(sheetId, null, null, allSheetIncludes, noSheetExcludes, allColumnIds, allFilters, noVersionAfter,
-                        noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize, allRowIds, allRowNumbers, noModifiedSince)
-                .getSheet();
+                        noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize, allRowIds, allRowNumbers, noModifiedSince);
     }
 
     public static Sheet getSheetNoRows(@NonNull ApiClient client, long sheetId) throws ApiException {
         return new SheetsApi(client)
                 .getSheet(sheetId, null, null, List.of(SheetInclude.COLUMN_TYPE), List.of(SheetExclude.LINK_IN_FROM_CELL_DETAILS),
                         allColumnIds, allFilters, noVersionAfter, noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize,
-                        allRowIds, allRowNumbers, noModifiedSince)
-                .getSheet();
+                        allRowIds, allRowNumbers, noModifiedSince);
     }
 
     @NonNull

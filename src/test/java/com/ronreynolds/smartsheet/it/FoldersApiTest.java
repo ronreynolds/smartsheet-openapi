@@ -741,13 +741,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for FoldersApi
  */
-@Disabled
 public class FoldersApiTest {
-
     private final FoldersApi api = new FoldersApi();
 
 
@@ -759,6 +759,7 @@ public class FoldersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void copyFolderTest() throws ApiException {
         Long folderId = null;
         ContainerDestination containerDestination = null;
@@ -766,10 +767,11 @@ public class FoldersApiTest {
         List<CopyFolderInclude> include = null;
         FolderCopyExclude exclude = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response =
-                api.copyFolder(folderId, containerDestination, contentType, include, exclude, skipRemap);
+        ContainerDestination response = api.copyFolder(folderId, containerDestination, contentType, include, exclude, skipRemap);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -780,6 +782,7 @@ public class FoldersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void createFolderFolderTest() throws ApiException {
         Long folderId = null;
         Folder folder = null;
@@ -791,6 +794,8 @@ public class FoldersApiTest {
                 api.createFolderFolder(folderId, folder, contentType, include, exclude, skipRemap);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -801,12 +806,14 @@ public class FoldersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteFolderTest() throws ApiException {
         Long folderId = null;
-        ResultPrefix response =
-                api.deleteFolder(folderId);
+        ResultPrefix response = api.deleteFolder(folderId);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -818,12 +825,13 @@ public class FoldersApiTest {
      */
     @Test
     public void getFolderTest() throws ApiException {
-        Long folderId = null;
+        Long folderId = TestData.FolderData.id;
         List<FolderInclude> include = null;
-        Folder response =
-                api.getFolder(folderId, include);
+        Folder response = api.getFolder(folderId, include);
 
-        // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull()
+                .satisfies(TestData.FolderData::assertEquals);
     }
 
     /**
@@ -835,14 +843,16 @@ public class FoldersApiTest {
      */
     @Test
     public void listFoldersTest() throws ApiException {
-        Long folderId = null;
+        Long parentFolderId = TestData.FolderData.id;
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListFolders200Response response =
-                api.listFolders(folderId, includeAll, page, pageSize);
+        ListFolders200Response response = api.listFolders(parentFolderId, includeAll, page, pageSize);
 
-        // TODO: test validations
+        assertThat(response)
+                .satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData())
+                .satisfies(TestData.FolderData::assertChildFolders);
     }
 
     /**
@@ -853,14 +863,16 @@ public class FoldersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void moveFolderTest() throws ApiException {
-        Long folderId = null;
+        Long folderId = TestData.FolderData.id;
         ContainerDestination containerDestination = null;
         String contentType = null;
-        ContainerDestination response =
-                api.moveFolder(folderId, containerDestination, contentType);
+        ContainerDestination response = api.moveFolder(folderId, containerDestination, contentType);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -871,13 +883,14 @@ public class FoldersApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateFolderTest() throws ApiException {
-        Long folderId = null;
+        Long folderId = TestData.FolderData.id;
         Folder folder = null;
-        UpdateFolder200Response response =
-                api.updateFolder(folderId, folder);
+        UpdateFolder200Response response = api.updateFolder(folderId, folder);
 
         // TODO: test validations
+        System.out.println(response);
+        assertThat(response).isNotNull();
     }
-
 }

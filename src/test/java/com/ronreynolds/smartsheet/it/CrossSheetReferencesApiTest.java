@@ -733,11 +733,13 @@ import com.ronreynolds.smartsheet.model.ListCrosssheetReferences200Response;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for CrossSheetReferencesApi
  */
-@Disabled
+@Disabled("CrossSheetReferencesApiTest not yet implemented")
 public class CrossSheetReferencesApiTest {
 
     private final CrossSheetReferencesApi api = new CrossSheetReferencesApi();
@@ -758,6 +760,7 @@ public class CrossSheetReferencesApiTest {
         String contentType = null;
         AddCrosssheetReference200Response response =
                 api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest, contentType);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

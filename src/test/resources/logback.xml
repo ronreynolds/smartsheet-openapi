@@ -7,18 +7,22 @@
 
     <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} {%mdc} %msg%n</pattern>
         </encoder>
     </appender>
 
     <appender name="file" class="ch.qos.logback.core.FileAppender">
         <file>/tmp/smar-openapi-${timestamp}.log</file> <!-- /tmp/ cleanup should keep the disk use down -->
         <encoder>
-            <pattern>%date %level [%thread] %logger{10} [%file:%line] -%kvp- %msg%n</pattern>
+            <pattern>%d{HH:mm:ss} [%thread] %-5level %logger{36} {%mdc} %msg%n</pattern>
         </encoder>
     </appender>
 
     <logger name="com.ronreynolds.smartsheet" level="info"/>
+<!-- very handy when debugging the API
+    <logger name="com.ronreynolds.smartsheet.api" level="trace"/>
+    <logger name="com.ronreynolds.smartsheet.model" level="trace"/>
+-->
 
     <root level="info">
         <appender-ref ref="stdout" />

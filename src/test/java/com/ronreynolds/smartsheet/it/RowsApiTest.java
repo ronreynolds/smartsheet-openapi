@@ -747,11 +747,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for RowsApi
  */
-@Disabled
+@Disabled("RowsApiTest not yet implemented")
 public class RowsApiTest {
 
     private final RowsApi api = new RowsApi();
@@ -773,6 +775,7 @@ public class RowsApiTest {
         CopyOrMoveRowDirective copyOrMoveRowDirective = null;
         CopyOrMoveRowResult response =
                 api.copyRows(sheetId, contentType, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

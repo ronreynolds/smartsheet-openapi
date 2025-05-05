@@ -748,11 +748,13 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for ProofsApi
  */
-@Disabled
+@Disabled("ProofsApiTest not yet implemented")
 public class ProofsApiTest {
 
     private final ProofsApi api = new ProofsApi();
@@ -773,6 +775,7 @@ public class ProofsApiTest {
         File body = null;
         AttachmentsAttachToSheet200Response response =
                 api.proofsAttachToProof(sheetId, proofId, contentType, body);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

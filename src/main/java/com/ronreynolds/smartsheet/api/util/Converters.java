@@ -2,9 +2,11 @@ package com.ronreynolds.smartsheet.api.util;
 
 import com.ronreynolds.smartsheet.model.Cell;
 import com.ronreynolds.smartsheet.model.CellLite;
+import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.RowsAddToSheet200ResponseAllOfResultInner;
 import com.ronreynolds.smartsheet.model.UpdateRows200ResponseAllOfResultInner;
+import com.ronreynolds.smartsheet.model.UserProfile;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,5 +56,36 @@ public class Converters {
                 .columnType(cellLite.getColumnType())
                 .value(cellLite.getValue())
                 .displayValue(cellLite.getDisplayValue());
+    }
+
+    public static UserProfile convert(GetCurrentUser200Response response) {
+        return UserProfile.builder()
+                .id(response.getId())
+                .account(response.getAccount())
+                .admin(response.getAdmin())
+                .alternateEmails(response.getAlternateEmails())
+                .company(response.getCompany())
+                .customWelcomeScreenViewed(response.getCustomWelcomeScreenViewed())
+                .department(response.getDepartment())
+                .email(response.getEmail())
+                .firstName(response.getFirstName())
+                .groupAdmin(response.getGroupAdmin())
+                .jiraAdmin(response.getJiraAdmin())
+                .lastLogin(response.getLastLogin())
+                .lastName(response.getLastName())
+                .licensedSheetCreator(response.getLicensedSheetCreator())
+                .locale(response.getLocale())
+                .mobilePhone(response.getMobilePhone())
+                .profileImage(response.getProfileImage())
+                .resourceViewer(response.getResourceViewer())
+                .role(response.getRole())
+                .salesforceAdmin(response.getSalesforceAdmin())
+                .salesforceUser(response.getSalesforceUser())
+                .sheetCount(response.getSheetCount())
+                .status(response.getStatus())
+                .timeZone(response.getTimeZone())
+                .title(response.getTitle())
+                .workPhone(response.getWorkPhone())
+                .build();
     }
 }

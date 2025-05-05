@@ -738,11 +738,13 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for SharingApi
  */
-@Disabled
+@Disabled("SharingApiTest not yet implemented")
 public class SharingApiTest {
 
     private final SharingApi api = new SharingApi();
@@ -762,6 +764,7 @@ public class SharingApiTest {
         Integer accessApiLevel = null;
         Result response =
                 api.deleteReportShare(reportId, shareId, accessApiLevel);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -810,10 +813,9 @@ public class SharingApiTest {
      */
     @Test
     public void deleteWorkspaceShareTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
-        Result response =
-                api.deleteWorkspaceShare(workspaceId, shareId);
+        Result response = api.deleteWorkspaceShare(workspaceId, shareId);
 
         // TODO: test validations
     }
@@ -891,15 +893,15 @@ public class SharingApiTest {
      */
     @Test
     public void listWorkspaceSharesTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         Integer accessApiLevel = null;
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ListReportShares200Response response =
-                api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
+        var response = api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -914,10 +916,10 @@ public class SharingApiTest {
         Long reportId = null;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareReport(reportId, sendEmail, share);
+        ShareReport200Response response = api.shareReport(reportId, sendEmail, share);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -932,10 +934,10 @@ public class SharingApiTest {
         Long reportId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareReportGet(reportId, shareId, accessApiLevel);
+        Share response = api.shareReportGet(reportId, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -951,10 +953,10 @@ public class SharingApiTest {
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
+        ShareReport200Response response = api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -969,10 +971,10 @@ public class SharingApiTest {
         Long sheetId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareSheetGet(sheetId, shareId, accessApiLevel);
+        Share response = api.shareSheetGet(sheetId, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -988,10 +990,10 @@ public class SharingApiTest {
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         Share share = null;
-        ShareReport200Response response =
-                api.shareSight(sightId, accessApiLevel, sendEmail, share);
+        ShareReport200Response response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1006,10 +1008,10 @@ public class SharingApiTest {
         String sightId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareSightGet(sightId, shareId, accessApiLevel);
+        Share response = api.shareSightGet(sightId, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1022,14 +1024,14 @@ public class SharingApiTest {
      */
     @Test
     public void shareWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareWorkspace(workspaceId, accessApiLevel, sendEmail, share);
+        ShareReport200Response response = api.shareWorkspace(workspaceId, accessApiLevel, sendEmail, share);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1041,13 +1043,13 @@ public class SharingApiTest {
      */
     @Test
     public void shareWorkspaceGetTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
+        Share response = api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1067,6 +1069,7 @@ public class SharingApiTest {
                 api.updateReportShare(reportId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1082,10 +1085,10 @@ public class SharingApiTest {
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
-        UpdateReportShare200Response response =
-                api.updateSheetShare(sheetId, shareId, accessApiLevel, updateReportShareRequest);
+        UpdateReportShare200Response response = api.updateSheetShare(sheetId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1101,10 +1104,10 @@ public class SharingApiTest {
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
-        UpdateReportShare200Response response =
-                api.updateSightShare(sightId, shareId, accessApiLevel, updateReportShareRequest);
+        UpdateReportShare200Response response = api.updateSightShare(sightId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1117,7 +1120,7 @@ public class SharingApiTest {
      */
     @Test
     public void updateWorkspaceShareTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
@@ -1125,6 +1128,7 @@ public class SharingApiTest {
                 api.updateWorkspaceShare(workspaceId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
 }

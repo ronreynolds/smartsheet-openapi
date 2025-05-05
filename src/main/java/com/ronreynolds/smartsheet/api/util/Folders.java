@@ -24,7 +24,7 @@ public class Folders {
     public static Optional<Folder> findFirstFolderByName(@NonNull ApiClient api, @NonNull String name) throws ApiException {
         return new FoldersApi(api)
                 .listFolders(null, true, null, null)
-                .getResult()
+                .getData()
                 .stream()
                 .filter(ws -> name.equals(ws.getName()))
                 .findFirst();
@@ -36,7 +36,7 @@ public class Folders {
     public static List<Folder> findFoldersByName(@NonNull ApiClient api, @NonNull String name) throws ApiException {
         return new FoldersApi(api)
                 .listFolders(null, true, null, null)
-                .getResult()
+                .getData()
                 .stream()
                 .filter(ws -> name.equals(ws.getName()))
                 .collect(Collectors.toList());
@@ -51,7 +51,7 @@ public class Folders {
                 folder.setFolders(folderData.getFolders());
                 folder.setReports(folderData.getReports());
                 folder.setSheets(folderData.getSheets());
-                folder.setSights(folderData.getSights());
+//                folder.setSights(folderData.getSights());
                 folder.setTemplates(folderData.getTemplates());
             }
         }

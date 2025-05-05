@@ -732,11 +732,13 @@ import com.ronreynolds.smartsheet.model.Token;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for TokenApi
  */
-@Disabled
+@Disabled("TokenApiTest not yet implemented")
 public class TokenApiTest {
 
     private final TokenApi api = new TokenApi();
@@ -753,8 +755,7 @@ public class TokenApiTest {
     @Test
     public void tokensDeleteTest() throws ApiException {
         Boolean deleteAllForApiClient = null;
-        Result response =
-                api.tokensDelete(deleteAllForApiClient);
+        Result response = api.tokensDelete(deleteAllForApiClient);
 
         // TODO: test validations
     }
@@ -778,6 +779,7 @@ public class TokenApiTest {
         String redirectUrl = null;
         Token response =
                 api.tokensGetOrRefresh(clientId, grantType, contentType, clientSecret, code, hash, refreshToken, redirectUrl);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

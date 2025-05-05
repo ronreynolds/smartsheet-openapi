@@ -750,11 +750,13 @@ import org.junit.jupiter.api.Test;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 /**
  * API tests for DashboardsApi
  */
-@Disabled
+@Disabled("DashboardsApiTest not yet implemented")
 public class DashboardsApiTest {
 
     private final DashboardsApi api = new DashboardsApi();
@@ -774,6 +776,7 @@ public class DashboardsApiTest {
         ContainerDestination containerDestination = null;
         CopySight200Response response =
                 api.copySight(sightId, contentType, containerDestination);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
