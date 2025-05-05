@@ -3,6 +3,44 @@ this project contains generated integration tests for all generated domain-speci
 track the progress of their implementations.  all such tests live in `src/test/java/.../it/` and most of them are currently disabled.
 the package also contains a `TestData` class in an attempt to consolidate constants used to query or validate the API.
 
+### Finished Tests
+* `EventsApiTest`
+* `ServerInfoApiTest`
+* `TemplatesApiTest`
+
+### Nearly Finished Tests
+* `CellsApiTest` - just need more validation logic
+* `SearchApiTest` - just need more validation logic
+* `UsersApiTest` - one method to go!
+
+### Unfinished Tests
+* `AlternateEmailAddressApiTest`
+* `AttachmentsApiTest`
+* `AutomationRulesApiTest`
+* `CellImagesApiTest`
+* `ColumnsApiTest`
+* `CommentsApiTest`
+* `ContactsApiTest`
+* `CrossSheetReferencesApiTest`
+* `DashboardsApiTest`
+* `DiscussionsApiTest`
+* `FavoritesApiTest`
+* `FoldersApiTest`
+* `GroupMembersApiTest`
+* `GroupsApiTest`
+* `HomeApiTest`
+* `ImportApiTest`
+* `ProofsApiTest`
+* `ReportsApiTest`
+* `RowsApiTest`
+* `SharingApiTest`
+* `SheetsApiTest`
+* `SheetSummaryApiTest`
+* `TokenApiTest`
+* `UpdateRequestsApiTest`
+* `WebhooksApiTest`
+* `WorkspacesApiTest`
+
 ### AlternateEmailAddressApiTest 
 * In-Progress
     * `addAlternateEmailTest`
