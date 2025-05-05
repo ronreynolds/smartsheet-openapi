@@ -809,7 +809,7 @@ public class ImportApiTest {
      */
     @Test
     public void importSheetIntoWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         SheetContentType contentType = null;
         String sheetName = null;
         String contentDisposition = null;
