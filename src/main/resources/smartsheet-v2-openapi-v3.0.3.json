@@ -1304,7 +1304,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/FolderArray"
                         }
                       }
@@ -10945,7 +10945,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/ResultPrefix"
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/ResultPrefix"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "sheetsRemovedFromSharing":{"type": "integer"},
+                        "workspacesRemovedFromSharing":{"type": "integer"}
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -11032,11 +11043,11 @@
                     {
                       "type": "object",
                       "properties": {
-                        "data": {
+                        "result": {
                           "description": "Updated User Properties",
                           "allOf": [
                             {
-                              "$ref": "#/components/schemas/UserProfileImageResponseArray"
+                              "$ref": "#/components/schemas/User"
                             }
                           ]
                         }
@@ -11974,7 +11985,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Workspace"
+                "$ref": "#/components/schemas/WorkspaceLite"
               }
             }
           }
@@ -11992,7 +12003,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "data": {
+                        "result": {
                           "$ref": "#/components/schemas/Workspace"
                         }
                       }
@@ -12369,8 +12380,14 @@
                           "description": "Can contain dashboards, folders, reports, sheets, or templates.",
                           "type": "object",
                           "properties": {
+                            "id": {
+                              "$ref": "#/components/schemas/Int64"
+                            },
                             "name": {
                               "description": "Folder name.",
+                              "type": "string"
+                            },
+                            "permalink":{
                               "type": "string"
                             }
                           }
@@ -12509,7 +12526,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -13394,7 +13411,7 @@
         "name": "workspaceId",
         "in": "path",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         },
         "required": true,
         "description": "WorkspaceID of the worksheet being accessed."
@@ -18470,7 +18487,9 @@
           },
           "type": {
             "description": "The type of this share. One of the following values: GROUP or USER.\n",
-            "type": "string"
+            "allOf": [{
+              "$ref": "#/components/schemas/ShareType"
+            }]
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
@@ -18499,7 +18518,9 @@
           },
           "scope": {
             "description": "The scope of this share. One of the following values:\n  * **ITEM**: an item-level share (that is, the specific object to which\nthe share applies is shared with\n    the user or group).\n  * **WORKSPACE**: a workspace-level share (that is, the workspace that\ncontains the object to which the\n    share applies is shared with the user or group).\n",
-            "type": "string"
+            "allOf": [{
+              "$ref": "#/components/schemas/ShareScope"
+            }]
           },
           "subject": {
             "description": "The subject of the email that is optionally sent to notify the recipient. You can specify this attribute\nin a request, but it is never present in a response.\n",
@@ -18512,6 +18533,22 @@
         "items": {
           "$ref": "#/components/schemas/Share"
         }
+      },
+      "ShareScope": {
+        "type": "string",
+        "description": "The scope of this share. One of the following values:\n  * **ITEM**: an item-level share (that is, the specific object to which\nthe share applies is shared with\n    the user or group).\n  * **WORKSPACE**: a workspace-level share (that is, the workspace that\ncontains the object to which the\n    share applies is shared with the user or group).\n",
+        "enum": [
+          "ITEM",
+          "WORKSPACE"
+        ]
+      },
+      "ShareType": {
+        "type": "string",
+        "description": "The type of this share. One of the following values: GROUP or USER.",
+        "enum": [
+          "GROUP",
+          "USER"
+        ]
       },
       "SharedSecret": {
         "type": "object",
@@ -20070,13 +20107,7 @@
           },
           "status": {
             "description": "User status, set to one of the listed enum values.",
-            "type": "string",
-            "enum": [
-              "ACTIVE",
-              "DECLINED",
-              "PENDING",
-              "DEACTIVATED"
-            ],
+            "allOf": [{"$ref": "#/components/schemas/UserStatus"}],
             "example": "ACTIVE"
           }
         }
@@ -20753,6 +20784,15 @@
           "permalink": {
             "description": "URL that represents a direct link to the workspace in Smartsheet.",
             "type": "string"
+          },
+          "folders": {
+            "$ref": "#/components/schemas/FolderArray"
+          },
+          "reports": {
+            "$ref": "#/components/schemas/ReportArray"
+          },
+          "sheets": {
+            "$ref": "#/components/schemas/SheetArray"
           }
         }
       },
@@ -20777,6 +20817,31 @@
           "rules",
           "shares"
         ]
+      },
+      "WorkspaceLite": {
+        "description": "Used to create a workspace (without child containers)",
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Workspace Id.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "name": {
+            "description": "Workspace name.",
+            "type": "string"
+          },
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "permalink": {
+            "description": "URL that represents a direct link to the workspace in Smartsheet.",
+            "type": "string"
+          }
+        }
       }
     },
     "securitySchemes": {
