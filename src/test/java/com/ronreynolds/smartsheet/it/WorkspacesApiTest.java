@@ -726,6 +726,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.WorkspacesApi;
+import com.ronreynolds.smartsheet.api.util.ApiClients;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.CreateWorkspace200Response;
 import com.ronreynolds.smartsheet.model.CreateWorkspaceFolder200Response;
@@ -745,9 +746,15 @@ import com.ronreynolds.smartsheet.model.UpdateWorkspace200Response;
 import com.ronreynolds.smartsheet.model.UpdateWorkspaceRequest;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.smartsheet.model.WorkspaceInclude;
+import com.ronreynolds.smartsheet.model.WorkspaceLite;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
+import java.time.OffsetDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -756,11 +763,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for WorkspacesApi
  */
-@Disabled("WorkspacesApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WorkspacesApiTest {
-
     private final WorkspacesApi api = new WorkspacesApi();
-
 
     /**
      * Copy Workspace
@@ -770,17 +775,20 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void copyWorkspaceTest() throws ApiException {
-        String workspaceId = null;
-        ContainerDestination containerDestination = null;
+        Long workspaceId = TestData.WorkspaceData.id;
+        ContainerDestination containerDestination = ContainerDestination.builder()
+                .newName("New Test Workspace")
+                .build();
         String contentType = null;
         List<WorkspaceInclude> include = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response =
-                api.copyWorkspace(workspaceId, containerDestination, contentType, include, skipRemap);
-        assertThat(response).isNotNull();
+        ContainerDestination response = api.copyWorkspace(workspaceId, containerDestination, contentType, include, skipRemap);
 
+        System.out.println(response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -791,16 +799,21 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(1)
     public void createWorkspaceTest() throws ApiException {
-        Workspace workspace = null;
+        WorkspaceLite workspace = WorkspaceLite.builder()
+                .name("new test workspace")
+                .build();
         Integer accessApiLevel = null;
         String contentType = null;
         List<WorkspaceInclude> include = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        CreateWorkspace200Response response =
-                api.createWorkspace(workspace, accessApiLevel, contentType, include, skipRemap);
+        CreateWorkspace200Response response = api.createWorkspace(workspace, accessApiLevel, contentType, include, skipRemap);
 
+        System.out.println(response);
         // TODO: test validations
+        assertThat(response).isNotNull();
+        TestData.temporaryWorkspaceIds.add(response.getResult().getId());    // for deleting later
     }
 
     /**
@@ -811,14 +824,19 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(2)
     public void createWorkspaceFolderTest() throws ApiException {
-        String workspaceId = null;
-        CreateWorkspaceFolderRequest createWorkspaceFolderRequest = null;
+        Long workspaceId = TestData.WorkspaceData.id;
+        CreateWorkspaceFolderRequest createWorkspaceFolderRequest = CreateWorkspaceFolderRequest.builder()
+                // "The value for folder.name must be 50 characters in length or less"
+                .name(("new workspace folder - " + ZonedDateTime.now()).substring(0, 49))
+                .build();
         String contentType = null;
-        CreateWorkspaceFolder200Response response =
-                api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest, contentType);
+        var response = api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest, contentType);
 
+        System.out.println(response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -829,12 +847,21 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(10)
     public void deleteWorkspaceTest() throws ApiException {
-        String workspaceId = null;
-        ResultPrefix response =
-                api.deleteWorkspace(workspaceId);
+        if (TestData.temporaryWorkspaceIds.isEmpty()) {
+            System.out.println("no temporary workspace IDs for deleting");
+            return; // we have nothing to delete
+        }
+        for (Long workspaceId : TestData.temporaryWorkspaceIds) {
+            ResultPrefix response = api.deleteWorkspace(workspaceId);
 
-        // TODO: test validations
+            System.out.println(response);
+            // TODO: test validations
+            assertThat(response).isNotNull();
+        }
+        // if we fail might as well leave the IDs there?
+        TestData.temporaryWorkspaceIds.clear();
     }
 
     /**
@@ -845,13 +872,16 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(9)   // before deleteWorkspaceTest()
+    @Disabled("need test data")
     public void deleteWorkspaceShareTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
-        Result response =
-                api.deleteWorkspaceShare(workspaceId, shareId);
+        Result response = api.deleteWorkspaceShare(workspaceId, shareId);
 
+        System.out.println(response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -862,15 +892,21 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(5)   // after createWorkspaceTest() and copyWorkspaceTest()
     public void getWorkspaceTest() throws ApiException {
-        String workspaceId = null;
-        Integer accessApiLevel = null;
-        List<FolderInclude> include = null;
-        Boolean loadAll = null;
-        Workspace response =
-                api.getWorkspace(workspaceId, accessApiLevel, include, loadAll);
+        try (var ignore = ApiClients.logRequestContext()) {
+            Long workspaceId = TestData.WorkspaceData.id;
+            Integer accessApiLevel = null;
+            List<FolderInclude> include = null;
+            Boolean loadAll = true;
+            Workspace response = api.getWorkspace(workspaceId, accessApiLevel, include, loadAll);
+            assertThat(response).isNotNull()
+                    .satisfies(TestData.WorkspaceData::assertEquals);
 
-        // TODO: test validations
+            for (Long id : TestData.temporaryWorkspaceIds) {
+                assertThat(api.getWorkspace(workspaceId, accessApiLevel, include, loadAll)).isNotNull();
+            }
+        }
     }
 
     /**
@@ -882,14 +918,15 @@ public class WorkspacesApiTest {
      */
     @Test
     public void getWorkspaceFoldersTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = TestData.WorkspaceData.id;
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        GetWorkspaceFolders200Response response =
-                api.getWorkspaceFolders(workspaceId, includeAll, page, pageSize);
+        GetWorkspaceFolders200Response response = api.getWorkspaceFolders(workspaceId, includeAll, page, pageSize);
 
-        // TODO: test validations
+        System.out.println(response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertFolderInWorkspace);
     }
 
     /**
@@ -901,15 +938,14 @@ public class WorkspacesApiTest {
      */
     @Test
     public void listWorkspaceSharesTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = TestData.WorkspaceData.id;
         Integer accessApiLevel = null;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
-        ListReportShares200Response response =
-                api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
-
-        // TODO: test validations
+        Boolean includeAll = true;
+        var response = api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertTestShare);
     }
 
     /**
@@ -926,10 +962,9 @@ public class WorkspacesApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListWorkspaces200Response response =
-                api.listWorkspaces(accessApiLevel, includeAll, page, pageSize);
-
-        // TODO: test validations
+        ListWorkspaces200Response response = api.listWorkspaces(accessApiLevel, includeAll, page, pageSize);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertEquals);
     }
 
     /**
@@ -941,15 +976,16 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareWorkspace(workspaceId, accessApiLevel, sendEmail, share);
-
+        ShareReport200Response response = api.shareWorkspace(workspaceId, accessApiLevel, sendEmail, share);
+        System.out.println(response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -960,14 +996,15 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareWorkspaceGetTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
+        Share response = api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -978,14 +1015,15 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         Integer accessApiLevel = null;
         UpdateWorkspaceRequest updateWorkspaceRequest = null;
-        UpdateWorkspace200Response response =
-                api.updateWorkspace(workspaceId, accessApiLevel, updateWorkspaceRequest);
+        UpdateWorkspace200Response response = api.updateWorkspace(workspaceId, accessApiLevel, updateWorkspaceRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -997,8 +1035,9 @@ public class WorkspacesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateWorkspaceShareTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
@@ -1006,6 +1045,7 @@ public class WorkspacesApiTest {
                 api.updateWorkspaceShare(workspaceId, shareId, accessApiLevel, updateReportShareRequest);
 
         // TODO: test validations
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
 }
