@@ -5,7 +5,7 @@ plugins {
 }
 
 group               = "com.ronreynolds"
-version             = "0.1.4-SNAPSHOT"
+version             = "0.1.5-SNAPSHOT"
 val buildDirectory  = layout.buildDirectory.get()
 // testing out newest specs
 //val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-3.0.3-20250324.json"
