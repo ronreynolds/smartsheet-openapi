@@ -239,6 +239,8 @@ some parts of the Spec don't match the server responses at all
 * `#/paths/workspaces POST` request 
   * type changed from `Workspace` to `WorkspaceLite`
     * `Workspace` without child containers (which are not allowed in create-workspace request)
+* `#/components/schemas/Folder` added fields
+  * `accessLevel`, `createdAt`, `modifiedAt`
 
 #### further improvements
 * added `#/components/schemas/ShareScope` to replace `string` for `#/components/schemas/Share.scope`
