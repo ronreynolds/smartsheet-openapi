@@ -1643,9 +1643,15 @@
                   "description": "All objects a user has access to, including dashboards, folders, reports, sheets, and templates.",
                   "type": "object",
                   "properties": {
-                    "id": {"$ref": "#/components/schemas/Int64"},
-                    "name": {"type": "string"},
-                    "permalink": {"type": "string"},
+                    "id": {
+                      "$ref": "#/components/schemas/Int64"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "permalink": {
+                      "type": "string"
+                    },
                     "folders": {
                       "$ref": "#/components/schemas/FolderArray"
                     },
@@ -10952,8 +10958,12 @@
                     {
                       "type": "object",
                       "properties": {
-                        "sheetsRemovedFromSharing":{"type": "integer"},
-                        "workspacesRemovedFromSharing":{"type": "integer"}
+                        "sheetsRemovedFromSharing": {
+                          "type": "integer"
+                        },
+                        "workspacesRemovedFromSharing": {
+                          "type": "integer"
+                        }
                       }
                     }
                   ]
@@ -12387,7 +12397,7 @@
                               "description": "Folder name.",
                               "type": "string"
                             },
-                            "permalink":{
+                            "permalink": {
                               "type": "string"
                             }
                           }
@@ -16420,6 +16430,15 @@
               }
             ]
           },
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "createdAt": {
+            "$ref": "#/components/schemas/Datetime"
+          },
+          "modifiedAt": {
+            "$ref": "#/components/schemas/Datetime"
+          },
           "favorite": {
             "description": "(Deprecated) Returned only if the user has marked the folder as a favorite in their \"Home\" tab (value = true).",
             "type": "boolean",
@@ -18425,24 +18444,24 @@
             "items": {
               "type": "object",
               "properties": {
-                "clientId":{
+                "clientId": {
                   "type": "integer"
                 },
-                "signInAllowed":{
+                "signInAllowed": {
                   "type": "boolean"
                 },
-                "signUpAllowed":{
+                "signUpAllowed": {
                   "type": "boolean"
                 },
-                "level":{
+                "level": {
                   "type": "integer"
                 }
               }
             }
           },
-          "azureAuthInfo":{
-            "type":"object",
-            "properties":{
+          "azureAuthInfo": {
+            "type": "object",
+            "properties": {
               "clientId": {
                 "description": "GUID",
                 "type": "string"
@@ -18487,9 +18506,11 @@
           },
           "type": {
             "description": "The type of this share. One of the following values: GROUP or USER.\n",
-            "allOf": [{
-              "$ref": "#/components/schemas/ShareType"
-            }]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShareType"
+              }
+            ]
           },
           "accessLevel": {
             "$ref": "#/components/schemas/AccessLevel"
@@ -18518,9 +18539,11 @@
           },
           "scope": {
             "description": "The scope of this share. One of the following values:\n  * **ITEM**: an item-level share (that is, the specific object to which\nthe share applies is shared with\n    the user or group).\n  * **WORKSPACE**: a workspace-level share (that is, the workspace that\ncontains the object to which the\n    share applies is shared with the user or group).\n",
-            "allOf": [{
-              "$ref": "#/components/schemas/ShareScope"
-            }]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ShareScope"
+              }
+            ]
           },
           "subject": {
             "description": "The subject of the email that is optionally sent to notify the recipient. You can specify this attribute\nin a request, but it is never present in a response.\n",
@@ -20107,7 +20130,11 @@
           },
           "status": {
             "description": "User status, set to one of the listed enum values.",
-            "allOf": [{"$ref": "#/components/schemas/UserStatus"}],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/UserStatus"
+              }
+            ],
             "example": "ACTIVE"
           }
         }
