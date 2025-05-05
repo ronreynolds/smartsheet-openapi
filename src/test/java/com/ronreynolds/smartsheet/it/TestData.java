@@ -5,15 +5,24 @@ import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
 import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
 import com.ronreynolds.smartsheet.model.Comment;
+import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
+import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
+import com.ronreynolds.smartsheet.model.ListFolders200Response;
+import com.ronreynolds.smartsheet.model.Report;
+import com.ronreynolds.smartsheet.model.Share;
+import com.ronreynolds.smartsheet.model.ShareScope;
+import com.ronreynolds.smartsheet.model.ShareType;
 import com.ronreynolds.smartsheet.model.Template;
-import com.ronreynolds.smartsheet.model.User;
 import com.ronreynolds.smartsheet.model.UserProfile;
+import com.ronreynolds.smartsheet.model.Workspace;
+import com.ronreynolds.util.reflection.Reflection;
 import lombok.NonNull;
-import org.assertj.core.data.Offset;
+import lombok.extern.slf4j.Slf4j;
 
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +31,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * various bits of test constants
  */
+@Slf4j
 public class TestData {
+    // lists of IDs of added items to be deleted in subsequent tests
+    public static final List<Long> temporaryWorkspaceIds = new ArrayList<>();
+    public static final List<Long> temporaryFolderIds = new ArrayList<>();
+    public static final List<Long> temporaryUserIds = new ArrayList<>();
+
+    private TestData() {
+    }
+
     interface AttachmentData {
         interface CommentAttachment {
             long id = CommentData.attachmentId;
@@ -161,13 +179,56 @@ public class TestData {
     }
 
     interface FolderData {
-        long id = 0L;
+        long id = 1104664725874564L;
         String name = "Test Folder";
+
+        static void assertEquals(@NonNull Folder folder) {
+            assertThat(folder.getId()).isEqualTo(id);
+            assertThat(folder.getName()).isEqualTo(name);
+            assertThat(folder.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            log.info("folder:{}", folder);
+            assertThat(folder.getFolders()).satisfies(FolderData::assertChildFolders);
+            assertThat(folder.getReports()).satisfies(ReportData::assertContains);
+            assertThat(folder.getSheets()).isEmpty();
+            assertThat(folder.getSights()).isEmpty();
+            assertThat(folder.getTemplates()).isEmpty();
+        }
+        static void assertChildFolders(@NonNull List<? extends Folder> childFolders) {
+            assertThat(childFolders)
+                    .anySatisfy(folder -> {
+                        assertThat(folder.getId()).isEqualTo(2081162651821956L);
+                        assertThat(folder.getName()).isEqualTo("Test Folder Child 1");
+                        assertThat(folder.getFolders()).isEmpty();
+                        assertThat(folder.getReports()).isEmpty();
+                        assertThat(folder.getSheets()).isEmpty();
+                        assertThat(folder.getSights()).isEmpty();
+                        assertThat(folder.getTemplates()).isEmpty();
+                    })
+                    .anySatisfy(folder -> {
+                        assertThat(folder.getId()).isEqualTo(1658950186755972L);
+                        assertThat(folder.getName()).isEqualTo("Test Folder Child 2");
+                        assertThat(folder.getFolders()).isEmpty();
+                        assertThat(folder.getReports()).isEmpty();
+                        assertThat(folder.getSheets()).isEmpty();
+                        assertThat(folder.getSights()).isEmpty();
+                        assertThat(folder.getTemplates()).isEmpty();
+                    });
+            log.info("child-folders:{}", childFolders);
+        }
     }
 
     interface ReportData {
-        long id = 0L;
+        long id = 5383337628618628L;
         String name = "Test Report";
+        static void assertContains(@NonNull List<? extends Report> reports) {
+            assertThat(reports).anySatisfy(ReportData::assertEquals);
+        }
+        static void assertEquals(@NonNull Report report) {
+            assertThat(report.getId()).isEqualTo(id);
+            assertThat(report.getName()).isEqualTo(name);
+            assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            log.info("report:{}", report);
+        }
     }
 
     interface RowData {
@@ -192,10 +253,13 @@ public class TestData {
                 .tags(List.of())
                 .build();
     }
+
     interface UserData {
+        long userIdToDeactivate = 0L;
         long id = 829865629902724L;
         String firstName = "Ron";
         String lastName = "Reynolds";
+        String name = firstName + " " + lastName;
         String locale = "en_US";
         String timezone = "US/Pacific";
         String accountName = "Flock of Singletons";
@@ -211,7 +275,7 @@ public class TestData {
                 assertThat(emailList).anyMatch(email -> assertThat(email.getId()).isNotNull().actual() == id);
             }
         }
-        
+
         static void assertEquals(@NonNull GetCurrentUser200Response user) {
             assertThat(user.getAccount()).as("missing account").isNotNull();
             assertThat(user.getAccount().getId()).as("account-id").isEqualTo(accountId);
@@ -248,5 +312,42 @@ public class TestData {
     interface WorkspaceData {
         long id = 4931918228678532L;
         String name = "Test Workspace";
+        AccessLevel level = AccessLevel.OWNER;
+
+        static void assertEquals(@NonNull Workspace workspace) {
+            assertThat(workspace.getId()).isEqualTo(id);
+            assertThat(workspace.getName()).isEqualTo(name);
+            assertThat(workspace.getAccessLevel()).isSameAs(level);
+            assertThat(workspace.getPermalink()).isNotBlank();
+        }
+
+        static void assertTestShare(@NonNull Share share) {
+            assertThat(share.getId()).isEqualTo("AAAC8sImFOeE");
+            assertThat(share.getUserId()).isEqualTo(UserData.id);
+            assertThat(share.getName()).isEqualTo(UserData.name);
+            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(share.getScope()).isSameAs(ShareScope.WORKSPACE);
+            assertThat(share.getType()).isSameAs(ShareType.USER);
+        }
+
+        // FIXME - make non-inner type
+        static void assertFolderInWorkspace(@NonNull GetWorkspaceFolders200ResponseAllOfDataInner folder) {
+            assertThat(folder.getId()).isEqualTo(1104664725874564L);
+            assertThat(folder.getName()).isEqualTo("Test Folder");
+        }
+    }
+
+    /**
+     * these assertions are so common i just couldn't not create a single method to handle them; unfortunately it needs to use
+     * reflection because code-gen uses aggregation instead of inheritance (for other good reasons); no choices without tradeoffs
+     */
+    static void pagedResultHasData(Object pagedResult) {
+        // any response object that aggregates the paged-result will have these methods; unfortunately openapi-codegen uses
+        // aggregation rather than extension so we can't depend on a base-type :shrug:
+        assertThat(pagedResult).isNotNull();
+        assertThat(Reflection.invoke(pagedResult, "getPageNumber", Integer.class)).isOne();
+        assertThat(Reflection.invoke(pagedResult, "getPageSize", Integer.class)).isPositive();
+        assertThat(Reflection.invoke(pagedResult, "getTotalPages", Integer.class)).isPositive();
+        assertThat(Reflection.invoke(pagedResult, "getTotalCount", Integer.class)).isPositive();
     }
 }
