@@ -208,10 +208,39 @@ some parts of the Spec don't match the server responses at all
   * `#/components/schemas/DayOfWeek`
   * `#/components/schemas/Month`
 * `#/components/schemas/UserProfile` missing field `status`
-* `#/components/parameters/commentIdInPath` defined as `string`; should have been `#/components/schemas/Int64` (i.e., `long`)
-  * also `#/components.parameters.discussionIdInPath` and `#/components.parameters.attachmentIdInPath`
-* `#/paths/templates` and `#/paths/templates/public` response needs to be altered to move the `TemplateArray` into a `data` field
-* `#/paths/folders/personal` - added `id`, `name`, and `permalink` to response schema
-* `#/paths/home/folders` - renamed response `result` to `data` to match response from servers
-  * not sure it's possible to create home folders any longer (?)
-* 
+* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
+  * `#/components/parameters/commentIdInPath` 
+  * `#/components/parameters/discussionIdInPath` 
+  * `#/components/parameters/attachmentIdInPath`
+  * `#/components/parameters/workspaceIdInPath`
+* `#/paths/templates` and `#/paths/templates/public` response 
+  * moved the `TemplateArray` into a `data` field
+* `#/paths/folders/personal` response
+  * added `id`, `name`, and `permalink` to response schema
+* `#/paths/users/{userId} DELETE` response
+  * missing fields `sheetsRemovedFromSharing` and `workspacesRemovedFromSharing`
+* `result` response fields renamed to `data`
+  * `#/paths/folders/{folderId}/folders GET`
+  * `#/paths/home/folders GET`
+  * `#/paths/workspaces/{workspaceId}/shares GET`
+* `data` response fields renamed to `result`
+  * `#/paths/workspaces POST` (create-workspace)
+  * `#/paths/users/{userId} PUT`
+  * `#/paths/workspaces POST`
+* `#/components/schemas/Workspace` 
+  * missing many fields, including:
+    * `sheets` - array of minimal Sheet records
+    * `folders` - array of minimal Folder records
+    * `reports` - array of minimal Report records
+* `#/paths/workspaces/{workspaceId}/folders POST` response 
+  * missing fields `id`(Int64) and `permalink`(string)
+* `#/paths/users/{userId} PUT` response 
+  * field `result` changed type `UserProfileImageResponseArray` to `User`
+* `#/paths/workspaces POST` request 
+  * type changed from `Workspace` to `WorkspaceLite`
+    * `Workspace` without child containers (which are not allowed in create-workspace request)
+
+#### further improvements
+* added `#/components/schemas/ShareScope` to replace `string` for `#/components/schemas/Share.scope`
+* added `#/components/schemas/ShareType` to replace `string` for `#/components/schemas/Share.type`
+* changed `#/components/schemas/User.status` from `string-enum` to `#/components/schemas/UserStatus`
