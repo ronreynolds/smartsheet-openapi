@@ -831,8 +831,7 @@ public class AlternateEmailAddressApiTest {
         Long userId = TestData.UserData.id;
         ListAlternateEmails200Response response = api.listAlternateEmails(userId);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getTotalCount()).isGreaterThan(0);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
         assertThat(response.getData()).anyMatch(altEmail -> altEmail.getId() == TestData.UserData.AlternateEmailData.id);
     }
 
