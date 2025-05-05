@@ -157,13 +157,13 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `copyFolderTest`
   * `createFolderFolderTest`
   * `deleteFolderTest`
-  * `getFolderTest`
-  * `listFoldersTest`
   * `moveFolderTest`
   * `updateFolderTest`
 * In-Progress
 * Blocked
 * Done
+  * `getFolderTest`
+  * `listFoldersTest`
 
 ### GroupMembersApiTest
 * To-Do
@@ -361,19 +361,22 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * Done
 
 ### UsersApiTest
-* To-Do
+* Blocked
+  * `updateUserProfileImageTest`
+    * need test image
+* Done
   * `addUserTest`
   * `deactivateUserTest`
-  * `reactivateUserTest`
-  * `removeUserTest`
-  * `updateUserTest`
-  * `updateUserProfileImageTest`
-* In-Progress
-  * `listUsersTest`
-* Blocked
-* Done
+    * unable to verify write-then-read changes, probably due to replication delays of user data across servers
   * `getCurrentUserTest`
   * `getUserTest`
+  * `listUsersTest`
+  * `reactivateUserTest`
+    * unable to verify write-then-read changes, probably due to replication delays of user data across servers
+  * `removeUserTest`
+    * unable to verify write-then-read changes, probably due to replication delays of user data across servers
+  * `updateUserTest`
+    * unable to verify write-then-read changes, probably due to replication delays of user data across servers
 
 ### WebhooksApiTest
 * To-Do
@@ -390,14 +393,8 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### WorkspacesApiTest
 * To-Do
   * `copyWorkspaceTest`
-  * `createWorkspaceTest`
-  * `createWorkspaceFolderTest`
   * `deleteWorkspaceTest`
   * `deleteWorkspaceShareTest`
-  * `getWorkspaceTest`
-  * `getWorkspaceFoldersTest`
-  * `listWorkspaceSharesTest`
-  * `listWorkspacesTest`
   * `shareWorkspaceTest`
   * `shareWorkspaceGetTest`
   * `updateWorkspaceTest`
@@ -405,3 +402,9 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
+  * `createWorkspaceTest`
+  * `createWorkspaceFolderTest`
+  * `getWorkspaceFoldersTest`
+  * `getWorkspaceTest`
+  * `listWorkspaceSharesTest`
+  * `listWorkspacesTest`
