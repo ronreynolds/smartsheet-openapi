@@ -850,7 +850,7 @@ public class SheetsApiTest {
      */
     @Test
     public void createSheetInWorkspaceTest() throws ApiException {
-        String workspaceId = null;
+        Long workspaceId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
         String contentType = null;
@@ -859,7 +859,7 @@ public class SheetsApiTest {
                 api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, contentType, include);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -877,7 +877,7 @@ public class SheetsApiTest {
         DeleteSheet200Response response = api.deleteSheet(sheetId);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -894,7 +894,7 @@ public class SheetsApiTest {
         Result response = api.deleteSheetShare(TestData.SheetData.id, shareId, accessApiLevel);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -943,7 +943,7 @@ public class SheetsApiTest {
         SheetPublish response = api.getSheetPublish(sheetId);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -961,7 +961,7 @@ public class SheetsApiTest {
         SheetVersion response = api.getSheetVersion(sheetId);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -980,7 +980,7 @@ public class SheetsApiTest {
         ListOrgSheets200Response response = api.listOrgSheets(modifiedSince);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1003,7 +1003,7 @@ public class SheetsApiTest {
                 api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
 
     }
 
@@ -1027,7 +1027,7 @@ public class SheetsApiTest {
                 api.listSheets(accessApiLevel, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
         // TODO: test validations
-        assertThat(response).isNotNull();
+        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
