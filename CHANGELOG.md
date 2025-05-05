@@ -4,7 +4,7 @@
 * commit messages: `<type>[(<scope>)]: <description>`
   * types: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs
 
-## 0.1.4 - unreleased
+## 0.1.4 - 2025-05-05
 ### Added
 * `BeforeAllTests` JUnit5 extension to prep the default ApiClient before any integration-tests (or other tests) start
 * `src/test/resources/META-INF/services/org.junit.jupiter.api.extension.Extension` to load our `BeforeAllTests` extension
@@ -17,13 +17,12 @@
 * `ApiClients` updated to use non-deprecated Jackson code to disable coercion of scalars feature
 * added `junit.jupiter.extensions.autodetection.enabled=true` flag to Gradle test task
 * fleshing out integration-tests
-  * `ServerInfoApiTest` is done
-  * `EventsApiTest` is done (but failing because our test account doesn't support this feature)
-  * `TemplatesApiTest` is done
+  * see [Integration Tests Doc](docs/integration-tests.md) for details
 * upgraded openapi-codegen from 7.12.0 to 7.13.0
 ### Fixed
 * malformed response for `/templates` and `/templates/public`
   * moved `TemplateArray` into field called `"data"` to match actual response
+  * see [OpenAPI Spec Changes Doc](docs/spec-changes.md) for more details
 ### Removed
 * `BasicUse` in favor of individual api-specific tests
 * renamed `TestIDs` to `TestData` to more accurately reflect its contents: static inner-interfaces for each resource type
