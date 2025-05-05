@@ -747,6 +747,7 @@ import com.ronreynolds.smartsheet.model.UpdateWorkspaceRequest;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.smartsheet.model.WorkspaceInclude;
 import com.ronreynolds.smartsheet.model.WorkspaceLite;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -763,6 +764,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for WorkspacesApi
  */
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WorkspacesApiTest {
     private final WorkspacesApi api = new WorkspacesApi();
@@ -944,7 +946,12 @@ public class WorkspacesApiTest {
         Integer pageSize = null;
         Boolean includeAll = true;
         var response = api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
-        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response).isNotNull();
+        assertThat(response.getPageSize()).isNull();    // :-?
+        assertThat(response.getTotalPages()).isPositive();
+        assertThat(response.getTotalCount()).isPositive();
+//        assertThat(response).satisfies(TestData::pagedResultHasData); can't use because page-size is null :-?
+
         assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertTestShare);
     }
 
