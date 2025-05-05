@@ -4,6 +4,10 @@
 * commit messages: `<type>[(<scope>)]: <description>`
   * types: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs
 
+## 0.1.5 - unreleased
+### ToDo
+* continue to implement integration-tests to uncover issues in spec and generated API code
+
 ## 0.1.4 - 2025-05-05
 ### Added
 * `BeforeAllTests` JUnit5 extension to prep the default ApiClient before any integration-tests (or other tests) start
