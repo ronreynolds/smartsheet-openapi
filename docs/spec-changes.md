@@ -219,14 +219,6 @@ some parts of the Spec don't match the server responses at all
   * added `id`, `name`, and `permalink` to response schema
 * `#/paths/users/{userId} DELETE` response
   * missing fields `sheetsRemovedFromSharing` and `workspacesRemovedFromSharing`
-* `result` response fields renamed to `data`
-  * `#/paths/folders/{folderId}/folders GET`
-  * `#/paths/home/folders GET`
-  * `#/paths/workspaces/{workspaceId}/shares GET`
-* `data` response fields renamed to `result`
-  * `#/paths/workspaces POST` (create-workspace)
-  * `#/paths/users/{userId} PUT`
-  * `#/paths/workspaces POST`
 * `#/components/schemas/Workspace` 
   * missing many fields, including:
     * `sheets` - array of minimal Sheet records
@@ -242,7 +234,26 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/Folder` added fields
   * `accessLevel`, `createdAt`, `modifiedAt`
 
+#### result/data response field mismatch (GET returns 'data'; PUT/POST return 'result')
+* `result` -> `data`
+    * `#/paths/folders/{folderId}/folders GET`
+    * `#/paths/home/folders GET`
+    * `#/paths/workspaces/{workspaceId}/shares GET`
+    * `#/paths/reports/{reportId}/shares GET`
+    * `#/paths/sheets/{sheetId}/shares GET`
+* `data` response fields renamed to `result`
+    * `#/paths/workspaces POST` (create-workspace)
+    * `#/paths/users/{userId} PUT`
+    * `#/paths/workspaces POST`
+
 #### further improvements
-* added `#/components/schemas/ShareScope` to replace `string` for `#/components/schemas/Share.scope`
-* added `#/components/schemas/ShareType` to replace `string` for `#/components/schemas/Share.type`
-* changed `#/components/schemas/User.status` from `string-enum` to `#/components/schemas/UserStatus`
+* added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
+* added `#/components/schemas/ShareType` enum to replace `string` for `#/components/schemas/Share.type`
+* added `#/components/schemas/UserStatus` enum to replace `string-enum` for `#/components/schemas/User.status` 
+* added `#/components/schemas/GroupId`
+* changed `#/components/schemas/EmailOrGroupId` to use `#/components/schemas/EmailAddress` and `#/components/schemas/GroupId`
+* removed unused `#/components/schemas/Recipient` (also identical in structure to EmailOrGroupId)
+* added `#/components/schemas/SourceType` enum to replace `string` for `#/components/schemas/Source.type`
+* changed `#/components/schemas/SheetEmail.formatDetails.paperSize` from `string-enum` to `#/components/schemas/PaperSize` 
+* added `#/components/schemas/SheetEmailFormat`
+* changed `#/components/schemas/SheetEmail.format` from `string-enum` to `#/components/schemas/SheetEmailFormat`
