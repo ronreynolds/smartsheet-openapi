@@ -340,23 +340,24 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `createSheetInWorkspaceTest`
   * `deleteSheetTest`
   * `deleteSheetShareTest`
+  * `moveSheetTest`
+  * `setSheetPublishTest`
+  * `shareSheetTest`
+  * `updateSheetTest`
+  * `updateSheetShareTest`
+* In-Progress
+  * `getSheetTest`
+    * works; just haven't added much validation logic yet
   * `getSheetPublishTest`
+    * works; so far only asserting that response parses and contains proper values for unpublished sheet
+* Blocked
+* Done
   * `getSheetVersionTest`
   * `listOrgSheetsTest`
   * `listSheetSharesTest`
   * `listSheetsTest`
-  * `moveSheetTest`
-  * `setSheetPublishTest`
-  * `shareSheetTest`
   * `shareSheetGetTest`
   * `sheetSendTest`
-  * `updateSheetTest`
-  * `updateSheetShareTest`
-* In-Progress
-    * `getSheetTest`
-      * works; just haven't added much validation logic yet
-* Blocked
-* Done
 
 ### SheetSummaryApiTest
 * To-Do
