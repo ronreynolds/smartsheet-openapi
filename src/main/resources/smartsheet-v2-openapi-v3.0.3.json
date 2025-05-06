@@ -2780,7 +2780,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -9157,7 +9157,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -16052,6 +16052,7 @@
           "email": {
             "description": "User's email address.",
             "type": "string",
+            "format": "email",
             "example": "johnathan.doe@smartsheet.com"
           }
         }
@@ -16067,27 +16068,20 @@
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "email": {
-                "description": "The email address of an individual recipient.",
-                "type": "string",
-                "format": "email"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/EmailAddress"
               }
-            }
+            ]
           },
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "groupId": {
-                "description": "The Id of a group recipient.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Int64"
-                  }
-                ]
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/GroupId"
               }
-            }
+            ]
           }
         ]
       },
@@ -16747,6 +16741,19 @@
           "$ref": "#/components/schemas/Group"
         }
       },
+      "GroupId": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "description": "The Id of a group recipient.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          }
+        }
+      },
       "GroupMember": {
         "type": "object",
         "properties": {
@@ -17247,17 +17254,18 @@
         }
       },
       "PaperSize": {
+        "description": "Specifies paper size.",
         "type": "string",
         "enum": [
-          "LETTER",
-          "LEGAL",
-          "WIDE",
-          "ARCHD",
-          "A4",
-          "A3",
-          "A2",
+          "A0",
           "A1",
-          "A0"
+          "A2",
+          "A3",
+          "A4",
+          "ARCHD",
+          "LEGAL",
+          "LETTER",
+          "WIDE"
         ],
         "default": "LETTER"
       },
@@ -17581,38 +17589,6 @@
             "type": "boolean"
           }
         }
-      },
-      "Recipient": {
-        "description": "Specifies the recipient of an email. The recipient may be either an individual or a group. To specify an individual, set the email attribute; to specify a group, set the groupId attribute. Either email and groupId may be set, but not both.\n",
-        "oneOf": [
-          {
-            "type": "object",
-            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "email": {
-                "description": "The email address of an individual recipient.",
-                "type": "string",
-                "format": "email",
-                "example": "john.doe@smartsheet.com"
-              }
-            }
-          },
-          {
-            "type": "object",
-            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "groupId": {
-                "description": "The Id of a group recipient.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Int64"
-                  }
-                ],
-                "example": 2258118617917316
-              }
-            }
-          }
-        ]
       },
       "Report": {
         "allOf": [
@@ -18858,31 +18834,26 @@
         "type": "object",
         "properties": {
           "format": {
-            "description": "One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.\n",
-            "type": "string"
+            "$ref": "#/components/schemas/SheetEmailFormat"
           },
           "formatDetails": {
             "type": "object",
             "properties": {
               "paperSize": {
-                "description": "Specifies paper size.",
-                "type": "string",
-                "example": "LETTER",
-                "enum": [
-                  "A0",
-                  "A1",
-                  "A2",
-                  "A3",
-                  "A4",
-                  "ARCHID",
-                  "LEGAL",
-                  "LETTER",
-                  "WIDE"
-                ]
+                "$ref": "#/components/schemas/PaperSize"
               }
             }
           }
         }
+      },
+      "SheetEmailFormat": {
+        "description": "One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.\n",
+        "type": "string",
+        "enum": [
+          "EXCEL",
+          "PDF",
+          "PDF_GANTT"
+        ]
       },
       "SheetExclude": {
         "type": "string",
@@ -19569,10 +19540,18 @@
             ]
           },
           "type": {
-            "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
-            "type": "string"
-          }
+            "$ref": "#/components/schemas/SourceType"          }
         }
+      },
+      "SourceType": {
+        "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
+        "type": "string",
+        "enum": [
+          "report",
+          "sheet",
+          "sight",
+          "template"
+        ]
       },
       "StreamResult": {
         "description": "StreamResult Object",
