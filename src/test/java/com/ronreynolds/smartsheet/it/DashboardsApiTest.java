@@ -744,6 +744,7 @@ import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSight200Response;
 import com.ronreynolds.smartsheet.model.UpdateSightRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -756,9 +757,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for DashboardsApi
  */
+@Slf4j
 @Disabled("DashboardsApiTest not yet implemented")
 public class DashboardsApiTest {
-
     private final DashboardsApi api = new DashboardsApi();
 
 
@@ -774,11 +775,12 @@ public class DashboardsApiTest {
         String sightId = null;
         String contentType = null;
         ContainerDestination containerDestination = null;
-        CopySight200Response response =
-                api.copySight(sightId, contentType, containerDestination);
+        CopySight200Response response = api.copySight(sightId, contentType, containerDestination);
         assertThat(response).isNotNull();
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -791,10 +793,11 @@ public class DashboardsApiTest {
     @Test
     public void deleteSightTest() throws ApiException {
         String sightId = null;
-        ResultPrefix response =
-                api.deleteSight(sightId);
+        ResultPrefix response = api.deleteSight(sightId);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -808,10 +811,11 @@ public class DashboardsApiTest {
     public void deleteSightShareTest() throws ApiException {
         String sightId = null;
         String shareId = null;
-        Result response =
-                api.deleteSightShare(sightId, shareId);
+        Result response = api.deleteSightShare(sightId, shareId);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -828,10 +832,11 @@ public class DashboardsApiTest {
         List<GetDashboardInclude> include = null;
         CompatibilityLevel level = null;
         Boolean numericDates = null;
-        Sight response =
-                api.getSight(sightId, accessApiLevel, include, level, numericDates);
+        Sight response = api.getSight(sightId, accessApiLevel, include, level, numericDates);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -844,10 +849,11 @@ public class DashboardsApiTest {
     @Test
     public void getSightPublishStatusTest() throws ApiException {
         String sightId = null;
-        SightPublish response =
-                api.getSightPublishStatus(sightId);
+        SightPublish response = api.getSightPublishStatus(sightId);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -865,10 +871,11 @@ public class DashboardsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListReportShares200Response response =
-                api.listSightShares(sightId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
+        var response = api.listSightShares(sightId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -889,7 +896,9 @@ public class DashboardsApiTest {
         ListSights200Response response =
                 api.listSights(accessApiLevel, includeAll, modifiedSince, numericDates, page, pageSize);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -904,10 +913,11 @@ public class DashboardsApiTest {
         String sightId = null;
         String contentType = null;
         ContainerDestination containerDestination = null;
-        CopySight200Response response =
-                api.moveSight(sightId, contentType, containerDestination);
+        CopySight200Response response = api.moveSight(sightId, contentType, containerDestination);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -922,10 +932,11 @@ public class DashboardsApiTest {
         String sightId = null;
         String contentType = null;
         SightPublish sightPublish = null;
-        SetSightPublishStatus200Response response =
-                api.setSightPublishStatus(sightId, contentType, sightPublish);
+        SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, contentType, sightPublish);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -941,10 +952,11 @@ public class DashboardsApiTest {
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         Share share = null;
-        ShareReport200Response response =
-                api.shareSight(sightId, accessApiLevel, sendEmail, share);
+        ShareReport200Response response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -959,10 +971,11 @@ public class DashboardsApiTest {
         String sightId = null;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareSightGet(sightId, shareId, accessApiLevel);
+        Share response = api.shareSightGet(sightId, shareId, accessApiLevel);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -978,10 +991,11 @@ public class DashboardsApiTest {
         Boolean numericDates = null;
         String contentType = null;
         UpdateSightRequest updateSightRequest = null;
-        UpdateSight200Response response =
-                api.updateSight(sightId, numericDates, contentType, updateSightRequest);
+        UpdateSight200Response response = api.updateSight(sightId, numericDates, contentType, updateSightRequest);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -997,10 +1011,10 @@ public class DashboardsApiTest {
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
-        UpdateReportShare200Response response =
-                api.updateSightShare(sightId, shareId, accessApiLevel, updateReportShareRequest);
+        UpdateReportShare200Response response = api.updateSightShare(sightId, shareId, accessApiLevel, updateReportShareRequest);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
-
 }
