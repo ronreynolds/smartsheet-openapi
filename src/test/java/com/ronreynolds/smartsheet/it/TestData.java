@@ -10,9 +10,15 @@ import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
 import com.ronreynolds.smartsheet.model.ListFolders200Response;
 import com.ronreynolds.smartsheet.model.Report;
+import com.ronreynolds.smartsheet.model.Result;
+import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareScope;
 import com.ronreynolds.smartsheet.model.ShareType;
+import com.ronreynolds.smartsheet.model.Sheet;
+import com.ronreynolds.smartsheet.model.SheetListingDataInner;
+import com.ronreynolds.smartsheet.model.SheetPublish;
+import com.ronreynolds.smartsheet.model.SourceType;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
 import com.ronreynolds.smartsheet.model.Workspace;
@@ -242,6 +248,110 @@ public class TestData {
         OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
         List<String> effectiveAttachmentOptions =
                 List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
+        String shareId = "AAAC8sImFOeE";
+
+        static void assertEquals(@NonNull Sheet sheet) {
+            assertThat(sheet.getName()).isEqualTo(name);
+            assertThat(sheet.getId()).isEqualTo(id);
+            assertThat(sheet.getCreatedAt()).isEqualTo(createdDate);
+            assertThat(sheet.getEffectiveAttachmentOptions()).containsOnly(effectiveAttachmentOptions.toArray(new String[0]));
+        }
+        
+        static void assertNotPublished(@NonNull SheetPublish publish) {
+            assertThat(publish.getIcalEnabled()).isFalse();
+            assertThat(publish.getIcalUrl()).isNull();
+            assertThat(publish.getReadOnlyFullAccessibleBy()).isNull();
+            assertThat(publish.getReadOnlyFullDefaultView()).isNull();
+            assertThat(publish.getReadOnlyFullEnabled()).isFalse();
+            assertThat(publish.getReadOnlyFullShowToolbar()).isNull();
+            assertThat(publish.getReadOnlyFullUrl()).isNull();
+            assertThat(publish.getReadOnlyLiteEnabled()).isFalse();
+            assertThat(publish.getReadOnlyLiteSslUrl()).isNull();
+            assertThat(publish.getReadOnlyLiteUrl()).isNull();
+            assertThat(publish.getReadWriteAccessibleBy()).isNull();
+            assertThat(publish.getReadWriteDefaultView()).isNull();
+            assertThat(publish.getReadWriteEnabled()).isFalse();
+            assertThat(publish.getReadWriteShowToolbar()).isNull();
+            assertThat(publish.getReadWriteUrl()).isNull();
+        }
+
+        static void assertValidShare(Share share) {
+            assertThat(share).isNotNull();
+            assertThat(share.getId()).isEqualTo(shareId);
+            assertThat(share.getGroupId()).isNull();
+            assertThat(share.getUserId()).isEqualTo(UserData.id);
+            assertThat(share.getType()).isSameAs(ShareType.USER);
+            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(share.getCcMe()).isNull();
+            assertThat(share.getCreatedAt()).isEqualTo(OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC));
+            assertThat(share.getEmail()).isNotBlank();
+            assertThat(share.getMessage()).isNull();
+            assertThat(share.getCreatedAt()).isAfterOrEqualTo(OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC));
+            assertThat(share.getName()).isEqualTo(UserData.name);
+            assertThat(share.getScope()).isSameAs(ShareScope.ITEM);
+            assertThat(share.getSubject()).isNull();
+        }
+
+        static void assertListingEquals(SheetListingDataInner listing) {
+            assertThat(listing).isNotNull();
+            assertThat(listing.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(listing.getCreatedAt()).isEqualTo(createdDate);
+            assertThat(listing.getId()).isEqualTo(id);
+            assertThat(listing.getName()).isEqualTo(name);
+            assertThat(listing.getPermalink()).isNotBlank();
+            assertThat(listing.getModifiedAt()).isAfterOrEqualTo(createdDate);
+            assertThat(listing.getSource()).satisfies(src -> {
+                assertThat(src.getId()).isEqualTo(4503604829677444L);
+                assertThat(src.getType()).isSameAs(SourceType.SHEET);
+            });
+            assertThat(listing.getVersion()).isGreaterThanOrEqualTo(9); // as of 2025-05-06
+        }
+
+        @NonNull
+        static Sheet createTestSheet() {
+            return Sheet.builder()
+//                    .accessLevel()
+//                    .attachments()
+//                    .cellImageUploadEnabled()
+//                    .columns()
+//                    .createdAt()
+//                    .crossSheetReferences()
+//                    .dependenciesEnabled()
+//                    .discussions()
+//                    .effectiveAttachmentOptions()
+//                    .favorite()
+//                    .filters()
+                    .fromId(id) // copy
+//                    .ganttConfig()
+//                    .hasSummaryFields()
+//                    .id()
+//                    .isMultiPicklistEnabled()
+//                    .modifiedAt()
+//                    .name()
+//                    .owner()
+//                    .ownerId()
+//                    .permalink()
+//                    .projectSettings()
+//                    .readOnly()
+//                    .resourceManagementEnabled()
+//                    .resourceManagementType()
+//                    .rows()
+//                    .showParentRowsForFilters()
+//                    .source()
+//                    .summary()
+//                    .totalRowCount()
+//                    .userPermissions()
+//                    .userSettings()
+//                    .version()
+//                    .workspace()
+                    .build();
+        }
+        @NonNull
+        static Sheet createTestSheetCopy() {
+            return Sheet.builder()
+                    .fromId(id) // copy of the test sheet
+                    .build();
+        }
     }
 
     interface TemplateData {
@@ -322,7 +432,7 @@ public class TestData {
         }
 
         static void assertTestShare(@NonNull Share share) {
-            assertThat(share.getId()).isEqualTo("AAAC8sImFOeE");
+            assertThat(share.getId()).isEqualTo(SheetData.shareId);
             assertThat(share.getUserId()).isEqualTo(UserData.id);
             assertThat(share.getName()).isEqualTo(UserData.name);
             assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
@@ -349,5 +459,19 @@ public class TestData {
         assertThat(Reflection.invoke(pagedResult, "getPageSize", Integer.class)).isPositive();
         assertThat(Reflection.invoke(pagedResult, "getTotalPages", Integer.class)).isPositive();
         assertThat(Reflection.invoke(pagedResult, "getTotalCount", Integer.class)).isPositive();
+    }
+
+    static void successfulResult(Result result) {
+        assertThat(result).isNotNull();
+        assertThat(result.getFailedItems()).isEmpty();
+        assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
+        // what's result.version about?
+    }
+
+    static void successfulResult(ResultPrefix result) {
+        assertThat(result).isNotNull();
+        assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
     }
 }
