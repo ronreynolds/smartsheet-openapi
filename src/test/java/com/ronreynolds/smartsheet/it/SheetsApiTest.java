@@ -734,21 +734,21 @@ import com.ronreynolds.smartsheet.model.CopySheet200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolder200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolderRequest;
 import com.ronreynolds.smartsheet.model.DeleteSheet200Response;
+import com.ronreynolds.smartsheet.model.EmailAddress;
+import com.ronreynolds.smartsheet.model.EmailOrGroupId;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
 import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
-import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.ListSheetInclude;
-import com.ronreynolds.smartsheet.model.ListSheets200Response;
 import com.ronreynolds.smartsheet.model.MoveSheetRequest;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSheetPublish200Response;
 import com.ronreynolds.smartsheet.model.Share;
-import com.ronreynolds.smartsheet.model.ShareReport200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetEmail;
+import com.ronreynolds.smartsheet.model.SheetEmailFormat;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetFromTemplateInclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
@@ -759,24 +759,26 @@ import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSheet200Response;
 import com.ronreynolds.smartsheet.model.UpdateSheetRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 /**
  * API tests for SheetsApi
  */
-@Disabled("SheetsApiTest not yet implemented")
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class SheetsApiTest {
-    private static final List<Long> sheetsToDelete = new ArrayList<>();
     private final SheetsApi api = new SheetsApi();
 
     /**
@@ -787,6 +789,7 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void copySheetTest() throws ApiException {
         ContainerDestination containerDestination = null;
         String contentType = null;
@@ -795,6 +798,7 @@ public class SheetsApiTest {
         CopySheet200Response response =
                 api.copySheet(TestData.SheetData.id, containerDestination, contentType, include, exclude);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -807,6 +811,7 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void createSheetInFolderTest() throws ApiException {
         Long folderId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
@@ -815,6 +820,7 @@ public class SheetsApiTest {
         CreateSheetInFolder200Response response =
                 api.createSheetInFolder(folderId, createSheetInFolderRequest, contentType, include);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -828,6 +834,7 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void createSheetInSheetsFolderTest() throws ApiException {
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
@@ -836,6 +843,7 @@ public class SheetsApiTest {
         CreateSheetInFolder200Response response =
                 api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, contentType, include);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -849,6 +857,7 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void createSheetInWorkspaceTest() throws ApiException {
         Long workspaceId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
@@ -858,8 +867,9 @@ public class SheetsApiTest {
         CreateSheetInFolder200Response response =
                 api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, contentType, include);
 
+        log.info("{}", response);
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -870,14 +880,17 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSheetTest() throws ApiException {
-        Sheet sheet = createTestSheet();
+        Sheet sheet = TestData.SheetData.createTestSheetCopy();
         assertThat(sheet).isNotNull();
+//        sheet = api.createSheetInFolder(TestData.FolderData.id, ) - need to work out method args
         Long sheetId = sheet.getId();
         DeleteSheet200Response response = api.deleteSheet(sheetId);
 
+        log.info("{}", response);
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -888,13 +901,15 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSheetShareTest() throws ApiException {
         String shareId = null;
         Integer accessApiLevel = null;
         Result response = api.deleteSheetShare(TestData.SheetData.id, shareId, accessApiLevel);
 
+        log.info("{}", response);
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -921,13 +936,12 @@ public class SheetsApiTest {
         List<Long> rowIds = null;
         List<Integer> rowNumbers = null;
         OffsetDateTime rowsModifiedSince = null;
-        var response =
+        Sheet response =
                 api.getSheet(sheetId, accept, accessApiLevel, include, exclude, columnIds, filterId, ifVersionAfter, level,
                         pageSize, page, paperSize, rowIds, rowNumbers, rowsModifiedSince);
 
-        // TODO: test validations
-        assertThat(response).isNotNull();
-        System.out.println(response);
+        log.info("{}", response);
+        assertThat(response).isNotNull().satisfies(TestData.SheetData::assertEquals);
     }
 
     /**
@@ -942,8 +956,10 @@ public class SheetsApiTest {
         Long sheetId = TestData.SheetData.id;
         SheetPublish response = api.getSheetPublish(sheetId);
 
-        // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        log.info("{}", response);
+        assertThat(response).isNotNull().satisfies(TestData.SheetData::assertNotPublished);
+
+        // TODO - publish a sheet and validate results
     }
 
     /**
@@ -960,8 +976,9 @@ public class SheetsApiTest {
         Long sheetId = TestData.SheetData.id;
         SheetVersion response = api.getSheetVersion(sheetId);
 
-        // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        log.info("{}", response);
+        assertThat(response).isNotNull();
+        assertThat(response.getVersion()).isGreaterThanOrEqualTo(9);    // as of 2025-05-06
     }
 
     /**
@@ -979,8 +996,19 @@ public class SheetsApiTest {
         OffsetDateTime modifiedSince = null;
         ListOrgSheets200Response response = api.listOrgSheets(modifiedSince);
 
-        // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        log.info("{}", response);
+
+        assertThat(response).isNotNull();
+        assertThat(response.getPageNumber()).isOne();
+        assertThat(response.getPageSize()).isEqualTo(100);  // default page size (could change)
+        assertThat(response.getTotalCount()).isEqualTo(-1); // weird
+        assertThat(response.getTotalPages()).isEqualTo(-1); // weird
+        assertThat(response.getData())
+                .hasSizeGreaterThan(10)
+                .anySatisfy(datum -> {
+                    assertThat(datum.getName()).isEqualTo(TestData.SheetData.name);
+                    assertThat(datum.getId()).isEqualTo(TestData.SheetData.id);
+                });
     }
 
     /**
@@ -993,18 +1021,16 @@ public class SheetsApiTest {
      */
     @Test
     public void listSheetSharesTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
         SharingInclude sharingInclude = null;
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListReportShares200Response response =
-                api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
-
-        // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
-
+        var response = api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.SheetData::assertValidShare);
     }
 
     /**
@@ -1017,17 +1043,18 @@ public class SheetsApiTest {
     @Test
     public void listSheetsTest() throws ApiException {
         Integer accessApiLevel = null;
-        List<ListSheetInclude> include = null;
-        Boolean includeAll = null;
+        List<ListSheetInclude> include = List.of(ListSheetInclude.values());
+        Boolean includeAll = true;
         OffsetDateTime modifiedSince = null;
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListSheets200Response response =
-                api.listSheets(accessApiLevel, include, includeAll, modifiedSince, numericDates, page, pageSize);
+        var response = api.listSheets(accessApiLevel, include, includeAll, modifiedSince, numericDates, page, pageSize);
 
+        log.info("{}", response);
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.SheetData::assertListingEquals);
     }
 
     /**
@@ -1039,12 +1066,17 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void moveSheetTest() throws ApiException {
-        Long sheetId = null;
-        MoveSheetRequest moveSheetRequest = null;
+        Long sheetId = TestData.SheetData.id;
+        MoveSheetRequest moveSheetRequest = MoveSheetRequest.builder()
+//                .destinationId()
+//                .destinationType()
+                .build();
         String contentType = null;
         CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest, contentType);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -1057,12 +1089,25 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void setSheetPublishTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         String contentType = null;
-        SheetPublishSettings sheetPublishSettings = null;
-        SetSheetPublish200Response response =api.setSheetPublish(sheetId, contentType, sheetPublishSettings);
+        SheetPublishSettings sheetPublishSettings = SheetPublishSettings.builder()
+//                .icalEnabled()
+//                .readOnlyFullAccessibleBy()
+//                .readOnlyFullDefaultView()
+//                .readOnlyFullEnabled()
+//                .readOnlyFullShowToolbar()
+//                .readOnlyLiteEnabled()
+//                .readWriteAccessibleBy()
+//                .readWriteDefaultView()
+//                .readWriteEnabled()
+//                .readWriteAccessibleBy()
+                .build();
+        SetSheetPublish200Response response = api.setSheetPublish(sheetId, contentType, sheetPublishSettings);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -1075,16 +1120,17 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
-        Boolean sendEmail = null;
-        List<Share> share = null;
-        ShareReport200Response response = api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
+        Boolean sendEmail = false;
+        List<Share> share = List.of(Share.builder().build());
+        var response = api.shareSheet(sheetId, accessApiLevel, sendEmail, share);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
-
     }
 
     /**
@@ -1096,14 +1142,14 @@ public class SheetsApiTest {
      */
     @Test
     public void shareSheetGetTest() throws ApiException {
-        Long sheetId = null;
-        String shareId = null;
-        Integer accessApiLevel = null;
+        Long sheetId = TestData.SheetData.id;
+        String shareId = TestData.SheetData.shareId;
+        Integer accessApiLevel = null; // ?
         Share response = api.shareSheetGet(sheetId, shareId, accessApiLevel);
 
-        // TODO: test validations
-        assertThat(response).isNotNull();
-
+//        log.info("{}", response);
+        assertThat(response).isNotNull()
+                .satisfies(TestData.SheetData::assertValidShare);
     }
 
     /**
@@ -1114,15 +1160,24 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("totally works - just don't want the spam :)")
     public void sheetSendTest() throws ApiException {
-        Long sheetId = null;
-        String contentType = null;
-        SheetEmail sheetEmail = null;
+        Long sheetId = TestData.SheetData.id;
+        String contentType = null;  // no idea
+        List<EmailOrGroupId> emailOrGroupIds = Stream.of("user@example.com")
+                // EmailOrGroupId is a one-of around 2 types so we create the proper value type then wrap it in the one-of
+                .map(email -> new EmailOrGroupId(EmailAddress.builder().email(email).build()))
+                .collect(Collectors.toList());
+        SheetEmail sheetEmail = SheetEmail.builder()
+                .sendTo(emailOrGroupIds)
+                .format(SheetEmailFormat.PDF)
+                .message("yo!  here's some sheet!")
+                .ccMe(true)
+                .build();
         ResultPrefix response = api.sheetSend(sheetId, contentType, sheetEmail);
 
-        // TODO: test validations
-        assertThat(response).isNotNull();
-
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::successfulResult);
     }
 
     /**
@@ -1138,12 +1193,14 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
         UpdateSheetRequest updateSheetRequest = null;
         UpdateSheet200Response response = api.updateSheet(sheetId, accessApiLevel, updateSheetRequest);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
     }
@@ -1156,21 +1213,17 @@ public class SheetsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSheetShareTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
         UpdateReportShare200Response response =
                 api.updateSheetShare(sheetId, shareId, accessApiLevel, updateReportShareRequest);
 
+        log.info("{}", response);
         // TODO: test validations
         assertThat(response).isNotNull();
-
-    }
-
-    private Sheet createTestSheet() {
-        // TODO
-        return null;
     }
 }
