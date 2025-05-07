@@ -729,12 +729,10 @@ import com.ronreynolds.smartsheet.api.WorkspacesApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.CreateWorkspace200Response;
-import com.ronreynolds.smartsheet.model.CreateWorkspaceFolder200Response;
 import com.ronreynolds.smartsheet.model.CreateWorkspaceFolderRequest;
 import com.ronreynolds.smartsheet.model.FolderCopySkipRemap;
 import com.ronreynolds.smartsheet.model.FolderInclude;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200Response;
-import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.ListWorkspaces200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
@@ -754,7 +752,6 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -946,13 +943,8 @@ public class WorkspacesApiTest {
         Integer pageSize = null;
         Boolean includeAll = true;
         var response = api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
-        assertThat(response).isNotNull();
-        assertThat(response.getPageSize()).isNull();    // :-?
-        assertThat(response.getTotalPages()).isPositive();
-        assertThat(response.getTotalCount()).isPositive();
-//        assertThat(response).satisfies(TestData::pagedResultHasData); can't use because page-size is null :-?
-
-        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertTestShare);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertShare);
     }
 
     /**
