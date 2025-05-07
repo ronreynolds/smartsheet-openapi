@@ -312,18 +312,10 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `deleteSheetShareTest`
   * `deleteSightShareTest`
   * `deleteWorkspaceShareTest`
-  * `listReportSharesTest`
-  * `listSheetSharesTest`
-  * `listSightSharesTest`
-  * `listWorkspaceSharesTest`
   * `shareReportTest`
-  * `shareReportGetTest`
   * `shareSheetTest`
-  * `shareSheetGetTest`
   * `shareSightTest`
-  * `shareSightGetTest`
   * `shareWorkspaceTest`
-  * `shareWorkspaceGetTest`
   * `updateReportShareTest`
   * `updateSheetShareTest`
   * `updateSightShareTest`
@@ -331,6 +323,14 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
+  * `listReportSharesTest`
+  * `listSheetSharesTest`
+  * `listSightSharesTest`
+  * `listWorkspaceSharesTest`
+  * `shareReportGetTest`
+  * `shareSheetGetTest`
+  * `shareSightGetTest`
+  * `shareWorkspaceGetTest`
 
 ### SheetsApiTest
 * To-Do
