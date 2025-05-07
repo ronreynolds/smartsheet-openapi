@@ -13271,7 +13271,7 @@
         "required": true,
         "description": "Proof Id of the original proof",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "renameIfConflict": {
@@ -13414,7 +13414,7 @@
         "required": true,
         "description": "The Id of a Webhook",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "workspaceIdInPath": {
