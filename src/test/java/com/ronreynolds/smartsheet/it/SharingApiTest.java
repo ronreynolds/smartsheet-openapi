@@ -726,12 +726,10 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.SharingApi;
-import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareReport200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
-import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -746,9 +744,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for SharingApi
  */
 @Slf4j
-@Disabled("SharingApiTest not yet implemented")
 public class SharingApiTest {
-
     private final SharingApi api = new SharingApi();
 
 
@@ -760,6 +756,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteReportShareTest() throws ApiException {
         Long reportId = null;
         String shareId = null;
@@ -778,6 +775,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSheetShareTest() throws ApiException {
         Long sheetId = null;
         String shareId = null;
@@ -796,8 +794,9 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSightShareTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String shareId = null;
         Result response = api.deleteSightShare(sightId, shareId);
 
@@ -814,6 +813,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteWorkspaceShareTest() throws ApiException {
         Long workspaceId = null;
         String shareId = null;
@@ -834,16 +834,16 @@ public class SharingApiTest {
      */
     @Test
     public void listReportSharesTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         SharingInclude sharingInclude = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         Integer page = null;
         Integer pageSize = null;
         var response = api.listReportShares(reportId, sharingInclude, includeAll, page, pageSize);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).anySatisfy(TestData.ReportData::assertShare);
     }
 
     /**
@@ -856,17 +856,17 @@ public class SharingApiTest {
      */
     @Test
     public void listSheetSharesTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
         SharingInclude sharingInclude = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         Integer page = null;
         Integer pageSize = null;
         var response = api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).anySatisfy(TestData.SheetData::assertShare);
     }
 
     /**
@@ -878,7 +878,7 @@ public class SharingApiTest {
      */
     @Test
     public void listSightSharesTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
         SharingInclude sharingInclude = null;
         Boolean includeAll = null;
@@ -886,9 +886,9 @@ public class SharingApiTest {
         Integer pageSize = null;
         var response = api.listSightShares(sightId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.DashboardData::assertShare);
     }
 
     /**
@@ -900,16 +900,16 @@ public class SharingApiTest {
      */
     @Test
     public void listWorkspaceSharesTest() throws ApiException {
-        Long workspaceId = null;
+        Long workspaceId = TestData.WorkspaceData.id;
         Integer accessApiLevel = null;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         var response = api.listWorkspaceShares(workspaceId, accessApiLevel, page, pageSize, includeAll);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertShare);
     }
 
     /**
@@ -920,6 +920,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareReportTest() throws ApiException {
         Long reportId = null;
         Boolean sendEmail = null;
@@ -940,14 +941,13 @@ public class SharingApiTest {
      */
     @Test
     public void shareReportGetTest() throws ApiException {
-        Long reportId = null;
-        String shareId = null;
+        Long reportId = TestData.ReportData.id;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null;
         Share response = api.shareReportGet(reportId, shareId, accessApiLevel);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.ReportData::assertShare);
     }
 
     /**
@@ -958,8 +958,9 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         List<Share> share = null;
@@ -979,14 +980,12 @@ public class SharingApiTest {
      */
     @Test
     public void shareSheetGetTest() throws ApiException {
-        Long sheetId = null;
-        String shareId = null;
+        Long sheetId = TestData.SheetData.id;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null;
         Share response = api.shareSheetGet(sheetId, shareId, accessApiLevel);
-
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.SheetData::assertShare);
     }
 
     /**
@@ -997,8 +996,9 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         Share share = null;
@@ -1018,14 +1018,13 @@ public class SharingApiTest {
      */
     @Test
     public void shareSightGetTest() throws ApiException {
-        String sightId = null;
-        String shareId = null;
+        Long sightId = TestData.DashboardData.id;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null;
         Share response = api.shareSightGet(sightId, shareId, accessApiLevel);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.DashboardData::assertShare);
     }
 
     /**
@@ -1037,6 +1036,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareWorkspaceTest() throws ApiException {
         Long workspaceId = null;
         Integer accessApiLevel = null;
@@ -1058,14 +1058,13 @@ public class SharingApiTest {
      */
     @Test
     public void shareWorkspaceGetTest() throws ApiException {
-        Long workspaceId = null;
-        String shareId = null;
+        Long workspaceId = TestData.WorkspaceData.id;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null;
         Share response = api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.WorkspaceData::assertShare);
     }
 
     /**
@@ -1076,6 +1075,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateReportShareTest() throws ApiException {
         Long reportId = null;
         String shareId = null;
@@ -1096,6 +1096,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSheetShareTest() throws ApiException {
         Long sheetId = null;
         String shareId = null;
@@ -1116,8 +1117,9 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSightShareTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
@@ -1137,6 +1139,7 @@ public class SharingApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateWorkspaceShareTest() throws ApiException {
         Long workspaceId = null;
         String shareId = null;
