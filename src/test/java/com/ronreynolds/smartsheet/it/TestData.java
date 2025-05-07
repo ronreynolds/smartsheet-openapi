@@ -234,6 +234,10 @@ public class TestData {
         }
     }
 
+    interface ProofData {
+        long id = 0L;   // FIXME
+    }
+
     interface ReportData {
         long id = 5383337628618628L;
         String name = "Test Report";
@@ -434,6 +438,10 @@ public class TestData {
             assertThat(user.getTimeZone()).as("time-zone").isEqualTo(TestData.UserData.timezone);
             AlternateEmailData.assertMatch(assertThat(user.getAlternateEmails()).isNotNull().actual());
         }
+    }
+
+    interface WebhookData {
+        long id = 0L;   // FIXME
     }
 
     interface WorkflowData {
