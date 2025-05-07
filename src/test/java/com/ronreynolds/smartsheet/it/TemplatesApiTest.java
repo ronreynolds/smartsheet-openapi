@@ -756,13 +756,11 @@ public class TemplatesApiTest {
     public void templatesListTest() throws ApiException {
         TemplatesList200Response response = api.templatesList(null, true, 1, null);
 
-        assertThat(response).isNotNull();
-        assertThat(response.getPageNumber()).isEqualTo(1);
-
-        int totalCount = assertThat(response.getTotalCount()).isGreaterThan(0).actual();
-        assertThat(response.getPageSize()).isNull();   // if you pass null into the API you get null back (seems weird)
-        assertThat(response.getTotalPages()).isEqualTo(1);
-        assertThat(response.getData()).hasSize(totalCount).contains(TestData.TemplateData.template);
+        // if you pass null into the API you get null back (seems weird)
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData())
+                .hasSize(response.getTotalCount())
+                .contains(TestData.TemplateData.template);
     }
 
     /**
