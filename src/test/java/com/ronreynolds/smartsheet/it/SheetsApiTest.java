@@ -1030,7 +1030,7 @@ public class SheetsApiTest {
         var response = api.listSheetShares(sheetId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasData);
-        assertThat(response.getData()).anySatisfy(TestData.SheetData::assertValidShare);
+        assertThat(response.getData()).anySatisfy(TestData.SheetData::assertShare);
     }
 
     /**
@@ -1143,13 +1143,12 @@ public class SheetsApiTest {
     @Test
     public void shareSheetGetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String shareId = TestData.SheetData.shareId;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null; // ?
         Share response = api.shareSheetGet(sheetId, shareId, accessApiLevel);
 
 //        log.info("{}", response);
-        assertThat(response).isNotNull()
-                .satisfies(TestData.SheetData::assertValidShare);
+        assertThat(response).satisfies(TestData.SheetData::assertShare);
     }
 
     /**
