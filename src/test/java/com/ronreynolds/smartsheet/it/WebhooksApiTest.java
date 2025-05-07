@@ -778,7 +778,7 @@ public class WebhooksApiTest {
      */
     @Test
     public void deleteWebhookTest() throws ApiException {
-        String webhookId = null;
+        Long webhookId = TestData.WebhookData.id;
         Result response = api.deleteWebhook(webhookId);
 
         // TODO: test validations
@@ -793,7 +793,7 @@ public class WebhooksApiTest {
      */
     @Test
     public void getWebhookTest() throws ApiException {
-        String webhookId = null;
+        Long webhookId = TestData.WebhookData.id;
         Webhook response = api.getWebhook(webhookId);
 
         // TODO: test validations
@@ -829,7 +829,7 @@ public class WebhooksApiTest {
      */
     @Test
     public void resetSharedSecretTest() throws ApiException {
-        String webhookId = null;
+        Long webhookId = TestData.WebhookData.id;
         String contentType = null;
         ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, contentType);
 
@@ -848,7 +848,7 @@ public class WebhooksApiTest {
      */
     @Test
     public void updateWebhookTest() throws ApiException {
-        String webhookId = null;
+        Long webhookId = TestData.WebhookData.id;
         String contentType = null;
         UpdateWebhookRequest updateWebhookRequest = null;
         CreateWebhook200Response response = api.updateWebhook(webhookId, contentType, updateWebhookRequest);
