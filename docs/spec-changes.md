@@ -244,11 +244,14 @@ some parts of the Spec don't match the server responses at all
 
 ##### IDs are longs not strings
 * `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
-    * `#/components/parameters/attachmentIdInPath`
-    * `#/components/parameters/commentIdInPath`
-    * `#/components/parameters/discussionIdInPath`
-    * `#/components/parameters/sightIdInPath`
-    * `#/components/parameters/workspaceIdInPath`
+  * `#/components/parameters/attachmentIdInPath`
+  * `#/components/parameters/commentIdInPath`
+  * `#/components/parameters/discussionIdInPath`
+  * `#/components/parameters/proofIdInPath`
+  * `#/components/parameters/sightIdInPath`
+  * `#/components/parameters/webhookIdInPath`
+  * `#/components/parameters/workspaceIdInPath`
+  * 
 
 #### further improvements
 * added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
