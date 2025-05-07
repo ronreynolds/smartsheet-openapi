@@ -10025,7 +10025,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -13359,7 +13359,7 @@
         "required": true,
         "description": "SightID of the sight being accessed.",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "skipRemap_folder_copy": {
