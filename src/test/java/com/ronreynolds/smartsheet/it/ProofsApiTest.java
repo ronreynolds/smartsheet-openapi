@@ -770,7 +770,7 @@ public class ProofsApiTest {
     @Test
     public void proofsAttachToProofTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         String contentType = null;
         File body = null;
         AttachmentsAttachToSheet200Response response =
@@ -809,7 +809,7 @@ public class ProofsApiTest {
     @Test
     public void proofsCreateDiscussionTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         String contentType = null;
         CommentLite commentLite = null;
         DiscussionsCreate200Response response =
@@ -828,7 +828,7 @@ public class ProofsApiTest {
     @Test
     public void proofsCreateProofRequestsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         String contentType = null;
         ProofRequestBody proofRequestBody = null;
         ProofsCreateProofRequests200Response response =
@@ -847,7 +847,7 @@ public class ProofsApiTest {
     @Test
     public void proofsCreateVersionTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         String contentType = null;
         File body = null;
         ProofsCreateVersion200Response response =
@@ -866,7 +866,7 @@ public class ProofsApiTest {
     @Test
     public void proofsDeleteTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         ResultPrefix response =
                 api.proofsDelete(sheetId, proofId);
 
@@ -883,7 +883,7 @@ public class ProofsApiTest {
     @Test
     public void proofsDeleteProofRequestsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         ResultPrefix response =
                 api.proofsDeleteProofRequests(sheetId, proofId);
 
@@ -900,7 +900,7 @@ public class ProofsApiTest {
     @Test
     public void proofsDeleteVersionTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         ResultPrefix response =
                 api.proofsDeleteVersion(sheetId, proofId);
 
@@ -918,7 +918,7 @@ public class ProofsApiTest {
     @Test
     public void proofsGetTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         List<DiscussionInclude> include = null;
         Proof response =
                 api.proofsGet(sheetId, proofId, include);
@@ -955,7 +955,7 @@ public class ProofsApiTest {
     @Test
     public void proofsGetVersionsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
@@ -975,7 +975,7 @@ public class ProofsApiTest {
     @Test
     public void proofsListAttachmentsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
@@ -995,7 +995,7 @@ public class ProofsApiTest {
     @Test
     public void proofsListDiscussionsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         List<DiscussionInclude> include = null;
         Integer page = null;
         Integer pageSize = null;
@@ -1016,7 +1016,7 @@ public class ProofsApiTest {
     @Test
     public void proofsListRequestActionsTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
@@ -1036,7 +1036,7 @@ public class ProofsApiTest {
     @Test
     public void proofsUpdateTest() throws ApiException {
         Long sheetId = null;
-        String proofId = null;
+        Long proofId = TestData.ProofData.id;
         ProofsUpdateRequest proofsUpdateRequest = null;
         Proof response =
                 api.proofsUpdate(sheetId, proofId, proofsUpdateRequest);
