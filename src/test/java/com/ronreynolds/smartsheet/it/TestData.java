@@ -8,7 +8,6 @@ import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
-import com.ronreynolds.smartsheet.model.ListFolders200Response;
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
@@ -184,6 +183,18 @@ public class TestData {
         }
     }
 
+    interface DashboardData {
+        long id = 5226358067488644L;
+        String name = "Test Dashboard";
+        OffsetDateTime shareDate = OffsetDateTime.of(2025, 5, 7, 14, 9, 7, 0, ZoneOffset.UTC);
+
+        static void assertShare(Share share) {
+            ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
+            assertThat(share.getCreatedAt()).isEqualTo(shareDate);
+            assertThat(share.getModifiedAt()).isAfterOrEqualTo(shareDate);
+        }
+    }
+
     interface FolderData {
         long id = 1104664725874564L;
         String name = "Test Folder";
@@ -226,6 +237,7 @@ public class TestData {
     interface ReportData {
         long id = 5383337628618628L;
         String name = "Test Report";
+        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC);
         static void assertContains(@NonNull List<? extends Report> reports) {
             assertThat(reports).anySatisfy(ReportData::assertEquals);
         }
@@ -235,6 +247,9 @@ public class TestData {
             assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
             log.info("report:{}", report);
         }
+        static void assertShare(Share share) {
+            ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
+        }
     }
 
     interface RowData {
@@ -242,13 +257,32 @@ public class TestData {
         long attachmentId = 7117529120280452L;
     }
 
+    interface ShareData {
+        String shareId = "AAAC8sImFOeE";
+        static void assertCommonShare(Share share, ShareScope scope, OffsetDateTime shareDate) {
+            assertThat(share).isNotNull();
+            assertThat(share.getId()).isEqualTo(ShareData.shareId);
+            assertThat(share.getGroupId()).isNull();
+            assertThat(share.getUserId()).isEqualTo(UserData.id);
+            assertThat(share.getType()).isSameAs(ShareType.USER);
+            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(share.getCcMe()).isNull();   // not false?
+            assertThat(share.getEmail()).isNotBlank();
+            assertThat(share.getMessage()).isNull();
+            assertThat(share.getName()).isEqualTo(UserData.name);
+            assertThat(share.getScope()).isSameAs(scope);
+            assertThat(share.getSubject()).isNull();
+            assertThat(share.getCreatedAt()).isEqualTo(shareDate);
+            assertThat(share.getModifiedAt()).isAfterOrEqualTo(shareDate);
+        }
+    }
     interface SheetData {
         long id = 6971132763656068L;
         String name = "Test Sheet 1";
         OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
         List<String> effectiveAttachmentOptions =
                 List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
-        String shareId = "AAAC8sImFOeE";
+        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
 
         static void assertEquals(@NonNull Sheet sheet) {
             assertThat(sheet.getName()).isEqualTo(name);
@@ -256,7 +290,7 @@ public class TestData {
             assertThat(sheet.getCreatedAt()).isEqualTo(createdDate);
             assertThat(sheet.getEffectiveAttachmentOptions()).containsOnly(effectiveAttachmentOptions.toArray(new String[0]));
         }
-        
+
         static void assertNotPublished(@NonNull SheetPublish publish) {
             assertThat(publish.getIcalEnabled()).isFalse();
             assertThat(publish.getIcalUrl()).isNull();
@@ -275,21 +309,8 @@ public class TestData {
             assertThat(publish.getReadWriteUrl()).isNull();
         }
 
-        static void assertValidShare(Share share) {
-            assertThat(share).isNotNull();
-            assertThat(share.getId()).isEqualTo(shareId);
-            assertThat(share.getGroupId()).isNull();
-            assertThat(share.getUserId()).isEqualTo(UserData.id);
-            assertThat(share.getType()).isSameAs(ShareType.USER);
-            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
-            assertThat(share.getCcMe()).isNull();
-            assertThat(share.getCreatedAt()).isEqualTo(OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC));
-            assertThat(share.getEmail()).isNotBlank();
-            assertThat(share.getMessage()).isNull();
-            assertThat(share.getCreatedAt()).isAfterOrEqualTo(OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC));
-            assertThat(share.getName()).isEqualTo(UserData.name);
-            assertThat(share.getScope()).isSameAs(ShareScope.ITEM);
-            assertThat(share.getSubject()).isNull();
+        static void assertShare(Share share) {
+            ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
         }
 
         static void assertListingEquals(SheetListingDataInner listing) {
@@ -423,6 +444,7 @@ public class TestData {
         long id = 4931918228678532L;
         String name = "Test Workspace";
         AccessLevel level = AccessLevel.OWNER;
+        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 3, 0, ZoneOffset.UTC);
 
         static void assertEquals(@NonNull Workspace workspace) {
             assertThat(workspace.getId()).isEqualTo(id);
@@ -431,13 +453,8 @@ public class TestData {
             assertThat(workspace.getPermalink()).isNotBlank();
         }
 
-        static void assertTestShare(@NonNull Share share) {
-            assertThat(share.getId()).isEqualTo(SheetData.shareId);
-            assertThat(share.getUserId()).isEqualTo(UserData.id);
-            assertThat(share.getName()).isEqualTo(UserData.name);
-            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.OWNER);
-            assertThat(share.getScope()).isSameAs(ShareScope.WORKSPACE);
-            assertThat(share.getType()).isSameAs(ShareType.USER);
+        static void assertShare(@NonNull Share share) {
+            ShareData.assertCommonShare(share, ShareScope.WORKSPACE, shareDate);
         }
 
         // FIXME - make non-inner type
@@ -460,6 +477,18 @@ public class TestData {
         assertThat(Reflection.invoke(pagedResult, "getTotalPages", Integer.class)).isPositive();
         assertThat(Reflection.invoke(pagedResult, "getTotalCount", Integer.class)).isPositive();
     }
+
+    /** some APIs respond with a null pageSize if the request had a null pageSize; it's inconsistent across APIs unfortunately */
+    static void pagedResultHasDataNullPageSize(Object pagedResult) {
+        // any response object that aggregates the paged-result will have these methods; unfortunately openapi-codegen uses
+        // aggregation rather than extension so we can't depend on a base-type :shrug:
+        assertThat(pagedResult).isNotNull();
+        assertThat(Reflection.invoke(pagedResult, "getPageNumber", Integer.class)).isOne();
+        assertThat(Reflection.invoke(pagedResult, "getPageSize", Integer.class)).isNull();
+        assertThat(Reflection.invoke(pagedResult, "getTotalPages", Integer.class)).isPositive();
+        assertThat(Reflection.invoke(pagedResult, "getTotalCount", Integer.class)).isPositive();
+    }
+
 
     static void successfulResult(Result result) {
         assertThat(result).isNotNull();
