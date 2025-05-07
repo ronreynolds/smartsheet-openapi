@@ -208,11 +208,6 @@ some parts of the Spec don't match the server responses at all
   * `#/components/schemas/DayOfWeek`
   * `#/components/schemas/Month`
 * `#/components/schemas/UserProfile` missing field `status`
-* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
-  * `#/components/parameters/commentIdInPath` 
-  * `#/components/parameters/discussionIdInPath` 
-  * `#/components/parameters/attachmentIdInPath`
-  * `#/components/parameters/workspaceIdInPath`
 * `#/paths/templates` and `#/paths/templates/public` response 
   * moved the `TemplateArray` into a `data` field
 * `#/paths/folders/personal` response
@@ -234,17 +229,26 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/Folder` added fields
   * `accessLevel`, `createdAt`, `modifiedAt`
 
-#### result/data response field mismatch (GET returns 'data'; PUT/POST return 'result')
-* `result` -> `data`
+##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
+* `result` response field renamed to `data`
     * `#/paths/folders/{folderId}/folders GET`
     * `#/paths/home/folders GET`
     * `#/paths/workspaces/{workspaceId}/shares GET`
     * `#/paths/reports/{reportId}/shares GET`
     * `#/paths/sheets/{sheetId}/shares GET`
-* `data` response fields renamed to `result`
-    * `#/paths/workspaces POST` (create-workspace)
+    * `#/paths/sights/{sightId}/shares GET`
+* `data` response field renamed to `result`
+    * `#/paths/workspaces POST`
     * `#/paths/users/{userId} PUT`
     * `#/paths/workspaces POST`
+
+##### IDs are longs not strings
+* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
+    * `#/components/parameters/attachmentIdInPath`
+    * `#/components/parameters/commentIdInPath`
+    * `#/components/parameters/discussionIdInPath`
+    * `#/components/parameters/sightIdInPath`
+    * `#/components/parameters/workspaceIdInPath`
 
 #### further improvements
 * added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
