@@ -772,7 +772,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void copySightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String contentType = null;
         ContainerDestination containerDestination = null;
         CopySight200Response response = api.copySight(sightId, contentType, containerDestination);
@@ -792,7 +792,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void deleteSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         ResultPrefix response = api.deleteSight(sightId);
 
         log.info("{}", response);
@@ -809,7 +809,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void deleteSightShareTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String shareId = null;
         Result response = api.deleteSightShare(sightId, shareId);
 
@@ -827,7 +827,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void getSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
         List<GetDashboardInclude> include = null;
         CompatibilityLevel level = null;
@@ -848,7 +848,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void getSightPublishStatusTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         SightPublish response = api.getSightPublishStatus(sightId);
 
         log.info("{}", response);
@@ -865,7 +865,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void listSightSharesTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
         SharingInclude sharingInclude = null;
         Boolean includeAll = null;
@@ -910,7 +910,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void moveSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String contentType = null;
         ContainerDestination containerDestination = null;
         CopySight200Response response = api.moveSight(sightId, contentType, containerDestination);
@@ -929,7 +929,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void setSightPublishStatusTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String contentType = null;
         SightPublish sightPublish = null;
         SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, contentType, sightPublish);
@@ -948,7 +948,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void shareSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
         Boolean sendEmail = null;
         Share share = null;
@@ -968,7 +968,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void shareSightGetTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String shareId = null;
         Integer accessApiLevel = null;
         Share response = api.shareSightGet(sightId, shareId, accessApiLevel);
@@ -987,7 +987,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void updateSightTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         Boolean numericDates = null;
         String contentType = null;
         UpdateSightRequest updateSightRequest = null;
@@ -1007,7 +1007,7 @@ public class DashboardsApiTest {
      */
     @Test
     public void updateSightShareTest() throws ApiException {
-        String sightId = null;
+        Long sightId = TestData.DashboardData.id;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
