@@ -13712,14 +13712,10 @@
           },
           "attachmentSubType": {
             "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
-            "type": "string",
-            "enum": [
-              "DOCUMENT",
-              "DRAWING",
-              "FOLDER",
-              "PDF",
-              "PRESENTATION",
-              "SPREADSHEET"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentSubType"
+              }
             ]
           },
           "mimeType": {
@@ -13778,7 +13774,7 @@
           "$ref": "#/components/schemas/Attachment"
         }
       },
-      "AttachmentType_smar": {
+      "AttachmentType": {
         "type": "string",
         "enum": [
           "BOX_COM",
@@ -14328,6 +14324,14 @@
               }
             ],
             "description": "A string, number, or a Boolean value -- depending on the cell type and the data in the cell. Cell values larger than 4000 characters are silently truncated. An empty cell returns no value."
+          },
+          "virtualColumnId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
+            "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet. Only used in Reports."
           }
         }
       },
@@ -15084,6 +15088,18 @@
           "width": {
             "description": "Display width of the column in pixels.",
             "type": "integer"
+          },
+          "virtualId": {
+            "description": "The virtual Id of this report column. Only used in Reports.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "sheetNameColumn": {
+            "description": "Returns true only for the special \"Sheet Name\" report column.  Only used in Reports.",
+            "type": "boolean"
           }
         }
       },
@@ -17639,46 +17655,6 @@
           "$ref": "#/components/schemas/Report"
         }
       },
-      "ReportCell": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Cell"
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "virtualColumnId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ],
-            "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet."
-          }
-        }
-      },
-      "ReportColumn": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Column"
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "virtualId": {
-            "description": "The virtual Id of this report column.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ]
-          },
-          "sheetNameColumn": {
-            "description": "Returns true only for the special \"Sheet Name\" report column.",
-            "type": "boolean"
-          }
-        }
-      },
       "ReportInclude": {
         "type": "string",
         "enum": [
@@ -17715,24 +17691,6 @@
           "readOnlyFullUrl": {
             "description": "URL for 'Read-Only Full' view of the published report.\n\nOnly returned in a response if **readOnlyFullEnabled** = **true**.\n",
             "type": "string"
-          }
-        }
-      },
-      "ReportRow": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Row"
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "sheetId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ],
-            "description": "The Id of the sheet from which the row originates."
           }
         }
       },
@@ -17994,6 +17952,9 @@
           },
           "outdent": {
             "type": "integer"
+          },
+          "dataModifiedAt": {
+            "$ref": "#/components/schemas/Datetime"
           }
         }
       },
@@ -18636,7 +18597,7 @@
             "description": "Array of enum strings (see [Attachment.attachmentType](../../tag/attachmentsDescription) indicating the allowable attachment options for the current user and sheet.\n",
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/AttachmentType"
             }
           },
           "favorite": {
@@ -19303,7 +19264,7 @@
         "type": "object",
         "properties": {
           "attachmentType": {
-            "$ref": "#/components/schemas/AttachmentType_smar"
+            "$ref": "#/components/schemas/AttachmentType"
           },
           "hyperlink": {
             "$ref": "#/components/schemas/Hyperlink"
@@ -19347,7 +19308,7 @@
               "type": "object",
               "properties": {
                 "attachmentType": {
-                  "$ref": "#/components/schemas/AttachmentType_smar"
+                  "$ref": "#/components/schemas/AttachmentType"
                 },
                 "hyperlink": {
                   "$ref": "#/components/schemas/Hyperlink"
@@ -19540,7 +19501,8 @@
             ]
           },
           "type": {
-            "$ref": "#/components/schemas/SourceType"          }
+            "$ref": "#/components/schemas/SourceType"
+          }
         }
       },
       "SourceType": {
