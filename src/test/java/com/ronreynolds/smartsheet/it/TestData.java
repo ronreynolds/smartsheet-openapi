@@ -1,9 +1,14 @@
 package com.ronreynolds.smartsheet.it;
 
+import com.ronreynolds.smartsheet.api.util.Cells;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
+import com.ronreynolds.smartsheet.model.AttachmentType;
 import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
+import com.ronreynolds.smartsheet.model.Cell;
+import com.ronreynolds.smartsheet.model.Column;
+import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
@@ -11,6 +16,7 @@ import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataI
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareScope;
 import com.ronreynolds.smartsheet.model.ShareType;
@@ -24,7 +30,10 @@ import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.reflection.Reflection;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Condition;
+import org.assertj.core.internal.Conditions;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -249,8 +258,162 @@ public class TestData {
             assertThat(report.getId()).isEqualTo(id);
             assertThat(report.getName()).isEqualTo(name);
             assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
-            log.info("report:{}", report);
         }
+        static void assertDeepEquals(@NonNull Report report) {
+            assertThat(report.getId()).isEqualTo(id);
+            assertThat(report.getName()).isEqualTo(name);
+            assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(report.getScope()).isNull();
+            assertThat(report.getSourceSheets()).isNull();
+            assertThat(report.getIsSummaryReport()).isFalse();
+            assertThat(report.getSource()).isNull();
+            assertThat(report.getFromId()).isNull();
+            assertThat(report.getAttachments()).isNull();
+            assertThat(report.getCellImageUploadEnabled()).isTrue();
+            assertThat(report.getCreatedAt()).isEqualTo(OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC));
+            assertThat(report.getCrossSheetReferences()).isNull();
+            assertThat(report.getDependenciesEnabled()).isNull();
+            assertThat(report.getDiscussions()).isNull();
+            // TODO - change to enum
+            assertThat(report.getEffectiveAttachmentOptions()).allMatch(SheetData.effectiveAttachmentOptions::contains);
+            assertThat(report.getFavorite()).isNull();
+            assertThat(report.getFilters()).isEmpty();
+            assertThat(report.getGanttConfig()).isNull();
+            assertThat(report.getGanttEnabled()).isFalse();
+            assertThat(report.getHasSummaryFields()).isNull();
+            assertThat(report.getIsMultiPicklistEnabled()).isNull();
+            assertThat(report.getModifiedAt()).isAfterOrEqualTo(OffsetDateTime.of(2025, 4, 20, 13, 59, 58, 0, ZoneOffset.UTC));
+            assertThat(report.getOwner()).isNull();
+            assertThat(report.getOwnerId()).isNull();
+            assertThat(report.getPermalink()).isNotBlank();
+            assertThat(report.getProjectSettings()).isNull();
+            assertThat(report.getReadOnly()).isNull();
+            assertThat(report.getResourceManagementEnabled()).isNull();
+            assertThat(report.getResourceManagementType()).isNull();
+            assertThat(report.getShowParentRowsForFilters()).isNull();
+            assertThat(report.getSummary()).isNull();
+            assertThat(report.getTotalRowCount()).isOne();
+            assertThat(report.getUserPermissions()).isNull();
+            assertThat(report.getUserSettings()).isNull();
+            assertThat(report.getVersion()).isNull();
+
+            assertThat(report.getColumns()).isNotEmpty().anySatisfy(ReportData::assertReportColumn);
+            assertThat(report.getRows()).isNotEmpty().anySatisfy(ReportData::assertReportRow);
+            assertThat(report.getWorkspace()).satisfies(ReportData::assertReportWorkspace);
+        }
+
+        static void assertReportColumn(Column reportColumn) {
+            assertThat(reportColumn).isNotNull();
+            assertThat(reportColumn.getAutoNumberFormat()).isNull();
+            assertThat(reportColumn.getContactOptions()).isNull();
+            assertThat(reportColumn.getDescription()).isNull();
+            assertThat(reportColumn.getFormat()).isNull();
+            assertThat(reportColumn.getFormula()).isNull();
+            assertThat(reportColumn.getHidden()).isNull();
+            assertThat(reportColumn.getId()).isNull();
+            assertThat(reportColumn.getIndex()).isNotNegative();    // 0, 1, ...
+            assertThat(reportColumn.getLocked()).isNull();
+            assertThat(reportColumn.getLockedForUser()).isNull();
+            assertThat(reportColumn.getOptions()).isEmpty();
+            assertThat(reportColumn.getPrimary()).matches(ReportData::isNullOrTrue);
+            assertThat(reportColumn.getSymbol()).isNull();
+            assertThat(reportColumn.getSystemColumnType()).isNull();
+            assertThat(reportColumn.getTags()).isEmpty();
+            assertThat(reportColumn.getTitle()).matches(Set.of("Sheet Name", "Primary")::contains);
+            assertThat(reportColumn.getType()).isSameAs(ColumnType.TEXT_NUMBER);
+            assertThat(reportColumn.getValidation()).isFalse();
+            assertThat(reportColumn.getVersion()).isSameAs(Column.VersionEnum.NUMBER_0);
+            assertThat(reportColumn.getWidth()).isEqualTo(150);
+            assertThat(reportColumn.getVirtualId()).matches(Set.of(6693795649507204L, 4441995835821956L)::contains);
+            assertThat(reportColumn.getSheetNameColumn()).matches(ReportData::isNullOrTrue);
+        }
+
+        static boolean isNullOrTrue(Boolean val) {
+            return val == null || val;
+        }
+
+        static void assertReportRow(Row reportRow) {
+            OffsetDateTime rowCreateDate = OffsetDateTime.of(2025, 4, 20, 13, 52, 46, 0, ZoneOffset.UTC);
+            assertThat(reportRow).isNotNull();
+            assertThat(reportRow.getColumns()).isNull();
+            assertThat(reportRow.getConditionalFormat()).isNull();
+            assertThat(reportRow.getCreatedAt()).isEqualTo(rowCreateDate);
+            assertThat(reportRow.getCreatedBy()).isNull();
+            assertThat(reportRow.getDiscussions()).isNull();
+            assertThat(reportRow.getProof()).isNull();
+            assertThat(reportRow.getExpanded()).matches(ReportData::isNullOrTrue);
+            assertThat(reportRow.getFilteredOut()).isNull();
+            assertThat(reportRow.getFormat()).isNull();
+            assertThat(reportRow.getInCriticalPath()).isNull();
+            assertThat(reportRow.getLocked()).isNull();
+            assertThat(reportRow.getLockedForUser()).isNull();
+            assertThat(reportRow.getModifiedAt()).isAfterOrEqualTo(rowCreateDate);
+            assertThat(reportRow.getModifiedBy()).isNull();
+            assertThat(reportRow.getPermalink()).isNull();
+            assertThat(reportRow.getRowNumber()).isOne();
+            assertThat(reportRow.getVersion()).isNull();
+            assertThat(reportRow.getParentId()).isNull();
+            assertThat(reportRow.getToTop()).isNull();
+            assertThat(reportRow.getToBottom()).isNull();
+            assertThat(reportRow.getAbove()).isNull();
+            assertThat(reportRow.getIndent()).isNull();
+            assertThat(reportRow.getOutdent()).isNull();
+            assertThat(reportRow.getDataModifiedAt()).isAfterOrEqualTo(rowCreateDate);
+            assertThat(reportRow.getId()).isEqualTo(RowData.id);
+            assertThat(reportRow.getSheetId()).isEqualTo(SheetData.id);
+            assertThat(reportRow.getSiblingId()).isNull();
+            assertThat(reportRow.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(reportRow.getAttachments()).isNull();
+            assertThat(reportRow.getCells()).isNotEmpty()
+                    .allSatisfy(ReportData::assertReportCell);
+        }
+
+        static void assertReportCell(Cell reportCell) {
+            assertThat(reportCell).isNotNull();
+
+            assertThat(reportCell.getColumnType()).isNull();
+            assertThat(reportCell.getConditionalFormat()).isNull();
+            assertThat(reportCell.getFormat()).isNull();
+            assertThat(reportCell.getFormula()).isNull();
+            assertThat(reportCell.getHyperlink()).isNull();
+            assertThat(reportCell.getImage()).isNull();
+            assertThat(reportCell.getLinkInFromCell()).isNull();
+            assertThat(reportCell.getLinksOutToCells()).isEmpty();
+            assertThat(reportCell.getObjectValue()).isNull();
+            assertThat(reportCell.getOverrideValidation()).isNull();
+            assertThat(reportCell.getStrict()).isNull();
+            assertThat(reportCell.getValue()).isNotNull()
+                    .satisfies(val -> {
+                        // clumbsy but not sure how else to handle cell-values that can have many value types
+                        switch (Cells.ValueType.getValueType(val)) {
+                            case NULL:
+                                assertThat(val).withFailMessage("this should not happen").isNull();
+                                break;
+                            case BOOLEAN:
+                                assertThat(val).withFailMessage("this is unexpected").isNull();
+                                break;
+                            case NUMBER:
+                                assertThat(val.getBigDecimal()).isEqualTo(BigDecimal.valueOf(42.0));
+                                break;
+                            case STRING:
+                                assertThat(val.getString()).isEqualTo("Test Sheet 1");
+                                break;
+                        }
+                    });
+            assertThat(reportCell.getVirtualColumnId()).matches(Set.of(6693795649507204L, 4441995835821956L)::contains);
+        }
+
+        static void assertReportWorkspace(Workspace reportWorkspace) {
+            assertThat(reportWorkspace).isNotNull();
+            assertThat(reportWorkspace.getId()).isEqualTo(WorkspaceData.id);
+            assertThat(reportWorkspace.getName()).isEqualTo(WorkspaceData.name);
+            assertThat(reportWorkspace.getAccessLevel()).isNull();
+            assertThat(reportWorkspace.getPermalink()).isNull();
+            assertThat(reportWorkspace.getFolders()).isEmpty();
+            assertThat(reportWorkspace.getReports()).isEmpty();
+            assertThat(reportWorkspace.getSheets()).isEmpty();
+        }
+
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
         }
@@ -284,15 +447,17 @@ public class TestData {
         long id = 6971132763656068L;
         String name = "Test Sheet 1";
         OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
-        List<String> effectiveAttachmentOptions =
-                List.of("FILE", "BOX_COM", "LINK", "EVERNOTE", "ONEDRIVE", "GOOGLE_DRIVE", "DROPBOX", "EGNYTE");
+        Set<AttachmentType> effectiveAttachmentOptions = Set.of(
+                AttachmentType.BOX_COM, AttachmentType.DROPBOX, AttachmentType.EGNYTE, AttachmentType.EVERNOTE,
+                AttachmentType.FILE, AttachmentType.GOOGLE_DRIVE, AttachmentType.LINK, AttachmentType.ONEDRIVE);
+
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
 
         static void assertEquals(@NonNull Sheet sheet) {
             assertThat(sheet.getName()).isEqualTo(name);
             assertThat(sheet.getId()).isEqualTo(id);
             assertThat(sheet.getCreatedAt()).isEqualTo(createdDate);
-            assertThat(sheet.getEffectiveAttachmentOptions()).containsOnly(effectiveAttachmentOptions.toArray(new String[0]));
+            assertThat(sheet.getEffectiveAttachmentOptions()).allMatch(effectiveAttachmentOptions::contains);
         }
 
         static void assertNotPublished(@NonNull SheetPublish publish) {
