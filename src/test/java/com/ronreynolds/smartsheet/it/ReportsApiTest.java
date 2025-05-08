@@ -741,6 +741,7 @@ import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.SheetEmail;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -753,9 +754,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for ReportsApi
  */
-@Disabled("ReportsApiTest not yet implemented")
+@Slf4j
 public class ReportsApiTest {
-
     private final ReportsApi api = new ReportsApi();
 
 
@@ -767,15 +767,15 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteReportShareTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String shareId = null;
         Integer accessApiLevel = null;
-        Result response =
-                api.deleteReportShare(reportId, shareId, accessApiLevel);
-        assertThat(response).isNotNull();
-
+        Result response = api.deleteReportShare(reportId, shareId, accessApiLevel);
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -787,7 +787,7 @@ public class ReportsApiTest {
      */
     @Test
     public void getReportTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String accept = null;
         Integer accessApiLevel = null;
         List<ReportInclude> include = null;
@@ -795,10 +795,10 @@ public class ReportsApiTest {
         Integer pageSize = null;
         Integer page = null;
         CompatibilityLevel level = null;
-        Report response =
-                api.getReport(reportId, accept, accessApiLevel, include, exclude, pageSize, page, level);
+        Report response = api.getReport(reportId, accept, accessApiLevel, include, exclude, pageSize, page, level);
 
-        // TODO: test validations
+//        log.info("{}", response);
+        assertThat(response).isNotNull().satisfies(TestData.ReportData::assertDeepEquals);
     }
 
     /**
@@ -810,11 +810,12 @@ public class ReportsApiTest {
      */
     @Test
     public void getReportPublishTest() throws ApiException {
-        Long reportId = null;
-        ReportPublish response =
-                api.getReportPublish(reportId);
+        Long reportId = TestData.ReportData.id;
+        ReportPublish response = api.getReportPublish(reportId);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -827,10 +828,11 @@ public class ReportsApiTest {
     @Test
     public void getReportsTest() throws ApiException {
         OffsetDateTime modifiedSince = null;
-        GetReports200Response response =
-                api.getReports(modifiedSince);
+        GetReports200Response response = api.getReports(modifiedSince);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -843,15 +845,16 @@ public class ReportsApiTest {
      */
     @Test
     public void listReportSharesTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         SharingInclude sharingInclude = null;
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListReportShares200Response response =
-                api.listReportShares(reportId, sharingInclude, includeAll, page, pageSize);
+        ListReportShares200Response response = api.listReportShares(reportId, sharingInclude, includeAll, page, pageSize);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -862,14 +865,16 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void sendReportViaEmailTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String contentType = null;
         SheetEmail sheetEmail = null;
-        Result response =
-                api.sendReportViaEmail(reportId, contentType, sheetEmail);
+        Result response = api.sendReportViaEmail(reportId, contentType, sheetEmail);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -880,14 +885,16 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void setReportPublishTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String contentType = null;
         ReportPublish reportPublish = null;
-        SetReportPublish200Response response =
-                api.setReportPublish(reportId, contentType, reportPublish);
+        SetReportPublish200Response response = api.setReportPublish(reportId, contentType, reportPublish);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -898,14 +905,16 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareReportTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response =
-                api.shareReport(reportId, sendEmail, share);
+        ShareReport200Response response = api.shareReport(reportId, sendEmail, share);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -916,14 +925,16 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("not yet implemented")
     public void shareReportGetTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String shareId = null;
         Integer accessApiLevel = null;
-        Share response =
-                api.shareReportGet(reportId, shareId, accessApiLevel);
+        Share response = api.shareReportGet(reportId, shareId, accessApiLevel);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -934,15 +945,16 @@ public class ReportsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("not yet implemented")
     public void updateReportShareTest() throws ApiException {
-        Long reportId = null;
+        Long reportId = TestData.ReportData.id;
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
-        UpdateReportShare200Response response =
-                api.updateReportShare(reportId, shareId, accessApiLevel, updateReportShareRequest);
+        UpdateReportShare200Response response = api.updateReportShare(reportId, shareId, accessApiLevel, updateReportShareRequest);
 
+        log.info("{}", response);
         // TODO: test validations
+        assertThat(response).isNotNull();
     }
-
 }
