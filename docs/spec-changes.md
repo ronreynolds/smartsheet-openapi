@@ -228,6 +228,10 @@ some parts of the Spec don't match the server responses at all
     * `Workspace` without child containers (which are not allowed in create-workspace request)
 * `#/components/schemas/Folder` added fields
   * `accessLevel`, `createdAt`, `modifiedAt`
+* `#/components/schemas/Column` added `virtualId` and `sheetNameColumn` fields from (unused and deleted) `ReportColumn` 
+* `#/components/schemas/Cell` added `virtualColumnId` from (unused and deleted) `ReportCell`
+* `#/components/schemas/Row` added `dataModifiedAt` (returned by server; not in latest spec)
+* ...
 
 ##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
 * `result` response field renamed to `data`
@@ -251,7 +255,6 @@ some parts of the Spec don't match the server responses at all
   * `#/components/parameters/sightIdInPath`
   * `#/components/parameters/webhookIdInPath`
   * `#/components/parameters/workspaceIdInPath`
-  * 
 
 #### further improvements
 * added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
@@ -264,3 +267,6 @@ some parts of the Spec don't match the server responses at all
 * changed `#/components/schemas/SheetEmail.formatDetails.paperSize` from `string-enum` to `#/components/schemas/PaperSize` 
 * added `#/components/schemas/SheetEmailFormat`
 * changed `#/components/schemas/SheetEmail.format` from `string-enum` to `#/components/schemas/SheetEmailFormat`
+* renamed `#/components/schemas/AttachmentType_smar` to `#/components/schemas/AttachmentType` (matches Java-SDK enum)
+* changed `#/components/schemas/Sheet.effectiveAttachmentOptions` from array-string to array-AttachmentType
+* changed `#/components/schemas/Attachment.attachmentSubType` from string-enum to `AttachmentSubType` enum
