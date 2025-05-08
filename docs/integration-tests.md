@@ -267,18 +267,18 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### ReportsApiTest
 * To-Do
   * `deleteReportShareTest`
-  * `getReportTest`
-  * `getReportPublishTest`
-  * `getReportsTest`
-  * `listReportSharesTest`
   * `sendReportViaEmailTest`
   * `setReportPublishTest`
   * `shareReportTest`
   * `shareReportGetTest`
   * `updateReportShareTest`
-* In-Progress
+* In-Progress (todo 2025-05-09)
+    * `getReportPublishTest`
+    * `getReportsTest`
+    * `listReportSharesTest`
 * Blocked
 * Done
+    * `getReportTest`
 
 ### RowsApiTest
 * To-Do
