@@ -812,10 +812,8 @@ public class ReportsApiTest {
     public void getReportPublishTest() throws ApiException {
         Long reportId = TestData.ReportData.id;
         ReportPublish response = api.getReportPublish(reportId);
-
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+        // FIXME for some reason report-publish data not being returned by server
+        assertThat(response).satisfies(TestData.ReportData::assertPublish);
     }
 
     /**
@@ -830,9 +828,9 @@ public class ReportsApiTest {
         OffsetDateTime modifiedSince = null;
         GetReports200Response response = api.getReports(modifiedSince);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).isNotEmpty().anySatisfy(TestData.ReportData::assertBrief);
     }
 
     /**
