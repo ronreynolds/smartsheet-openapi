@@ -273,12 +273,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `shareReportGetTest`
   * `updateReportShareTest`
 * In-Progress (todo 2025-05-09)
-    * `getReportPublishTest`
-    * `getReportsTest`
-    * `listReportSharesTest`
+  * `listReportSharesTest`
 * Blocked
 * Done
-    * `getReportTest`
+  * `getReportPublishTest`
+  * `getReportTest`
+  * `getReportsTest`
 
 ### RowsApiTest
 * To-Do
