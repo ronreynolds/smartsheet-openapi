@@ -744,7 +744,7 @@ import com.ronreynolds.smartsheet.model.UpdateWorkspace200Response;
 import com.ronreynolds.smartsheet.model.UpdateWorkspaceRequest;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.smartsheet.model.WorkspaceInclude;
-import com.ronreynolds.smartsheet.model.WorkspaceLite;
+import com.ronreynolds.smartsheet.model.WorkspaceBrief;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -800,7 +800,7 @@ public class WorkspacesApiTest {
     @Test
     @Order(1)
     public void createWorkspaceTest() throws ApiException {
-        WorkspaceLite workspace = WorkspaceLite.builder()
+        WorkspaceBrief workspace = WorkspaceBrief.builder()
                 .name("new test workspace")
                 .build();
         Integer accessApiLevel = null;
