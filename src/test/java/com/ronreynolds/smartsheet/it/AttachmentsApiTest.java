@@ -726,6 +726,12 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.AttachmentsApi;
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.CommentAttachment;
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.RowAttachment;
+import com.ronreynolds.smartsheet.it.TestData.AttachmentData.SheetAttachment;
+import com.ronreynolds.smartsheet.it.TestData.CommentData;
+import com.ronreynolds.smartsheet.it.TestData.RowData;
+import com.ronreynolds.smartsheet.it.TestData.SheetData;
 import com.ronreynolds.smartsheet.model.Attachment;
 import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
 import com.ronreynolds.smartsheet.model.AttachmentsListOnSheet200Response;
@@ -742,12 +748,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import com.ronreynolds.smartsheet.it.TestData.AttachmentData.CommentAttachment;
-import com.ronreynolds.smartsheet.it.TestData.AttachmentData.RowAttachment;
-import com.ronreynolds.smartsheet.it.TestData.AttachmentData.SheetAttachment;
-import com.ronreynolds.smartsheet.it.TestData.RowData;
-import com.ronreynolds.smartsheet.it.TestData.CommentData;
-import com.ronreynolds.smartsheet.it.TestData.SheetData;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -829,9 +829,9 @@ public class AttachmentsApiTest {
      */
     @Test
     public void attachmentsGetTest() throws ApiException {
-        CommentAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, CommentAttachment.id)).isNotNull().actual());
-        RowAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, RowAttachment.id)).isNotNull().actual());
-        SheetAttachment.assertEquals(assertThat(api.attachmentsGet(SheetData.id, SheetAttachment.id)).isNotNull().actual());
+        assertThat(api.attachmentsGet(SheetData.id, CommentAttachment.id)).satisfies(CommentAttachment::assertEquals);
+        assertThat(api.attachmentsGet(SheetData.id, RowAttachment.id)).satisfies(RowAttachment::assertEquals);
+        assertThat(api.attachmentsGet(SheetData.id, SheetAttachment.id)).satisfies(SheetAttachment::assertEquals);
     }
 
     /**
@@ -852,16 +852,12 @@ public class AttachmentsApiTest {
         assertThat(response).isNotNull();
 
         Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
-        RowAttachment.assertEquals(
-                assertThat(attachmentMap.get(RowAttachment.id))
-                        .as("unable to find row attachment")
-                        .isNotNull()
-                        .actual());
-        CommentAttachment.assertEquals(
-                assertThat(attachmentMap.get(CommentAttachment.id))
-                        .as("unable to find comment attachment")
-                        .isNotNull()
-                        .actual());
+        assertThat(attachmentMap.get(RowAttachment.id))
+                .as("checking row attachment")
+                .satisfies(RowAttachment::assertEquals);
+        assertThat(attachmentMap.get(CommentAttachment.id))
+                .as("checking comment attachment")
+                .satisfies(CommentAttachment::assertEquals);
     }
 
     /**
@@ -881,21 +877,15 @@ public class AttachmentsApiTest {
         assertThat(response).isNotNull();
 
         Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
-        RowAttachment.assertEquals(
-                assertThat(attachmentMap.get(RowAttachment.id))
-                        .as("unable to find row attachment")
-                        .isNotNull()
-                        .actual());
-        CommentAttachment.assertEquals(
-                assertThat(attachmentMap.get(CommentAttachment.id))
-                        .as("unable to find comment attachment")
-                        .isNotNull()
-                        .actual());
-        SheetAttachment.assertEquals(
-                assertThat(attachmentMap.get(SheetAttachment.id))
-                        .as("unable to find sheet attachment")
-                        .isNotNull()
-                        .actual());
+        assertThat(attachmentMap.get(RowAttachment.id))
+                .as("checking row attachment")
+                .satisfies(RowAttachment::assertEquals);
+        assertThat(attachmentMap.get(CommentAttachment.id))
+                .as("checking comment attachment")
+                .satisfies(CommentAttachment::assertEquals);
+        assertThat(attachmentMap.get(SheetAttachment.id))
+                .as("checking sheet attachment")
+                .satisfies(SheetAttachment::assertEquals);
     }
 
     /**
@@ -910,11 +900,11 @@ public class AttachmentsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = true;
-        AttachmentsVersionList200Response response =
-                api.attachmentsVersionList(SheetData.id, SheetAttachment.id, page, pageSize, includeAll);
+        var response = api.attachmentsVersionList(SheetData.id, SheetAttachment.id, page, pageSize, includeAll);
         assertThat(response).isNotNull();
-        assertThat(response.getData()).isNotEmpty();
-        SheetAttachment.assertEquals(response.getData().get(0));
+        assertThat(response.getData())
+                .isNotEmpty()
+                .first().satisfies(SheetAttachment::assertEquals);
     }
 
     /**
