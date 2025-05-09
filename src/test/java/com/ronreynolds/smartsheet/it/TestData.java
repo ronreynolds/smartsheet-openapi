@@ -14,6 +14,8 @@ import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
 import com.ronreynolds.smartsheet.model.Report;
+import com.ronreynolds.smartsheet.model.ReportBrief;
+import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.Row;
@@ -30,8 +32,6 @@ import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.reflection.Reflection;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Condition;
-import org.assertj.core.internal.Conditions;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -66,7 +66,8 @@ public class TestData {
             String name = "calvin-head-24-2.GIF";
             int sizeInKb = 10;
 
-            static void assertEquals(@NonNull Attachment attachment) {
+            static void assertEquals(Attachment attachment) {
+                assertThat(attachment).isNotNull();
                 assertThat(attachment.getId()).as("id").isEqualTo(id);
                 assertThat(attachment.getName()).as("name").isEqualTo(name);
                 assertThat(attachment.getAttachmentType()).as("attachment-type").isSameAs(attachmentType);
@@ -92,7 +93,8 @@ public class TestData {
             String name = "Test Row Attachment.jpg";
             int sizeInKb = 751;
 
-            static void assertEquals(@NonNull Attachment attachment) {
+            static void assertEquals(Attachment attachment) {
+                assertThat(attachment).isNotNull();
                 assertThat(attachment.getId()).as("id").isEqualTo(id);
                 assertThat(attachment.getParentId()).as("parent id").isEqualTo(parentId);
                 assertThat(attachment.getName()).as("name").isEqualTo(name);
@@ -114,7 +116,8 @@ public class TestData {
             String name = "Test Attachment.jpeg";
             int sizeInKb = 212;
 
-            static void assertEquals(@NonNull Attachment attachment) {
+            static void assertEquals(Attachment attachment) {
+                assertThat(attachment).isNotNull();
                 assertThat(attachment.getId()).as("id").isEqualTo(id);
                 assertThat(attachment.getParentId()).as("parent id").isEqualTo(parentId);
                 assertThat(attachment.getName()).as("name").isEqualTo(name);
@@ -180,15 +183,17 @@ public class TestData {
         long discussionId = 5934265966825348L;
         OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 42, 0, 0, ZoneOffset.UTC);
 
-        static void assertEquals(@NonNull Comment comment) {
+        static void assertEquals(Comment comment) {
+            assertThat(comment).isNotNull();
             assertThat(comment.getId()).as("id").isEqualTo(id);
             assertThat(comment.getDiscussionId()).as("discussion id").isEqualTo(discussionId);
             assertThat(comment.getText()).as("text").isEqualTo(text);
             assertThat(comment.getCreatedAt()).as("created-at").isEqualTo(created);
 
             // assert on the attachment too
-            assertThat(comment.getAttachments()).hasSizeGreaterThan(0);
-            AttachmentData.CommentAttachment.assertEquals(comment.getAttachments().get(0));
+            assertThat(comment.getAttachments())
+                    .isNotEmpty()
+                    .first().satisfies(AttachmentData.CommentAttachment::assertEquals);
         }
     }
 
@@ -208,7 +213,8 @@ public class TestData {
         long id = 1104664725874564L;
         String name = "Test Folder";
 
-        static void assertEquals(@NonNull Folder folder) {
+        static void assertEquals(Folder folder) {
+            assertThat(folder).isNotNull();
             assertThat(folder.getId()).isEqualTo(id);
             assertThat(folder.getName()).isEqualTo(name);
             assertThat(folder.getAccessLevel()).isSameAs(AccessLevel.OWNER);
@@ -219,8 +225,9 @@ public class TestData {
             assertThat(folder.getSights()).isEmpty();
             assertThat(folder.getTemplates()).isEmpty();
         }
-        static void assertChildFolders(@NonNull List<? extends Folder> childFolders) {
+        static void assertChildFolders(List<? extends Folder> childFolders) {
             assertThat(childFolders)
+                    .isNotEmpty()
                     .anySatisfy(folder -> {
                         assertThat(folder.getId()).isEqualTo(2081162651821956L);
                         assertThat(folder.getName()).isEqualTo("Test Folder Child 1");
@@ -251,15 +258,20 @@ public class TestData {
         long id = 5383337628618628L;
         String name = "Test Report";
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC);
-        static void assertContains(@NonNull List<? extends Report> reports) {
-            assertThat(reports).anySatisfy(ReportData::assertEquals);
+
+        static void assertContains(List<? extends Report> reports) {
+            assertThat(reports).isNotEmpty().anySatisfy(ReportData::assertEquals);
         }
-        static void assertEquals(@NonNull Report report) {
+
+        static void assertEquals(Report report) {
+            assertThat(report).isNotNull();
             assertThat(report.getId()).isEqualTo(id);
             assertThat(report.getName()).isEqualTo(name);
             assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
         }
-        static void assertDeepEquals(@NonNull Report report) {
+
+        static void assertDeepEquals(Report report) {
+            assertThat(report).isNotNull();
             assertThat(report.getId()).isEqualTo(id);
             assertThat(report.getName()).isEqualTo(name);
             assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
@@ -417,6 +429,24 @@ public class TestData {
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
         }
+
+        static void assertPublish(ReportPublish publish) {
+            assertThat(publish).isNotNull();
+            assertThat(publish.getReadOnlyFullAccessibleBy()).isNull();
+            assertThat(publish.getReadOnlyFullDefaultView()).isNull();
+            assertThat(publish.getReadOnlyFullEnabled()).isFalse();
+            assertThat(publish.getReadOnlyFullShowToolbar()).isNull();
+            assertThat(publish.getReadOnlyFullUrl()).isNull();
+        }
+
+        static void assertBrief(ReportBrief brief) {
+            assertThat(brief).isNotNull();
+            assertThat(brief.getId()).isEqualTo(id);
+            assertThat(brief.getName()).isEqualTo(name);
+            assertThat(brief.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(brief.getPermalink()).isNotBlank();
+            assertThat(brief.getIsSummaryReport()).isFalse();
+        }
     }
 
     interface RowData {
@@ -443,6 +473,7 @@ public class TestData {
             assertThat(share.getModifiedAt()).isAfterOrEqualTo(shareDate);
         }
     }
+
     interface SheetData {
         long id = 6971132763656068L;
         String name = "Test Sheet 1";
@@ -453,14 +484,16 @@ public class TestData {
 
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
 
-        static void assertEquals(@NonNull Sheet sheet) {
+        static void assertEquals(Sheet sheet) {
+            assertThat(sheet).isNotNull();
             assertThat(sheet.getName()).isEqualTo(name);
             assertThat(sheet.getId()).isEqualTo(id);
             assertThat(sheet.getCreatedAt()).isEqualTo(createdDate);
             assertThat(sheet.getEffectiveAttachmentOptions()).allMatch(effectiveAttachmentOptions::contains);
         }
 
-        static void assertNotPublished(@NonNull SheetPublish publish) {
+        static void assertNotPublished(SheetPublish publish) {
+            assertThat(publish).isNotNull();
             assertThat(publish.getIcalEnabled()).isFalse();
             assertThat(publish.getIcalUrl()).isNull();
             assertThat(publish.getReadOnlyFullAccessibleBy()).isNull();
@@ -571,12 +604,13 @@ public class TestData {
 
         interface AlternateEmailData {
             long id = 3036181538596740L;
-            static void assertMatch(@NonNull List<? extends AlternateEmail> emailList) {
-                assertThat(emailList).anyMatch(email -> assertThat(email.getId()).isNotNull().actual() == id);
+            static void assertMatch(List<? extends AlternateEmail> emailList) {
+                assertThat(emailList).isNotEmpty().anySatisfy(email -> assertThat(email.getId()).isEqualTo(id));
             }
         }
 
-        static void assertEquals(@NonNull GetCurrentUser200Response user) {
+        static void assertEquals(GetCurrentUser200Response user) {
+            assertThat(user).isNotNull();
             assertThat(user.getAccount()).as("missing account").isNotNull();
             assertThat(user.getAccount().getId()).as("account-id").isEqualTo(accountId);
             assertThat(user.getAccount().getName()).as("account-name").isEqualTo(TestData.UserData.accountName);
@@ -590,8 +624,9 @@ public class TestData {
             AlternateEmailData.assertMatch(assertThat(user.getAlternateEmails()).isNotNull().actual());
         }
 
-        static void assertEquals(@NonNull UserProfile user) {
-            assertThat(user.getAccount()).as("missing account").isNotNull();
+        static void assertEquals(UserProfile user) {
+            assertThat(user).isNotNull();
+            assertThat(user.getAccount()).as("account").isNotNull();
             assertThat(user.getAccount().getId()).as("account-id").isEqualTo(accountId);
             assertThat(user.getAccount().getName()).as("account-name").isEqualTo(TestData.UserData.accountName);
             assertThat(user.getAdmin()).as("admin-flag").isEqualTo(TestData.UserData.isAdmin);
@@ -619,19 +654,21 @@ public class TestData {
         AccessLevel level = AccessLevel.OWNER;
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 3, 0, ZoneOffset.UTC);
 
-        static void assertEquals(@NonNull Workspace workspace) {
+        static void assertEquals(Workspace workspace) {
+            assertThat(workspace).isNotNull();
             assertThat(workspace.getId()).isEqualTo(id);
             assertThat(workspace.getName()).isEqualTo(name);
             assertThat(workspace.getAccessLevel()).isSameAs(level);
             assertThat(workspace.getPermalink()).isNotBlank();
         }
 
-        static void assertShare(@NonNull Share share) {
+        static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.WORKSPACE, shareDate);
         }
 
         // FIXME - make non-inner type
-        static void assertFolderInWorkspace(@NonNull GetWorkspaceFolders200ResponseAllOfDataInner folder) {
+        static void assertFolderInWorkspace(GetWorkspaceFolders200ResponseAllOfDataInner folder) {
+            assertThat(folder).isNotNull();
             assertThat(folder.getId()).isEqualTo(1104664725874564L);
             assertThat(folder.getName()).isEqualTo("Test Folder");
         }
@@ -651,7 +688,9 @@ public class TestData {
         assertThat(Reflection.invoke(pagedResult, "getTotalCount", Integer.class)).isPositive();
     }
 
-    /** some APIs respond with a null pageSize if the request had a null pageSize; it's inconsistent across APIs unfortunately */
+    /**
+     * some APIs respond with a null pageSize if the request had a null pageSize; it's inconsistent across APIs unfortunately
+     */
     static void pagedResultHasDataNullPageSize(Object pagedResult) {
         // any response object that aggregates the paged-result will have these methods; unfortunately openapi-codegen uses
         // aggregation rather than extension so we can't depend on a base-type :shrug:
