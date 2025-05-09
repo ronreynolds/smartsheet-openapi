@@ -727,7 +727,7 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ProofsApi;
 import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
-import com.ronreynolds.smartsheet.model.CommentLite;
+import com.ronreynolds.smartsheet.model.CommentBrief;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
 import com.ronreynolds.smartsheet.model.Proof;
@@ -811,9 +811,8 @@ public class ProofsApiTest {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
         String contentType = null;
-        CommentLite commentLite = null;
-        DiscussionsCreate200Response response =
-                api.proofsCreateDiscussion(sheetId, proofId, contentType, commentLite);
+        CommentBrief commentLite = null;
+        DiscussionsCreate200Response response = api.proofsCreateDiscussion(sheetId, proofId, contentType, commentLite);
 
         // TODO: test validations
     }
