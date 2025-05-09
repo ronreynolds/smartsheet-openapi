@@ -1511,10 +1511,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -2341,38 +2341,11 @@
                       "properties": {
                         "data": {
                           "description": "List of all accessible reports, referenced by their ID, name, access level, and summary report flag values.",
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/Int64"
-                                  }
-                                ],
-                                "description": "The report's unique identifier.",
-                                "example": 987654321
-                              },
-                              "name": {
-                                "type": "string",
-                                "description": "The report's name.",
-                                "example": "Q2 Earnings"
-                              },
-                              "accessLevel": {
-                                "$ref": "#/components/schemas/AccessLevel"
-                              },
-                              "permalink": {
-                                "type": "string",
-                                "description": "URL to the report in Smartsheet.",
-                                "example": "https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21"
-                              },
-                              "isSummaryReport": {
-                                "type": "boolean",
-                                "description": "It is `true` if the report is a sheet summary; otherwise it is a row report."
-                              }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/ReportBriefArray"
                             }
-                          }
+                          ]
                         }
                       }
                     }
@@ -3241,10 +3214,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -4485,7 +4458,7 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/ColumnLite"
+                      "$ref": "#/components/schemas/ColumnBrief"
                     }
                   ]
                 }
@@ -4635,7 +4608,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/ColumnLite"
+                      "$ref": "#/components/schemas/ColumnBrief"
                     }
                   ]
                 }
@@ -5044,7 +5017,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SheetLite"
+                          "$ref": "#/components/schemas/SheetBrief"
                         }
                       }
                     }
@@ -5456,7 +5429,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -5859,7 +5832,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SheetLite"
+                          "$ref": "#/components/schemas/SheetBrief"
                         }
                       }
                     }
@@ -6285,7 +6258,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -6882,7 +6855,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "$ref": "#/components/schemas/CellLite"
+                                  "$ref": "#/components/schemas/CellBrief"
                                 }
                               },
                               "version": {
@@ -7081,7 +7054,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "$ref": "#/components/schemas/CellLite"
+                                  "$ref": "#/components/schemas/CellBrief"
                                 }
                               },
                               "version": {
@@ -7395,7 +7368,7 @@
                           "description": "Cells objects.",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/CellLite"
+                            "$ref": "#/components/schemas/CellBrief"
                           }
                         },
                         "createdAt": {
@@ -7832,7 +7805,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -9484,7 +9457,7 @@
                             "type": "object",
                             "allOf": [
                               {
-                                "$ref": "#/components/schemas/SightLite"
+                                "$ref": "#/components/schemas/SightBrief"
                               }
                             ],
                             "properties": {
@@ -9723,7 +9696,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SightLite"
+                          "$ref": "#/components/schemas/SightBrief"
                         }
                       }
                     }
@@ -9787,7 +9760,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SightLite"
+                          "$ref": "#/components/schemas/SightBrief"
                         }
                       }
                     }
@@ -11995,7 +11968,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WorkspaceLite"
+                "$ref": "#/components/schemas/WorkspaceBrief"
               }
             }
           }
@@ -12771,10 +12744,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -14526,7 +14499,7 @@
           }
         }
       },
-      "CellLite": {
+      "CellBrief": {
         "type": "object",
         "properties": {
           "columnId": {
@@ -15109,7 +15082,7 @@
           "$ref": "#/components/schemas/Column"
         }
       },
-      "ColumnLite": {
+      "ColumnBrief": {
         "type": "object",
         "properties": {
           "data": {
@@ -15420,7 +15393,7 @@
           "$ref": "#/components/schemas/Comment"
         }
       },
-      "CommentLite": {
+      "CommentBrief": {
         "type": "object",
         "properties": {
           "comment": {
@@ -17694,6 +17667,43 @@
           }
         }
       },
+      "ReportBrief": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
+            "description": "The report's unique identifier.",
+            "example": 987654321
+          },
+          "name": {
+            "type": "string",
+            "description": "The report's name.",
+            "example": "Q2 Earnings"
+          },
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "permalink": {
+            "type": "string",
+            "description": "URL to the report in Smartsheet.",
+            "example": "https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21"
+          },
+          "isSummaryReport": {
+            "type": "boolean",
+            "description": "It is `true` if the report is a sheet summary; otherwise it is a row report."
+          }
+        }
+      },
+      "ReportBriefArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ReportBrief"
+        }
+      },
       "ReportWidgetContent": {
         "type": "object",
         "title": "Report",
@@ -18915,7 +18925,7 @@
           }
         }
       },
-      "SheetLite": {
+      "SheetBrief": {
         "type": "object",
         "properties": {
           "accessLevel": {
@@ -18932,7 +18942,7 @@
           }
         }
       },
-      "SheetLite_withColumns": {
+      "SheetBrief_withColumns": {
         "type": "object",
         "description": "Sheet created from scratch using the specified columns.",
         "properties": {
@@ -19344,7 +19354,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/SightLite"
+                "$ref": "#/components/schemas/SightBrief"
               }
             ],
             "properties": {
@@ -19401,7 +19411,7 @@
           "$ref": "#/components/schemas/Sight"
         }
       },
-      "SightLite": {
+      "SightBrief": {
         "type": "object",
         "properties": {
           "id": {
@@ -20786,7 +20796,7 @@
           "shares"
         ]
       },
-      "WorkspaceLite": {
+      "WorkspaceBrief": {
         "description": "Used to create a workspace (without child containers)",
         "type": "object",
         "properties": {
