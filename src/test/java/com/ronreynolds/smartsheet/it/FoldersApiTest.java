@@ -736,6 +736,7 @@ import com.ronreynolds.smartsheet.model.FolderInclude;
 import com.ronreynolds.smartsheet.model.ListFolders200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.UpdateFolder200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -747,6 +748,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for FoldersApi
  */
+@Slf4j
 public class FoldersApiTest {
     private final FoldersApi api = new FoldersApi();
 
@@ -828,10 +830,8 @@ public class FoldersApiTest {
         Long folderId = TestData.FolderData.id;
         List<FolderInclude> include = null;
         Folder response = api.getFolder(folderId, include);
-
-        System.out.println(response);
-        assertThat(response).isNotNull()
-                .satisfies(TestData.FolderData::assertEquals);
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.FolderData::assertEquals);
     }
 
     /**
@@ -848,11 +848,8 @@ public class FoldersApiTest {
         Integer page = null;
         Integer pageSize = null;
         ListFolders200Response response = api.listFolders(parentFolderId, includeAll, page, pageSize);
-
-        assertThat(response)
-                .satisfies(TestData::pagedResultHasData);
-        assertThat(response.getData())
-                .satisfies(TestData.FolderData::assertChildFolders);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).satisfies(TestData.FolderData::assertChildFolders);
     }
 
     /**
