@@ -727,7 +727,7 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DiscussionsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
-import com.ronreynolds.smartsheet.model.CommentLite;
+import com.ronreynolds.smartsheet.model.CommentBrief;
 import com.ronreynolds.smartsheet.model.Discussion;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
@@ -796,9 +796,8 @@ public class DiscussionsApiTest {
     public void discussionsCreateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         String contentType = null;
-        CommentLite commentLite = null;
-        DiscussionsCreate200Response response =
-                api.discussionsCreate(sheetId, contentType, commentLite);
+        CommentBrief commentLite = null;
+        DiscussionsCreate200Response response = api.discussionsCreate(sheetId, contentType, commentLite);
 
         // TODO: test validations
     }
@@ -837,7 +836,7 @@ public class DiscussionsApiTest {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
         String contentType = null;
-        CommentLite commentLite = null;
+        CommentBrief commentLite = null;
         DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, contentType, commentLite);
 
         // TODO: test validations
