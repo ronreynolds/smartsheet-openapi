@@ -270,3 +270,12 @@ some parts of the Spec don't match the server responses at all
 * renamed `#/components/schemas/AttachmentType_smar` to `#/components/schemas/AttachmentType` (matches Java-SDK enum)
 * changed `#/components/schemas/Sheet.effectiveAttachmentOptions` from array-string to array-AttachmentType
 * changed `#/components/schemas/Attachment.attachmentSubType` from string-enum to `AttachmentSubType` enum
+* added `#/components/schemas/ReportBrief` and `#/components/schemas/ReportBriefArray` to replace `getReports` response data
+* renamed all "*Lite" types to "*Brief"
+  * `CellLite`
+  * `ColumnLite`
+  * `CommentLite`
+  * `SheetLite`
+  * `SheetLite_withColumns`
+  * `SightLite`
+  * `WorkspaceLite`
