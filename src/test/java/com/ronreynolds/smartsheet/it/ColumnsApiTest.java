@@ -726,7 +726,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ColumnsApi;
-import com.ronreynolds.smartsheet.model.ColumnLite;
+import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnObject;
 import com.ronreynolds.smartsheet.model.ColumnUpdateColumn200Response;
 import com.ronreynolds.smartsheet.model.ColumnsAddToSheet200Response;
@@ -779,8 +779,7 @@ public class ColumnsApiTest {
         Long sheetId = null;
         Long columnId = null;
         CompatibilityLevel level = null;
-        ColumnLite response =
-                api.columnGet(sheetId, columnId, level);
+        ColumnBrief response = api.columnGet(sheetId, columnId, level);
 
         // TODO: test validations
     }
