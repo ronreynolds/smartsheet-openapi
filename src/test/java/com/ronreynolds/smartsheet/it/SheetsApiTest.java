@@ -792,11 +792,9 @@ public class SheetsApiTest {
     @Disabled("need test data")
     public void copySheetTest() throws ApiException {
         ContainerDestination containerDestination = null;
-        String contentType = null;
         List<CopyFolderInclude> include = Constants.allOf(CopyFolderInclude.class);
         FolderCopyExclude exclude = null;
-        CopySheet200Response response =
-                api.copySheet(TestData.SheetData.id, containerDestination, contentType, include, exclude);
+        CopySheet200Response response = api.copySheet(TestData.SheetData.id, containerDestination, include, exclude);
 
         log.info("{}", response);
         // TODO: test validations
@@ -815,10 +813,8 @@ public class SheetsApiTest {
     public void createSheetInFolderTest() throws ApiException {
         Long folderId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
-        String contentType = null;
         List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response =
-                api.createSheetInFolder(folderId, createSheetInFolderRequest, contentType, include);
+        CreateSheetInFolder200Response response = api.createSheetInFolder(folderId, createSheetInFolderRequest, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -838,10 +834,8 @@ public class SheetsApiTest {
     public void createSheetInSheetsFolderTest() throws ApiException {
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
-        String contentType = null;
         List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response =
-                api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, contentType, include);
+        CreateSheetInFolder200Response response = api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -862,10 +856,8 @@ public class SheetsApiTest {
         Long workspaceId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
-        String contentType = null;
         List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response =
-                api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, contentType, include);
+        CreateSheetInFolder200Response response = api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -1073,8 +1065,7 @@ public class SheetsApiTest {
 //                .destinationId()
 //                .destinationType()
                 .build();
-        String contentType = null;
-        CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest, contentType);
+        CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest);
 
         log.info("{}", response);
         // TODO: test validations
@@ -1092,7 +1083,6 @@ public class SheetsApiTest {
     @Disabled("need test data")
     public void setSheetPublishTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String contentType = null;
         SheetPublishSettings sheetPublishSettings = SheetPublishSettings.builder()
 //                .icalEnabled()
 //                .readOnlyFullAccessibleBy()
@@ -1105,7 +1095,7 @@ public class SheetsApiTest {
 //                .readWriteEnabled()
 //                .readWriteAccessibleBy()
                 .build();
-        SetSheetPublish200Response response = api.setSheetPublish(sheetId, contentType, sheetPublishSettings);
+        SetSheetPublish200Response response = api.setSheetPublish(sheetId, sheetPublishSettings);
 
         log.info("{}", response);
         // TODO: test validations
@@ -1162,7 +1152,6 @@ public class SheetsApiTest {
     @Disabled("totally works - just don't want the spam :)")
     public void sheetSendTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String contentType = null;  // no idea
         List<EmailOrGroupId> emailOrGroupIds = Stream.of("user@example.com")
                 // EmailOrGroupId is a one-of around 2 types so we create the proper value type then wrap it in the one-of
                 .map(email -> new EmailOrGroupId(EmailAddress.builder().email(email).build()))
@@ -1173,7 +1162,7 @@ public class SheetsApiTest {
                 .message("yo!  here's some sheet!")
                 .ccMe(true)
                 .build();
-        ResultPrefix response = api.sheetSend(sheetId, contentType, sheetEmail);
+        ResultPrefix response = api.sheetSend(sheetId, sheetEmail);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::successfulResult);

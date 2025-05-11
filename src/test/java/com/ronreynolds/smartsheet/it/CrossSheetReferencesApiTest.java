@@ -730,6 +730,7 @@ import com.ronreynolds.smartsheet.model.AddCrosssheetReference200Response;
 import com.ronreynolds.smartsheet.model.AddCrosssheetReferenceRequest;
 import com.ronreynolds.smartsheet.model.CrossSheetReference;
 import com.ronreynolds.smartsheet.model.ListCrosssheetReferences200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -739,6 +740,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for CrossSheetReferencesApi
  */
+@Slf4j
 @Disabled("CrossSheetReferencesApiTest not yet implemented")
 public class CrossSheetReferencesApiTest {
 
@@ -757,9 +759,10 @@ public class CrossSheetReferencesApiTest {
     public void addCrosssheetReferenceTest() throws ApiException {
         Long sheetId = null;
         AddCrosssheetReferenceRequest addCrosssheetReferenceRequest = null;
-        String contentType = null;
-        AddCrosssheetReference200Response response =
-                api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest, contentType);
+        AddCrosssheetReference200Response response = api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest);
+        assertThat(response).isNotNull();
+
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -776,8 +779,10 @@ public class CrossSheetReferencesApiTest {
     public void getCrosssheetReferenceTest() throws ApiException {
         Long sheetId = null;
         Long crossSheetReferenceId = null;
-        CrossSheetReference response =
-                api.getCrosssheetReference(sheetId, crossSheetReferenceId);
+        CrossSheetReference response = api.getCrosssheetReference(sheetId, crossSheetReferenceId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -795,10 +800,11 @@ public class CrossSheetReferencesApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListCrosssheetReferences200Response response =
-                api.listCrosssheetReferences(sheetId, includeAll, page, pageSize);
+        ListCrosssheetReferences200Response response = api.listCrosssheetReferences(sheetId, includeAll, page, pageSize);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
-
 }

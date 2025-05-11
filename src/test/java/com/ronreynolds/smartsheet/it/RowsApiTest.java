@@ -742,6 +742,7 @@ import com.ronreynolds.smartsheet.model.RowsSortRequest;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.UpdateRows200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -753,6 +754,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for RowsApi
  */
+@Slf4j
 @Disabled("RowsApiTest not yet implemented")
 public class RowsApiTest {
 
@@ -769,12 +771,12 @@ public class RowsApiTest {
     @Test
     public void copyRowsTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
+        
         List<CopyRowsInclude> include = null;
         Boolean ignoreRowsNotFound = null;
         CopyOrMoveRowDirective copyOrMoveRowDirective = null;
-        CopyOrMoveRowResult response =
-                api.copyRows(sheetId, contentType, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        CopyOrMoveRowResult response = api.copyRows(sheetId, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -792,8 +794,10 @@ public class RowsApiTest {
         Long sheetId = null;
         List<Long> ids = null;
         Boolean ignoreRowsNotFound = null;
-        DeleteRows200Response response =
-                api.deleteRows(sheetId, ids, ignoreRowsNotFound);
+        DeleteRows200Response response = api.deleteRows(sheetId, ids, ignoreRowsNotFound);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -808,12 +812,13 @@ public class RowsApiTest {
     @Test
     public void moveRowsTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
         MoveRowsInclude include = null;
         Boolean ignoreRowsNotFound = null;
         CopyOrMoveRowDirective copyOrMoveRowDirective = null;
-        CopyOrMoveRowResult response =
-                api.moveRows(sheetId, contentType, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        CopyOrMoveRowResult response = api.moveRows(sheetId, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -833,8 +838,10 @@ public class RowsApiTest {
         List<GetRowInclude> include = null;
         List<SheetExclude> exclude = null;
         CompatibilityLevel level = null;
-        RowGet200Response response =
-                api.rowGet(sheetId, rowId, accessApiLevel, include, exclude, level);
+        RowGet200Response response = api.rowGet(sheetId, rowId, accessApiLevel, include, exclude, level);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -856,12 +863,14 @@ public class RowsApiTest {
     public void rowsAddToSheetTest() throws ApiException {
         Long sheetId = null;
         Integer accessApiLevel = null;
-        String contentType = null;
+        
         Boolean allowPartialSuccess = null;
         Boolean overrideValidation = null;
         List<Row> row = null;
-        RowsAddToSheet200Response response =
-                api.rowsAddToSheet(sheetId, accessApiLevel, contentType, allowPartialSuccess, overrideValidation, row);
+        RowsAddToSheet200Response response = api.rowsAddToSheet(sheetId, accessApiLevel, allowPartialSuccess, overrideValidation, row);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -876,10 +885,11 @@ public class RowsApiTest {
     @Test
     public void rowsSendTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
         MultiRowEmail multiRowEmail = null;
-        ResultPrefix response =
-                api.rowsSend(sheetId, contentType, multiRowEmail);
+        ResultPrefix response = api.rowsSend(sheetId, multiRowEmail);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -894,11 +904,12 @@ public class RowsApiTest {
     @Test
     public void rowsSortTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
         String includeAmpersandExclude = null;
         RowsSortRequest rowsSortRequest = null;
-        Sheet response =
-                api.rowsSort(sheetId, contentType, includeAmpersandExclude, rowsSortRequest);
+        Sheet response = api.rowsSort(sheetId, includeAmpersandExclude, rowsSortRequest);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -918,12 +929,14 @@ public class RowsApiTest {
     public void updateRowsTest() throws ApiException {
         Long sheetId = null;
         Integer accessApiLevel = null;
-        String contentType = null;
+        
         Boolean allowPartialSuccess = null;
         Boolean overrideValidation = null;
         List<Row> row = null;
-        UpdateRows200Response response =
-                api.updateRows(sheetId, accessApiLevel, contentType, allowPartialSuccess, overrideValidation, row);
+        UpdateRows200Response response = api.updateRows(sheetId, accessApiLevel, allowPartialSuccess, overrideValidation, row);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

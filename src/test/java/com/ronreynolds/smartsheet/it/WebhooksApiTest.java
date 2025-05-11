@@ -733,6 +733,7 @@ import com.ronreynolds.smartsheet.model.ResetSharedSecret200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.UpdateWebhookRequest;
 import com.ronreynolds.smartsheet.model.Webhook;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -742,6 +743,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for WebhooksApi
  */
+@Slf4j
 @Disabled("WebhooksApiTest not yet implemented")
 public class WebhooksApiTest {
 
@@ -760,12 +762,13 @@ public class WebhooksApiTest {
      */
     @Test
     public void createWebhookTest() throws ApiException {
-        String contentType = null;
         CreateWebhookRequest createWebhookRequest = null;
-        CreateWebhook200Response response = api.createWebhook(contentType, createWebhookRequest);
+        CreateWebhook200Response response = api.createWebhook(createWebhookRequest);
         assertThat(response).isNotNull();
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -782,6 +785,8 @@ public class WebhooksApiTest {
         Result response = api.deleteWebhook(webhookId);
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -797,6 +802,8 @@ public class WebhooksApiTest {
         Webhook response = api.getWebhook(webhookId);
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -816,6 +823,8 @@ public class WebhooksApiTest {
         ListWebhooks200Response response = api.listWebhooks(includeAll, page, pageSize);
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -830,10 +839,11 @@ public class WebhooksApiTest {
     @Test
     public void resetSharedSecretTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
-        String contentType = null;
-        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, contentType);
+        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId);
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
     /**
@@ -849,11 +859,12 @@ public class WebhooksApiTest {
     @Test
     public void updateWebhookTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
-        String contentType = null;
         UpdateWebhookRequest updateWebhookRequest = null;
-        CreateWebhook200Response response = api.updateWebhook(webhookId, contentType, updateWebhookRequest);
+        CreateWebhook200Response response = api.updateWebhook(webhookId, updateWebhookRequest);
 
         // TODO: test validations
+        log.info("{}", response);
+        assertThat(response).isNotNull();
     }
 
 }

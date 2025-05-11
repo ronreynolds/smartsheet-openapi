@@ -773,9 +773,8 @@ public class DashboardsApiTest {
     @Test
     public void copySightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        String contentType = null;
         ContainerDestination containerDestination = null;
-        CopySight200Response response = api.copySight(sightId, contentType, containerDestination);
+        CopySight200Response response = api.copySight(sightId, containerDestination);
         assertThat(response).isNotNull();
 
         log.info("{}", response);
@@ -911,9 +910,8 @@ public class DashboardsApiTest {
     @Test
     public void moveSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        String contentType = null;
         ContainerDestination containerDestination = null;
-        CopySight200Response response = api.moveSight(sightId, contentType, containerDestination);
+        CopySight200Response response = api.moveSight(sightId, containerDestination);
 
         log.info("{}", response);
         // TODO: test validations
@@ -930,9 +928,8 @@ public class DashboardsApiTest {
     @Test
     public void setSightPublishStatusTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        String contentType = null;
-        SightPublish sightPublish = null;
-        SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, contentType, sightPublish);
+        SightPublish sightPublish = SightPublish.builder().build();
+        SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, sightPublish);
 
         log.info("{}", response);
         // TODO: test validations
@@ -989,9 +986,8 @@ public class DashboardsApiTest {
     public void updateSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Boolean numericDates = null;
-        String contentType = null;
         UpdateSightRequest updateSightRequest = null;
-        UpdateSight200Response response = api.updateSight(sightId, numericDates, contentType, updateSightRequest);
+        UpdateSight200Response response = api.updateSight(sightId, numericDates, updateSightRequest);
 
         log.info("{}", response);
         // TODO: test validations

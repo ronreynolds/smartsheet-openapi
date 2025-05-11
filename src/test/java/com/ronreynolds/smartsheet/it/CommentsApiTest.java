@@ -731,6 +731,7 @@ import com.ronreynolds.smartsheet.model.CommentDelete200Response;
 import com.ronreynolds.smartsheet.model.CommentEdit200Response;
 import com.ronreynolds.smartsheet.model.CommentText;
 import com.ronreynolds.smartsheet.model.CommentsCreate200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -745,8 +746,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for CommentsApi
  */
+@Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
-//@Disabled("CommentsApiTest not yet implemented")
 public class CommentsApiTest {
     private final CommentsApi api = new CommentsApi();
 
@@ -764,8 +765,9 @@ public class CommentsApiTest {
         Long sheetId = SheetData.id;
         Long commentId = null;
         CommentDelete200Response response = api.commentDelete(sheetId, commentId);
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
         // TODO: test validations
     }
 
@@ -780,12 +782,12 @@ public class CommentsApiTest {
     @Disabled
     public void commentEditTest() throws ApiException {
         Long commentId = null;
-        String contentType = null;
         CommentText commentText = CommentText.builder().text("new comment").build();
-        CommentEdit200Response response = api.commentEdit(SheetData.id, commentId, contentType, commentText);
+        CommentEdit200Response response = api.commentEdit(SheetData.id, commentId, commentText);
 
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
         // TODO: test validations
     }
 
@@ -798,10 +800,7 @@ public class CommentsApiTest {
      */
     @Test
     public void commentGetTest() throws ApiException {
-        CommentData.assertEquals(
-                assertThat(api.commentGet(SheetData.id, CommentData.id))
-                        .isNotNull()
-                        .actual());
+        assertThat(api.commentGet(SheetData.id, CommentData.id)).satisfies(CommentData::assertEquals);
     }
 
     /**
@@ -823,8 +822,9 @@ public class CommentsApiTest {
                 .build();
         CommentsCreate200Response response = api.commentsCreate(sheetId, discussionId, contentType, commentText);
 
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
         // TODO: test validations
     }
 

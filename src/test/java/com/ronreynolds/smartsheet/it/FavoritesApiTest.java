@@ -732,6 +732,7 @@ import com.ronreynolds.smartsheet.model.FavoriteInclude;
 import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.GetFavorites200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -743,6 +744,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for FavoritesApi
  */
+@Slf4j
 @Disabled("FavoritesApiTest not yet implemented")
 public class FavoritesApiTest {
 
@@ -763,9 +765,8 @@ public class FavoritesApiTest {
     public void addFavoriteTest() throws ApiException {
         List<Favorite> favorite = null;
         String xSmarScActorId = null;
-        String contentType = null;
-        AddFavorite200Response response =
-                api.addFavorite(favorite, xSmarScActorId, contentType);
+        AddFavorite200Response response = api.addFavorite(favorite, xSmarScActorId);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -783,8 +784,10 @@ public class FavoritesApiTest {
         FavoriteType favoriteType = null;
         List<Long> objectIds = null;
         String xSmarScActorId = null;
-        ResultPrefix response =
-                api.deleteFavoritesByType(favoriteType, objectIds, xSmarScActorId);
+        ResultPrefix response = api.deleteFavoritesByType(favoriteType, objectIds, xSmarScActorId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -801,8 +804,10 @@ public class FavoritesApiTest {
         FavoriteType favoriteType = null;
         Long favoriteId = null;
         String xSmarScActorId = null;
-        ResultPrefix response =
-                api.deleteFavoritesByTypeAndId(favoriteType, favoriteId, xSmarScActorId);
+        ResultPrefix response = api.deleteFavoritesByTypeAndId(favoriteType, favoriteId, xSmarScActorId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -821,8 +826,10 @@ public class FavoritesApiTest {
         Integer page = null;
         Integer pageSize = null;
         List<FavoriteInclude> include = null;
-        GetFavorites200Response response =
-                api.getFavorites(xSmarScActorId, includeAll, page, pageSize, include);
+        GetFavorites200Response response = api.getFavorites(xSmarScActorId, includeAll, page, pageSize, include);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -840,8 +847,10 @@ public class FavoritesApiTest {
         Long favoriteId = null;
         String xSmarScActorId = null;
         List<FavoriteInclude> include = null;
-        Favorite response =
-                api.isFavorite(favoriteType, favoriteId, xSmarScActorId, include);
+        Favorite response = api.isFavorite(favoriteType, favoriteId, xSmarScActorId, include);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

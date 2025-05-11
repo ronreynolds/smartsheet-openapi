@@ -730,6 +730,7 @@ import com.ronreynolds.smartsheet.model.AutomationRule;
 import com.ronreynolds.smartsheet.model.AutomationruleUpdate200Response;
 import com.ronreynolds.smartsheet.model.AutomationrulesList200Response;
 import com.ronreynolds.smartsheet.model.Result;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -742,6 +743,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for AutomationRulesApi
  */
+@Slf4j
 @Disabled("AutomationRulesApiTest not yet implemented")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
 public class AutomationRulesApiTest {
@@ -761,9 +763,10 @@ public class AutomationRulesApiTest {
         String automationRuleId = TestData.WorkflowData.id;
         Result response = api.automationruleDelete(sheetId, automationRuleId);
 
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
+        // TODO: test validations
     }
 
     /**
@@ -780,9 +783,10 @@ public class AutomationRulesApiTest {
         String automationRuleId = TestData.WorkflowData.id;
         AutomationRule response = api.automationruleGet(sheetId, automationRuleId);
 
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
+        // TODO: test validations
     }
 
     /**
@@ -798,16 +802,16 @@ public class AutomationRulesApiTest {
     public void automationruleUpdateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         String automationRuleId = TestData.WorkflowData.id;
-        String contentType = null;
         AutomationRule automationRule = AutomationRule.builder()
                 .name("Test Workflow rename")
                 .enabled(false)
                 .build();
-        AutomationruleUpdate200Response response = api.automationruleUpdate(sheetId, automationRuleId, contentType, automationRule);
+        AutomationruleUpdate200Response response = api.automationruleUpdate(sheetId, automationRuleId, automationRule);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
-        assertThat(response).isNotNull();
-        System.out.println(response);
     }
 
     /**
@@ -829,8 +833,9 @@ public class AutomationRulesApiTest {
         Integer pageSize = null;
         AutomationrulesList200Response response = api.automationrulesList(sheetId, includeAll, page, pageSize);
 
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
+
+        // TODO: test validations
     }
 }

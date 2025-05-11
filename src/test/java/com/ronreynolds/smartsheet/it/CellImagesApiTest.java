@@ -729,6 +729,7 @@ import com.ronreynolds.smartsheet.api.CellImagesApi;
 import com.ronreynolds.smartsheet.model.AddImageToCell200Response;
 import com.ronreynolds.smartsheet.model.ImageUrl;
 import com.ronreynolds.smartsheet.model.ListImageUrls200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -741,6 +742,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for CellImagesApi
  */
+@Slf4j
 @Disabled("CellImagesApiTest not yet implemented")
 public class CellImagesApiTest {
 
@@ -759,18 +761,19 @@ public class CellImagesApiTest {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
         Long columnId = null;
-        String contentType = null;
+        String contentType = null;  // content type of the request
         String contentDisposition = null;
         Integer contentLength = null;
         String altText = null;
         Boolean overrideValidation = null;
         File body = null;
-        AddImageToCell200Response response =
-                api.addImageToCell(sheetId, rowId, columnId, contentType, contentDisposition, contentLength, altText,
-                        overrideValidation, body);
+        AddImageToCell200Response response = api.addImageToCell(
+                sheetId, rowId, columnId, contentType, contentDisposition, contentLength, altText, overrideValidation, body);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
+
     }
 
     /**
@@ -782,12 +785,12 @@ public class CellImagesApiTest {
      */
     @Test
     public void listImageUrlsTest() throws ApiException {
-        String contentType = null;
         List<ImageUrl> imageUrl = null;
-        ListImageUrls200Response response =
-                api.listImageUrls(contentType, imageUrl);
+        ListImageUrls200Response response = api.listImageUrls(imageUrl);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
-
 }

@@ -742,6 +742,7 @@ import com.ronreynolds.smartsheet.model.ProofsListDiscussions200Response;
 import com.ronreynolds.smartsheet.model.ProofsListRequestActions200Response;
 import com.ronreynolds.smartsheet.model.ProofsUpdateRequest;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -754,6 +755,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for ProofsApi
  */
+@Slf4j
 @Disabled("ProofsApiTest not yet implemented")
 public class ProofsApiTest {
 
@@ -773,8 +775,8 @@ public class ProofsApiTest {
         Long proofId = TestData.ProofData.id;
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response =
-                api.proofsAttachToProof(sheetId, proofId, contentType, body);
+        AttachmentsAttachToSheet200Response response = api.proofsAttachToProof(sheetId, proofId, contentType, body);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -793,8 +795,10 @@ public class ProofsApiTest {
         Long rowId = null;
         String contentType = null;
         File body = null;
-        ProofsCreate200Response response =
-                api.proofsCreate(sheetId, rowId, contentType, body);
+        ProofsCreate200Response response = api.proofsCreate(sheetId, rowId, contentType, body);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -814,6 +818,9 @@ public class ProofsApiTest {
         CommentBrief commentLite = null;
         DiscussionsCreate200Response response = api.proofsCreateDiscussion(sheetId, proofId, contentType, commentLite);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
+
         // TODO: test validations
     }
 
@@ -828,10 +835,11 @@ public class ProofsApiTest {
     public void proofsCreateProofRequestsTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        String contentType = null;
         ProofRequestBody proofRequestBody = null;
-        ProofsCreateProofRequests200Response response =
-                api.proofsCreateProofRequests(sheetId, proofId, contentType, proofRequestBody);
+        ProofsCreateProofRequests200Response response = api.proofsCreateProofRequests(sheetId, proofId, proofRequestBody);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -849,8 +857,10 @@ public class ProofsApiTest {
         Long proofId = TestData.ProofData.id;
         String contentType = null;
         File body = null;
-        ProofsCreateVersion200Response response =
-                api.proofsCreateVersion(sheetId, proofId, contentType, body);
+        ProofsCreateVersion200Response response = api.proofsCreateVersion(sheetId, proofId, contentType, body);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -866,8 +876,10 @@ public class ProofsApiTest {
     public void proofsDeleteTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response =
-                api.proofsDelete(sheetId, proofId);
+        ResultPrefix response = api.proofsDelete(sheetId, proofId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -883,8 +895,10 @@ public class ProofsApiTest {
     public void proofsDeleteProofRequestsTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response =
-                api.proofsDeleteProofRequests(sheetId, proofId);
+        ResultPrefix response = api.proofsDeleteProofRequests(sheetId, proofId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -900,8 +914,10 @@ public class ProofsApiTest {
     public void proofsDeleteVersionTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response =
-                api.proofsDeleteVersion(sheetId, proofId);
+        ResultPrefix response = api.proofsDeleteVersion(sheetId, proofId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -919,8 +935,10 @@ public class ProofsApiTest {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
         List<DiscussionInclude> include = null;
-        Proof response =
-                api.proofsGet(sheetId, proofId, include);
+        Proof response = api.proofsGet(sheetId, proofId, include);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -938,8 +956,10 @@ public class ProofsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ProofsGetAllProofs200Response response =
-                api.proofsGetAllProofs(sheetId, page, pageSize, includeAll);
+        ProofsGetAllProofs200Response response = api.proofsGetAllProofs(sheetId, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -958,8 +978,10 @@ public class ProofsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ProofsGetVersions200Response response =
-                api.proofsGetVersions(sheetId, proofId, page, pageSize, includeAll);
+        ProofsGetVersions200Response response = api.proofsGetVersions(sheetId, proofId, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -978,8 +1000,10 @@ public class ProofsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ProofsListAttachments200Response response =
-                api.proofsListAttachments(sheetId, proofId, page, pageSize, includeAll);
+        ProofsListAttachments200Response response = api.proofsListAttachments(sheetId, proofId, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -999,8 +1023,10 @@ public class ProofsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ProofsListDiscussions200Response response =
-                api.proofsListDiscussions(sheetId, proofId, include, page, pageSize, includeAll);
+        ProofsListDiscussions200Response response = api.proofsListDiscussions(sheetId, proofId, include, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -1019,8 +1045,10 @@ public class ProofsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ProofsListRequestActions200Response response =
-                api.proofsListRequestActions(sheetId, proofId, page, pageSize, includeAll);
+        ProofsListRequestActions200Response response = api.proofsListRequestActions(sheetId, proofId, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -1037,8 +1065,10 @@ public class ProofsApiTest {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
         ProofsUpdateRequest proofsUpdateRequest = null;
-        Proof response =
-                api.proofsUpdate(sheetId, proofId, proofsUpdateRequest);
+        Proof response = api.proofsUpdate(sheetId, proofId, proofsUpdateRequest);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

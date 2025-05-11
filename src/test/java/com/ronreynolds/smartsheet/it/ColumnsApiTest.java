@@ -733,6 +733,7 @@ import com.ronreynolds.smartsheet.model.ColumnsAddToSheet200Response;
 import com.ronreynolds.smartsheet.model.ColumnsListOnSheet200Response;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -742,6 +743,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for ColumnsApi
  */
+@Slf4j
 @Disabled("ColumnsApiTest not yet implemented")
 public class ColumnsApiTest {
 
@@ -759,8 +761,8 @@ public class ColumnsApiTest {
     public void columnDeleteTest() throws ApiException {
         Long sheetId = null;
         Long columnId = null;
-        ResultPrefix response =
-                api.columnDelete(sheetId, columnId);
+        ResultPrefix response = api.columnDelete(sheetId, columnId);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -781,6 +783,9 @@ public class ColumnsApiTest {
         CompatibilityLevel level = null;
         ColumnBrief response = api.columnGet(sheetId, columnId, level);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
+
         // TODO: test validations
     }
 
@@ -799,8 +804,10 @@ public class ColumnsApiTest {
         Long sheetId = null;
         Long columnId = null;
         ColumnObject columnObject = null;
-        ColumnUpdateColumn200Response response =
-                api.columnUpdateColumn(sheetId, columnId, columnObject);
+        ColumnUpdateColumn200Response response = api.columnUpdateColumn(sheetId, columnId, columnObject);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -818,10 +825,11 @@ public class ColumnsApiTest {
     @Test
     public void columnsAddToSheetTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
         ColumnObject columnObject = null;
-        ColumnsAddToSheet200Response response =
-                api.columnsAddToSheet(sheetId, contentType, columnObject);
+        ColumnsAddToSheet200Response response = api.columnsAddToSheet(sheetId, columnObject);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -840,8 +848,10 @@ public class ColumnsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = null;
-        ColumnsListOnSheet200Response response =
-                api.columnsListOnSheet(sheetId, level, page, pageSize, includeAll);
+        ColumnsListOnSheet200Response response = api.columnsListOnSheet(sheetId, level, page, pageSize, includeAll);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

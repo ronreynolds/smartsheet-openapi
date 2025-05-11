@@ -725,10 +725,14 @@
 package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
+import com.ronreynolds.smartsheet.api.FoldersApi;
 import com.ronreynolds.smartsheet.api.HomeApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.model.CreateFolderFolder200Response;
 import com.ronreynolds.smartsheet.model.Folder;
+import com.ronreynolds.smartsheet.model.FolderBrief;
 import com.ronreynolds.smartsheet.model.FolderInclude;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -740,6 +744,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for HomeApi
  */
+@Slf4j
 public class HomeApiTest {
     private final HomeApi api = new HomeApi();
 
@@ -750,24 +755,37 @@ public class HomeApiTest {
      *
      * @throws ApiException if the Api call fails
      */
-    @Disabled("400 from server; 'sights' was of unexpected type; i.e., openapi-spec bug")
+//    @Disabled("400 from server; 'sights' was of unexpected type; i.e., openapi-spec bug")
     @Test
     void createHomeFolderTest() throws ApiException {
+        String newFolderName = "test folder " + System.currentTimeMillis();
         ApiClients.setLogRequest(true);
-        Folder folder = Folder.builder().name("test folder").build();
-        String contentType = null;
-        var response = api.createHomeFolder(folder, contentType);
-        // TODO: test validations
-        assertThat(response).isNotNull();
-        System.out.println(response);
-        /*
-            body:{"id":null,"favorite":null,"folders":[],"name":"test folder","permalink":null,"reports":[],"sheets":[],"sights":[],"templates":[]}
-        com.ronreynolds.smartsheet.ApiException: createHomeFolder call failed with: 400 - {
-  "errorCode" : 1008,
-  "message" : "Unable to parse request. The following error occurred: Field \"sights\" was of unexpected type.",
-  "refId" : "3nqzxd"
-}
-         */
+        FolderBrief newFolder = FolderBrief.builder().name(newFolderName).build();
+        var response = api.createHomeFolder(newFolder);
+        assertThat(response).isNotNull()
+                .satisfies(val -> {
+                    assertThat(val.getMessage()).isSameAs(CreateFolderFolder200Response.MessageEnum.SUCCESS);
+                    assertThat(val.getResultCode()).isSameAs(CreateFolderFolder200Response.ResultCodeEnum.NUMBER_0);
+                });
+
+        // the response folder is quite minimal (id, name, permalink)
+        assertThat(response.getResult()).satisfies(folder -> {
+            assertThat(folder).isNotNull();
+            assertThat(folder.getId()).isPositive();
+            assertThat(folder.getAccessLevel()).isNull();
+            assertThat(folder.getCreatedAt()).isNull();
+            assertThat(folder.getModifiedAt()).isNull();
+            assertThat(folder.getFavorite()).isNull();
+            assertThat(folder.getFolders()).isEmpty();
+            assertThat(folder.getName()).isEqualTo(newFolderName);
+            assertThat(folder.getPermalink()).isNotBlank();
+            assertThat(folder.getReports()).isEmpty();
+            assertThat(folder.getSheets()).isEmpty();
+            assertThat(folder.getSights()).isEmpty();
+            assertThat(folder.getTemplates()).isEmpty();
+        });
+        var deleteResult = new FoldersApi().deleteFolder(response.getResult().getId());
+        log.info("{}", deleteResult);
     }
 
     /**

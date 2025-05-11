@@ -765,15 +765,15 @@ public class FoldersApiTest {
     public void copyFolderTest() throws ApiException {
         Long folderId = null;
         ContainerDestination containerDestination = null;
-        String contentType = null;
         List<CopyFolderInclude> include = null;
         FolderCopyExclude exclude = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response = api.copyFolder(folderId, containerDestination, contentType, include, exclude, skipRemap);
+        ContainerDestination response = api.copyFolder(folderId, containerDestination, include, exclude, skipRemap);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
-        System.out.println(response);
-        assertThat(response).isNotNull();
     }
 
     /**
@@ -788,16 +788,15 @@ public class FoldersApiTest {
     public void createFolderFolderTest() throws ApiException {
         Long folderId = null;
         Folder folder = null;
-        String contentType = null;
         List<CopyFolderInclude> include = null;
         FolderCopyExclude exclude = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        CreateFolderFolder200Response response =
-                api.createFolderFolder(folderId, folder, contentType, include, exclude, skipRemap);
+        CreateFolderFolder200Response response = api.createFolderFolder(folderId, folder, include, exclude, skipRemap);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
-        System.out.println(response);
-        assertThat(response).isNotNull();
     }
 
     /**
@@ -813,9 +812,10 @@ public class FoldersApiTest {
         Long folderId = null;
         ResultPrefix response = api.deleteFolder(folderId);
 
-        // TODO: test validations
-        System.out.println(response);
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 
     /**
@@ -864,12 +864,12 @@ public class FoldersApiTest {
     public void moveFolderTest() throws ApiException {
         Long folderId = TestData.FolderData.id;
         ContainerDestination containerDestination = null;
-        String contentType = null;
-        ContainerDestination response = api.moveFolder(folderId, containerDestination, contentType);
+        ContainerDestination response = api.moveFolder(folderId, containerDestination);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
-        System.out.println(response);
-        assertThat(response).isNotNull();
     }
 
     /**
@@ -886,8 +886,9 @@ public class FoldersApiTest {
         Folder folder = null;
         UpdateFolder200Response response = api.updateFolder(folderId, folder);
 
-        // TODO: test validations
-        System.out.println(response);
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 }

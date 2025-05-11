@@ -868,9 +868,8 @@ public class ReportsApiTest {
     @Disabled("need test data")
     public void sendReportViaEmailTest() throws ApiException {
         Long reportId = TestData.ReportData.id;
-        String contentType = null;
-        SheetEmail sheetEmail = null;
-        Result response = api.sendReportViaEmail(reportId, contentType, sheetEmail);
+        SheetEmail sheetEmail = SheetEmail.builder().build();
+        Result response = api.sendReportViaEmail(reportId, sheetEmail);
 
         log.info("{}", response);
         // TODO: test validations
@@ -888,9 +887,8 @@ public class ReportsApiTest {
     @Disabled("need test data")
     public void setReportPublishTest() throws ApiException {
         Long reportId = TestData.ReportData.id;
-        String contentType = null;
-        ReportPublish reportPublish = null;
-        SetReportPublish200Response response = api.setReportPublish(reportId, contentType, reportPublish);
+        ReportPublish reportPublish = ReportPublish.builder().build();
+        SetReportPublish200Response response = api.setReportPublish(reportId, reportPublish);
 
         log.info("{}", response);
         // TODO: test validations

@@ -780,14 +780,13 @@ public class WorkspacesApiTest {
         ContainerDestination containerDestination = ContainerDestination.builder()
                 .newName("New Test Workspace")
                 .build();
-        String contentType = null;
         List<WorkspaceInclude> include = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response = api.copyWorkspace(workspaceId, containerDestination, contentType, include, skipRemap);
-
-        System.out.println(response);
-        // TODO: test validations
+        ContainerDestination response = api.copyWorkspace(workspaceId, containerDestination, include, skipRemap);
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 
     /**
@@ -804,14 +803,14 @@ public class WorkspacesApiTest {
                 .name("new test workspace")
                 .build();
         Integer accessApiLevel = null;
-        String contentType = null;
         List<WorkspaceInclude> include = null;
         List<FolderCopySkipRemap> skipRemap = null;
-        CreateWorkspace200Response response = api.createWorkspace(workspace, accessApiLevel, contentType, include, skipRemap);
+        CreateWorkspace200Response response = api.createWorkspace(workspace, accessApiLevel, include, skipRemap);
 
-        System.out.println(response);
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
         TestData.temporaryWorkspaceIds.add(response.getResult().getId());    // for deleting later
     }
 
@@ -830,12 +829,12 @@ public class WorkspacesApiTest {
                 // "The value for folder.name must be 50 characters in length or less"
                 .name(("new workspace folder - " + ZonedDateTime.now()).substring(0, 49))
                 .build();
-        String contentType = null;
-        var response = api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest, contentType);
+        var response = api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest);
 
-        System.out.println(response);
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 
     /**
@@ -854,10 +853,10 @@ public class WorkspacesApiTest {
         }
         for (Long workspaceId : TestData.temporaryWorkspaceIds) {
             ResultPrefix response = api.deleteWorkspace(workspaceId);
-
-            System.out.println(response);
-            // TODO: test validations
+            log.info("{}", response);
             assertThat(response).isNotNull();
+
+            // TODO: test validations
         }
         // if we fail might as well leave the IDs there?
         TestData.temporaryWorkspaceIds.clear();
@@ -878,9 +877,10 @@ public class WorkspacesApiTest {
         String shareId = null;
         Result response = api.deleteWorkspaceShare(workspaceId, shareId);
 
-        System.out.println(response);
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 
     /**
@@ -899,8 +899,7 @@ public class WorkspacesApiTest {
             List<FolderInclude> include = null;
             Boolean loadAll = true;
             Workspace response = api.getWorkspace(workspaceId, accessApiLevel, include, loadAll);
-            assertThat(response).isNotNull()
-                    .satisfies(TestData.WorkspaceData::assertEquals);
+            assertThat(response).satisfies(TestData.WorkspaceData::assertEquals);
 
             for (Long id : TestData.temporaryWorkspaceIds) {
                 assertThat(api.getWorkspace(workspaceId, accessApiLevel, include, loadAll)).isNotNull();
@@ -922,8 +921,7 @@ public class WorkspacesApiTest {
         Integer page = null;
         Integer pageSize = null;
         GetWorkspaceFolders200Response response = api.getWorkspaceFolders(workspaceId, includeAll, page, pageSize);
-
-        System.out.println(response);
+//        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasData);
         assertThat(response.getData()).anySatisfy(TestData.WorkspaceData::assertFolderInWorkspace);
     }
@@ -982,9 +980,10 @@ public class WorkspacesApiTest {
         Boolean sendEmail = null;
         List<Share> share = null;
         ShareReport200Response response = api.shareWorkspace(workspaceId, accessApiLevel, sendEmail, share);
-        System.out.println(response);
-        // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
+
+        // TODO: test validations
     }
 
     /**
@@ -1002,8 +1001,10 @@ public class WorkspacesApiTest {
         Integer accessApiLevel = null;
         Share response = api.shareWorkspaceGet(workspaceId, shareId, accessApiLevel);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
+
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1021,8 +1022,10 @@ public class WorkspacesApiTest {
         UpdateWorkspaceRequest updateWorkspaceRequest = null;
         UpdateWorkspace200Response response = api.updateWorkspace(workspaceId, accessApiLevel, updateWorkspaceRequest);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
+
         // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
     }
 
     /**
@@ -1043,8 +1046,9 @@ public class WorkspacesApiTest {
         UpdateReportShare200Response response =
                 api.updateWorkspaceShare(workspaceId, shareId, accessApiLevel, updateReportShareRequest);
 
-        // TODO: test validations
-        System.out.println(assertThat(response).isNotNull().actual());
-    }
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
+        // TODO: test validations
+    }
 }

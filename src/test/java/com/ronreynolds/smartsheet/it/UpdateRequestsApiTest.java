@@ -730,8 +730,10 @@ import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.SentUpdateRequest;
 import com.ronreynolds.smartsheet.model.SentupdaterequestsList200Response;
 import com.ronreynolds.smartsheet.model.UpdateRequest;
+import com.ronreynolds.smartsheet.model.UpdateRequestUpdate;
 import com.ronreynolds.smartsheet.model.UpdaterequestsCreate200Response;
 import com.ronreynolds.smartsheet.model.UpdaterequestsList200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -741,6 +743,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for UpdateRequestsApi
  */
+@Slf4j
 @Disabled("UpdateRequestsApiTest not yet implemented")
 public class UpdateRequestsApiTest {
 
@@ -759,8 +762,8 @@ public class UpdateRequestsApiTest {
     public void sentupdaterequestDeleteTest() throws ApiException {
         Long sheetId = null;
         String sentUpdateRequestId = null;
-        Result response =
-                api.sentupdaterequestDelete(sheetId, sentUpdateRequestId);
+        Result response = api.sentupdaterequestDelete(sheetId, sentUpdateRequestId);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -777,8 +780,10 @@ public class UpdateRequestsApiTest {
     public void sentupdaterequestGetTest() throws ApiException {
         Long sheetId = null;
         String sentUpdateRequestId = null;
-        SentUpdateRequest response =
-                api.sentupdaterequestGet(sheetId, sentUpdateRequestId);
+        SentUpdateRequest response = api.sentupdaterequestGet(sheetId, sentUpdateRequestId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -798,8 +803,10 @@ public class UpdateRequestsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        SentupdaterequestsList200Response response =
-                api.sentupdaterequestsList(sheetId, includeAll, page, pageSize);
+        SentupdaterequestsList200Response response = api.sentupdaterequestsList(sheetId, includeAll, page, pageSize);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -820,10 +827,11 @@ public class UpdateRequestsApiTest {
     @Test
     public void updaterequestsCreateTest() throws ApiException {
         Long sheetId = null;
-        String contentType = null;
         UpdateRequest updateRequest = null;
-        UpdaterequestsCreate200Response response =
-                api.updaterequestsCreate(sheetId, contentType, updateRequest);
+        UpdaterequestsCreate200Response response = api.updaterequestsCreate(sheetId, updateRequest);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -839,8 +847,10 @@ public class UpdateRequestsApiTest {
     public void updaterequestsDeleteTest() throws ApiException {
         Long sheetId = null;
         String updateRequestId = null;
-        Result response =
-                api.updaterequestsDelete(sheetId, updateRequestId);
+        Result response = api.updaterequestsDelete(sheetId, updateRequestId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -858,8 +868,10 @@ public class UpdateRequestsApiTest {
     public void updaterequestsGetTest() throws ApiException {
         Long sheetId = null;
         String updateRequestId = null;
-        UpdateRequest response =
-                api.updaterequestsGet(sheetId, updateRequestId);
+        UpdateRequest response = api.updaterequestsGet(sheetId, updateRequestId);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -879,8 +891,10 @@ public class UpdateRequestsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        UpdaterequestsList200Response response =
-                api.updaterequestsList(sheetId, includeAll, page, pageSize);
+        UpdaterequestsList200Response response = api.updaterequestsList(sheetId, includeAll, page, pageSize);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -901,11 +915,12 @@ public class UpdateRequestsApiTest {
     public void updaterequestsUpdateTest() throws ApiException {
         Long sheetId = null;
         String updateRequestId = null;
-        String contentType = null;
-        UpdaterequestsCreate200Response response =
-                api.updaterequestsUpdate(sheetId, updateRequestId, contentType);
+        UpdateRequestUpdate updateRequest = UpdateRequestUpdate.builder().build();
+        UpdaterequestsCreate200Response response = api.updaterequestsUpdate(sheetId, updateRequestId, updateRequest);
+
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
-
 }
