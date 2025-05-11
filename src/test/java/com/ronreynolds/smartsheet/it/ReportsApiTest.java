@@ -852,7 +852,9 @@ public class ReportsApiTest {
 
         log.info("{}", response);
         // TODO: test validations
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).isNotEmpty()
+                .anySatisfy(TestData.ReportData::assertShare);
     }
 
     /**
