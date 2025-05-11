@@ -279,3 +279,10 @@ some parts of the Spec don't match the server responses at all
   * `SheetLite_withColumns`
   * `SightLite`
   * `WorkspaceLite`
+* removed `#/components/parameters/contentTypeHeader_JSON` from all requests that have only 1 content-type (i.e., you can't set this)
+  * TBD how it'll work with requests that can be in multiple content-types
+    * e.g., `attachments-attachToSheet`, `attachments-versionUpload`
+  * also changed content-type param of `attachments-versionUpload` to `contentTypeHeader_FORM` as it doesn't have a JSON request format
+* added `#/components/parameters/contentTypeHeader_OctetStream` for paths that ONLY send octet-stream requests
+  * e.g., `proofs-attachToProof`, `addImageToCell`, `proofs-create`
+* added `#/components/schemas/UpdateRequestUpdate` and added it as requestBody of `updaterequests-update`
