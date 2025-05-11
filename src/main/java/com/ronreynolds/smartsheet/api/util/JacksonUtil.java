@@ -1,5 +1,6 @@
 package com.ronreynolds.smartsheet.api.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.StreamReadFeature;
@@ -7,6 +8,7 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -19,6 +21,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * collection of utility methods for dealing with specific aspects of Jackson (mostly mods needed to make JSON work with Smartsheet API)
+ */
 public class JacksonUtil {
     // same as https://github.com/smartsheet/smartsheet-java-sdk/blob/mainline/src/main/java/com/smartsheet/api/internal/json/JacksonJsonSerializer.java#L81
     static final DateTimeFormatter DATE_FORMATTER =
@@ -44,14 +49,16 @@ public class JacksonUtil {
 
     public static JsonMapper.Builder modifyObjectMapper(ObjectMapper mapper) {
         JsonMapper.Builder builder = JsonMapper.builder(mapper.getFactory());
-        // disable type coercion of values; breaks parsing of more complex objects
-        builder.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS);
-        // FIXME - for debugging JSON responses
-        builder.enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);
+
+        builder.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)        // type coercion breaks parsing of more complex objects
+                .serializationInclusion(JsonInclude.Include.NON_NULL)   // don't send fields with null values
+                .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);  // excellent for debugging JSON responses
+
         // add our custom date handlers
         builder.addModules(new SimpleModule()
                 .addSerializer(dateSerializer)
                 .addDeserializer(OffsetDateTime.class, dateDeserializer));
+
         return builder;
     }
 }
