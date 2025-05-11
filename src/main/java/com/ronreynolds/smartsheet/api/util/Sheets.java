@@ -48,7 +48,7 @@ public class Sheets {
     @NonNull
     public static List<Row> addRows(@NonNull ApiClient client, long sheetId, @NonNull List<Row> rowData, Consumer<List<Row>> cb)
             throws ApiException {
-        var response = new RowsApi(client).rowsAddToSheet(sheetId, null, null, null, null, rowData);
+        var response = new RowsApi(client).rowsAddToSheet(sheetId, null, null, null, rowData);
         State.notNull(response, "null response from rowsAddToSheet");
         var responseResult = State.notNull(response.getResult(), "null response result");
         assertEqualRowCounts(rowData.size(), responseResult.size());
@@ -72,7 +72,7 @@ public class Sheets {
             row.setModifiedAt(null);
             row.setSheetId(null);
         });
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, rowData);
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, rowData);
         State.notNull(response, "null response from updateRows");
         var responseResult = State.notNull(response.getResult(), "null response result");
         assertEqualRowCounts(rowData.size(), responseResult.size());
