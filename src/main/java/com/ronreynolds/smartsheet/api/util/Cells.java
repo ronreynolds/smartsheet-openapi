@@ -97,7 +97,7 @@ public class Cells {
                         .hyperlink(null)
                         .linkInFromCell(null));
         updatedRow.setCells(cell);
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, Collections.singletonList(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, Collections.singletonList(updatedRow));
         State.notNull(response, "null response from updateRows");
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "update FAILED - row:%d column:%d value:'%s'", rowId, columnId, value);
@@ -147,7 +147,7 @@ public class Cells {
                         .map(entry -> new Cell().columnId(entry.getKey()).value(makeCellValue(entry.getValue())).strict(true)
                                 .hyperlink(null).linkInFromCell(null))
                         .collect(Collectors.toList()));
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, List.of(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, List.of(updatedRow));
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "failed to update row");
         return result.stream().map(Converters::convert).collect(Collectors.toList());
