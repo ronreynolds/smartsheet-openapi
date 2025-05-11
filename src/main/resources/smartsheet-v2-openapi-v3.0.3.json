@@ -867,11 +867,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "A list of favorites to be added.",
           "required": true,
@@ -1217,9 +1212,6 @@
         "operationId": "copy-folder",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_folder_copy"
           },
           {
@@ -1338,9 +1330,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_folder_copy"
           },
           {
@@ -1413,11 +1402,6 @@
           }
         ],
         "operationId": "move-folder",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "New folder destination.",
           "required": true,
@@ -1470,9 +1454,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "$ref": "#/components/parameters/include_sheet"
           }
@@ -2188,18 +2169,13 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "Folder to create.",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Folder"
+                "$ref": "#/components/schemas/FolderBrief"
               }
             }
           }
@@ -2218,7 +2194,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/FolderArray"
+                          "$ref": "#/components/schemas/Folder"
                         }
                       }
                     }
@@ -2234,11 +2210,6 @@
       }
     },
     "/imageurls": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
-        }
-      ],
       "post": {
         "operationId": "listImageUrls",
         "summary": "List Image URLs",
@@ -2496,11 +2467,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2581,11 +2547,6 @@
             "OAuth2": [
               "ADMIN_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -3173,9 +3134,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "$ref": "#/components/parameters/include_sheet"
           }
@@ -4060,7 +4018,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -4340,11 +4298,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4482,11 +4435,6 @@
             "OAuth2": [
               "ADMIN_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4793,11 +4741,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4966,9 +4909,6 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
-        },
-        {
           "$ref": "#/components/parameters/include_folder_copy"
         },
         {
@@ -5042,11 +4982,6 @@
         "summary": "Create Cross-sheet References",
         "description": "Adds a cross-sheet reference between two sheets and defines the data range for formulas. Each distinct data range requires a new cross-sheet reference.",
         "operationId": "add-crosssheet-reference",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "tags": [
           "crossSheetReferences"
         ],
@@ -5722,9 +5657,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -5772,9 +5704,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -6116,7 +6045,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -6432,11 +6361,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -6711,11 +6635,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "SheetPublish object.\n\nFor Read Only, if you do not specify a value for **readOnlyFullAccessibleBy**, the value defaults\nto the organization-level 'Sheet Publishing' setting (if the sheet owner belongs to an organization account)\nor to **ALL** (if the sheet owner does not belong to an organization account).\n\nFor Read Write, if you do not specify a value for **readWriteAccessibleBy**, the value defaults\nto the organization-level 'Sheet Publishing' setting (if the sheet owner belongs to an organization account)\nor to **ALL** (if the sheet owner does not belong to an organization account).\n",
           "content": {
@@ -6781,9 +6700,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/accessApiLevel"
-          },
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/allowPartialSuccess"
@@ -6978,9 +6894,6 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/allowPartialSuccess"
           },
           {
@@ -7107,11 +7020,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "The columns included for each row in the email are populated according to the following rules:\n* If the **columnIds** attribute of the MultiRowEmail object is specified as an array of column Ids, those specific columns are included.\n* If the **columnIds** attribute of the MultiRowEmail object is omitted, all columns except hidden columns shall be included.\n* If the **columnIds** attribute of the MultiRowEmail object is specified as empty, no columns shall be included. (**NOTE:** In this case, either **includeAttachments=true** or **includeDiscussions=true** must be specified.)\n",
           "content": {
@@ -7164,9 +7072,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "name": "include",
             "in": "query",
@@ -7236,9 +7141,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "name": "include",
             "in": "query",
@@ -7555,7 +7457,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -7884,7 +7786,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -8609,7 +8511,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -8842,11 +8744,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8944,11 +8841,15 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestUpdate"
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Result object containing the modified UpdateRequest object",
@@ -9294,9 +9195,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -9552,9 +9450,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/numericDates"
-          },
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "tags": [
@@ -9667,9 +9562,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/sightIdInPath"
           }
         ],
@@ -9730,9 +9622,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "$ref": "#/components/parameters/sightIdInPath"
           }
@@ -9829,11 +9718,6 @@
             "OAuth2": [
               "ADMIN_SIGHTS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -11556,11 +11440,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11701,11 +11580,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11835,11 +11709,11 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+        "requestBody": {
+          "content": {
+            "application/json": {}
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -11952,9 +11826,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "$ref": "#/components/parameters/include_workspace"
           },
@@ -12182,9 +12053,6 @@
         "operationId": "copy-workspace",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_workspace"
           },
           {
@@ -12321,11 +12189,6 @@
             "OAuth2": [
               "ADMIN_WORKSPACES"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12704,9 +12567,6 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_sheet"
           }
         ],
@@ -12995,6 +12855,15 @@
         "schema": {
           "type": "string",
           "default": "application/json"
+        }
+      },
+      "contentTypeHeader_OctetStream": {
+        "name": "Content-Type",
+        "in": "header",
+        "description": "Required for POST and PUT requests. Defines the structure for the request body.\n",
+        "schema": {
+          "type": "string",
+          "default": "application/octet-stream"
         }
       },
       "discussionIdInPath": {
@@ -16432,7 +16301,8 @@
           },
           "name": {
             "description": "Folder name.",
-            "type": "string"
+            "type": "string",
+            "maxLength": 50
           },
           "permalink": {
             "description": "URL that represents a direct link to the folder in Smartsheet.",
@@ -16456,6 +16326,24 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Folder"
+        }
+      },
+      "FolderBrief": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Folder Id.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "name": {
+            "description": "Folder name.",
+            "type": "string",
+            "maxLength": 50
+          }
         }
       },
       "FolderCopyExclude": {
@@ -19962,6 +19850,38 @@
             }
           }
         ]
+      },
+      "UpdateRequestUpdate": {
+        "type": "object",
+        "properties": {
+          "ccMe": {
+            "type": "boolean"
+          },
+          "columnIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
+          },
+          "includeAttachments": {
+            "type": "boolean"
+          },
+          "includeDiscussions": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
+          },
+          "sendTo": {
+            "$ref": "#/components/schemas/EmailOrGroupIdArray"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
       },
       "URLAttachmentRequest": {
         "type": "object",
