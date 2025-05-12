@@ -744,9 +744,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for ColumnsApi
  */
 @Slf4j
-@Disabled("ColumnsApiTest not yet implemented")
 public class ColumnsApiTest {
-
     private final ColumnsApi api = new ColumnsApi();
 
 
@@ -758,6 +756,7 @@ public class ColumnsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void columnDeleteTest() throws ApiException {
         Long sheetId = null;
         Long columnId = null;
@@ -778,15 +777,13 @@ public class ColumnsApiTest {
      */
     @Test
     public void columnGetTest() throws ApiException {
-        Long sheetId = null;
-        Long columnId = null;
+        Long sheetId = TestData.SheetData.id;
+        Long columnId = TestData.ColumnData.ColumnBriefData.COLUMN6.id;
         CompatibilityLevel level = null;
         ColumnBrief response = api.columnGet(sheetId, columnId, level);
 
         log.info("{}", response);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+        assertThat(response).satisfies(TestData.ColumnData.ColumnBriefData.COLUMN6::assertMatches);
     }
 
     /**
@@ -800,6 +797,7 @@ public class ColumnsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void columnUpdateColumnTest() throws ApiException {
         Long sheetId = null;
         Long columnId = null;
@@ -823,6 +821,7 @@ public class ColumnsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void columnsAddToSheetTest() throws ApiException {
         Long sheetId = null;
         ColumnObject columnObject = null;
@@ -843,17 +842,15 @@ public class ColumnsApiTest {
      */
     @Test
     public void columnsListOnSheetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         CompatibilityLevel level = null;
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         ColumnsListOnSheet200Response response = api.columnsListOnSheet(sheetId, level, page, pageSize, includeAll);
 
-        log.info("{}", response);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).isNotEmpty().anySatisfy(TestData.ColumnData::assertColumnBriefs);
     }
-
 }
