@@ -1,15 +1,16 @@
-## Integration Tests
+# Integration Tests
 this project contains generated integration tests for all generated domain-specific `Api` classes.  the purpose of this doc is to
 track the progress of their implementations.  all such tests live in `src/test/java/.../it/` and most of them are currently disabled.
 the package also contains a `TestData` class in an attempt to consolidate constants used to query or validate the API.
 
+## Tests Summary
 ### Finished Tests
+* `CellsApiTest`
 * `EventsApiTest`
 * `ServerInfoApiTest`
 * `TemplatesApiTest`
 
 ### Nearly Finished Tests
-* `CellsApiTest` - just need more validation logic
 * `SearchApiTest` - just need more validation logic
 * `UsersApiTest` - one method to go!
 
@@ -41,6 +42,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * `WebhooksApiTest`
 * `WorkspacesApiTest`
 
+## Individual Test Statuses
 ### AlternateEmailAddressApiTest 
 * In-Progress
     * `addAlternateEmailTest`
@@ -78,14 +80,14 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### AutomationRulesApiTest
 * To-Do
 * In-Progress
-    * `automationruleDeleteTest`
-      * need to add ID; unfortunately can't create automation-rules via API so will have to create via Web-UI
-    * `automationruleGetTest`
-      * failing with 404; not sure why (possibly replication delay?)
-    * `automationruleUpdateTest`
-      * failing with 404; also possibly replication delay
-    * `automationrulesListTest`
-      * needs more validation logic but response is parsing but is currently empty (even tho rule created via Web-UI)
+  * `automationruleDeleteTest`
+    * need to add ID; unfortunately can't create automation-rules via API so will have to create via Web-UI
+  * `automationruleGetTest`
+    * failing with 404; not sure why (possibly replication delay?)
+  * `automationruleUpdateTest`
+    * failing with 404; also possibly replication delay
+  * `automationrulesListTest`
+    * needs more validation logic but response is parsing but is currently empty (even tho rule created via Web-UI)
 * Blocked
   * possibly replication-delay of newly-created rule to be visible via API
 * Done
@@ -93,28 +95,25 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### CellImagesApiTest
 * To-Do
   * `addImageToCellTest`
-  * `listImageUrlsTest`
 * In-Progress
 * Blocked
 * Done
+  * `listImageUrlsTest`
 
 ### CellsApiTest
-* In-Progress
-  * `cellHistoryGetTest`
-    * works; just needs more validation
-* Blocked
 * Done
+    * `cellHistoryGetTest`
 
 ### ColumnsApiTest
 * To-Do
   * `columnDeleteTest`
-  * `columnGetTest`
   * `columnUpdateColumnTest`
   * `columnsAddToSheetTest`
-  * `columnsListOnSheetTest`
 * In-Progress
 * Blocked
 * Done
+  * `columnGetTest`
+  * `columnsListOnSheetTest`
 
 ### CommentsApiTest
 * To-Do
