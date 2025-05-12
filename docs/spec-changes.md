@@ -231,7 +231,9 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/Column` added `virtualId` and `sheetNameColumn` fields from (unused and deleted) `ReportColumn` 
 * `#/components/schemas/Cell` added `virtualColumnId` from (unused and deleted) `ReportCell`
 * `#/components/schemas/Row` added `dataModifiedAt` (returned by server; not in latest spec)
-* ...
+* `#/components/schemas/ColumnBrief.data.items` added `version`, `primary`, and `width` to match server response
+  * called `GetColumn` type in latest schemas (as of 2025-05-12) which is missing those fields also
+* 
 
 ##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
 * `result` response field renamed to `data`
@@ -286,3 +288,5 @@ some parts of the Spec don't match the server responses at all
 * added `#/components/parameters/contentTypeHeader_OctetStream` for paths that ONLY send octet-stream requests
   * e.g., `proofs-attachToProof`, `addImageToCell`, `proofs-create`
 * added `#/components/schemas/UpdateRequestUpdate` and added it as requestBody of `updaterequests-update`
+* changed `Cell.columnType` and `CellBrief.columnType` from `string` to `ColumnType`
+* fixed `columns-listOnSheet` response from `ColumnBrief` (which had too many fields) to a simpler inner response type
