@@ -743,7 +743,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for CellImagesApi
  */
 @Slf4j
-@Disabled("CellImagesApiTest not yet implemented")
+//@Disabled("CellImagesApiTest not yet implemented")
 public class CellImagesApiTest {
 
     private final CellImagesApi api = new CellImagesApi();
@@ -757,6 +757,7 @@ public class CellImagesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need to add test image")
     public void addImageToCellTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
@@ -785,12 +786,17 @@ public class CellImagesApiTest {
      */
     @Test
     public void listImageUrlsTest() throws ApiException {
-        List<ImageUrl> imageUrl = null;
+        // you get a 500 if this is null
+        List<ImageUrl> imageUrl = List.of(
+                ImageUrl.builder().imageId(TestData.ImageData.id1).build(),
+                ImageUrl.builder().imageId(TestData.ImageData.id2).build());
         ListImageUrls200Response response = api.listImageUrls(imageUrl);
 
         log.info("{}", response);
-        assertThat(response).isNotNull();
 
-        // TODO: test validations
+        assertThat(response).isNotNull()
+                .satisfies(val -> assertThat(val.getUrlExpiresInMillis()).isEqualTo(1_800_000));  // default value
+        assertThat(response.getImageUrls()).isNotEmpty()
+                .anySatisfy(TestData.ImageData::assertImageUrl);
     }
 }
