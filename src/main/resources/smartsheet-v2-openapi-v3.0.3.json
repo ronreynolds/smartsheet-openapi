@@ -4411,7 +4411,15 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/ColumnBrief"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ColumnBrief"
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -14095,7 +14103,11 @@
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
             "description": "Only returned if the include query string parameter contains **columnType**."
           },
           "conditionalFormat": {
@@ -14380,7 +14392,11 @@
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
             "description": "Only returned if the include query string parameter contains **columnType**."
           },
           "value": {
@@ -14954,45 +14970,46 @@
       "ColumnBrief": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Int64"
-                    }
-                  ],
-                  "description": "Column Id."
-                },
-                "index": {
-                  "type": "integer",
-                  "description": "Column index or position. This number is zero-based."
-                },
-                "symbol": {
-                  "type": "string",
-                  "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                },
-                "title": {
-                  "type": "string",
-                  "description": "Column title."
-                },
-                "type": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ColumnType"
-                    }
-                  ],
-                  "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
-                },
-                "validation": {
-                  "type": "boolean",
-                  "description": "Indicates whether validation has been enabled for the column (value = **true**)."
-                }
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
               }
-            }
+            ],
+            "description": "Column Id."
+          },
+          "index": {
+            "type": "integer",
+            "description": "Column index or position. This number is zero-based."
+          },
+          "symbol": {
+            "type": "string",
+            "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+          },
+          "title": {
+            "type": "string",
+            "description": "Column title."
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
+            "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+          },
+          "validation": {
+            "type": "boolean",
+            "description": "Indicates whether validation has been enabled for the column (value = **true**)."
+          },
+          "version": {
+            "type": "integer"
+          },
+          "primary": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "integer"
           }
         }
       },
