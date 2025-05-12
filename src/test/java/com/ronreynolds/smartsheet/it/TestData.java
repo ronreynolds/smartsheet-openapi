@@ -7,12 +7,19 @@ import com.ronreynolds.smartsheet.model.Attachment;
 import com.ronreynolds.smartsheet.model.AttachmentType;
 import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
 import com.ronreynolds.smartsheet.model.Cell;
+import com.ronreynolds.smartsheet.model.CellHistoryGet200ResponseAllOfDataInner;
+import com.ronreynolds.smartsheet.model.CellObjectValue;
+import com.ronreynolds.smartsheet.model.CellValue;
 import com.ronreynolds.smartsheet.model.Column;
+import com.ronreynolds.smartsheet.model.ColumnBrief;
+import com.ronreynolds.smartsheet.model.ColumnBriefDataInner;
 import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
+import com.ronreynolds.smartsheet.model.ImageUrl;
+import com.ronreynolds.smartsheet.model.NameAndEmail;
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.ReportBrief;
 import com.ronreynolds.smartsheet.model.ReportPublish;
@@ -28,19 +35,26 @@ import com.ronreynolds.smartsheet.model.SheetPublish;
 import com.ronreynolds.smartsheet.model.SourceType;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
+import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.reflection.Reflection;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * various bits of test constants
@@ -63,7 +77,7 @@ public class TestData {
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/gif";
             OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 44, 32, 0, ZoneOffset.UTC);
-            String name = "calvin-head-24-2.GIF";
+            String name = get("AttachmentData.CommentAttachment.name");
             int sizeInKb = 10;
 
             static void assertEquals(Attachment attachment) {
@@ -90,7 +104,7 @@ public class TestData {
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
             OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 11, 19, 0, ZoneOffset.UTC);
-            String name = "Test Row Attachment.jpg";
+            String name = get("AttachmentData.RowAttachment.name");
             int sizeInKb = 751;
 
             static void assertEquals(Attachment attachment) {
@@ -107,13 +121,13 @@ public class TestData {
         }
 
         interface SheetAttachment {
-            long id = 350159638925188L;
+            long id = getLong("AttachmentData.SheetAttachment.id");
             long parentId = SheetData.id;
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.SHEET;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
             OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 10, 4, 0, ZoneOffset.UTC);
-            String name = "Test Attachment.jpeg";
+            String name = get("AttachmentData.SheetAttachment.name");
             int sizeInKb = 212;
 
             static void assertEquals(Attachment attachment) {
@@ -136,51 +150,88 @@ public class TestData {
     }
 
     interface ColumnData {
-        Set<Long> columnIds = Set.of(PrimaryColumn.id, ImageColumn.id, Column3.id, Column4.id, Column5.id, Column6.id);
+        enum ColumnBriefData {
+            // these MUST appear in the same order as they appear in the sheet (since we use the ordinal as the column index)
+            PRIMARY,
+            IMAGE,
+            COLUMN3,
+            COLUMN4,
+            COLUMN5,
+            COLUMN6,
+            ;
 
-        interface PrimaryColumn {
-            long id = 6606505816313732L;
-            String name = "Primary Column";
-            String type = "TEXT_NUMBER";
+            final long id;
+            final String name;
+            final ColumnType type;
+            final int index;
+
+            ColumnBriefData() {
+                index = ordinal();
+                id = getLong("ColumnData.ColumnBriefData." + index + ".id");
+                name = get("ColumnData.ColumnBriefData." + index + ".title");
+                type = ColumnType.valueOf(get("ColumnData.ColumnBriefData." + index + ".type"));
+            }
+
+            void assertMatches(ColumnBrief column) {
+                assertThat(column).isNotNull();
+                assertThat(column.getIndex()).isEqualTo(ordinal());
+                assertThat(column.getId()).isEqualTo(id);
+                assertThat(column.getTitle()).isEqualTo(name);
+                assertThat(column.getType()).isSameAs(type);
+                assertThat(column.getSymbol()).isNull();
+                assertThat(column.getVersion()).isZero();
+                assertThat(column.getWidth()).isEqualTo(150);
+
+                if (ordinal() == 0) {
+                    assertThat(column.getPrimary()).isTrue();
+                } else {
+                    assertThat(column.getPrimary()).isNull();   // weird; wouldn't false make more sense?
+                }
+
+                if (type == ColumnType.DATE) {
+                    assertThat(column.getValidation()).isTrue();
+                } else {
+                    assertThat(column.getValidation()).isFalse();
+                }
+            }
         }
 
-        interface ImageColumn {
-            long id = 4354706002628484L;
-            String name = "Images";
-            String type = "TEXT_NUMBER";
+        ColumnBriefData[] columnBriefData = ColumnBriefData.values();
+        OffsetDateTime modifiedDateTime = OffsetDateTime.of(2025, 4, 20, 13, 52, 46, 0, ZoneOffset.UTC);
+
+        static void assertColumnBriefs(ColumnBrief column) {
+            assertThat(column).isNotNull();
+            int index = assertThat(column.getIndex()).isNotNull().isBetween(0, columnBriefData.length - 1).actual();
+            assertThat(column).satisfies(columnBriefData[index]::assertMatches);
         }
 
-        // created these to keep track of the IDs which should not change as the column names, types, and so forth do
-        interface Column3 {
-            long id = 8858305629998980L;
-            String name = "Column3";
-            String type = "TEXT_NUMBER";
-        }
-
-        interface Column4 {
-            long id = 273318840323972L;
-            String name = "Column4";
-            String type = "TEXT_NUMBER";
-        }
-
-        interface Column5 {
-            long id = 4776918467694468L;
-            String name = "Column5";
-            String type = "TEXT_NUMBER";
-        }
-
-        interface Column6 {
-            long id = 2525118654009220L;
-            String name = "Column6";
-            String type = "TEXT_NUMBER";
+        static void assertColumnHistory(CellHistoryGet200ResponseAllOfDataInner history) {
+            assertThat(history).isNotNull();
+            assertThat(history.getModifiedAt()).isAfterOrEqualTo(modifiedDateTime);
+            assertThat(history.getModifiedBy()).isEqualTo(UserData.getNameAndEmail());
+            assertThat(history.getColumnId()).isEqualTo(ColumnBriefData.PRIMARY.id);
+            assertThat(history.getColumnType()).isSameAs(ColumnBriefData.PRIMARY.type);
+            assertThat(history.getConditionalFormat()).isNull();
+            assertThat(history.getDisplayValue()).isEqualTo("42");
+            assertThat(history.getFormat()).isNull();
+            assertThat(history.getFormula()).isNull();
+            assertThat(history.getHyperlink()).isNull();
+            assertThat(history.getImage()).isNull();
+            assertThat(history.getLinkInFromCell()).isNull();
+            assertThat(history.getLinksOutToCells()).isEmpty();
+            assertThat(history.getObjectValue()).isEqualTo(new CellObjectValue(BigDecimal.valueOf(42.0)));
+            assertThat(history.getOverrideValidation()).isNull();
+            assertThat(history.getStrict()).isNull();
+            assertThat(history.getValue()).isEqualTo(new CellValue(BigDecimal.valueOf(42.0)));
+            assertThat(history.getVirtualColumnId()).isNull();
         }
     }
 
     interface CommentData {
-        long id = 6185976821223300L;
-        String text = "Test Comment";
-        long attachmentId = 3555179125575556L;
-        long discussionId = 5934265966825348L;
+        long id = getLong("CommentData.id");
+        String text = get("CommentData.text");
+        long attachmentId = getLong("CommentData.attachmentId");
+        long discussionId = getLong("CommentData.discussionId");
         OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 42, 0, 0, ZoneOffset.UTC);
 
         static void assertEquals(Comment comment) {
@@ -198,8 +249,8 @@ public class TestData {
     }
 
     interface DashboardData {
-        long id = 5226358067488644L;
-        String name = "Test Dashboard";
+        long id = getLong("DashboardData.id");
+        String name = get("DashboardData.name");
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 5, 7, 14, 9, 7, 0, ZoneOffset.UTC);
 
         static void assertShare(Share share) {
@@ -210,8 +261,12 @@ public class TestData {
     }
 
     interface FolderData {
-        long id = 1104664725874564L;
-        String name = "Test Folder";
+        long id = getLong("FolderData.id");
+        String name = get("FolderData.name");
+        long childFolder1Id = getLong("FolderData.childFolder.1.id");
+        String childFolder1Name = get("FolderData.childFolder.1.name");
+        long childFolder2Id = getLong("FolderData.childFolder.2.id");
+        String childFolder2Name = get("FolderData.childFolder.2.name");
 
         static void assertEquals(Folder folder) {
             assertThat(folder).isNotNull();
@@ -229,24 +284,19 @@ public class TestData {
             assertThat(childFolders)
                     .isNotEmpty()
                     .anySatisfy(folder -> {
-                        assertThat(folder.getId()).isEqualTo(2081162651821956L);
-                        assertThat(folder.getName()).isEqualTo("Test Folder Child 1");
                         assertThat(folder.getFolders()).isEmpty();
                         assertThat(folder.getReports()).isEmpty();
                         assertThat(folder.getSheets()).isEmpty();
                         assertThat(folder.getSights()).isEmpty();
                         assertThat(folder.getTemplates()).isEmpty();
-                    })
-                    .anySatisfy(folder -> {
-                        assertThat(folder.getId()).isEqualTo(1658950186755972L);
-                        assertThat(folder.getName()).isEqualTo("Test Folder Child 2");
-                        assertThat(folder.getFolders()).isEmpty();
-                        assertThat(folder.getReports()).isEmpty();
-                        assertThat(folder.getSheets()).isEmpty();
-                        assertThat(folder.getSights()).isEmpty();
-                        assertThat(folder.getTemplates()).isEmpty();
+                        assertThat(folder.getId()).isNotNull();
+                        if (folder.getId() == childFolder1Id) {
+                            assertThat(folder.getName()).isEqualTo(childFolder1Name);
+                        } else if (folder.getId() == childFolder2Id) {
+                            assertThat(folder.getName()).isEqualTo(childFolder2Name);
+                        }
                     });
-            log.info("child-folders:{}", childFolders);
+//            log.info("child-folders:{}", childFolders);
         }
     }
 
@@ -254,9 +304,25 @@ public class TestData {
         long id = 0L;   // FIXME
     }
 
+    interface ImageData {
+        String id1 = get("ImageData.id.1");
+        String id2 = get("ImageData.id.2");
+        Set<String> idSet = Set.of(id1, id2);
+
+        static void assertImageUrl(ImageUrl url) {
+            assertThat(url).isNotNull();
+            assertThat(url.getError()).isNull();
+            assertThat(url.getHeight()).isNull();
+            assertThat(url.getWidth()).isNull();
+            assertThat(url.getUrl()).isNotBlank();
+            assertThat(url.getImageId()).matches(idSet::contains);
+        }
+    }
+
     interface ReportData {
-        long id = 5383337628618628L;
-        String name = "Test Report";
+        long id = getLong("ReportData.id");
+        String name = get("ReportData.name");
+        Set<Long> virtualColumnIds = Set.of(getLong("ReportData.virtualColumnId.1"), getLong("ReportData.virtualColumnId.2"));
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC);
 
         static void assertContains(List<? extends Report> reports) {
@@ -336,7 +402,7 @@ public class TestData {
             assertThat(reportColumn.getValidation()).isFalse();
             assertThat(reportColumn.getVersion()).isSameAs(Column.VersionEnum.NUMBER_0);
             assertThat(reportColumn.getWidth()).isEqualTo(150);
-            assertThat(reportColumn.getVirtualId()).matches(Set.of(6693795649507204L, 4441995835821956L)::contains);
+            assertThat(reportColumn.getVirtualId()).matches(virtualColumnIds::contains);
             assertThat(reportColumn.getSheetNameColumn()).matches(ReportData::isNullOrTrue);
         }
 
@@ -376,13 +442,11 @@ public class TestData {
             assertThat(reportRow.getSiblingId()).isNull();
             assertThat(reportRow.getAccessLevel()).isSameAs(AccessLevel.OWNER);
             assertThat(reportRow.getAttachments()).isNull();
-            assertThat(reportRow.getCells()).isNotEmpty()
-                    .allSatisfy(ReportData::assertReportCell);
+            assertThat(reportRow.getCells()).isNotEmpty().allSatisfy(ReportData::assertReportCell);
         }
 
         static void assertReportCell(Cell reportCell) {
             assertThat(reportCell).isNotNull();
-
             assertThat(reportCell.getColumnType()).isNull();
             assertThat(reportCell.getConditionalFormat()).isNull();
             assertThat(reportCell.getFormat()).isNull();
@@ -412,7 +476,7 @@ public class TestData {
                                 break;
                         }
                     });
-            assertThat(reportCell.getVirtualColumnId()).matches(Set.of(6693795649507204L, 4441995835821956L)::contains);
+            assertThat(reportCell.getVirtualColumnId()).matches(virtualColumnIds::contains);
         }
 
         static void assertReportWorkspace(Workspace reportWorkspace) {
@@ -450,12 +514,12 @@ public class TestData {
     }
 
     interface RowData {
-        long id = 6139161318133636L;
-        long attachmentId = 7117529120280452L;
+        long id = getLong("RowData.id");
+        long attachmentId = getLong("RowData.attachmentId");
     }
 
     interface ShareData {
-        String shareId = "AAAC8sImFOeE";
+        String shareId = get("ShareData.shareId");
         static void assertCommonShare(Share share, ShareScope scope, OffsetDateTime shareDate) {
             assertThat(share).isNotNull();
             assertThat(share.getId()).isEqualTo(ShareData.shareId);
@@ -475,8 +539,10 @@ public class TestData {
     }
 
     interface SheetData {
-        long id = 6971132763656068L;
-        String name = "Test Sheet 1";
+        long id = getLong("SheetData.id");
+        String name = get("SheetData.name");
+        long sourceId = getLong("SheetData.sourceId");
+
         OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
         Set<AttachmentType> effectiveAttachmentOptions = Set.of(
                 AttachmentType.BOX_COM, AttachmentType.DROPBOX, AttachmentType.EGNYTE, AttachmentType.EVERNOTE,
@@ -524,12 +590,11 @@ public class TestData {
             assertThat(listing.getPermalink()).isNotBlank();
             assertThat(listing.getModifiedAt()).isAfterOrEqualTo(createdDate);
             assertThat(listing.getSource()).satisfies(src -> {
-                assertThat(src.getId()).isEqualTo(4503604829677444L);
+                assertThat(src.getId()).isEqualTo(sourceId);
                 assertThat(src.getType()).isSameAs(SourceType.SHEET);
             });
             assertThat(listing.getVersion()).isGreaterThanOrEqualTo(9); // as of 2025-05-06
         }
-
         @NonNull
         static Sheet createTestSheet() {
             return Sheet.builder()
@@ -578,50 +643,59 @@ public class TestData {
     }
 
     interface TemplateData {
+        long id = getLong("TemplateData.id");
+        String name = get("TemplateData.name");
+
         Template template = Template.builder()
-                .id(6674172927233924L)
+                .id(id)
                 .accessLevel(AccessLevel.OWNER)
                 .categories(List.of())
-                .name("Template of Waiting List")
+                .name(name)
                 .tags(List.of())
                 .build();
     }
 
     interface UserData {
-        long userIdToDeactivate = 0L;
-        long id = 829865629902724L;
-        String firstName = "Ron";
-        String lastName = "Reynolds";
+        long id = getLong("UserData.id");
+        String email = get("UserData.email");
+        String firstName = get("UserData.firstName");
+        String lastName = get("UserData.lastName");
         String name = firstName + " " + lastName;
         String locale = "en_US";
         String timezone = "US/Pacific";
-        String accountName = "Flock of Singletons";
-        long accountId = 429119679817604L;
+        String accountName = get("UserData.accountName");
+        long accountId = getLong("UserData.accountId");
         boolean isAdmin = true;
         boolean isLicensedSheetCreator = true;
         boolean isGroupAdmin = true;
-        List<String> alternateEmails = List.of();
 
         interface AlternateEmailData {
-            long id = 3036181538596740L;
+            long id = getLong("UserData.AlternateEmailData.id");
             static void assertMatch(List<? extends AlternateEmail> emailList) {
                 assertThat(emailList).isNotEmpty().anySatisfy(email -> assertThat(email.getId()).isEqualTo(id));
             }
         }
 
+        static NameAndEmail getNameAndEmail() {
+            return NameAndEmail.builder()
+                    .email(email)
+                    .name(name)
+                    .build();
+        }
         static void assertEquals(GetCurrentUser200Response user) {
             assertThat(user).isNotNull();
-            assertThat(user.getAccount()).as("missing account").isNotNull();
-            assertThat(user.getAccount().getId()).as("account-id").isEqualTo(accountId);
-            assertThat(user.getAccount().getName()).as("account-name").isEqualTo(TestData.UserData.accountName);
-            assertThat(user.getAdmin()).as("admin-flag").isEqualTo(TestData.UserData.isAdmin);
-            assertThat(user.getFirstName()).as("first-name").isEqualTo(TestData.UserData.firstName);
-            assertThat(user.getGroupAdmin()).as("group-admin-flag").isEqualTo(TestData.UserData.isGroupAdmin);
-            assertThat(user.getLastName()).as("last-name").isEqualTo(TestData.UserData.lastName);
-            assertThat(user.getLicensedSheetCreator()).as("sheet-creator-flag").isEqualTo(TestData.UserData.isLicensedSheetCreator);
-            assertThat(user.getLocale()).as("locale").isEqualTo(TestData.UserData.locale);
-            assertThat(user.getTimeZone()).as("time-zone").isEqualTo(TestData.UserData.timezone);
-            AlternateEmailData.assertMatch(assertThat(user.getAlternateEmails()).isNotNull().actual());
+            UserProfileAccount account = assertThat(user.getAccount()).as("account").isNotNull().actual();
+            assertThat(account.getId()).as("account-id").isEqualTo(accountId);
+            assertThat(account.getName()).as("account-name").isEqualTo(accountName);
+            assertThat(user.getEmail()).as("email").isEqualTo(email);
+            assertThat(user.getAdmin()).as("admin-flag").isEqualTo(isAdmin);
+            assertThat(user.getFirstName()).as("first-name").isEqualTo(firstName);
+            assertThat(user.getGroupAdmin()).as("group-admin-flag").isEqualTo(isGroupAdmin);
+            assertThat(user.getLastName()).as("last-name").isEqualTo(lastName);
+            assertThat(user.getLicensedSheetCreator()).as("sheet-creator-flag").isEqualTo(isLicensedSheetCreator);
+            assertThat(user.getLocale()).as("locale").isEqualTo(locale);
+            assertThat(user.getTimeZone()).as("time-zone").isEqualTo(timezone);
+            assertThat(user.getAlternateEmails()).satisfies(AlternateEmailData::assertMatch);
         }
 
         static void assertEquals(UserProfile user) {
@@ -641,16 +715,18 @@ public class TestData {
     }
 
     interface WebhookData {
-        long id = 0L;   // FIXME
+        long id = getLong("WebhookData.id");
     }
 
     interface WorkflowData {
-        String id = "Test Workflow";
+        String id = get("WorkflowData.id");
     }
 
     interface WorkspaceData {
-        long id = 4931918228678532L;
-        String name = "Test Workspace";
+        long id = getLong("WorkspaceData.id");
+        String name = get("WorkspaceData.name");
+        long folderId = getLong("WorkspaceData.folderId");
+        String folderName = get("WorkspaceData.folderName");
         AccessLevel level = AccessLevel.OWNER;
         OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 3, 0, ZoneOffset.UTC);
 
@@ -669,8 +745,8 @@ public class TestData {
         // FIXME - make non-inner type
         static void assertFolderInWorkspace(GetWorkspaceFolders200ResponseAllOfDataInner folder) {
             assertThat(folder).isNotNull();
-            assertThat(folder.getId()).isEqualTo(1104664725874564L);
-            assertThat(folder.getName()).isEqualTo("Test Folder");
+            assertThat(folder.getId()).isEqualTo(folderId);
+            assertThat(folder.getName()).isEqualTo(folderName);
         }
     }
 
@@ -714,5 +790,32 @@ public class TestData {
         assertThat(result).isNotNull();
         assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
         assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
+    }
+
+    // all "secret" values are moved to a properties file that is not checked in
+    private static final Properties secrets = new Properties();
+    static {
+        try {
+            secrets.load(new FileReader("src/main/resources/secrets.props"));
+        } catch (IOException iox) {
+            throw new RuntimeException(iox);
+        }
+    }
+
+    private static String get(String name) {
+        return assertThat(secrets.getProperty(name)).as("get(" + name + ")").isNotBlank().actual();
+    }
+
+    private static long getLong(String name) {
+        return Long.parseLong(get(name));
+    }
+
+    private static Set<String> getSetOf(String namePrefix) {
+        // matches all names that start with the prefix followed by a . followed by one or more digits
+        var filter = Pattern.compile(Pattern.quote(namePrefix) + "\\.\\d+").asMatchPredicate();
+        return secrets.stringPropertyNames().stream()
+                .filter(filter)
+                .map(secrets::getProperty)
+                .collect(Collectors.toSet());
     }
 }
