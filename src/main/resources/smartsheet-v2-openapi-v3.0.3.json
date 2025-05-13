@@ -20,6 +20,10 @@
       "description": "EU production API server"
     },
     {
+      "url": "https://api.smartsheet.au/2.0",
+      "description": "AU production API server"
+    },
+    {
       "url": "https://api.smartsheetgov.com/2.0",
       "description": "Gov-US production API server"
     }
@@ -706,6 +710,7 @@
             "description": "Maximum number of events to return as response to this call.\nMust be between 1 through 10,000 (inclusive).\nDefaults to 1,000 if not specified.",
             "schema": {
               "type": "integer",
+              "format": "int32",
               "minimum": 1,
               "maximum": 10000,
               "default": 1000
@@ -14039,7 +14044,7 @@
             "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
             "nullable": true
           },
-          "rowid": {
+          "rowId": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
@@ -14048,7 +14053,7 @@
             "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
             "nullable": true
           },
-          "userid": {
+          "userId": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
