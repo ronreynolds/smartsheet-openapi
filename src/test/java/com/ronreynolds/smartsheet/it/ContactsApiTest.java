@@ -729,6 +729,7 @@ import com.ronreynolds.smartsheet.api.ContactsApi;
 import com.ronreynolds.smartsheet.model.Contact;
 import com.ronreynolds.smartsheet.model.GetContactInclude;
 import com.ronreynolds.smartsheet.model.ListContacts200Response;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -741,9 +742,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for ContactsApi
  */
-@Disabled("ContactsApiTest not yet implemented")
+@Slf4j
 public class ContactsApiTest {
-
     private final ContactsApi api = new ContactsApi();
 
 
@@ -756,13 +756,11 @@ public class ContactsApiTest {
      */
     @Test
     public void getContactTest() throws ApiException {
-        Long contactId = null;
+        String contactId = TestData.ContactData.contacts.iterator().next().getId();
         List<GetContactInclude> include = null;
-        Contact response =
-                api.getContact(contactId, include);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+        Contact response = api.getContact(contactId, include);
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.ContactData::assertFirstContact);
     }
 
     /**
@@ -774,15 +772,14 @@ public class ContactsApiTest {
      */
     @Test
     public void listContactsTest() throws ApiException {
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         OffsetDateTime modifiedSince = null;
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListContacts200Response response =
-                api.listContacts(includeAll, modifiedSince, numericDates, page, pageSize);
+        ListContacts200Response response = api.listContacts(includeAll, modifiedSince, numericDates, page, pageSize);
 
-        // TODO: test validations
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).satisfies(TestData.ContactData::assertContains);
     }
-
 }
