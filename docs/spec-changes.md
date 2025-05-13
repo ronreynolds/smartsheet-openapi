@@ -258,6 +258,9 @@ some parts of the Spec don't match the server responses at all
   * `#/components/parameters/webhookIdInPath`
   * `#/components/parameters/workspaceIdInPath`
 
+##### some IDs are strings not longs
+* `#/components/parameters/contactIdInPath` was long (number) but should be a string
+
 #### further improvements
 * added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
 * added `#/components/schemas/ShareType` enum to replace `string` for `#/components/schemas/Share.type`
