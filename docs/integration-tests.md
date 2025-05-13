@@ -6,6 +6,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ## Tests Summary
 ### Finished Tests
 * `CellsApiTest`
+* `ContactsApiTest`
 * `EventsApiTest`
 * `ServerInfoApiTest`
 * `TemplatesApiTest`
@@ -21,7 +22,6 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * `CellImagesApiTest`
 * `ColumnsApiTest`
 * `CommentsApiTest`
-* `ContactsApiTest`
 * `CrossSheetReferencesApiTest`
 * `DashboardsApiTest`
 * `DiscussionsApiTest`
@@ -126,12 +126,9 @@ the package also contains a `TestData` class in an attempt to consolidate consta
     * `commentGetTest`
 
 ### ContactsApiTest
-* To-Do
-  * `getContactTest`
-  * `listContactsTest`
-* In-Progress
-* Blocked
 * Done
+    * `getContactTest`
+    * `listContactsTest`
 
 ### CrossSheetReferencesApiTest
 * To-Do
