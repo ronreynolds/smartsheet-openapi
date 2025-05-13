@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### secrets file ###
-src/main/resources/secrets.props
+src/test/resources/secrets.props
