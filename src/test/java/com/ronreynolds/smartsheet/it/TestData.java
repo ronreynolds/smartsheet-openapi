@@ -821,7 +821,7 @@ public class TestData {
     private static final Properties secrets = new Properties();
     static {
         try {
-            secrets.load(new FileReader("src/main/resources/secrets.props"));
+            secrets.load(new FileReader("src/test/resources/secrets.props"));
         } catch (IOException iox) {
             throw new RuntimeException(iox);
         }
