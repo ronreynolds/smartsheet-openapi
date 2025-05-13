@@ -12,9 +12,9 @@ import com.ronreynolds.smartsheet.model.CellObjectValue;
 import com.ronreynolds.smartsheet.model.CellValue;
 import com.ronreynolds.smartsheet.model.Column;
 import com.ronreynolds.smartsheet.model.ColumnBrief;
-import com.ronreynolds.smartsheet.model.ColumnBriefDataInner;
 import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.Comment;
+import com.ronreynolds.smartsheet.model.Contact;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
@@ -38,6 +38,7 @@ import com.ronreynolds.smartsheet.model.UserProfile;
 import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.reflection.Reflection;
+import com.ronreynolds.util.streams.ExtCollectors;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,14 +48,20 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeSet;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
  * various bits of test constants
@@ -245,6 +252,24 @@ public class TestData {
             assertThat(comment.getAttachments())
                     .isNotEmpty()
                     .first().satisfies(AttachmentData.CommentAttachment::assertEquals);
+        }
+    }
+
+    interface ContactData {
+        Set<Contact> contacts = new HashSet<>(
+                getListOfItems("ContactData.contact",
+                        props -> Contact.builder()
+                                .email(props.get("email"))
+                                .id(props.get("id"))
+                                .name(props.get("name"))
+                                .build()));
+
+        static void assertContains(List<? extends Contact> contactList) {
+            assertThat(contactList).isNotEmpty().allMatch(contacts::contains);
+        }
+
+        static void assertFirstContact(Contact contact) {
+            assertThat(contact).isNotNull().isEqualTo(contacts.iterator().next());
         }
     }
 
@@ -810,12 +835,47 @@ public class TestData {
         return Long.parseLong(get(name));
     }
 
-    private static Set<String> getSetOf(String namePrefix) {
-        // matches all names that start with the prefix followed by a . followed by one or more digits
-        var filter = Pattern.compile(Pattern.quote(namePrefix) + "\\.\\d+").asMatchPredicate();
+    private static Map<String,String> getPropertiesStartingWith(String namePrefix) {
+        // matches all names that start with the prefix
         return secrets.stringPropertyNames().stream()
-                .filter(filter)
-                .map(secrets::getProperty)
-                .collect(Collectors.toSet());
+                .filter(key -> key.startsWith(namePrefix))
+                .map(key -> Map.entry(key, secrets.getProperty(key)))
+                .collect(ExtCollectors.entriesToMap());
+    }
+
+    /**
+     * generate a list of T given their property name prefix and a factory method to convert the Map of key-value pairs to T.
+     *
+     * @param namePrefix  key prefix by which to find all properties to use; property keys must be of the form "PREFIX.DIGITS
+     *                    .FIELD"
+     * @param itemFactory a method-ref to invoke to convert {@code Map<String,String>} of key-value pairs into type T
+     * @param <T>         the type of the object created from the property groups
+     * @return a {@code List<T>} containing all T created from all properties with {@code namePrefix} grouped by DIGIT(S)
+     */
+    private static <T> List<T> getListOfItems(String namePrefix, Function<Map<String, String>, T> itemFactory) {
+        assertThat(itemFactory).isNotNull();
+
+        Map<String,String> properties = getPropertiesStartingWith(namePrefix + ".");
+        Pattern keyPattern = Pattern.compile(Pattern.quote(namePrefix) + "\\.(\\d+)\\.(.+)");
+
+        // gather up all the key-value pairs by digit suffix
+        Map<Integer, Map<String, String>> mapsByDigit = new HashMap<>();
+        for (Map.Entry<String,String> entry : properties.entrySet()) {
+            Matcher mat = keyPattern.matcher(entry.getKey());
+            if (mat.matches()) {
+                Integer digits = Integer.parseInt(mat.group(1));
+                String field = mat.group(2);
+                Map<String, String> keyValuePairs = mapsByDigit.computeIfAbsent(digits, ignore -> new HashMap<>());
+                keyValuePairs.put(field, entry.getValue());
+            } else {
+                log.warn("key '{}' didn't match expect key-pattern '{}'", entry.getKey(), keyPattern.pattern());
+            }
+        }
+
+        List<T> newList = new ArrayList<>();
+        for (Map<String, String> valueMap : mapsByDigit.values()) {
+            newList.add(itemFactory.apply(valueMap));
+        }
+        return newList;
     }
 }
