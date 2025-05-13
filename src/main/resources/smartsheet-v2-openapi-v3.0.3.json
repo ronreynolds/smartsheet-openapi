@@ -12822,7 +12822,8 @@
         "name": "contactId",
         "in": "path",
         "schema": {
-          "$ref": "#/components/schemas/Int64"
+          "type": "string",
+          "example": "AAAAATYU54QAD7_fNhTnhA"
         },
         "description": "contactId of the contact being accessed.",
         "required": true
