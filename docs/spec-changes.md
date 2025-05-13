@@ -293,3 +293,7 @@ some parts of the Spec don't match the server responses at all
 * added `#/components/schemas/UpdateRequestUpdate` and added it as requestBody of `updaterequests-update`
 * changed `Cell.columnType` and `CellBrief.columnType` from `string` to `ColumnType`
 * fixed `columns-listOnSheet` response from `ColumnBrief` (which had too many fields) to a simpler inner response type
+* some changes noticed diffing earlier spec with latest 2025-05-12 spec
+  * added AU server endpoint
+  * added `format:int32` to `maxCount` parameter of `#/paths/events GET`
+  * changed `#/components/schemas/CallbackEvent` properties `rowid` and `userid` to `rowId` and `userId`, resp.
