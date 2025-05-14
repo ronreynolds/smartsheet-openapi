@@ -97,6 +97,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `addImageToCellTest`
 * In-Progress
 * Blocked
+  * need test image to add to a cell
 * Done
   * `listImageUrlsTest`
 
@@ -144,19 +145,20 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `copySightTest`
   * `deleteSightTest`
   * `deleteSightShareTest`
-  * `getSightTest`
-  * `getSightPublishStatusTest`
-  * `listSightSharesTest`
-  * `listSightsTest`
   * `moveSightTest`
   * `setSightPublishStatusTest`
   * `shareSightTest`
-  * `shareSightGetTest`
   * `updateSightTest`
   * `updateSightShareTest`
 * In-Progress
+  * `getSightPublishStatusTest`
+  * `listSightSharesTest`
 * Blocked
+  * `getSightTest`
+    * `Failed deserialization for WidgetContents: matching types:[RichTextWidgetContent, TitleWidgetContent], expected 1 (through reference chain: com.ronreynolds.smartsheet.model.Sight["widgets"]->java.util.ArrayList[1])`
 * Done
+  * `listSightsTest`
+  * `shareSightGetTest`
 
 ### DiscussionsApiTest
 * To-Do
