@@ -758,7 +758,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for DashboardsApi
  */
 @Slf4j
-@Disabled("DashboardsApiTest not yet implemented")
+//@Disabled("DashboardsApiTest not yet implemented")
 public class DashboardsApiTest {
     private final DashboardsApi api = new DashboardsApi();
 
@@ -771,6 +771,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void copySightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         ContainerDestination containerDestination = null;
@@ -790,6 +791,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         ResultPrefix response = api.deleteSight(sightId);
@@ -807,6 +809,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void deleteSightShareTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         String shareId = null;
@@ -825,6 +828,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("until we can resolve the response->model mapping issue")
     public void getSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
@@ -892,12 +896,9 @@ public class DashboardsApiTest {
         Boolean numericDates = null;
         Integer page = null;
         Integer pageSize = null;
-        ListSights200Response response =
-                api.listSights(accessApiLevel, includeAll, modifiedSince, numericDates, page, pageSize);
-
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+        ListSights200Response response = api.listSights(accessApiLevel, includeAll, modifiedSince, numericDates, page, pageSize);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).satisfies(TestData.DashboardData::assertContains);
     }
 
     /**
@@ -908,6 +909,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void moveSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         ContainerDestination containerDestination = null;
@@ -926,6 +928,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void setSightPublishStatusTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         SightPublish sightPublish = SightPublish.builder().build();
@@ -944,6 +947,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void shareSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
@@ -966,13 +970,12 @@ public class DashboardsApiTest {
     @Test
     public void shareSightGetTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        String shareId = null;
+        String shareId = TestData.ShareData.shareId;
         Integer accessApiLevel = null;
         Share response = api.shareSightGet(sightId, shareId, accessApiLevel);
 
         log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData.DashboardData::assertShare);
     }
 
     /**
@@ -983,6 +986,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Boolean numericDates = null;
@@ -1002,6 +1006,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void updateSightShareTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         String shareId = null;
