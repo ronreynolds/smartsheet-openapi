@@ -855,9 +855,10 @@ public class UsersApiTest {
         // also tests getUser and User.equals methods
         UserProfile sameUser = api.getUser(currentUser.getId());
         // for whatever reason getCurrentUser does not return status but getUser does. :-?
+        // and as of 2025-05-14 getUser returns a sheetCount of -1 instead of the proper value
         sameUser.setStatus(null);
-        assertThat(sameUser)
-                .isEqualTo(Converters.convert(currentUser));
+        sameUser.setSheetCount(-1);
+        assertThat(sameUser).isEqualTo(Converters.convert(currentUser));
     }
 
     /**
