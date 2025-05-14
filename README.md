@@ -13,5 +13,5 @@ the Java classes needed to invoke the Smartsheet API.
 ## Other Docs
 * [Integration Tests](docs/integration-tests.md)
   * list of all the integration-tests and methods for tracking progress in implementing them
-* [Secrets.props Keys](docs/secrets-keys.md)
-  * lists the keys used in secrets.props to keep sensitive data out of integration tests
+* [Secrets.props](docs/secrets.props.md)
+  * info about `secrets.props` file used to keep sensitive data out of integration tests
