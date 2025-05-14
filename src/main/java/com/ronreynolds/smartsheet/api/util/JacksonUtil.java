@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -17,24 +16,19 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
- * collection of utility methods for dealing with specific aspects of Jackson (mostly mods needed to make JSON work with Smartsheet API)
+ * collection of utility methods for dealing with specific aspects of Jackson (mostly mods needed to make JSON work with
+ * Smartsheet API)
  */
 public class JacksonUtil {
-    // same as https://github.com/smartsheet/smartsheet-java-sdk/blob/mainline/src/main/java/com/smartsheet/api/internal/json/JacksonJsonSerializer.java#L81
-    static final DateTimeFormatter DATE_FORMATTER =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'").withZone(ZoneId.of("UTC"));
     static final StdSerializer<OffsetDateTime> dateSerializer = new StdSerializer<>(OffsetDateTime.class) {
         @Override
         public void serialize(OffsetDateTime value, JsonGenerator gen, SerializerProvider provider) throws IOException {
             if (value == null) {
                 gen.writeNull();
             } else {
-                gen.writeString(DATE_FORMATTER.format(value));
+                gen.writeString(DateTimes.format(value));
             }
         }
     };
@@ -43,7 +37,7 @@ public class JacksonUtil {
         public OffsetDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {
             JsonNode node = parser.getCodec().readTree(parser);
             String dateText = node.asText();
-            return ZonedDateTime.parse(dateText, JacksonUtil.DATE_FORMATTER).toOffsetDateTime();
+            return DateTimes.parseToOffset(dateText);
         }
     };
 
