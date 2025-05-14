@@ -17,3 +17,6 @@ only some keys can support a `null` or empty value; most will trigger a test fai
 `assertThat(secrets.getProperty(name)).as("get(" + name + ")").isNotBlank()` 
 
 [secrets.props.sample](/src/test/resources/secrets.props.sample) contains all the keys currently supported.
+
+## pending improvements
+* move ALL fields into secrets.props for easier adaptability by other users
