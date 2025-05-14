@@ -1,6 +1,7 @@
 package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.api.util.Cells;
+import com.ronreynolds.smartsheet.api.util.DateTimes;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
@@ -19,6 +20,7 @@ import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
 import com.ronreynolds.smartsheet.model.ImageUrl;
+import com.ronreynolds.smartsheet.model.ListSights200ResponseAllOfDataInner;
 import com.ronreynolds.smartsheet.model.NameAndEmail;
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.ReportBrief;
@@ -32,6 +34,7 @@ import com.ronreynolds.smartsheet.model.ShareType;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetListingDataInner;
 import com.ronreynolds.smartsheet.model.SheetPublish;
+import com.ronreynolds.smartsheet.model.Sight;
 import com.ronreynolds.smartsheet.model.SourceType;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
@@ -46,15 +49,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -83,7 +85,7 @@ public class TestData {
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.COMMENT;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/gif";
-            OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 44, 32, 0, ZoneOffset.UTC);
+            OffsetDateTime createdDate = getDate("AttachmentData.CommentAttachment.createdDate");
             String name = get("AttachmentData.CommentAttachment.name");
             int sizeInKb = 10;
 
@@ -93,7 +95,7 @@ public class TestData {
                 assertThat(attachment.getName()).as("name").isEqualTo(name);
                 assertThat(attachment.getAttachmentType()).as("attachment-type").isSameAs(attachmentType);
                 assertThat(attachment.getMimeType()).as("mime-type").isEqualTo(mimeType);
-                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(created);
+                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(createdDate);
                 assertThat(attachment.getSizeInKb()).as("size-in-kb").isEqualTo(sizeInKb);
 
                 // light attachment data doesn't include parent info
@@ -110,7 +112,7 @@ public class TestData {
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.ROW;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
-            OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 11, 19, 0, ZoneOffset.UTC);
+            OffsetDateTime createdDate = getDate("AttachmentData.RowAttachment.createdDate");
             String name = get("AttachmentData.RowAttachment.name");
             int sizeInKb = 751;
 
@@ -122,7 +124,7 @@ public class TestData {
                 assertThat(attachment.getParentType()).as("parent type").isSameAs(parentType);
                 assertThat(attachment.getAttachmentType()).as("attachment-type").isSameAs(attachmentType);
                 assertThat(attachment.getMimeType()).as("mime-type").isEqualTo(mimeType);
-                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(created);
+                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(createdDate);
                 assertThat(attachment.getSizeInKb()).as("size-in-kb").isEqualTo(sizeInKb);
             }
         }
@@ -133,7 +135,7 @@ public class TestData {
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.SHEET;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
-            OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 10, 4, 0, ZoneOffset.UTC);
+            OffsetDateTime createdDate = getDate("AttachmentData.SheetAttachment.createdDate");
             String name = get("AttachmentData.SheetAttachment.name");
             int sizeInKb = 212;
 
@@ -145,7 +147,7 @@ public class TestData {
                 assertThat(attachment.getParentType()).as("parent type").isSameAs(parentType);
                 assertThat(attachment.getAttachmentType()).as("attachment-type").isSameAs(attachmentType);
                 assertThat(attachment.getMimeType()).as("mime-type").isEqualTo(mimeType);
-                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(created);
+                assertThat(attachment.getCreatedAt()).as("created-at").isEqualTo(createdDate);
                 assertThat(attachment.getSizeInKb()).as("size-in-kb").isEqualTo(sizeInKb);
             }
         }
@@ -204,7 +206,7 @@ public class TestData {
         }
 
         ColumnBriefData[] columnBriefData = ColumnBriefData.values();
-        OffsetDateTime modifiedDateTime = OffsetDateTime.of(2025, 4, 20, 13, 52, 46, 0, ZoneOffset.UTC);
+        OffsetDateTime modifiedDate = getDate("ColumnData.modifiedDate");
 
         static void assertColumnBriefs(ColumnBrief column) {
             assertThat(column).isNotNull();
@@ -214,7 +216,7 @@ public class TestData {
 
         static void assertColumnHistory(CellHistoryGet200ResponseAllOfDataInner history) {
             assertThat(history).isNotNull();
-            assertThat(history.getModifiedAt()).isAfterOrEqualTo(modifiedDateTime);
+            assertThat(history.getModifiedAt()).isAfterOrEqualTo(modifiedDate);
             assertThat(history.getModifiedBy()).isEqualTo(UserData.getNameAndEmail());
             assertThat(history.getColumnId()).isEqualTo(ColumnBriefData.PRIMARY.id);
             assertThat(history.getColumnType()).isSameAs(ColumnBriefData.PRIMARY.type);
@@ -239,14 +241,14 @@ public class TestData {
         String text = get("CommentData.text");
         long attachmentId = getLong("CommentData.attachmentId");
         long discussionId = getLong("CommentData.discussionId");
-        OffsetDateTime created = OffsetDateTime.of(2025, 4, 23, 13, 42, 0, 0, ZoneOffset.UTC);
+        OffsetDateTime createdDate = getDate("CommentData.createdDate");
 
         static void assertEquals(Comment comment) {
             assertThat(comment).isNotNull();
             assertThat(comment.getId()).as("id").isEqualTo(id);
             assertThat(comment.getDiscussionId()).as("discussion id").isEqualTo(discussionId);
             assertThat(comment.getText()).as("text").isEqualTo(text);
-            assertThat(comment.getCreatedAt()).as("created-at").isEqualTo(created);
+            assertThat(comment.getCreatedAt()).as("created-at").isEqualTo(createdDate);
 
             // assert on the attachment too
             assertThat(comment.getAttachments())
@@ -276,12 +278,34 @@ public class TestData {
     interface DashboardData {
         long id = getLong("DashboardData.id");
         String name = get("DashboardData.name");
-        OffsetDateTime shareDate = OffsetDateTime.of(2025, 5, 7, 14, 9, 7, 0, ZoneOffset.UTC);
+        OffsetDateTime shareDate = getDate("DashboardData.shareDate");
+        Map<Long,Sight> dashboardMap = getListOfItems("DashboardData.dashboards",
+                fieldMap -> Sight.builder()
+                        .accessLevel(AccessLevel.valueOf(fieldMap.get("accessLevel")))
+                        .id(Long.parseLong(fieldMap.get("id")))
+                        .name(fieldMap.get("name"))
+                        .createdAt(DateTimes.parseToOffset(fieldMap.get("createdDate")))
+                        .modifiedAt(DateTimes.parseToOffset(fieldMap.get("modifiedDate")))
+                        .build()
+        ).stream().map(dashboard -> Map.entry(dashboard.getId(), dashboard)).collect(ExtCollectors.entriesToMap());
 
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
             assertThat(share.getCreatedAt()).isEqualTo(shareDate);
             assertThat(share.getModifiedAt()).isAfterOrEqualTo(shareDate);
+        }
+        static void assertContains(List<? extends ListSights200ResponseAllOfDataInner> dashboardList) {
+            log.info("{}", dashboardList);
+            assertThat(dashboardList).isNotEmpty();
+            assertThat(dashboardList).allSatisfy(val -> {
+                Sight dashboard = dashboardMap.get(val.getId());
+                assertThat(dashboard).as("has dashboard").isNotNull();
+                assertThat(val.getPermalink()).isNotBlank();
+                assertThat(val.getName()).isEqualTo(dashboard.getName());
+                assertThat(val.getAccessLevel()).isSameAs(dashboard.getAccessLevel());
+                assertThat(val.getCreatedAt()).isEqualTo(dashboard.getCreatedAt());
+                assertThat(val.getModifiedAt()).isAfterOrEqualTo(dashboard.getModifiedAt());
+            });
         }
     }
 
@@ -347,8 +371,11 @@ public class TestData {
     interface ReportData {
         long id = getLong("ReportData.id");
         String name = get("ReportData.name");
-        Set<Long> virtualColumnIds = Set.of(getLong("ReportData.virtualColumnId.1"), getLong("ReportData.virtualColumnId.2"));
-        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC);
+        Set<Long> virtualColumnIds = getCollectionStartingWith("ReportData.virtualColumnId", HashSet::new, Long::parseLong);
+        OffsetDateTime shareDate = getDate("ReportData.shareDate");
+        OffsetDateTime createdDate = getDate("ReportData.createdDate");
+        OffsetDateTime modifiedDate = getDate("ReportData.modifiedDate");
+        OffsetDateTime rowCreateDate = getDate("ReportData.rowCreateDate");
 
         static void assertContains(List<? extends Report> reports) {
             assertThat(reports).isNotEmpty().anySatisfy(ReportData::assertEquals);
@@ -373,7 +400,7 @@ public class TestData {
             assertThat(report.getFromId()).isNull();
             assertThat(report.getAttachments()).isNull();
             assertThat(report.getCellImageUploadEnabled()).isTrue();
-            assertThat(report.getCreatedAt()).isEqualTo(OffsetDateTime.of(2025, 4, 20, 13, 59, 22, 0, ZoneOffset.UTC));
+            assertThat(report.getCreatedAt()).isEqualTo(createdDate);
             assertThat(report.getCrossSheetReferences()).isNull();
             assertThat(report.getDependenciesEnabled()).isNull();
             assertThat(report.getDiscussions()).isNull();
@@ -385,7 +412,7 @@ public class TestData {
             assertThat(report.getGanttEnabled()).isFalse();
             assertThat(report.getHasSummaryFields()).isNull();
             assertThat(report.getIsMultiPicklistEnabled()).isNull();
-            assertThat(report.getModifiedAt()).isAfterOrEqualTo(OffsetDateTime.of(2025, 4, 20, 13, 59, 58, 0, ZoneOffset.UTC));
+            assertThat(report.getModifiedAt()).isAfterOrEqualTo(modifiedDate);
             assertThat(report.getOwner()).isNull();
             assertThat(report.getOwnerId()).isNull();
             assertThat(report.getPermalink()).isNotBlank();
@@ -436,7 +463,6 @@ public class TestData {
         }
 
         static void assertReportRow(Row reportRow) {
-            OffsetDateTime rowCreateDate = OffsetDateTime.of(2025, 4, 20, 13, 52, 46, 0, ZoneOffset.UTC);
             assertThat(reportRow).isNotNull();
             assertThat(reportRow.getColumns()).isNull();
             assertThat(reportRow.getConditionalFormat()).isNull();
@@ -568,12 +594,12 @@ public class TestData {
         String name = get("SheetData.name");
         long sourceId = getLong("SheetData.sourceId");
 
-        OffsetDateTime createdDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
+        OffsetDateTime createdDate = getDate("SheetData.createdDate");
+        OffsetDateTime shareDate = getDate("SheetData.shareDate");
         Set<AttachmentType> effectiveAttachmentOptions = Set.of(
                 AttachmentType.BOX_COM, AttachmentType.DROPBOX, AttachmentType.EGNYTE, AttachmentType.EVERNOTE,
                 AttachmentType.FILE, AttachmentType.GOOGLE_DRIVE, AttachmentType.LINK, AttachmentType.ONEDRIVE);
 
-        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 31, 0, ZoneOffset.UTC);
 
         static void assertEquals(Sheet sheet) {
             assertThat(sheet).isNotNull();
@@ -753,7 +779,7 @@ public class TestData {
         long folderId = getLong("WorkspaceData.folderId");
         String folderName = get("WorkspaceData.folderName");
         AccessLevel level = AccessLevel.OWNER;
-        OffsetDateTime shareDate = OffsetDateTime.of(2025, 4, 2, 14, 27, 3, 0, ZoneOffset.UTC);
+        OffsetDateTime shareDate = getDate("WorkspaceData.shareDate");
 
         static void assertEquals(Workspace workspace) {
             assertThat(workspace).isNotNull();
@@ -813,8 +839,8 @@ public class TestData {
 
     static void successfulResult(ResultPrefix result) {
         assertThat(result).isNotNull();
-        assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
-        assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
+        assertThat(result.getResultCode()).isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(ResultPrefix.MessageEnum.SUCCESS);
     }
 
     // all "secret" values are moved to a properties file that is not checked in
@@ -831,11 +857,24 @@ public class TestData {
         return assertThat(secrets.getProperty(name)).as("get(" + name + ")").isNotBlank().actual();
     }
 
+    private static OffsetDateTime getDate(String name) {
+        return DateTimes.parseToOffset(get(name));
+    }
+
     private static long getLong(String name) {
         return Long.parseLong(get(name));
     }
 
-    private static Map<String,String> getPropertiesStartingWith(String namePrefix) {
+    private static <T, CollectionT extends Collection<T>> CollectionT getCollectionStartingWith(
+            String prefix, Supplier<CollectionT> collectionFactory, Function<String, T> valueConverter) {
+        assertThat(valueConverter).as("check converter").isNotNull();
+        assertThat(collectionFactory).as("check collection factory").isNotNull();
+        return getPropertiesStartingWith(prefix).values().stream()
+                .map(valueConverter)
+                .collect(Collectors.toCollection(collectionFactory));
+    }
+
+    private static Map<String, String> getPropertiesStartingWith(String namePrefix) {
         // matches all names that start with the prefix
         return secrets.stringPropertyNames().stream()
                 .filter(key -> key.startsWith(namePrefix))
@@ -855,12 +894,12 @@ public class TestData {
     private static <T> List<T> getListOfItems(String namePrefix, Function<Map<String, String>, T> itemFactory) {
         assertThat(itemFactory).isNotNull();
 
-        Map<String,String> properties = getPropertiesStartingWith(namePrefix + ".");
+        Map<String, String> properties = getPropertiesStartingWith(namePrefix + ".");
         Pattern keyPattern = Pattern.compile(Pattern.quote(namePrefix) + "\\.(\\d+)\\.(.+)");
 
         // gather up all the key-value pairs by digit suffix
         Map<Integer, Map<String, String>> mapsByDigit = new HashMap<>();
-        for (Map.Entry<String,String> entry : properties.entrySet()) {
+        for (Map.Entry<String, String> entry : properties.entrySet()) {
             Matcher mat = keyPattern.matcher(entry.getKey());
             if (mat.matches()) {
                 Integer digits = Integer.parseInt(mat.group(1));
