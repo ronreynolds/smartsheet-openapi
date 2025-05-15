@@ -726,17 +726,17 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DashboardsApi;
+import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.CopySight200Response;
 import com.ronreynolds.smartsheet.model.GetDashboardInclude;
-import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.ListSights200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSightPublishStatus200Response;
 import com.ronreynolds.smartsheet.model.Share;
-import com.ronreynolds.smartsheet.model.ShareReport200Response;
+import com.ronreynolds.smartsheet.model.ShareSight200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.Sight;
 import com.ronreynolds.smartsheet.model.SightPublish;
@@ -746,19 +746,22 @@ import com.ronreynolds.smartsheet.model.UpdateSight200Response;
 import com.ronreynolds.smartsheet.model.UpdateSightRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * API tests for DashboardsApi
  */
 @Slf4j
-//@Disabled("DashboardsApiTest not yet implemented")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DashboardsApiTest {
     private final DashboardsApi api = new DashboardsApi();
 
@@ -793,12 +796,13 @@ public class DashboardsApiTest {
     @Test
     @Disabled("need test data")
     public void deleteSightTest() throws ApiException {
-        Long sightId = TestData.DashboardData.id;
-        ResultPrefix response = api.deleteSight(sightId);
+        for (Long dashboardId : TestData.DashboardData.sightIdsToDelete) {
+            ResultPrefix response = api.deleteSight(dashboardId);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+            log.info("{}", response);
+            // TODO: test validations
+            assertThat(response).isNotNull();
+        }
     }
 
     /**
@@ -809,15 +813,14 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled("need test data")
+    @Order(10)  // last test group to clean up data created in previous tests (possible fail due to replication delays)
     public void deleteSightShareTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        String shareId = null;
-        Result response = api.deleteSightShare(sightId, shareId);
-
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+        for (String shareId : TestData.DashboardData.shareIdsToDelete) {
+            Result response = api.deleteSightShare(sightId, shareId);
+//            log.info("{}", response);
+            assertThat(response).satisfies(TestData::successfulResult);
+        }
     }
 
     /**
@@ -867,6 +870,7 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(5)
     public void listSightSharesTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
@@ -876,9 +880,13 @@ public class DashboardsApiTest {
         Integer pageSize = null;
         var response = api.listSightShares(sightId, accessApiLevel, sharingInclude, includeAll, page, pageSize);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasData);
+        assertThat(response.getData()).anySatisfy(TestData.DashboardData::assertShare);
+        assertThat(response.getData()).anySatisfy(share -> {
+            assertThat(share.getAccessLevel()).isSameAs(AccessLevel.VIEWER);
+            assertThat(share.getEmail()).isEqualTo(TestData.ShareData.shareToEmail);
+        });
     }
 
     /**
@@ -947,17 +955,32 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled("need test data")
+    @Order(1)
     public void shareSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
-        Boolean sendEmail = null;
-        Share share = null;
-        ShareReport200Response response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
+        Boolean sendEmail = false;
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+        // circular share should fail
+        ApiException fail = assertThrows(ApiException.class, () -> api.shareSight(sightId, accessApiLevel, sendEmail,
+                Share.builder().accessLevel(AccessLevel.COMMENTER).email(TestData.UserData.email).build()));
+        assertThat(fail.getCode()).isEqualTo(400);
+        assertThat(fail).hasMessageContainingAll("The share already exists.", "\"errorCode\" : 1025");
+
+        Share share = Share.builder()
+                .accessLevel(AccessLevel.VIEWER)
+                .email(TestData.ShareData.shareToEmail)
+                .build();
+        ShareSight200Response response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
+        assertThat(response).as("successful result")
+                .satisfies(resp -> TestData.successfulResult(resp,
+                        ShareSight200Response.ResultCodeEnum.NUMBER_0,
+                        ShareSight200Response.MessageEnum.SUCCESS));
+        for (Share newShare : response.getResult()) {
+            TestData.DashboardData.shareIdsToDelete.add(newShare.getId());
+            assertThat(newShare.getEmail()).isEqualTo(TestData.ShareData.shareToEmail);
+            assertThat(newShare.getAccessLevel()).isSameAs(AccessLevel.VIEWER);
+        }
     }
 
     /**
