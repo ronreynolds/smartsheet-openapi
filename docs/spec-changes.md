@@ -233,7 +233,6 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/Row` added `dataModifiedAt` (returned by server; not in latest spec)
 * `#/components/schemas/ColumnBrief.data.items` added `version`, `primary`, and `width` to match server response
   * called `GetColumn` type in latest schemas (as of 2025-05-12) which is missing those fields also
-* 
 
 ##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
 * `result` response field renamed to `data`
@@ -297,3 +296,5 @@ some parts of the Spec don't match the server responses at all
   * added AU server endpoint
   * added `format:int32` to `maxCount` parameter of `#/paths/events GET`
   * changed `#/components/schemas/CallbackEvent` properties `rowid` and `userid` to `rowId` and `userId`, resp.
+* changed all single-element `oneOf` to `allOf` for consistency
+  * still doesn't fix openapi-parse warning "'oneOf' is intended to include only the additional optional OAS extension discriminator object."
