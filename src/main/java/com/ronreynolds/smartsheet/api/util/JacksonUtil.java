@@ -5,6 +5,7 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.StreamReadFeature;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,7 +47,9 @@ public class JacksonUtil {
 
         builder.disable(MapperFeature.ALLOW_COERCION_OF_SCALARS)        // type coercion breaks parsing of more complex objects
                 .serializationInclusion(JsonInclude.Include.NON_NULL)   // don't send fields with null values
-                .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION);  // excellent for debugging JSON responses
+                .enable(StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION)  // excellent for debugging JSON responses
+                .enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)    // handle responses that contain both single and array
+        ;
 
         // add our custom date handlers
         builder.addModules(new SimpleModule()
