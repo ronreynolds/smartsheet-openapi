@@ -287,7 +287,9 @@ public class TestData {
                         .createdAt(DateTimes.parseToOffset(fieldMap.get("createdDate")))
                         .modifiedAt(DateTimes.parseToOffset(fieldMap.get("modifiedDate")))
                         .build()
-        ).stream().map(dashboard -> Map.entry(dashboard.getId(), dashboard)).collect(ExtCollectors.entriesToMap());
+        ).stream().map(sight -> Map.entry(sight.getId(), sight)).collect(ExtCollectors.entriesToMap());
+        Set<String> shareIdsToDelete = getCollectionStartingWith("DashboardData.shareIdsToDelete", HashSet::new, v -> v);
+        Set<Long> sightIdsToDelete = getCollectionStartingWith("DashboardData.sightIdsToDelete", HashSet::new, Long::parseLong);
 
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
@@ -571,6 +573,8 @@ public class TestData {
 
     interface ShareData {
         String shareId = get("ShareData.shareId");
+        String shareToEmail = get("ShareData.shareToEmail");
+
         static void assertCommonShare(Share share, ShareScope scope, OffsetDateTime shareDate) {
             assertThat(share).isNotNull();
             assertThat(share.getId()).isEqualTo(ShareData.shareId);
@@ -831,7 +835,7 @@ public class TestData {
 
     static void successfulResult(Result result) {
         assertThat(result).isNotNull();
-        assertThat(result.getFailedItems()).isEmpty();
+        assertThat(result.getFailedItems()).isNullOrEmpty();
         assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
         assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
         // what's result.version about?
@@ -841,6 +845,21 @@ public class TestData {
         assertThat(result).isNotNull();
         assertThat(result.getResultCode()).isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);
         assertThat(result.getMessage()).isSameAs(ResultPrefix.MessageEnum.SUCCESS);
+    }
+
+    /**
+     * because OpenAPI-codegen uses individual inner-classes we need the specific success code and message values against which to
+     * assert
+     */
+    static void successfulResult(Object result, Object successCode, Object successMessage) {
+        assertThat(result).as("result not null").isNotNull();
+        if (Reflection.hasMethod(result.getClass(), "getFailedItems")) {
+            assertThat(Reflection.invoke(result, "getFailedItems", List.class)).as("no failed items").isNullOrEmpty();
+        }
+        assertThat(Reflection.invoke(result, "getResultCode", successCode.getClass()))
+                .as("success result code").isSameAs(successCode);
+        assertThat(Reflection.invoke(result, "getMessage", successMessage.getClass()))
+                .as("success message").isSameAs(successMessage);
     }
 
     // all "secret" values are moved to a properties file that is not checked in
