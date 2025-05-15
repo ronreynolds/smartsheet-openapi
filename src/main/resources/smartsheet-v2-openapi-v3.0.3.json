@@ -3402,7 +3402,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
+                  "allOf": [
                     {
                       "$ref": "#/components/schemas/Sheet"
                     }
@@ -10397,7 +10397,7 @@
                               },
                               "customWelcomeScreenViewed": {
                                 "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/Datetime"
                                   }
@@ -10424,7 +10424,7 @@
                               },
                               "lastLogin": {
                                 "description": "Last login time of the current user.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/Datetime"
                                   }
@@ -10466,7 +10466,7 @@
                               },
                               "status": {
                                 "description": "User status, set to one of the listed enum values.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/UserStatus"
                                   }
@@ -13466,7 +13466,7 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -13989,7 +13989,7 @@
                 },
                 "timestamp": {
                   "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
-                  "oneOf": [
+                  "allOf": [
                     {
                       "$ref": "#/components/schemas/Datetime"
                     }
@@ -14016,7 +14016,7 @@
           },
           "timestamp": {
             "description": "Time that the callback was generated.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -14089,7 +14089,7 @@
           },
           "timestamp": {
             "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -15689,7 +15689,7 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -15949,7 +15949,7 @@
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/EmailAddress"
               }
@@ -15958,7 +15958,7 @@
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/GroupId"
               }
@@ -16019,7 +16019,7 @@
           },
           "eventTimeStamp": {
             "description": "Date and time of the event. Defaults to ISO-8601 format. See dates and times for more information.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -19955,7 +19955,7 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -19982,7 +19982,7 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20079,7 +20079,7 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20113,7 +20113,7 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20378,7 +20378,7 @@
                 "readOnly": true,
                 "properties": {
                   "lastCallbackAttempt": {
-                    "oneOf": [
+                    "allOf": [
                       {
                         "$ref": "#/components/schemas/Datetime"
                       }
@@ -20392,7 +20392,7 @@
                     "description": "The number of retries the webhook had performed as of the last callback attempt."
                   },
                   "lastSuccessfulCallback": {
-                    "oneOf": [
+                    "allOf": [
                       {
                         "$ref": "#/components/schemas/Datetime"
                       }
