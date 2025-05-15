@@ -144,21 +144,21 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * To-Do
   * `copySightTest`
   * `deleteSightTest`
-  * `deleteSightShareTest`
   * `moveSightTest`
   * `setSightPublishStatusTest`
-  * `shareSightTest`
   * `updateSightTest`
   * `updateSightShareTest`
 * In-Progress
   * `getSightPublishStatusTest`
-  * `listSightSharesTest`
 * Blocked
   * `getSightTest`
     * `Failed deserialization for WidgetContents: matching types:[RichTextWidgetContent, TitleWidgetContent], expected 1 (through reference chain: com.ronreynolds.smartsheet.model.Sight["widgets"]->java.util.ArrayList[1])`
 * Done
+  * `deleteSightShareTest`
   * `listSightsTest`
+  * `listSightSharesTest`
   * `shareSightGetTest`
+  * `shareSightTest`
 
 ### DiscussionsApiTest
 * To-Do
