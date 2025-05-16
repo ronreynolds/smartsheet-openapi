@@ -298,3 +298,5 @@ some parts of the Spec don't match the server responses at all
   * changed `#/components/schemas/CallbackEvent` properties `rowid` and `userid` to `rowId` and `userId`, resp.
 * changed all single-element `oneOf` to `allOf` for consistency
   * still doesn't fix openapi-parse warning "'oneOf' is intended to include only the additional optional OAS extension discriminator object."
+* moved `#/components/schemas/ResultPrefix` properties `message` and `resultCode` into their own type so that each type build from `ResultPrefix` won't use their own custom inner-classes
+  * added `#/components/schemas/ResultPrefixMessage` and `#/components/schemas/ResultPrefixCode`
