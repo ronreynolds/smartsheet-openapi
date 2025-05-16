@@ -17682,23 +17682,29 @@
         "type": "object",
         "properties": {
           "message": {
-            "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
-            "type": "string",
-            "enum": [
-              "PARTIAL_SUCCESS",
-              "SUCCESS"
-            ],
-            "example": "SUCCESS"
+            "$ref": "#/components/schemas/ResultPrefixMessage"
           },
           "resultCode": {
-            "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
-            "type": "integer",
-            "enum": [
-              0,
-              3
-            ]
+            "$ref": "#/components/schemas/ResultPrefixCode"
           }
         }
+      },
+      "ResultPrefixCode": {
+        "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
+        "type": "integer",
+        "enum": [
+          0,
+          3
+        ]
+      },
+      "ResultPrefixMessage": {
+        "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
+        "type": "string",
+        "enum": [
+          "PARTIAL_SUCCESS",
+          "SUCCESS"
+        ],
+        "example": "SUCCESS"
       },
       "RichTextWidgetContent": {
         "type": "object",
