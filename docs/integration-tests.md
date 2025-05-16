@@ -45,12 +45,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ## Individual Test Statuses
 ### AlternateEmailAddressApiTest 
 * In-Progress
-    * `addAlternateEmailTest`
-      * failed with a 500; oops!
-    * `deleteAlternateEmailTest`
-      * need to add alternate email to delete
-    * `promoteAlternateEmailTest`
-      * need to add alternate email to test with
+  * `addAlternateEmailTest`
+    * failed with a 500; oops!
+  * `deleteAlternateEmailTest`
+    * need to add alternate email to delete
+  * `promoteAlternateEmailTest`
+    * need to add alternate email to test with
 * Blocked
   * unable to create new alternate-email so makes it difficult to continue testing
     * `addAlternateEmail call failed with: 500 - { "errorCode" : 4000, "message" : "An unexpected error has occurred. Please contact the Support team at https://help.smartsheet.com/contact for assistance.", "refId" : "8ocvwq"}`
@@ -103,7 +103,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 
 ### CellsApiTest
 * Done
-    * `cellHistoryGetTest`
+  * `cellHistoryGetTest`
 
 ### ColumnsApiTest
 * To-Do
@@ -124,12 +124,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
-    * `commentGetTest`
+  * `commentGetTest`
 
 ### ContactsApiTest
 * Done
-    * `getContactTest`
-    * `listContactsTest`
+  * `getContactTest`
+  * `listContactsTest`
 
 ### CrossSheetReferencesApiTest
 * To-Do
@@ -145,18 +145,18 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `copySightTest`
   * `deleteSightTest`
   * `moveSightTest`
-  * `setSightPublishStatusTest`
   * `updateSightTest`
   * `updateSightShareTest`
 * In-Progress
-  * `getSightPublishStatusTest`
 * Blocked
   * `getSightTest`
     * `Failed deserialization for WidgetContents: matching types:[RichTextWidgetContent, TitleWidgetContent], expected 1 (through reference chain: com.ronreynolds.smartsheet.model.Sight["widgets"]->java.util.ArrayList[1])`
 * Done
   * `deleteSightShareTest`
+  * `getSightPublishStatusTest`
   * `listSightsTest`
   * `listSightSharesTest`
+  * `setSightPublishStatusTest`
   * `shareSightGetTest`
   * `shareSightTest`
 
