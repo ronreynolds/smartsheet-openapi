@@ -27,6 +27,8 @@ import com.ronreynolds.smartsheet.model.ReportBrief;
 import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import com.ronreynolds.smartsheet.model.ResultPrefixCode;
+import com.ronreynolds.smartsheet.model.ResultPrefixMessage;
 import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareScope;
@@ -836,30 +838,29 @@ public class TestData {
     static void successfulResult(Result result) {
         assertThat(result).isNotNull();
         assertThat(result.getFailedItems()).isNullOrEmpty();
-        assertThat(result.getResultCode()).isSameAs(Result.ResultCodeEnum.NUMBER_0);
-        assertThat(result.getMessage()).isSameAs(Result.MessageEnum.SUCCESS);
+        assertThat(result.getResultCode()).isSameAs(ResultPrefixCode.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(ResultPrefixMessage.SUCCESS);
         // what's result.version about?
     }
 
     static void successfulResult(ResultPrefix result) {
         assertThat(result).isNotNull();
-        assertThat(result.getResultCode()).isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);
-        assertThat(result.getMessage()).isSameAs(ResultPrefix.MessageEnum.SUCCESS);
+        assertThat(result.getResultCode()).isSameAs(ResultPrefixCode.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(ResultPrefixMessage.SUCCESS);
     }
 
     /**
-     * because OpenAPI-codegen uses individual inner-classes we need the specific success code and message values against which to
-     * assert
+     * most general-purpose version to handle all types similar in structure to Result (because allOf generates aggregation not extension)
      */
-    static void successfulResult(Object result, Object successCode, Object successMessage) {
+    static void successfulResult(Object result) {
         assertThat(result).as("result not null").isNotNull();
         if (Reflection.hasMethod(result.getClass(), "getFailedItems")) {
             assertThat(Reflection.invoke(result, "getFailedItems", List.class)).as("no failed items").isNullOrEmpty();
         }
-        assertThat(Reflection.invoke(result, "getResultCode", successCode.getClass()))
-                .as("success result code").isSameAs(successCode);
-        assertThat(Reflection.invoke(result, "getMessage", successMessage.getClass()))
-                .as("success message").isSameAs(successMessage);
+        assertThat(Reflection.invoke(result, "getResultCode", ResultPrefixCode.class))
+                .as("success result code").isSameAs(ResultPrefixCode.NUMBER_0);
+        assertThat(Reflection.invoke(result, "getMessage", ResultPrefixMessage.class))
+                .as("success message").isSameAs(ResultPrefixMessage.SUCCESS);
     }
 
     // all "secret" values are moved to a properties file that is not checked in
