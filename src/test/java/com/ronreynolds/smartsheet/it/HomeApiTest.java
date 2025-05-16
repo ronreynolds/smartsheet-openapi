@@ -728,12 +728,9 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.FoldersApi;
 import com.ronreynolds.smartsheet.api.HomeApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
-import com.ronreynolds.smartsheet.model.CreateFolderFolder200Response;
-import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.FolderBrief;
 import com.ronreynolds.smartsheet.model.FolderInclude;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -762,11 +759,7 @@ public class HomeApiTest {
         ApiClients.setLogRequest(true);
         FolderBrief newFolder = FolderBrief.builder().name(newFolderName).build();
         var response = api.createHomeFolder(newFolder);
-        assertThat(response).isNotNull()
-                .satisfies(val -> {
-                    assertThat(val.getMessage()).isSameAs(CreateFolderFolder200Response.MessageEnum.SUCCESS);
-                    assertThat(val.getResultCode()).isSameAs(CreateFolderFolder200Response.ResultCodeEnum.NUMBER_0);
-                });
+        assertThat(response).satisfies(TestData::successfulResult);
 
         // the response folder is quite minimal (id, name, permalink)
         assertThat(response.getResult()).satisfies(folder -> {
