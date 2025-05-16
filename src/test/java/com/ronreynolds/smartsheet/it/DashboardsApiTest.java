@@ -736,7 +736,6 @@ import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSightPublishStatus200Response;
 import com.ronreynolds.smartsheet.model.Share;
-import com.ronreynolds.smartsheet.model.ShareSight200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.Sight;
 import com.ronreynolds.smartsheet.model.SightPublish;
@@ -798,7 +797,6 @@ public class DashboardsApiTest {
     public void deleteSightTest() throws ApiException {
         for (Long dashboardId : TestData.DashboardData.sightIdsToDelete) {
             ResultPrefix response = api.deleteSight(dashboardId);
-
             log.info("{}", response);
             // TODO: test validations
             assertThat(response).isNotNull();
@@ -857,9 +855,11 @@ public class DashboardsApiTest {
         Long sightId = TestData.DashboardData.id;
         SightPublish response = api.getSightPublishStatus(sightId);
 
-        log.info("{}", response);
-        // TODO: test validations
+//        log.info("{}", response);
         assertThat(response).isNotNull();
+        assertThat(response.getReadOnlyFullUrl()).isNotBlank();
+        assertThat(response.getReadOnlyFullEnabled()).isTrue();
+        assertThat(response.getReadOnlyFullAccessibleBy()).isSameAs(SightPublish.ReadOnlyFullAccessibleByEnum.ALL);
     }
 
     /**
@@ -936,15 +936,22 @@ public class DashboardsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled("need test data")
     public void setSightPublishStatusTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        SightPublish sightPublish = SightPublish.builder().build();
+        SightPublish sightPublish = SightPublish.builder()
+                .readOnlyFullEnabled(true)
+                .build();
         SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, sightPublish);
 
-        log.info("{}", response);
-        // TODO: test validations
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+
+        assertThat(response).satisfies(TestData::successfulResult);
+        assertThat(response.getResult()).satisfies(result -> {
+            assertThat(result).isNotNull();
+            assertThat(result.getReadOnlyFullAccessibleBy()).isSameAs(SightPublish.ReadOnlyFullAccessibleByEnum.ALL);
+            assertThat(result.getReadOnlyFullEnabled()).isTrue();
+            assertThat(result.getReadOnlyFullUrl()).isNotBlank();
+        });
     }
 
     /**
@@ -971,12 +978,9 @@ public class DashboardsApiTest {
                 .accessLevel(AccessLevel.VIEWER)
                 .email(TestData.ShareData.shareToEmail)
                 .build();
-        ShareSight200Response response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
-        assertThat(response).as("successful result")
-                .satisfies(resp -> TestData.successfulResult(resp,
-                        ShareSight200Response.ResultCodeEnum.NUMBER_0,
-                        ShareSight200Response.MessageEnum.SUCCESS));
-        for (Share newShare : response.getResult()) {
+        var response = api.shareSight(sightId, accessApiLevel, sendEmail, share);
+        assertThat(response).as("successful result").satisfies(TestData::successfulResult);
+        for (Share newShare : assertThat(response.getResult()).isNotNull().actual()) {
             TestData.DashboardData.shareIdsToDelete.add(newShare.getId());
             assertThat(newShare.getEmail()).isEqualTo(TestData.ShareData.shareToEmail);
             assertThat(newShare.getAccessLevel()).isSameAs(AccessLevel.VIEWER);
