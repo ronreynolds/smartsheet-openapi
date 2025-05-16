@@ -824,12 +824,11 @@ public class UsersApiTest {
             log.warn("no temporary users to deactivate");
             return;
         }
+        // FIXME - the problem here is we're trying to deactivate NEWLY CREATED users and thus we hit edge-case issues
         for (Long userId : TestData.temporaryUserIds) {
             log.info("deactivating {}", userId);
             ResultPrefix response = api.deactivateUser(userId);
-            assertThat(response).isNotNull();
-            assertThat(response.getResultCode())
-                    .isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);    // 0 = success, 3 = partial :-?
+            assertThat(response).satisfies(TestData::successfulResult);
             log.info("deactivate-user response:{}", response);
         }
     }
@@ -849,8 +848,7 @@ public class UsersApiTest {
     public void getCurrentUserTest() throws ApiException {
         GetCurrentUser200Response currentUser = api.getCurrentUser(GetUserInclude.GROUPS);
         // test validation
-        assertThat(currentUser).isNotNull()
-                .satisfies(UserData::assertEquals);
+        assertThat(currentUser).isNotNull().satisfies(UserData::assertEquals);
 
         // also tests getUser and User.equals methods
         UserProfile sameUser = api.getUser(currentUser.getId());
@@ -938,9 +936,7 @@ public class UsersApiTest {
         for (Long userId : TestData.temporaryUserIds) {
             log.info("reactivating {}", userId);
             ResultPrefix response = api.reactivateUser(userId);
-            assertThat(response).isNotNull();
-            assertThat(response.getResultCode())
-                    .isSameAs(ResultPrefix.ResultCodeEnum.NUMBER_0);    // 0 = success, 3 = partial :-?
+            assertThat(response).satisfies(TestData::successfulResult);
             log.info("{}", response);
         }
     }
@@ -977,8 +973,7 @@ public class UsersApiTest {
 //                    .removeFromSharing().transferSheets().transferTo()
                     .build();
             RemoveUser200Response response = api.removeUser(userId, removeUserRequest);
-            assertThat(response).isNotNull();
-            assertThat(response.getResultCode()).isSameAs(RemoveUser200Response.ResultCodeEnum.NUMBER_0); // 0 = success, 3 = partial :-?
+            assertThat(response).satisfies(TestData::successfulResult);
             assertThat(response.getSheetsRemovedFromSharing()).isZero();
             assertThat(response.getWorkspacesRemovedFromSharing()).isZero();
         }
@@ -1011,15 +1006,13 @@ public class UsersApiTest {
                 .build();
         UpdateUser200Response response = api.updateUser(userId, updateUserRequest);
         log.info("update-user-response:{}", response);
-        assertThat(response).isNotNull();
-        assertThat(response.getResultCode()).isSameAs(UpdateUser200Response.ResultCodeEnum.NUMBER_0);
+        assertThat(response).satisfies(TestData::successfulResult);
 
         // put their data back as we found it
         response = api.updateUser(userId,
                 UpdateUserRequest.builder().firstName(user.getFirstName()).lastName(user.getLastName()).build());
         log.info("resetting updated-user-response:{}", response);
-        assertThat(response).isNotNull();
-        assertThat(response.getResultCode()).isSameAs(UpdateUser200Response.ResultCodeEnum.NUMBER_0);
+        assertThat(response).satisfies(TestData::successfulResult);
     }
 
     /**
