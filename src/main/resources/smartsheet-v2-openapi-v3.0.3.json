@@ -16084,15 +16084,13 @@
             ]
           },
           "type": {
-            "type": "string",
-            "enum": [
-              "folder",
-              "report",
-              "sheet",
-              "sight",
-              "template",
-              "workspace"
-            ]
+            "$ref": "#/components/schemas/FavoriteType"
+          },
+          "directId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
