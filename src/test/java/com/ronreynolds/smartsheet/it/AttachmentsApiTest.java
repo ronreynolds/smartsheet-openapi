@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * API tests for AttachmentsApi
  */
 @Slf4j
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)   // enable processing of the @Order annotation to specify test ordering
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class AttachmentsApiTest {
     private final AttachmentsApi api = new AttachmentsApi();
 
