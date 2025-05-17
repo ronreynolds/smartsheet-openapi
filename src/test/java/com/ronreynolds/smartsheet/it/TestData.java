@@ -16,6 +16,8 @@ import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Contact;
+import com.ronreynolds.smartsheet.model.Favorite;
+import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
@@ -44,6 +46,7 @@ import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.reflection.Reflection;
 import com.ronreynolds.util.streams.ExtCollectors;
+import com.ronreynolds.util.string.StringUtils;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -260,13 +263,12 @@ public class TestData {
     }
 
     interface ContactData {
-        Set<Contact> contacts = new HashSet<>(
-                getListOfItems("ContactData.contact",
-                        props -> Contact.builder()
-                                .email(props.get("email"))
-                                .id(props.get("id"))
-                                .name(props.get("name"))
-                                .build()));
+        Set<Contact> contacts = getObjectsCollection("ContactData.contact", HashSet::new,
+                props -> Contact.builder()
+                        .email(props.get("email"))
+                        .id(props.get("id"))
+                        .name(props.get("name"))
+                        .build());
 
         static void assertContains(List<? extends Contact> contactList) {
             assertThat(contactList).isNotEmpty().allMatch(contacts::contains);
@@ -277,21 +279,51 @@ public class TestData {
         }
     }
 
+    interface FavoriteData {
+        Set<Favorite> favorites = getObjectsCollection("FavoriteData.favorites", HashSet::new,
+                map -> Favorite.builder()
+                        .objectId(Long.parseLong(map.get("id")))
+                        .type(FavoriteType.valueOf(map.get("type").toUpperCase()))
+                        .name(map.get("name"))
+                        .directId(map.get("directId"))
+                        .build()
+        );
+        static void assertContains(List<? extends Favorite> favoriteList) {
+            assertThat(favoriteList).isNotEmpty();
+            // assert that all the favorites in our favorites list are in the favoriteList
+            for (Favorite favorite : favorites) {
+                assertThat(favoriteList).anySatisfy(fav -> {
+                    assertThat(fav.getObjectId()).isEqualTo(favorite.getObjectId());
+                    assertThat(fav.getType()).isSameAs(favorite.getType());
+                    // not all of Favorite lists have all 4 fields populated :-/
+                    if (fav.getName() != null) {
+                        assertThat(fav.getName()).isEqualTo(favorite.getName());
+                    }
+                    if (fav.getDirectId() != null) {
+                        assertThat(fav.getDirectId()).isEqualTo(favorite.getDirectId());
+                    }
+                });
+            }
+        }
+    }
+
     interface DashboardData {
         long id = getLong("DashboardData.id");
         String name = get("DashboardData.name");
         OffsetDateTime shareDate = getDate("DashboardData.shareDate");
-        Map<Long,Sight> dashboardMap = getListOfItems("DashboardData.dashboards",
+        Map<Long, Sight> dashboardMap = getObjectsCollection("DashboardData.dashboards", ArrayList::new,
                 fieldMap -> Sight.builder()
-                        .accessLevel(AccessLevel.valueOf(fieldMap.get("accessLevel")))
+                        .accessLevel(AccessLevel.valueOf(fieldMap.get("accessLevel").toUpperCase()))
                         .id(Long.parseLong(fieldMap.get("id")))
                         .name(fieldMap.get("name"))
                         .createdAt(DateTimes.parseToOffset(fieldMap.get("createdDate")))
                         .modifiedAt(DateTimes.parseToOffset(fieldMap.get("modifiedDate")))
-                        .build()
-        ).stream().map(sight -> Map.entry(sight.getId(), sight)).collect(ExtCollectors.entriesToMap());
-        Set<String> shareIdsToDelete = getCollectionStartingWith("DashboardData.shareIdsToDelete", HashSet::new, v -> v);
-        Set<Long> sightIdsToDelete = getCollectionStartingWith("DashboardData.sightIdsToDelete", HashSet::new, Long::parseLong);
+                        .build())
+                .stream()
+                .map(sight -> Map.entry(sight.getId(), sight))
+                .collect(ExtCollectors.entriesToMap());
+        Set<String> shareIdsToDelete = getValuesCollection("DashboardData.shareIdsToDelete", HashSet::new, v -> v);
+        Set<Long> sightIdsToDelete = getValuesCollection("DashboardData.sightIdsToDelete", HashSet::new, Long::parseLong);
 
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
@@ -300,16 +332,16 @@ public class TestData {
         }
         static void assertContains(List<? extends ListSights200ResponseAllOfDataInner> dashboardList) {
             log.info("{}", dashboardList);
-            assertThat(dashboardList).isNotEmpty();
-            assertThat(dashboardList).allSatisfy(val -> {
-                Sight dashboard = dashboardMap.get(val.getId());
-                assertThat(dashboard).as("has dashboard").isNotNull();
-                assertThat(val.getPermalink()).isNotBlank();
-                assertThat(val.getName()).isEqualTo(dashboard.getName());
-                assertThat(val.getAccessLevel()).isSameAs(dashboard.getAccessLevel());
-                assertThat(val.getCreatedAt()).isEqualTo(dashboard.getCreatedAt());
-                assertThat(val.getModifiedAt()).isAfterOrEqualTo(dashboard.getModifiedAt());
-            });
+            assertThat(dashboardList).isNotEmpty()
+                    .allSatisfy(val -> {
+                        Sight dashboard = dashboardMap.get(val.getId());
+                        assertThat(dashboard).as("has dashboard").isNotNull();
+                        assertThat(val.getPermalink()).isNotBlank();
+                        assertThat(val.getName()).isEqualTo(dashboard.getName());
+                        assertThat(val.getAccessLevel()).isSameAs(dashboard.getAccessLevel());
+                        assertThat(val.getCreatedAt()).isEqualTo(dashboard.getCreatedAt());
+                        assertThat(val.getModifiedAt()).isAfterOrEqualTo(dashboard.getModifiedAt());
+                    });
         }
     }
 
@@ -375,7 +407,7 @@ public class TestData {
     interface ReportData {
         long id = getLong("ReportData.id");
         String name = get("ReportData.name");
-        Set<Long> virtualColumnIds = getCollectionStartingWith("ReportData.virtualColumnId", HashSet::new, Long::parseLong);
+        Set<Long> virtualColumnIds = getValuesCollection("ReportData.virtualColumnId", HashSet::new, Long::parseLong);
         OffsetDateTime shareDate = getDate("ReportData.shareDate");
         OffsetDateTime createdDate = getDate("ReportData.createdDate");
         OffsetDateTime modifiedDate = getDate("ReportData.modifiedDate");
@@ -646,10 +678,13 @@ public class TestData {
             assertThat(listing.getName()).isEqualTo(name);
             assertThat(listing.getPermalink()).isNotBlank();
             assertThat(listing.getModifiedAt()).isAfterOrEqualTo(createdDate);
-            assertThat(listing.getSource()).satisfies(src -> {
-                assertThat(src.getId()).isEqualTo(sourceId);
-                assertThat(src.getType()).isSameAs(SourceType.SHEET);
-            });
+            // as of 2025-05-17 the sheet src is now sometimes null :-?
+            if (listing.getSource() != null) {
+                assertThat(listing.getSource()).satisfies(src -> {
+                    assertThat(src.getId()).isEqualTo(sourceId);
+                    assertThat(src.getType()).isSameAs(SourceType.SHEET);
+                });
+            }
             assertThat(listing.getVersion()).isGreaterThanOrEqualTo(9); // as of 2025-05-06
         }
         @NonNull
@@ -850,7 +885,8 @@ public class TestData {
     }
 
     /**
-     * most general-purpose version to handle all types similar in structure to Result (because allOf generates aggregation not extension)
+     * most general-purpose version to handle all types similar in structure to Result (because allOf generates aggregation not
+     * extension)
      */
     static void successfulResult(Object result) {
         assertThat(result).as("result not null").isNotNull();
@@ -873,28 +909,42 @@ public class TestData {
         }
     }
 
+    /**
+     * @param name name of a property to look up; must NOT be null or blank
+     * @return the value of the specified property (or null if the property key is not found)
+     * @throws AssertionError if provided name is blank
+     */
     private static String get(String name) {
         return assertThat(secrets.getProperty(name)).as("get(" + name + ")").isNotBlank().actual();
     }
 
+    /**
+     * @param name name of a property to look up; must NOT be null or blank
+     * @return an {@code OffsetDateTime} created from the value of the property with key {@code name} or null if property value
+     * is null or blank
+     * @throws AssertionError         if provided name is blank
+     * @throws DateTimeParseException if the value can't be parsed (yyyy-MM-dd'T'HH:mm:ss'Z'; e.g., 2025-05-17T07:50:00Z)
+     */
     private static OffsetDateTime getDate(String name) {
         return DateTimes.parseToOffset(get(name));
     }
 
+    /**
+     * @param name name of a property to look up; must NOT be null or blank
+     * @return the value converted to a {@code long} or null if the value is null or blank
+     * @throws AssertionError        if provided name is blank
+     * @throws NumberFormatException if the value isn't a properly formatted long
+     */
     private static long getLong(String name) {
-        return Long.parseLong(get(name));
+        String value = get(name);
+        return StringUtils.isNotBlank(value) ? Long.parseLong(value) : null;
     }
 
-    private static <T, CollectionT extends Collection<T>> CollectionT getCollectionStartingWith(
-            String prefix, Supplier<CollectionT> collectionFactory, Function<String, T> valueConverter) {
-        assertThat(valueConverter).as("check converter").isNotNull();
-        assertThat(collectionFactory).as("check collection factory").isNotNull();
-        return getPropertiesStartingWith(prefix).values().stream()
-                .map(valueConverter)
-                .collect(Collectors.toCollection(collectionFactory));
-    }
-
-    private static Map<String, String> getPropertiesStartingWith(String namePrefix) {
+    /**
+     * @param namePrefix property name starts-with
+     * @return {@code Map<String,String>} of all key-value pairs with keys starting with {@code namePrefix}
+     */
+    private static Map<String, String> getPairsStartingWith(String namePrefix) {
         // matches all names that start with the prefix
         return secrets.stringPropertyNames().stream()
                 .filter(key -> key.startsWith(namePrefix))
@@ -903,19 +953,43 @@ public class TestData {
     }
 
     /**
-     * generate a list of T given their property name prefix and a factory method to convert the Map of key-value pairs to T.
-     *
-     * @param namePrefix  key prefix by which to find all properties to use; property keys must be of the form "PREFIX.DIGITS
-     *                    .FIELD"
-     * @param itemFactory a method-ref to invoke to convert {@code Map<String,String>} of key-value pairs into type T
-     * @param <T>         the type of the object created from the property groups
-     * @return a {@code List<T>} containing all T created from all properties with {@code namePrefix} grouped by DIGIT(S)
+     * @param keyPrefix         property name starts-with
+     * @param collectionFactory returns instance of collection to populate
+     * @param valueConverter    converts {@code String} property values into type {@code T}
+     * @param <T>               the type of object to return
+     * @param <CollectionT>     the type of collection of {@code T} to return
+     * @return a collection of {@code T} objects created from the values of properties with keys starting with {@code
+     * keyPrefix}
+     * @throws AssertionError if {@code collectionFactory} or {@code valueConverter} is null
      */
-    private static <T> List<T> getListOfItems(String namePrefix, Function<Map<String, String>, T> itemFactory) {
-        assertThat(itemFactory).isNotNull();
+    private static <T, CollectionT extends Collection<T>> CollectionT getValuesCollection(
+            String keyPrefix, Supplier<CollectionT> collectionFactory, Function<String, T> valueConverter) {
+        assertThat(valueConverter).as("check converter").isNotNull();
+        assertThat(collectionFactory).as("check collection factory").isNotNull();
+        return getPairsStartingWith(keyPrefix).values().stream()
+                .map(valueConverter)
+                .collect(Collectors.toCollection(collectionFactory));
+    }
 
-        Map<String, String> properties = getPropertiesStartingWith(namePrefix + ".");
-        Pattern keyPattern = Pattern.compile(Pattern.quote(namePrefix) + "\\.(\\d+)\\.(.+)");
+
+    /**
+     * generate a collection of T given their property key prefix and a factory method to convert the Map of key-value pairs to T.
+     * properties for the same object are grouped via one or more digits following the key prefix; e.g., "Foo.1.fieldOfFoo = ..."
+     *
+     * @param keyPrefix         key prefix to find all properties to use; property keys must be of the form "PREFIX.DIGITS.FIELD"
+     * @param collectionFactory returns instance of collection to populate
+     * @param itemFactory       converts {@code Map<String,String>} of key-value pairs into type {@code T}
+     * @param <T>               the type of the object created from the property groups
+     * @return a {@code List<T>} containing all T created from all properties with {@code keyPrefix} grouped by DIGIT(S)
+     * @throws AssertionError if the {@code collectionFactory} or {@code itemFactory} are null
+     */
+    private static <T, CollectionT extends Collection<T>> CollectionT getObjectsCollection(
+            String keyPrefix, Supplier<CollectionT> collectionFactory, Function<Map<String, String>, T> itemFactory) {
+        assertThat(collectionFactory).as("check collection factory").isNotNull();
+        assertThat(itemFactory).as("check item factory").isNotNull();
+
+        Map<String, String> properties = getPairsStartingWith(keyPrefix + ".");
+        Pattern keyPattern = Pattern.compile(Pattern.quote(keyPrefix) + "\\.(\\d+)\\.(.+)");
 
         // gather up all the key-value pairs by digit suffix
         Map<Integer, Map<String, String>> mapsByDigit = new HashMap<>();
@@ -931,10 +1005,8 @@ public class TestData {
             }
         }
 
-        List<T> newList = new ArrayList<>();
-        for (Map<String, String> valueMap : mapsByDigit.values()) {
-            newList.add(itemFactory.apply(valueMap));
-        }
-        return newList;
+        return mapsByDigit.values().stream()
+                .map(itemFactory)
+                .collect(Collectors.toCollection(collectionFactory));
     }
 }
