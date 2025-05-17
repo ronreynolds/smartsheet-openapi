@@ -1,5 +1,7 @@
 package com.ronreynolds.smartsheet.api.util;
 
+import com.ronreynolds.util.string.StringUtils;
+
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -20,10 +22,10 @@ public class DateTimes {
     }
 
     public static ZonedDateTime parseToZoned(String dateText) {
-        return ZonedDateTime.parse(dateText, FORMATTER);
+        return StringUtils.isNotBlank(dateText) ? ZonedDateTime.parse(dateText, FORMATTER) : null;
     }
 
     public static OffsetDateTime parseToOffset(String dateText) {
-        return parseToZoned(dateText).toOffsetDateTime();
+        return StringUtils.isNotBlank(dateText) ? parseToZoned(dateText).toOffsetDateTime() : null;
     }
 }
