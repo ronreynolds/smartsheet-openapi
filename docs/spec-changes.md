@@ -233,6 +233,7 @@ some parts of the Spec don't match the server responses at all
 * `#/components/schemas/Row` added `dataModifiedAt` (returned by server; not in latest spec)
 * `#/components/schemas/ColumnBrief.data.items` added `version`, `primary`, and `width` to match server response
   * called `GetColumn` type in latest schemas (as of 2025-05-12) which is missing those fields also
+* `#/components/schemas/Favorite` added `directId` and `name` to match server response
 
 ##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
 * `result` response field renamed to `data`
@@ -300,3 +301,4 @@ some parts of the Spec don't match the server responses at all
   * still doesn't fix openapi-parse warning "'oneOf' is intended to include only the additional optional OAS extension discriminator object."
 * moved `#/components/schemas/ResultPrefix` properties `message` and `resultCode` into their own type so that each type build from `ResultPrefix` won't use their own custom inner-classes
   * added `#/components/schemas/ResultPrefixMessage` and `#/components/schemas/ResultPrefixCode`
+* changed `#/components/schemas/Favorite.type` inner-enum to `#/components/schemas/FavoriteType` top-level enum
