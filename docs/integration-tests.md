@@ -8,6 +8,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * `CellsApiTest`
 * `ContactsApiTest`
 * `EventsApiTest`
+* `FavoritesApiTest`
 * `ServerInfoApiTest`
 * `TemplatesApiTest`
 
@@ -25,7 +26,6 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * `CrossSheetReferencesApiTest`
 * `DashboardsApiTest`
 * `DiscussionsApiTest`
-* `FavoritesApiTest`
 * `FoldersApiTest`
 * `GroupMembersApiTest`
 * `GroupsApiTest`
@@ -178,15 +178,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
     * however it fails (expectedly) because our account plan doesn't support this operation :shrug:
 
 ### FavoritesApiTest
-* To-Do
-  * `addFavoriteTest`
-  * `deleteFavoritesByTypeTest`
-  * `deleteFavoritesByTypeAndIdTest`
-  * `getFavoritesTest`
-  * `isFavoriteTest`
-* In-Progress
-* Blocked
 * Done
+    * `addFavoriteTest`
+    * `deleteFavoritesByTypeTest`
+    * `deleteFavoritesByTypeAndIdTest`
+    * `getFavoritesTest`
+    * `isFavoriteTest`
 
 ### FoldersApiTest
 * To-Do
