@@ -47,7 +47,7 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
+    @Disabled("need file to attach to comment")
     public void attachmentsAttachToCommentTest() throws ApiException {
         String contentType = null;
         File body = null;
@@ -69,7 +69,7 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
+    @Disabled("need file to attach to sheet")
     public void attachmentsAttachToSheetTest() throws ApiException {
         String contentType = null;
         File body = null;
@@ -88,7 +88,7 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
+    @Disabled("need attachment ID to delete")
     public void attachmentsDeleteTest() throws ApiException {
         Long attachmentId = null;
         ResultPrefix response = api.attachmentsDelete(SheetData.id, attachmentId);
@@ -180,6 +180,7 @@ public class AttachmentsApiTest {
         Integer pageSize = null;
         Boolean includeAll = true;
         var response = api.attachmentsVersionList(SheetData.id, SheetAttachment.id, page, pageSize, includeAll);
+        // TODO - probably can improve these assertions
         assertThat(response).isNotNull();
         assertThat(response.getData())
                 .isNotEmpty()
@@ -195,10 +196,10 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
+    @Disabled("need file to attach to existing attachment on sheet")
     public void attachmentsVersionUploadTest() throws ApiException {
         Long sheetId = SheetData.id;
-        Long attachmentId = null;
+        Long attachmentId = TestData.AttachmentData.SheetAttachment.id;
         String contentType = null;
         File body = null;
         AttachmentsAttachToSheet200Response response = api.attachmentsVersionUpload(sheetId, attachmentId, contentType, body);
@@ -216,9 +217,9 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
+    @Disabled("need attachment ID")
     public void attachmentsVersionsDeleteTest() throws ApiException {
-        Long attachmentId = null;
+        Long attachmentId = TestData.AttachmentData.SheetAttachment.id;
         ResultPrefix response = api.attachmentsVersionsDelete(SheetData.id, attachmentId);
         // TODO: test validations
         log.info("{}", response);
@@ -233,9 +234,8 @@ public class AttachmentsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled
     public void discussionListAttachmentsTest() throws ApiException {
-        Long discussionId = null;
+        Long discussionId = TestData.DiscussionData.id;
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = true;
