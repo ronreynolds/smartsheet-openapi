@@ -16,6 +16,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -26,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Disabled("DiscussionsApiTest not yet implemented")
 public class DiscussionsApiTest {
 
     private final DiscussionsApi api = new DiscussionsApi();
@@ -40,12 +40,14 @@ public class DiscussionsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test discussion to delete")
     public void discussionDeleteTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long discussionId = null;
         ResultPrefix response = api.discussionDelete(sheetId, discussionId);
-        assertThat(response).isNotNull();
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -59,10 +61,11 @@ public class DiscussionsApiTest {
     @Test
     public void discussionGetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        Long discussionId = null;
+        Long discussionId = TestData.DiscussionData.id;
         Discussion response = api.discussionGet(sheetId, discussionId);
 
-        // TODO: test validations
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData.DiscussionData::assertEquals);
     }
 
     /**
@@ -74,12 +77,15 @@ public class DiscussionsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void discussionsCreateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         String contentType = null;
         CommentBrief commentLite = null;
         DiscussionsCreate200Response response = api.discussionsCreate(sheetId, contentType, commentLite);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -94,13 +100,14 @@ public class DiscussionsApiTest {
     @Test
     public void discussionsListTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        List<DiscussionsInclude> include = null;
+        List<DiscussionsInclude> include = Arrays.asList(DiscussionsInclude.values());
         Integer page = null;
         Integer pageSize = null;
-        Boolean includeAll = null;
-        DiscussionsList200Response response =
-                api.discussionsList(sheetId, include, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        DiscussionsList200Response response = api.discussionsList(sheetId, include, page, pageSize, includeAll);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -113,6 +120,7 @@ public class DiscussionsApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled
     public void rowDiscussionsCreateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
@@ -120,6 +128,8 @@ public class DiscussionsApiTest {
         CommentBrief commentLite = null;
         DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, contentType, commentLite);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -141,7 +151,8 @@ public class DiscussionsApiTest {
         Boolean includeAll = true;
         DiscussionsList200Response response = api.rowDiscussionsList(sheetId, rowId, include, page, pageSize, includeAll);
 
-        // TODO: test validations
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).satisfies(TestData.DiscussionData::assertContains);
     }
-
 }
