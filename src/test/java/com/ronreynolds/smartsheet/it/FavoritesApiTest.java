@@ -43,7 +43,6 @@ public class FavoritesApiTest {
      */
     @Test
     @Order(1)
-    @Disabled("TODO") // TODO
     public void addFavoriteTest() throws ApiException {
         List<Favorite> newFavorites = List.of(
                 Favorite.builder().objectId(TestData.DashboardData.id).type(FavoriteType.SIGHT).build(),
@@ -51,10 +50,19 @@ public class FavoritesApiTest {
         );
         String xSmarScActorId = null;
         AddFavorite200Response response = api.addFavorite(newFavorites, xSmarScActorId);
-        log.info("{}", response);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::successfulResult);
+        assertThat(response.getResult()).satisfies(result -> {
+            assertThat(result)
+                    .anySatisfy(favorite -> {
+                        assertThat(favorite.getObjectId()).isEqualTo(TestData.DashboardData.id);
+                        assertThat(favorite.getType()).isSameAs(FavoriteType.SIGHT);
+                    })
+                    .anySatisfy(favorite -> {
+                        assertThat(favorite.getObjectId()).isEqualTo(TestData.FolderData.id);
+                        assertThat(favorite.getType()).isSameAs(FavoriteType.FOLDER);
+                    });
+        });
     }
 
     /**
@@ -66,17 +74,12 @@ public class FavoritesApiTest {
      */
     @Test
     @Order(10)
-    @Disabled("TODO")   // TODO
     public void deleteFavoritesByTypeTest() throws ApiException {
         FavoriteType favoriteType = FavoriteType.SIGHT;
         List<Long> objectIds = List.of(TestData.DashboardData.id);
         String xSmarScActorId = null;
         ResultPrefix response = api.deleteFavoritesByType(favoriteType, objectIds, xSmarScActorId);
-
-        log.info("{}", response);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+        assertThat(response).satisfies(TestData::successfulResult);
     }
 
     /**
@@ -87,18 +90,13 @@ public class FavoritesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled("TODO")   // TODO
     @Order(10)
     public void deleteFavoritesByTypeAndIdTest() throws ApiException {
         FavoriteType favoriteType = FavoriteType.FOLDER;
         Long favoriteId = TestData.FolderData.id;
         String xSmarScActorId = null;
         ResultPrefix response = api.deleteFavoritesByTypeAndId(favoriteType, favoriteId, xSmarScActorId);
-
-        log.info("{}", response);
-        assertThat(response).isNotNull();
-
-        // TODO: test validations
+        assertThat(response).satisfies(TestData::successfulResult);
     }
 
     /**
@@ -138,5 +136,4 @@ public class FavoritesApiTest {
             assertThat(response).isNotNull().isEqualTo(favorite);
         }
     }
-
 }
