@@ -16,6 +16,7 @@ import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Contact;
+import com.ronreynolds.smartsheet.model.Discussion;
 import com.ronreynolds.smartsheet.model.Favorite;
 import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.Folder;
@@ -276,6 +277,66 @@ public class TestData {
 
         static void assertFirstContact(Contact contact) {
             assertThat(contact).isNotNull().isEqualTo(contacts.iterator().next());
+        }
+    }
+
+    interface DiscussionData {
+        long id = getLong("DiscussionData.id");
+        AccessLevel accessLevel = get("DiscussionData.accessLevel", val -> AccessLevel.valueOf(StringUtils.toUpperCase(val)));
+        List<Comment> comments = null; // FIXME
+        List<Attachment> commentAttachments = List.of(); // FIXME
+        int commentCount = (int) getLong("DiscussionData.commentCount");
+        NameAndEmail createdBy = getObject("DiscussionData.createdBy",
+                map -> NameAndEmail.builder()
+                        .email(map.get("email"))
+                        .name(map.get("name"))
+                        .systemUserType(map.get("systemUserType"))
+                        .build());
+        OffsetDateTime lastCommentedAt = getDate("DiscussionData.lastCommentedAt");
+        NameAndEmail lastCommentedUser = getObject("DiscussionData.lastCommentedUser",
+                map -> NameAndEmail.builder()
+                        .email(map.get("email"))
+                        .name(map.get("name"))
+                        .systemUserType(map.get("systemUserType"))
+                        .build());
+        Long parentId = get("DiscussionData.parentId", val -> StringUtils.isNotBlank(val) ? Long.parseLong(val) : null);
+        Discussion.ParentTypeEnum parentType = get("DiscussionData.parentType",
+                val -> StringUtils.isNotBlank(val) ? Discussion.ParentTypeEnum.valueOf(val.toUpperCase()) : null);
+        boolean readOnly = get("DiscussionData.readOnly",
+                val -> StringUtils.isNotBlank(val) ? Boolean.parseBoolean(val) : Boolean.FALSE);
+        String title = get("DiscussionData.title");
+
+        static void assertContains(List<? extends Discussion> discussionList) {
+            assertThat(discussionList).isNotEmpty()
+                    .anySatisfy(DiscussionData::assertEquals);
+        }
+
+        static void assertEquals(Discussion discussion) {
+            log.info("discussion:{}", discussion);
+
+            assertThat(discussion).isNotNull();
+            assertThat(discussion.getId()).isEqualTo(id);
+            assertThat(discussion.getAccessLevel()).isSameAs(accessLevel);
+            if (discussion.getComments() != null) {
+                // FIXME
+            }
+            if (discussion.getCommentAttachments() != null) {
+                // FIXME
+            }
+            assertThat(discussion.getCommentCount()).isEqualTo(commentCount);
+            assertThat(discussion.getCreatedBy()).isEqualTo(createdBy);
+            assertThat(discussion.getLastCommentedAt()).isAfterOrEqualTo(lastCommentedAt);
+            assertThat(discussion.getLastCommentedUser()).isEqualTo(lastCommentedUser);
+            if (discussion.getParentId() != null) {
+                assertThat(discussion.getParentId()).isEqualTo(parentId);
+            }
+            if (discussion.getParentType() != null) {
+                assertThat(discussion.getParentType()).isEqualTo(parentType);
+            }
+            if (discussion.getReadOnly() != null) {
+                assertThat(discussion.getReadOnly()).isEqualTo(readOnly);
+            }
+            assertThat(discussion.getTitle()).isEqualTo(title);
         }
     }
 
@@ -915,7 +976,19 @@ public class TestData {
      * @throws AssertionError if provided name is blank
      */
     private static String get(String name) {
-        return assertThat(secrets.getProperty(name)).as("get(" + name + ")").isNotBlank().actual();
+        assertThat(name).isNotBlank();
+        return secrets.getProperty(name);
+    }
+
+    /**
+     * @param name      property name
+     * @param converter converts property value (String) into {@code T}
+     * @param <T>       the type requested
+     * @return the {@code T} returned by converter for the value of the specified property (which could be null)
+     */
+    private static <T> T get(String name, Function<String, T> converter) {
+        assertThat(converter).isNotNull();
+        return converter.apply(get(name));
     }
 
     /**
@@ -952,6 +1025,17 @@ public class TestData {
                 .collect(ExtCollectors.entriesToMap());
     }
 
+    private static <T> T getObject(String keyPrefix, Function<Map<String, String>, T> converter) {
+        assertThat(converter).as("check converter").isNotNull();
+        Map<String, String> pairs = pruneKeys(StringUtils.appendIfMissing(keyPrefix, "."), getPairsStartingWith(keyPrefix));
+        return converter.apply(pairs);
+    }
+
+    static <V> Map<String,V> pruneKeys(String prefixToPrune, Map<String,V> map) {
+        return map.entrySet().stream()
+                .map(entry -> Map.entry(StringUtils.prune(prefixToPrune, entry.getKey()), entry.getValue()))
+                .collect(ExtCollectors.entriesToMap());
+    }
     /**
      * @param keyPrefix         property name starts-with
      * @param collectionFactory returns instance of collection to populate
