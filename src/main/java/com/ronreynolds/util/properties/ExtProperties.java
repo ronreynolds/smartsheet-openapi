@@ -30,6 +30,7 @@ import java.util.stream.Collectors;
 public class ExtProperties {
     /**
      * loads properties from the provided file path
+     *
      * @param filePath path to local file to read into properties
      * @return {@code ExtProperties} containing values read from {@code filePath}
      * @throws RuntimeException if there are any issues finding or loading the file
@@ -112,6 +113,30 @@ public class ExtProperties {
     }
 
     /**
+     * @param name      property name
+     * @param converter converts property value (String) in UPPER-CASE into {@code T}; will NOT be called if property value is
+     *                  null as Enum::valueOf doesn't handle nulls
+     * @param <T>       the type requested
+     * @return the {@code T} returned by converter for the value of the specified property or null if value was null
+     * @throws NullPointerException if the {@code converter} is null
+     */
+    public <T> T getUC(String name, Function<String, T> converter) {
+        Objects.requireNonNull(converter);
+        String value = get(name);
+        return value != null ? converter.apply(StringUtils.toUpperCase(value)) : null;
+    }
+
+    /**
+     * @param name property name
+     * @param ifMissing value to return if value not found or is blank
+     * @return Boolean parsed from value of property with {@code name} or {@code ifMissing} if value not found or is blank
+     */
+    public Boolean getBool(String name, Boolean ifMissing) {
+        String value = get(name);
+        return StringUtils.isNotBlank(value) ? Boolean.parseBoolean(value) : ifMissing;
+    }
+
+    /**
      * @param name name of a property to look up; must NOT be null or blank
      * @return an {@code OffsetDateTime} created from the value of the property with key {@code name} or null if property value
      * is null or blank
@@ -124,10 +149,20 @@ public class ExtProperties {
 
     /**
      * @param name name of a property to look up; must NOT be null or blank
-     * @return the value converted to a {@code long} or null if the value is null or blank
+     * @return the value converted to a {@code Integer} or null if the value is null or blank
      * @throws NumberFormatException if the value isn't a properly formatted long
      */
-    public long getLong(String name) {
+    public Integer getInt(String name) {
+        String value = get(name);
+        return StringUtils.isNotBlank(value) ? Integer.parseInt(value) : null;
+    }
+
+    /**
+     * @param name name of a property to look up; must NOT be null or blank
+     * @return the value converted to a {@code Long} or null if the value is null or blank
+     * @throws NumberFormatException if the value isn't a properly formatted long
+     */
+    public Long getLong(String name) {
         String value = get(name);
         return StringUtils.isNotBlank(value) ? Long.parseLong(value) : null;
     }
