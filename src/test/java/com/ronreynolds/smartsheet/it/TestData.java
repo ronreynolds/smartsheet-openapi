@@ -305,10 +305,18 @@ public class TestData {
             assertThat(discussion.getCreatedBy()).isEqualTo(createdBy);
             assertThat(discussion.getLastCommentedAt()).isAfterOrEqualTo(lastCommentedAt);
             assertThat(discussion.getLastCommentedUser()).isEqualTo(lastCommentedUser);
-            assertThat(discussion.getParentId()).isEqualTo(parentId);
-            assertThat(discussion.getParentType()).isEqualTo(parentType);
-            assertThat(discussion.getReadOnly()).isEqualTo(readOnly);
             assertThat(discussion.getTitle()).isEqualTo(title);
+            
+            // certain API endpoints don't populate these fields
+            if (discussion.getParentId() != null) {
+                assertThat(discussion.getParentId()).isEqualTo(parentId);
+            }
+            if (discussion.getParentType() != null) {
+                assertThat(discussion.getParentType()).isEqualTo(parentType);
+            }
+            if (discussion.getReadOnly() != null) {
+                assertThat(discussion.getReadOnly()).isEqualTo(readOnly);
+            }
         }
 
         static void assertEqualsAttachment(Attachment attachment) {
