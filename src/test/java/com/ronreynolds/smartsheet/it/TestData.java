@@ -45,29 +45,20 @@ import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
 import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
+import com.ronreynolds.util.properties.ExtProperties;
 import com.ronreynolds.util.reflection.Reflection;
 import com.ronreynolds.util.streams.ExtCollectors;
 import com.ronreynolds.util.string.StringUtils;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileReader;
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Set;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,6 +67,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Slf4j
 public class TestData {
+    // all "secret" values are moved to a properties file that is not checked in
+    private static final ExtProperties secrets = ExtProperties.load("src/test/resources/secrets.props");
+
     // lists of IDs of added items to be deleted in subsequent tests
     public static final List<Long> temporaryWorkspaceIds = new ArrayList<>();
     public static final List<Long> temporaryFolderIds = new ArrayList<>();
@@ -91,8 +85,8 @@ public class TestData {
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.COMMENT;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/gif";
-            OffsetDateTime createdDate = getDate("AttachmentData.CommentAttachment.createdDate");
-            String name = get("AttachmentData.CommentAttachment.name");
+            OffsetDateTime createdDate = secrets.getDate("AttachmentData.CommentAttachment.createdDate");
+            String name = secrets.get("AttachmentData.CommentAttachment.name");
             int sizeInKb = 10;
 
             static void assertEquals(Attachment attachment) {
@@ -118,8 +112,8 @@ public class TestData {
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.ROW;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
-            OffsetDateTime createdDate = getDate("AttachmentData.RowAttachment.createdDate");
-            String name = get("AttachmentData.RowAttachment.name");
+            OffsetDateTime createdDate = secrets.getDate("AttachmentData.RowAttachment.createdDate");
+            String name = secrets.get("AttachmentData.RowAttachment.name");
             int sizeInKb = 751;
 
             static void assertEquals(Attachment attachment) {
@@ -136,13 +130,13 @@ public class TestData {
         }
 
         interface SheetAttachment {
-            long id = getLong("AttachmentData.SheetAttachment.id");
+            long id = secrets.getLong("AttachmentData.SheetAttachment.id");
             long parentId = SheetData.id;
             Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.SHEET;
             AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
             String mimeType = "image/jpeg";
-            OffsetDateTime createdDate = getDate("AttachmentData.SheetAttachment.createdDate");
-            String name = get("AttachmentData.SheetAttachment.name");
+            OffsetDateTime createdDate = secrets.getDate("AttachmentData.SheetAttachment.createdDate");
+            String name = secrets.get("AttachmentData.SheetAttachment.name");
             int sizeInKb = 212;
 
             static void assertEquals(Attachment attachment) {
@@ -182,9 +176,9 @@ public class TestData {
 
             ColumnBriefData() {
                 index = ordinal();
-                id = getLong("ColumnData.ColumnBriefData." + index + ".id");
-                name = get("ColumnData.ColumnBriefData." + index + ".title");
-                type = ColumnType.valueOf(get("ColumnData.ColumnBriefData." + index + ".type"));
+                id = secrets.getLong("ColumnData.ColumnBriefData." + index + ".id");
+                name = secrets.get("ColumnData.ColumnBriefData." + index + ".title");
+                type = ColumnType.valueOf(secrets.get("ColumnData.ColumnBriefData." + index + ".type"));
             }
 
             void assertMatches(ColumnBrief column) {
@@ -212,7 +206,7 @@ public class TestData {
         }
 
         ColumnBriefData[] columnBriefData = ColumnBriefData.values();
-        OffsetDateTime modifiedDate = getDate("ColumnData.modifiedDate");
+        OffsetDateTime modifiedDate = secrets.getDate("ColumnData.modifiedDate");
 
         static void assertColumnBriefs(ColumnBrief column) {
             assertThat(column).isNotNull();
@@ -243,11 +237,11 @@ public class TestData {
     }
 
     interface CommentData {
-        long id = getLong("CommentData.id");
-        String text = get("CommentData.text");
-        long attachmentId = getLong("CommentData.attachmentId");
-        long discussionId = getLong("CommentData.discussionId");
-        OffsetDateTime createdDate = getDate("CommentData.createdDate");
+        long id = secrets.getLong("CommentData.id");
+        String text = secrets.get("CommentData.text");
+        long attachmentId = secrets.getLong("CommentData.attachmentId");
+        long discussionId = secrets.getLong("CommentData.discussionId");
+        OffsetDateTime createdDate = secrets.getDate("CommentData.createdDate");
 
         static void assertEquals(Comment comment) {
             assertThat(comment).isNotNull();
@@ -264,7 +258,7 @@ public class TestData {
     }
 
     interface ContactData {
-        Set<Contact> contacts = getObjectsCollection("ContactData.contact", HashSet::new,
+        Set<Contact> contacts = secrets.getObjectsCollection("ContactData.contact", HashSet::new,
                 props -> Contact.builder()
                         .email(props.get("email"))
                         .id(props.get("id"))
@@ -281,30 +275,31 @@ public class TestData {
     }
 
     interface DiscussionData {
-        long id = getLong("DiscussionData.id");
-        AccessLevel accessLevel = get("DiscussionData.accessLevel", val -> AccessLevel.valueOf(StringUtils.toUpperCase(val)));
+        long id = secrets.getLong("DiscussionData.id");
+        AccessLevel accessLevel = secrets.get("DiscussionData.accessLevel",
+                val -> AccessLevel.valueOf(StringUtils.toUpperCase(val)));
         List<Comment> comments = null; // FIXME
         List<Attachment> commentAttachments = List.of(); // FIXME
-        int commentCount = (int) getLong("DiscussionData.commentCount");
-        NameAndEmail createdBy = getObject("DiscussionData.createdBy",
+        int commentCount = (int) secrets.getLong("DiscussionData.commentCount");
+        NameAndEmail createdBy = secrets.getObject("DiscussionData.createdBy",
                 map -> NameAndEmail.builder()
                         .email(map.get("email"))
                         .name(map.get("name"))
                         .systemUserType(map.get("systemUserType"))
                         .build());
-        OffsetDateTime lastCommentedAt = getDate("DiscussionData.lastCommentedAt");
-        NameAndEmail lastCommentedUser = getObject("DiscussionData.lastCommentedUser",
+        OffsetDateTime lastCommentedAt = secrets.getDate("DiscussionData.lastCommentedAt");
+        NameAndEmail lastCommentedUser = secrets.getObject("DiscussionData.lastCommentedUser",
                 map -> NameAndEmail.builder()
                         .email(map.get("email"))
                         .name(map.get("name"))
                         .systemUserType(map.get("systemUserType"))
                         .build());
-        Long parentId = get("DiscussionData.parentId", val -> StringUtils.isNotBlank(val) ? Long.parseLong(val) : null);
-        Discussion.ParentTypeEnum parentType = get("DiscussionData.parentType",
+        Long parentId = secrets.get("DiscussionData.parentId", val -> StringUtils.isNotBlank(val) ? Long.parseLong(val) : null);
+        Discussion.ParentTypeEnum parentType = secrets.get("DiscussionData.parentType",
                 val -> StringUtils.isNotBlank(val) ? Discussion.ParentTypeEnum.valueOf(val.toUpperCase()) : null);
-        boolean readOnly = get("DiscussionData.readOnly",
+        boolean readOnly = secrets.get("DiscussionData.readOnly",
                 val -> StringUtils.isNotBlank(val) ? Boolean.parseBoolean(val) : Boolean.FALSE);
-        String title = get("DiscussionData.title");
+        String title = secrets.get("DiscussionData.title");
 
         static void assertContains(List<? extends Discussion> discussionList) {
             assertThat(discussionList).isNotEmpty()
@@ -341,7 +336,7 @@ public class TestData {
     }
 
     interface FavoriteData {
-        Set<Favorite> favorites = getObjectsCollection("FavoriteData.favorites", HashSet::new,
+        Set<Favorite> favorites = secrets.getObjectsCollection("FavoriteData.favorites", HashSet::new,
                 map -> Favorite.builder()
                         .objectId(Long.parseLong(map.get("id")))
                         .type(FavoriteType.valueOf(map.get("type").toUpperCase()))
@@ -369,22 +364,22 @@ public class TestData {
     }
 
     interface DashboardData {
-        long id = getLong("DashboardData.id");
-        String name = get("DashboardData.name");
-        OffsetDateTime shareDate = getDate("DashboardData.shareDate");
-        Map<Long, Sight> dashboardMap = getObjectsCollection("DashboardData.dashboards", ArrayList::new,
-                fieldMap -> Sight.builder()
-                        .accessLevel(AccessLevel.valueOf(fieldMap.get("accessLevel").toUpperCase()))
-                        .id(Long.parseLong(fieldMap.get("id")))
-                        .name(fieldMap.get("name"))
-                        .createdAt(DateTimes.parseToOffset(fieldMap.get("createdDate")))
-                        .modifiedAt(DateTimes.parseToOffset(fieldMap.get("modifiedDate")))
-                        .build())
+        long id = secrets.getLong("DashboardData.id");
+        String name = secrets.get("DashboardData.name");
+        OffsetDateTime shareDate = secrets.getDate("DashboardData.shareDate");
+        Map<Long, Sight> dashboardMap = secrets.getObjectsCollection("DashboardData.dashboards", ArrayList::new,
+                        fieldMap -> Sight.builder()
+                                .accessLevel(AccessLevel.valueOf(fieldMap.get("accessLevel").toUpperCase()))
+                                .id(Long.parseLong(fieldMap.get("id")))
+                                .name(fieldMap.get("name"))
+                                .createdAt(DateTimes.parseToOffset(fieldMap.get("createdDate")))
+                                .modifiedAt(DateTimes.parseToOffset(fieldMap.get("modifiedDate")))
+                                .build())
                 .stream()
                 .map(sight -> Map.entry(sight.getId(), sight))
                 .collect(ExtCollectors.entriesToMap());
-        Set<String> shareIdsToDelete = getValuesCollection("DashboardData.shareIdsToDelete", HashSet::new, v -> v);
-        Set<Long> sightIdsToDelete = getValuesCollection("DashboardData.sightIdsToDelete", HashSet::new, Long::parseLong);
+        Set<String> shareIdsToDelete = secrets.getValuesCollection("DashboardData.shareIdsToDelete", HashSet::new, v -> v);
+        Set<Long> sightIdsToDelete = secrets.getValuesCollection("DashboardData.sightIdsToDelete", HashSet::new, Long::parseLong);
 
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
@@ -407,12 +402,12 @@ public class TestData {
     }
 
     interface FolderData {
-        long id = getLong("FolderData.id");
-        String name = get("FolderData.name");
-        long childFolder1Id = getLong("FolderData.childFolder.1.id");
-        String childFolder1Name = get("FolderData.childFolder.1.name");
-        long childFolder2Id = getLong("FolderData.childFolder.2.id");
-        String childFolder2Name = get("FolderData.childFolder.2.name");
+        long id = secrets.getLong("FolderData.id");
+        String name = secrets.get("FolderData.name");
+        long childFolder1Id = secrets.getLong("FolderData.childFolder.1.id");
+        String childFolder1Name = secrets.get("FolderData.childFolder.1.name");
+        long childFolder2Id = secrets.getLong("FolderData.childFolder.2.id");
+        String childFolder2Name = secrets.get("FolderData.childFolder.2.name");
 
         static void assertEquals(Folder folder) {
             assertThat(folder).isNotNull();
@@ -451,8 +446,8 @@ public class TestData {
     }
 
     interface ImageData {
-        String id1 = get("ImageData.id.1");
-        String id2 = get("ImageData.id.2");
+        String id1 = secrets.get("ImageData.id.1");
+        String id2 = secrets.get("ImageData.id.2");
         Set<String> idSet = Set.of(id1, id2);
 
         static void assertImageUrl(ImageUrl url) {
@@ -466,13 +461,13 @@ public class TestData {
     }
 
     interface ReportData {
-        long id = getLong("ReportData.id");
-        String name = get("ReportData.name");
-        Set<Long> virtualColumnIds = getValuesCollection("ReportData.virtualColumnId", HashSet::new, Long::parseLong);
-        OffsetDateTime shareDate = getDate("ReportData.shareDate");
-        OffsetDateTime createdDate = getDate("ReportData.createdDate");
-        OffsetDateTime modifiedDate = getDate("ReportData.modifiedDate");
-        OffsetDateTime rowCreateDate = getDate("ReportData.rowCreateDate");
+        long id = secrets.getLong("ReportData.id");
+        String name = secrets.get("ReportData.name");
+        Set<Long> virtualColumnIds = secrets.getValuesCollection("ReportData.virtualColumnId", HashSet::new, Long::parseLong);
+        OffsetDateTime shareDate = secrets.getDate("ReportData.shareDate");
+        OffsetDateTime createdDate = secrets.getDate("ReportData.createdDate");
+        OffsetDateTime modifiedDate = secrets.getDate("ReportData.modifiedDate");
+        OffsetDateTime rowCreateDate = secrets.getDate("ReportData.rowCreateDate");
 
         static void assertContains(List<? extends Report> reports) {
             assertThat(reports).isNotEmpty().anySatisfy(ReportData::assertEquals);
@@ -608,7 +603,7 @@ public class TestData {
             assertThat(reportCell.getStrict()).isNull();
             assertThat(reportCell.getValue()).isNotNull()
                     .satisfies(val -> {
-                        // clumbsy but not sure how else to handle cell-values that can have many value types
+                        // clumsy but not sure how else to handle cell-values that can have many value types
                         switch (Cells.ValueType.getValueType(val)) {
                             case NULL:
                                 assertThat(val).withFailMessage("this should not happen").isNull();
@@ -662,13 +657,13 @@ public class TestData {
     }
 
     interface RowData {
-        long id = getLong("RowData.id");
-        long attachmentId = getLong("RowData.attachmentId");
+        long id = secrets.getLong("RowData.id");
+        long attachmentId = secrets.getLong("RowData.attachmentId");
     }
 
     interface ShareData {
-        String shareId = get("ShareData.shareId");
-        String shareToEmail = get("ShareData.shareToEmail");
+        String shareId = secrets.get("ShareData.shareId");
+        String shareToEmail = secrets.get("ShareData.shareToEmail");
 
         static void assertCommonShare(Share share, ShareScope scope, OffsetDateTime shareDate) {
             assertThat(share).isNotNull();
@@ -689,12 +684,12 @@ public class TestData {
     }
 
     interface SheetData {
-        long id = getLong("SheetData.id");
-        String name = get("SheetData.name");
-        long sourceId = getLong("SheetData.sourceId");
+        long id = secrets.getLong("SheetData.id");
+        String name = secrets.get("SheetData.name");
+        long sourceId = secrets.getLong("SheetData.sourceId");
 
-        OffsetDateTime createdDate = getDate("SheetData.createdDate");
-        OffsetDateTime shareDate = getDate("SheetData.shareDate");
+        OffsetDateTime createdDate = secrets.getDate("SheetData.createdDate");
+        OffsetDateTime shareDate = secrets.getDate("SheetData.shareDate");
         Set<AttachmentType> effectiveAttachmentOptions = Set.of(
                 AttachmentType.BOX_COM, AttachmentType.DROPBOX, AttachmentType.EGNYTE, AttachmentType.EVERNOTE,
                 AttachmentType.FILE, AttachmentType.GOOGLE_DRIVE, AttachmentType.LINK, AttachmentType.ONEDRIVE);
@@ -796,8 +791,8 @@ public class TestData {
     }
 
     interface TemplateData {
-        long id = getLong("TemplateData.id");
-        String name = get("TemplateData.name");
+        long id = secrets.getLong("TemplateData.id");
+        String name = secrets.get("TemplateData.name");
 
         Template template = Template.builder()
                 .id(id)
@@ -809,21 +804,21 @@ public class TestData {
     }
 
     interface UserData {
-        long id = getLong("UserData.id");
-        String email = get("UserData.email");
-        String firstName = get("UserData.firstName");
-        String lastName = get("UserData.lastName");
+        long id = secrets.getLong("UserData.id");
+        String email = secrets.get("UserData.email");
+        String firstName = secrets.get("UserData.firstName");
+        String lastName = secrets.get("UserData.lastName");
         String name = firstName + " " + lastName;
         String locale = "en_US";
         String timezone = "US/Pacific";
-        String accountName = get("UserData.accountName");
-        long accountId = getLong("UserData.accountId");
+        String accountName = secrets.get("UserData.accountName");
+        long accountId = secrets.getLong("UserData.accountId");
         boolean isAdmin = true;
         boolean isLicensedSheetCreator = true;
         boolean isGroupAdmin = true;
 
         interface AlternateEmailData {
-            long id = getLong("UserData.AlternateEmailData.id");
+            long id = secrets.getLong("UserData.AlternateEmailData.id");
             static void assertMatch(List<? extends AlternateEmail> emailList) {
                 assertThat(emailList).isNotEmpty().anySatisfy(email -> assertThat(email.getId()).isEqualTo(id));
             }
@@ -868,20 +863,20 @@ public class TestData {
     }
 
     interface WebhookData {
-        long id = getLong("WebhookData.id");
+        long id = secrets.getLong("WebhookData.id");
     }
 
     interface WorkflowData {
-        String id = get("WorkflowData.id");
+        String id = secrets.get("WorkflowData.id");
     }
 
     interface WorkspaceData {
-        long id = getLong("WorkspaceData.id");
-        String name = get("WorkspaceData.name");
-        long folderId = getLong("WorkspaceData.folderId");
-        String folderName = get("WorkspaceData.folderName");
+        long id = secrets.getLong("WorkspaceData.id");
+        String name = secrets.get("WorkspaceData.name");
+        long folderId = secrets.getLong("WorkspaceData.folderId");
+        String folderName = secrets.get("WorkspaceData.folderName");
         AccessLevel level = AccessLevel.OWNER;
-        OffsetDateTime shareDate = getDate("WorkspaceData.shareDate");
+        OffsetDateTime shareDate = secrets.getDate("WorkspaceData.shareDate");
 
         static void assertEquals(Workspace workspace) {
             assertThat(workspace).isNotNull();
@@ -958,139 +953,5 @@ public class TestData {
                 .as("success result code").isSameAs(ResultPrefixCode.NUMBER_0);
         assertThat(Reflection.invoke(result, "getMessage", ResultPrefixMessage.class))
                 .as("success message").isSameAs(ResultPrefixMessage.SUCCESS);
-    }
-
-    // all "secret" values are moved to a properties file that is not checked in
-    private static final Properties secrets = new Properties();
-    static {
-        try {
-            secrets.load(new FileReader("src/test/resources/secrets.props"));
-        } catch (IOException iox) {
-            throw new RuntimeException(iox);
-        }
-    }
-
-    /**
-     * @param name name of a property to look up; must NOT be null or blank
-     * @return the value of the specified property (or null if the property key is not found)
-     * @throws AssertionError if provided name is blank
-     */
-    private static String get(String name) {
-        assertThat(name).isNotBlank();
-        return secrets.getProperty(name);
-    }
-
-    /**
-     * @param name      property name
-     * @param converter converts property value (String) into {@code T}
-     * @param <T>       the type requested
-     * @return the {@code T} returned by converter for the value of the specified property (which could be null)
-     */
-    private static <T> T get(String name, Function<String, T> converter) {
-        assertThat(converter).isNotNull();
-        return converter.apply(get(name));
-    }
-
-    /**
-     * @param name name of a property to look up; must NOT be null or blank
-     * @return an {@code OffsetDateTime} created from the value of the property with key {@code name} or null if property value
-     * is null or blank
-     * @throws AssertionError         if provided name is blank
-     * @throws DateTimeParseException if the value can't be parsed (yyyy-MM-dd'T'HH:mm:ss'Z'; e.g., 2025-05-17T07:50:00Z)
-     */
-    private static OffsetDateTime getDate(String name) {
-        return DateTimes.parseToOffset(get(name));
-    }
-
-    /**
-     * @param name name of a property to look up; must NOT be null or blank
-     * @return the value converted to a {@code long} or null if the value is null or blank
-     * @throws AssertionError        if provided name is blank
-     * @throws NumberFormatException if the value isn't a properly formatted long
-     */
-    private static long getLong(String name) {
-        String value = get(name);
-        return StringUtils.isNotBlank(value) ? Long.parseLong(value) : null;
-    }
-
-    /**
-     * @param namePrefix property name starts-with
-     * @return {@code Map<String,String>} of all key-value pairs with keys starting with {@code namePrefix}
-     */
-    private static Map<String, String> getPairsStartingWith(String namePrefix) {
-        // matches all names that start with the prefix
-        return secrets.stringPropertyNames().stream()
-                .filter(key -> key.startsWith(namePrefix))
-                .map(key -> Map.entry(key, secrets.getProperty(key)))
-                .collect(ExtCollectors.entriesToMap());
-    }
-
-    private static <T> T getObject(String keyPrefix, Function<Map<String, String>, T> converter) {
-        assertThat(converter).as("check converter").isNotNull();
-        Map<String, String> pairs = pruneKeys(StringUtils.appendIfMissing(keyPrefix, "."), getPairsStartingWith(keyPrefix));
-        return converter.apply(pairs);
-    }
-
-    static <V> Map<String,V> pruneKeys(String prefixToPrune, Map<String,V> map) {
-        return map.entrySet().stream()
-                .map(entry -> Map.entry(StringUtils.prune(prefixToPrune, entry.getKey()), entry.getValue()))
-                .collect(ExtCollectors.entriesToMap());
-    }
-    /**
-     * @param keyPrefix         property name starts-with
-     * @param collectionFactory returns instance of collection to populate
-     * @param valueConverter    converts {@code String} property values into type {@code T}
-     * @param <T>               the type of object to return
-     * @param <CollectionT>     the type of collection of {@code T} to return
-     * @return a collection of {@code T} objects created from the values of properties with keys starting with {@code
-     * keyPrefix}
-     * @throws AssertionError if {@code collectionFactory} or {@code valueConverter} is null
-     */
-    private static <T, CollectionT extends Collection<T>> CollectionT getValuesCollection(
-            String keyPrefix, Supplier<CollectionT> collectionFactory, Function<String, T> valueConverter) {
-        assertThat(valueConverter).as("check converter").isNotNull();
-        assertThat(collectionFactory).as("check collection factory").isNotNull();
-        return getPairsStartingWith(keyPrefix).values().stream()
-                .map(valueConverter)
-                .collect(Collectors.toCollection(collectionFactory));
-    }
-
-
-    /**
-     * generate a collection of T given their property key prefix and a factory method to convert the Map of key-value pairs to T.
-     * properties for the same object are grouped via one or more digits following the key prefix; e.g., "Foo.1.fieldOfFoo = ..."
-     *
-     * @param keyPrefix         key prefix to find all properties to use; property keys must be of the form "PREFIX.DIGITS.FIELD"
-     * @param collectionFactory returns instance of collection to populate
-     * @param itemFactory       converts {@code Map<String,String>} of key-value pairs into type {@code T}
-     * @param <T>               the type of the object created from the property groups
-     * @return a {@code List<T>} containing all T created from all properties with {@code keyPrefix} grouped by DIGIT(S)
-     * @throws AssertionError if the {@code collectionFactory} or {@code itemFactory} are null
-     */
-    private static <T, CollectionT extends Collection<T>> CollectionT getObjectsCollection(
-            String keyPrefix, Supplier<CollectionT> collectionFactory, Function<Map<String, String>, T> itemFactory) {
-        assertThat(collectionFactory).as("check collection factory").isNotNull();
-        assertThat(itemFactory).as("check item factory").isNotNull();
-
-        Map<String, String> properties = getPairsStartingWith(keyPrefix + ".");
-        Pattern keyPattern = Pattern.compile(Pattern.quote(keyPrefix) + "\\.(\\d+)\\.(.+)");
-
-        // gather up all the key-value pairs by digit suffix
-        Map<Integer, Map<String, String>> mapsByDigit = new HashMap<>();
-        for (Map.Entry<String, String> entry : properties.entrySet()) {
-            Matcher mat = keyPattern.matcher(entry.getKey());
-            if (mat.matches()) {
-                Integer digits = Integer.parseInt(mat.group(1));
-                String field = mat.group(2);
-                Map<String, String> keyValuePairs = mapsByDigit.computeIfAbsent(digits, ignore -> new HashMap<>());
-                keyValuePairs.put(field, entry.getValue());
-            } else {
-                log.warn("key '{}' didn't match expect key-pattern '{}'", entry.getKey(), keyPattern.pattern());
-            }
-        }
-
-        return mapsByDigit.values().stream()
-                .map(itemFactory)
-                .collect(Collectors.toCollection(collectionFactory));
     }
 }
