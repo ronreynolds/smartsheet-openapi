@@ -241,9 +241,9 @@ public class AttachmentsApiTest {
         Boolean includeAll = true;
         var response = api.discussionListAttachments(SheetData.id, discussionId, page, pageSize, includeAll);
 
-        // TODO: test validations
-        log.info("{}", response);
-        assertThat(response).isNotNull();
+//        log.info("{}", response);
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).satisfies(TestData.DiscussionData::assertContainsAttachment);
     }
 
     /**
