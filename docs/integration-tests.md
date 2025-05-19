@@ -65,7 +65,6 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `attachmentsDeleteTest`
   * `attachmentsVersionUploadTest`
   * `attachmentsVersionsDeleteTest`
-  * `discussionListAttachmentsTest`
   * `rowAttachmentsAttachFileTest`
 * In-Progress
 * Blocked
@@ -76,6 +75,7 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `attachmentsListOnRowTest`
   * `attachmentsListOnSheetTest`
   * `attachmentsVersionListTest`
+  * `discussionListAttachmentsTest`
 
 ### AutomationRulesApiTest
 * To-Do
