@@ -5,6 +5,7 @@ import com.ronreynolds.smartsheet.api.util.DateTimes;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
+import com.ronreynolds.smartsheet.model.AttachmentSubType;
 import com.ronreynolds.smartsheet.model.AttachmentType;
 import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
 import com.ronreynolds.smartsheet.model.Cell;
@@ -217,7 +218,7 @@ public class TestData {
         static void assertColumnHistory(CellHistoryGet200ResponseAllOfDataInner history) {
             assertThat(history).isNotNull();
             assertThat(history.getModifiedAt()).isAfterOrEqualTo(modifiedDate);
-            assertThat(history.getModifiedBy()).isEqualTo(UserData.getNameAndEmail());
+            assertThat(history.getModifiedBy()).isEqualTo(UserData.nameAndEmail);
             assertThat(history.getColumnId()).isEqualTo(ColumnBriefData.PRIMARY.id);
             assertThat(history.getColumnType()).isSameAs(ColumnBriefData.PRIMARY.type);
             assertThat(history.getConditionalFormat()).isNull();
@@ -276,35 +277,17 @@ public class TestData {
 
     interface DiscussionData {
         long id = secrets.getLong("DiscussionData.id");
-        AccessLevel accessLevel = secrets.get("DiscussionData.accessLevel",
-                val -> AccessLevel.valueOf(StringUtils.toUpperCase(val)));
+        AccessLevel accessLevel = secrets.getUC("DiscussionData.accessLevel", AccessLevel::valueOf);
         List<Comment> comments = null; // FIXME
         List<Attachment> commentAttachments = List.of(); // FIXME
-        int commentCount = (int) secrets.getLong("DiscussionData.commentCount");
-        NameAndEmail createdBy = secrets.getObject("DiscussionData.createdBy",
-                map -> NameAndEmail.builder()
-                        .email(map.get("email"))
-                        .name(map.get("name"))
-                        .systemUserType(map.get("systemUserType"))
-                        .build());
+        int commentCount = secrets.getInt("DiscussionData.commentCount");
+        NameAndEmail createdBy = secrets.getObject("DiscussionData.createdBy", TestData::mapToNameAndEmail);
         OffsetDateTime lastCommentedAt = secrets.getDate("DiscussionData.lastCommentedAt");
-        NameAndEmail lastCommentedUser = secrets.getObject("DiscussionData.lastCommentedUser",
-                map -> NameAndEmail.builder()
-                        .email(map.get("email"))
-                        .name(map.get("name"))
-                        .systemUserType(map.get("systemUserType"))
-                        .build());
-        Long parentId = secrets.get("DiscussionData.parentId", val -> StringUtils.isNotBlank(val) ? Long.parseLong(val) : null);
-        Discussion.ParentTypeEnum parentType = secrets.get("DiscussionData.parentType",
-                val -> StringUtils.isNotBlank(val) ? Discussion.ParentTypeEnum.valueOf(val.toUpperCase()) : null);
-        boolean readOnly = secrets.get("DiscussionData.readOnly",
-                val -> StringUtils.isNotBlank(val) ? Boolean.parseBoolean(val) : Boolean.FALSE);
+        NameAndEmail lastCommentedUser = secrets.getObject("DiscussionData.lastCommentedUser", TestData::mapToNameAndEmail);
+        Long parentId = secrets.getLong("DiscussionData.parentId");
+        Discussion.ParentTypeEnum parentType = secrets.getUC("DiscussionData.parentType", Discussion.ParentTypeEnum::valueOf);
+        Boolean readOnly = secrets.getBool("DiscussionData.readOnly", null);
         String title = secrets.get("DiscussionData.title");
-
-        static void assertContains(List<? extends Discussion> discussionList) {
-            assertThat(discussionList).isNotEmpty()
-                    .anySatisfy(DiscussionData::assertEquals);
-        }
 
         static void assertEquals(Discussion discussion) {
             log.info("discussion:{}", discussion);
@@ -322,16 +305,37 @@ public class TestData {
             assertThat(discussion.getCreatedBy()).isEqualTo(createdBy);
             assertThat(discussion.getLastCommentedAt()).isAfterOrEqualTo(lastCommentedAt);
             assertThat(discussion.getLastCommentedUser()).isEqualTo(lastCommentedUser);
-            if (discussion.getParentId() != null) {
-                assertThat(discussion.getParentId()).isEqualTo(parentId);
-            }
-            if (discussion.getParentType() != null) {
-                assertThat(discussion.getParentType()).isEqualTo(parentType);
-            }
-            if (discussion.getReadOnly() != null) {
-                assertThat(discussion.getReadOnly()).isEqualTo(readOnly);
-            }
+            assertThat(discussion.getParentId()).isEqualTo(parentId);
+            assertThat(discussion.getParentType()).isEqualTo(parentType);
+            assertThat(discussion.getReadOnly()).isEqualTo(readOnly);
             assertThat(discussion.getTitle()).isEqualTo(title);
+        }
+
+        static void assertEqualsAttachment(Attachment attachment) {
+            assertThat(attachment).isNotNull();
+            final String PREFIX = "DiscussionData.attachment.";
+            assertThat(attachment.getId()).isEqualTo(secrets.getLong(PREFIX + "id"));
+            assertThat(attachment.getParentId()).isEqualTo(secrets.getLong(PREFIX + "parentId"));
+            assertThat(attachment.getAttachmentType())
+                    .isEqualTo(secrets.getUC(PREFIX + "attachmentType", AttachmentTypeTrello::valueOf));
+            assertThat(attachment.getAttachmentSubType())
+                    .isEqualTo(secrets.getUC(PREFIX + "attachmentSubType", AttachmentSubType::valueOf));
+            assertThat(attachment.getMimeType()).isEqualTo(secrets.get(PREFIX + "mimeType"));
+            assertThat(attachment.getParentType())
+                    .isEqualTo(secrets.getUC(PREFIX + "parentType", Attachment.ParentTypeEnum::valueOf));
+            assertThat(attachment.getCreatedAt()).isEqualTo(secrets.getDate(PREFIX + "createdAt"));
+            assertThat(attachment.getCreatedBy()).isEqualTo(secrets.getObject(PREFIX + "createdBy", TestData::mapToNameAndEmail));
+            assertThat(attachment.getName()).isEqualTo(secrets.get(PREFIX + "name"));
+            assertThat(attachment.getSizeInKb()).isEqualTo(secrets.getInt(PREFIX + "sizeInKb"));
+            assertThat(attachment.getUrl()).isEqualTo(secrets.get(PREFIX + "url"));
+            assertThat(attachment.getUrlExpiresInMillis()).isEqualTo(secrets.getInt(PREFIX + "urlExpiresInMillis"));
+        }
+        static void assertContains(List<? extends Discussion> discussionList) {
+            assertThat(discussionList).isNotEmpty().anySatisfy(DiscussionData::assertEquals);
+        }
+
+        static void assertContainsAttachment(List<? extends Attachment> attachments) {
+            assertThat(attachments).isNotEmpty().anySatisfy(DiscussionData::assertEqualsAttachment);
         }
     }
 
@@ -496,7 +500,6 @@ public class TestData {
             assertThat(report.getCrossSheetReferences()).isNull();
             assertThat(report.getDependenciesEnabled()).isNull();
             assertThat(report.getDiscussions()).isNull();
-            // TODO - change to enum
             assertThat(report.getEffectiveAttachmentOptions()).allMatch(SheetData.effectiveAttachmentOptions::contains);
             assertThat(report.getFavorite()).isNull();
             assertThat(report.getFilters()).isEmpty();
@@ -816,6 +819,7 @@ public class TestData {
         boolean isAdmin = true;
         boolean isLicensedSheetCreator = true;
         boolean isGroupAdmin = true;
+        NameAndEmail nameAndEmail = NameAndEmail.builder().email(email).name(name).build();
 
         interface AlternateEmailData {
             long id = secrets.getLong("UserData.AlternateEmailData.id");
@@ -824,12 +828,6 @@ public class TestData {
             }
         }
 
-        static NameAndEmail getNameAndEmail() {
-            return NameAndEmail.builder()
-                    .email(email)
-                    .name(name)
-                    .build();
-        }
         static void assertEquals(GetCurrentUser200Response user) {
             assertThat(user).isNotNull();
             UserProfileAccount account = assertThat(user.getAccount()).as("account").isNotNull().actual();
@@ -953,5 +951,13 @@ public class TestData {
                 .as("success result code").isSameAs(ResultPrefixCode.NUMBER_0);
         assertThat(Reflection.invoke(result, "getMessage", ResultPrefixMessage.class))
                 .as("success message").isSameAs(ResultPrefixMessage.SUCCESS);
+    }
+
+    static NameAndEmail mapToNameAndEmail(Map<String, String> map) {
+        return NameAndEmail.builder()
+                .email(map.get("email"))
+                .name(map.get("name"))
+                .systemUserType(map.get("systemUserType"))
+                .build();
     }
 }
