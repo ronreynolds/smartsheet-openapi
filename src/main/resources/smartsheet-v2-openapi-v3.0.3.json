@@ -12821,7 +12821,8 @@
         "schema": {
           "type": "string",
           "example": "attachment; filename=\"ProgressReport.docx\""
-        }
+        },
+        "required": true
       },
       "contactIdInPath": {
         "name": "contactId",
