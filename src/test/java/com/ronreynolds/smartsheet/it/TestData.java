@@ -49,17 +49,22 @@ import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.util.properties.ExtProperties;
 import com.ronreynolds.util.reflection.Reflection;
 import com.ronreynolds.util.streams.ExtCollectors;
-import com.ronreynolds.util.string.StringUtils;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
+import org.assertj.core.api.Assertions;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -306,7 +311,7 @@ public class TestData {
             assertThat(discussion.getLastCommentedAt()).isAfterOrEqualTo(lastCommentedAt);
             assertThat(discussion.getLastCommentedUser()).isEqualTo(lastCommentedUser);
             assertThat(discussion.getTitle()).isEqualTo(title);
-            
+
             // certain API endpoints don't populate these fields
             if (discussion.getParentId() != null) {
                 assertThat(discussion.getParentId()).isEqualTo(parentId);
@@ -458,9 +463,21 @@ public class TestData {
     }
 
     interface ImageData {
-        String id1 = secrets.get("ImageData.id.1");
-        String id2 = secrets.get("ImageData.id.2");
-        Set<String> idSet = Set.of(id1, id2);
+        Set<String> idSet = secrets.getValuesCollection("ImageData.id", HashSet::new, Function.identity());
+        String imagePath = secrets.get("ImageData.image.path");
+        String imageMimeType = secrets.get("ImageData.image.mime");
+        File imageFile = new File(imagePath);
+        long imageFileSize = imageFile.length();
+
+//        AtomicReference<byte[]> imageBytes = new AtomicReference<>();
+//
+//        static byte[] getImageBytes() {
+//            byte[] bytes = imageBytes.get();
+//            if (bytes == null) {
+//                bytes = imageBytes.updateAndGet(ImageData::readImageBytes);
+//            }
+//            return bytes;
+//        }
 
         static void assertImageUrl(ImageUrl url) {
             assertThat(url).isNotNull();
@@ -469,6 +486,19 @@ public class TestData {
             assertThat(url.getWidth()).isNull();
             assertThat(url.getUrl()).isNotBlank();
             assertThat(url.getImageId()).matches(idSet::contains);
+        }
+
+        private static byte[] readImageBytes(byte[] bytes) {
+            // bytes is non-null if a value has already been read
+            if (bytes != null) {
+                return bytes;
+            }
+            try {
+                return Files.readAllBytes(Paths.get(imagePath));
+            } catch (IOException iox) {
+                Assertions.fail(iox);
+                return null;    // we will never make it this far
+            }
         }
     }
 
