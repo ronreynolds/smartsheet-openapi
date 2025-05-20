@@ -46,10 +46,12 @@ public class ImportApiTest {
         Integer primaryColumnIndex = null;
         File body = null;
         ImportSheetIntoFolder200Response response =
-                api.importSheetIntoFolder(folderId, contentType, sheetName, contentDisposition, headerRowIndex,
+                api.importSheetIntoFolder(folderId, contentDisposition, contentType, sheetName, headerRowIndex,
                         primaryColumnIndex, body);
         assertThat(response).isNotNull();
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -72,9 +74,11 @@ public class ImportApiTest {
         Integer primaryColumnIndex = null;
         File body = null;
         ImportSheetIntoFolder200Response response =
-                api.importSheetIntoSheetsFolder(contentType, sheetName, contentDisposition, headerRowIndex, primaryColumnIndex,
+                api.importSheetIntoSheetsFolder(contentDisposition, contentType, sheetName, headerRowIndex, primaryColumnIndex,
                         body);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -98,9 +102,10 @@ public class ImportApiTest {
         Integer primaryColumnIndex = null;
         File body = null;
         ImportSheetIntoFolder200Response response =
-                api.importSheetIntoWorkspace(workspaceId, contentType, sheetName, contentDisposition, headerRowIndex,
+                api.importSheetIntoWorkspace(workspaceId, contentDisposition, contentType, sheetName, headerRowIndex,
                         primaryColumnIndex, body);
-
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
