@@ -302,3 +302,17 @@ some parts of the Spec don't match the server responses at all
 * moved `#/components/schemas/ResultPrefix` properties `message` and `resultCode` into their own type so that each type build from `ResultPrefix` won't use their own custom inner-classes
   * added `#/components/schemas/ResultPrefixMessage` and `#/components/schemas/ResultPrefixCode`
 * changed `#/components/schemas/Favorite.type` inner-enum to `#/components/schemas/FavoriteType` top-level enum
+
+#### changes that may or may not be improvements
+* marked `#/components/parameters/contentDispositionHeader` as required; may or may not be required everywhere it's used
+  * definitely required in operation `addImageToCell`; seems unlikely that some APIs would need it and others would not
+
+#### potential issues
+* `Content-Length` is a disallowed header when using the Java-JDK `HttpClient` library
+  * the client will throw an `IllegalArgumentException` if you attempt to set it
+  * this is because the library expects (requires) that only it will set Content-Length from the actual size of the request body
+    * of course with stream-based request bodies this is, in some cases, almost entirely impossible to know in advance
+  * this makes much more sense in chunked HTTP where the chunk size isn't known in advance but chosen by the library
+  * this means we might want to drop Content-Length as a supported parameter in requests because it must ALWAYS be `null` in code
+    * note, however, this is an issue isolated to using the `java-native` library
+    * likely other libraries would allow it or ignore it and generate their own
