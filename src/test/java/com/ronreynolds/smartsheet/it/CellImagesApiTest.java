@@ -2,6 +2,8 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CellImagesApi;
+import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.api.util.Files;
 import com.ronreynolds.smartsheet.model.AddImageToCell200Response;
 import com.ronreynolds.smartsheet.model.ImageUrl;
 import com.ronreynolds.smartsheet.model.ListImageUrls200Response;
@@ -12,7 +14,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -35,24 +40,25 @@ public class CellImagesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
-    @Disabled("need to add test image")
+    @Disabled("need to fix body issue; being converted to JSON when it should be raw bytes")
     public void addImageToCellTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
-        Long columnId = null;
-        String contentType = null;  // content type of the request
-        String contentDisposition = null;
-        Integer contentLength = null;
-        String altText = null;
-        Boolean overrideValidation = null;
-        File body = null;
-        AddImageToCell200Response response = api.addImageToCell(
-                sheetId, rowId, columnId, contentType, contentDisposition, contentLength, altText, overrideValidation, body);
-        log.info("{}", response);
-        assertThat(response).isNotNull();
+        Long columnId = TestData.ColumnData.ColumnBriefData.PRIMARY.id;
+        String contentType = TestData.ImageData.imageMimeType;  // content type of the request
+        String contentDisposition = Files.getAttachmentContentDisposition(TestData.ImageData.imageFile);
+        String altText = "cute little kittens";
+        Boolean overrideValidation = true;
+        File body = TestData.ImageData.imageFile;
+        try (var ignore = ApiClients.logRequestContext()) {
+            // contentLength MUST always be null if using JDK HttpClient because "Content-Length" is a restricted header
+            AddImageToCell200Response response = api.addImageToCell(
+                    sheetId, rowId, columnId, contentDisposition, contentType, null, altText, overrideValidation, body);
+            log.info("{}", response);
+            assertThat(response).isNotNull();
 
-        // TODO: test validations
-
+            // TODO: test validations
+        }
     }
 
     /**
@@ -65,9 +71,9 @@ public class CellImagesApiTest {
     @Test
     public void listImageUrlsTest() throws ApiException {
         // you get a 500 if this is null
-        List<ImageUrl> imageUrl = List.of(
-                ImageUrl.builder().imageId(TestData.ImageData.id1).build(),
-                ImageUrl.builder().imageId(TestData.ImageData.id2).build());
+        List<ImageUrl> imageUrl = TestData.ImageData.idSet.stream()
+                .map(id -> ImageUrl.builder().imageId(id).build())
+                .collect(Collectors.toList());
         ListImageUrls200Response response = api.listImageUrls(imageUrl);
 
         log.info("{}", response);
@@ -75,6 +81,6 @@ public class CellImagesApiTest {
         assertThat(response).isNotNull()
                 .satisfies(val -> assertThat(val.getUrlExpiresInMillis()).isEqualTo(1_800_000));  // default value
         assertThat(response.getImageUrls()).isNotEmpty()
-                .anySatisfy(TestData.ImageData::assertImageUrl);
+                .allSatisfy(TestData.ImageData::assertImageUrl);
     }
 }
