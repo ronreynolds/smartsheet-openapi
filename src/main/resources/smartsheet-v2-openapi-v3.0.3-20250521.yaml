@@ -3316,7 +3316,6 @@ paths:
           label: C#
           source: >
             // Omit pagination parameters
-
             PaginatedResult<Group> groups =
             smartsheet.GroupResources.ListGroups(
               null                    // PaginationParameters
@@ -3361,8 +3360,6 @@ paths:
       summary: Add Group
       description: >
         Creates a new group.
-
-
         **_This operation is only available to group administrators and system
         administrators._**
       tags:
@@ -3375,11 +3372,8 @@ paths:
         description: >
           [Group object](/api/smartsheet/openapi/groups/group), limited to the
           following attributes:
-
           * name (required) -- must be unique within the organization account
-
           * description (optional)
-
           * members (optional) -- array of [GroupMember
           objects](/api/smartsheet/openapi/groupmembers/groupmember), each
           limited to the following attribute:
@@ -3541,9 +3535,8 @@ paths:
                     properties:
                       members:
                         description: List of Group Members
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/GroupMember'
+                        allOf:
+                          - $ref: '#/components/schemas/GroupMemberArray'
         default:
           description: Generic Error Payload
           content:
@@ -3824,11 +3817,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/GroupMember'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/GroupMember'
+              $ref: '#/components/schemas/GroupMemberArray'
       responses:
         '200':
           description: >
@@ -3854,11 +3843,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/GroupMember'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/GroupMember'
+                        $ref: '#/components/schemas/GroupMemberArray'
         default:
           description: >
             If an error occurs because the request specified one or more
@@ -23857,6 +23842,10 @@ components:
           description: Group member's full name.
           type: string
           example: John Doe
+    GroupMemberArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/GroupMember'
     Home:
       description: >-
         All objects a user has access to, including dashboards, folders,
