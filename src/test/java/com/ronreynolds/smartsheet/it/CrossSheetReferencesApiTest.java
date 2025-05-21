@@ -20,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@Disabled("CrossSheetReferencesApiTest not yet implemented")
 public class CrossSheetReferencesApiTest {
 
     private final CrossSheetReferencesApi api = new CrossSheetReferencesApi();
@@ -35,8 +34,9 @@ public class CrossSheetReferencesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need test data")
     public void addCrosssheetReferenceTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         AddCrosssheetReferenceRequest addCrosssheetReferenceRequest = null;
         AddCrosssheetReference200Response response = api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest);
         assertThat(response).isNotNull();
@@ -55,8 +55,9 @@ public class CrossSheetReferencesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("need to create cross-sheet reference to test with")
     public void getCrosssheetReferenceTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long crossSheetReferenceId = null;
         CrossSheetReference response = api.getCrosssheetReference(sheetId, crossSheetReferenceId);
 
@@ -74,15 +75,16 @@ public class CrossSheetReferencesApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Disabled("currently have no cross-sheet references")
     public void listCrosssheetReferencesTest() throws ApiException {
-        Long sheetId = null;
-        Boolean includeAll = null;
+        Long sheetId = TestData.SheetData.id;
+        Boolean includeAll = true;
         Integer page = null;
         Integer pageSize = null;
         ListCrosssheetReferences200Response response = api.listCrosssheetReferences(sheetId, includeAll, page, pageSize);
 
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
 
         // TODO: test validations
     }
