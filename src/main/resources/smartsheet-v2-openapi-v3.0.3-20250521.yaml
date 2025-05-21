@@ -5022,11 +5022,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Share'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Share'
+              $ref: '#/components/schemas/ShareArray'
       responses:
         '200':
           description: >
@@ -5042,11 +5038,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/Share'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         '400':
           description: >
             If called with a single Share object, and that user or group share
@@ -5190,9 +5182,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
           content:
@@ -15299,11 +15289,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Share'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Share'
+              $ref: '#/components/schemas/ShareArray'
       responses:
         '200':
           description: >
@@ -15319,11 +15305,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/Share'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         '400':
           description: >
             If called with a single Share object, and that user or group share
@@ -15471,9 +15453,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
           content:
@@ -16753,11 +16733,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/Share'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         '400':
           description: >
             If called with a single Share object, and that user or group share
@@ -21115,11 +21091,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Share'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Share'
+              $ref: '#/components/schemas/ShareArray'
       responses:
         '200':
           description: >
@@ -21133,11 +21105,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/Share'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         '400':
           description: >
             If called with a single Share object, and that user or group share
@@ -21284,9 +21252,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        type: array
-                        items:
-                          $ref: '#/components/schemas/Share'
+                        $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
           content:
@@ -25062,10 +25028,7 @@ components:
         id:
           description: >
             Share Id.
-
-
-            **NOTE**: unlike other Smartsheet object Ids, this Id is an
-            alphanumeric string.
+            **NOTE**: unlike other Smartsheet object Ids, this Id is an alphanumeric string.
           type: string
         groupId:
           description: Group Id if the share is a group share, else null.
@@ -25120,6 +25083,10 @@ components:
 
             in a request, but it is never present in a response.
           type: string
+    ShareArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Share'
     SharedSecret:
       type: object
       properties:
