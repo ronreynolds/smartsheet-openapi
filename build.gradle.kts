@@ -5,9 +5,10 @@ plugins {
 }
 
 group               = "com.ronreynolds"
-version             = "0.1.5-SNAPSHOT"
+version             = "0.2.0-SNAPSHOT"
 val buildDirectory  = layout.buildDirectory.get()
-val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
+//val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3.json"
+val openapiSource   = "$rootDir/src/main/resources/smartsheet-v2-openapi-v3.0.3-20250521.yaml"
 
 // library versions
 val assertJVersion              = "3.27.3"      // 2025-01-18
