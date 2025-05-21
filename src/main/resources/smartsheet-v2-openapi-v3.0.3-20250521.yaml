@@ -1228,7 +1228,7 @@ paths:
 
             the main plan in EPM hierarchy.
           schema:
-            type: number
+            $ref: '#/components/schemas/Int64'
           required: false
       responses:
         '200':
@@ -4339,7 +4339,8 @@ paths:
                           type: object
                           properties:
                             id:
-                              type: number
+                              allOf:
+                                - $ref: '#/components/schemas/Int64'
                               description: The report's unique identifier.
                               example: 987654321
                             name:
@@ -6897,7 +6898,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -7257,7 +7258,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -8476,7 +8477,7 @@ paths:
                     description: >-
                       New version of the Sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -8566,7 +8567,7 @@ paths:
                     description: >-
                       New version of the Sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -8702,7 +8703,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -9447,7 +9448,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -10631,7 +10632,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: cURL
@@ -10729,7 +10730,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: cURL
@@ -11026,7 +11027,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: cURL
@@ -11650,7 +11651,7 @@ paths:
                       result:
                         type: array
                         items:
-                          type: number
+                          $ref: '#/components/schemas/Int64'
         '404':
           $ref: '#/components/responses/404'
       x-codeSamples:
@@ -12835,7 +12836,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -13365,7 +13366,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: C#
@@ -13616,7 +13617,7 @@ paths:
                     description: >-
                       New version of the sheet. Applicable only for operations
                       which update sheet data.
-                    type: number
+                    type: integer
                     nullable: true
       x-codeSamples:
         - lang: cURL
@@ -13752,7 +13753,7 @@ paths:
         required: true
         description: ID of the sent update request
         schema:
-          type: string
+          $ref: '#/components/schemas/Int64'
       - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sent Update Request
@@ -14273,7 +14274,7 @@ paths:
                       result:
                         type: array
                         items:
-                          type: number
+                          $ref: '#/components/schemas/Int64'
         default:
           description: Generic Error Payload
           content:
@@ -14916,7 +14917,7 @@ paths:
         required: true
         description: ID of the Update Request
         schema:
-          type: string
+          $ref: '#/components/schemas/Int64'
       - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get an Update Request
@@ -17298,7 +17299,7 @@ paths:
             Level of public template types. 0 refers to only Sheet types, 1
             refers to all types.
           schema:
-            type: number
+            type: integer
             enum:
               - 0
               - 1
@@ -20856,7 +20857,8 @@ paths:
                           type: object
                           properties:
                             id:
-                              type: number
+                              allOf:
+                                - $ref: '#/components/schemas/Int64'
                               description: The folder's unique identifier.
                               example: 987654321
                             name:
@@ -22083,7 +22085,8 @@ components:
       properties:
         id:
           description: Account Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 122454719915908
         name:
           description: Account name.
@@ -22096,7 +22099,8 @@ components:
       properties:
         id:
           description: AlternateEmail Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 8150532427671428
         confirmed:
           description: Indicates whether the alternate email address has been confirmed.
@@ -22114,10 +22118,12 @@ components:
       properties:
         id:
           description: Attachment Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         parentId:
           description: The Id of the parent.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         attachmentType:
           description: >-
             Attachment type. Note--Dropbox, Egnyte, and Evernote are not
@@ -22170,13 +22176,15 @@ components:
           type: string
         sizeInKb:
           description: The size of the file, if the attachmentType is FILE.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         url:
           description: Attachment temporary URL (files only).
           type: string
         urlExpiresInMillis:
           description: Attachment temporary URL time to live (files only).
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     AutomationAction:
       type: object
       x-tags:
@@ -22186,7 +22194,7 @@ components:
           description: Specifies which columns to include in message.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
         type:
           type: string
           enum:
@@ -22233,7 +22241,7 @@ components:
               description: Array of column Ids from which to collect email recipients.
               type: array
               items:
-                type: number
+                $ref: '#/components/schemas/Int64'
     AutomationRule:
       type: object
       x-tags:
@@ -22241,7 +22249,8 @@ components:
       properties:
         id:
           description: AutomationRule Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         action:
           description: >-
             An [AutomationAction
@@ -22346,7 +22355,8 @@ components:
           type: string
         startingNumber:
           description: The starting number for the auto-id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         suffix:
           description: |
             The suffix. Can include the date tokens:
@@ -22362,25 +22372,29 @@ components:
           description: >-
             The Id of the row that failed. Applicable only to bulk row
             operations.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           nullable: true
         error:
           $ref: '#/components/schemas/Error'
         index:
           description: The index of the failed item in the bulk request array.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     Callback:
       type: object
       x-tags:
         - webhooks
       properties:
         scopeObjectId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Id of the object that corresponds to scope.
           example: 3285357287499652
           readOnly: true
         webhookId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Id of the corresponding webhook.
           example: 8444254503626628
         events:
@@ -22410,25 +22424,29 @@ components:
         - webhooks
       properties:
         id:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: >-
             Id of the object that corresponds to objectType. Omitted if
             objectType is cell.
           example: 3285357287499652
         columnId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: >-
             Only present if objectType is cell. The Id of the column where the
             cell is located.
           nullable: true
         rowId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: >-
             Only present if objectType is cell. The Id of the row where the cell
             is located.
           nullable: true
         userId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: The user Id of the person who caused this event.
           example: 48569348493401210
         objectType:
@@ -22473,7 +22491,8 @@ components:
         - cells
       properties:
         columnId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: The Id of the column that the cell is located in.
         columnType:
           type: string
@@ -22545,13 +22564,16 @@ components:
       properties:
         columnId:
           description: Column Id for each item.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         rowId:
           description: Row Id for each item.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: Sheet Id for each item.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         objectValue:
           description: >-
             The type of data returned depends on the cell type and the data in
@@ -22583,7 +22605,7 @@ components:
           $ref: '#/components/schemas/DashboardFont'
         order:
           description: The display order for the CellDataItem.
-          type: number
+          type: integer
         profileField:
           $ref: '#/components/schemas/SummaryField'
         valueFormat:
@@ -22612,13 +22634,16 @@ components:
       type: object
       properties:
         columnId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Column Id of the linked cell.
         rowId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Row Id of the linked cell.
         sheetId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Sheet Id of the sheet that the linked cell belongs to.
         sheetName:
           type: string
@@ -22666,7 +22691,8 @@ components:
             - SHEETSUMMARY
         sheetId:
           description: Sheet Id from which the cell data originates.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         cellData:
           type: array
           items:
@@ -22687,10 +22713,12 @@ components:
             - CHART
         reportId:
           description: Report Id denoting container source, if applicable.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: Sheet Id denoting container source, if applicable.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         axes:
           type: array
           items:
@@ -22701,7 +22729,7 @@ components:
           description: Array of column Ids if the range was selected through the UI.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
         legend:
           $ref: '#/components/schemas/Legend'
         selectionRanges:
@@ -22747,10 +22775,11 @@ components:
           type: boolean
           description: Indicates whether the column is hidden.
         id:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Column Id.
         index:
-          type: number
+          type: integer
           description: Column index or position. This number is zero-based.
         locked:
           type: boolean
@@ -22834,7 +22863,7 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**).
         version:
-          type: number
+          type: integer
           enum:
             - 0
             - 1
@@ -22844,7 +22873,7 @@ components:
             * `1`: MULTI_CONTACT_LIST.
             * `2`: MULTI_PICKLIST.
         width:
-          type: number
+          type: integer
           description: Display width of the column in pixels.
     ColumnObject:
       $ref: '#/components/schemas/ColumnObjectAttributes'
@@ -22869,10 +22898,12 @@ components:
             - $ref: '#/components/schemas/MiniUser'
         discussionId:
           description: Discussion Id of discussion that contains comment.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         id:
           description: Comment Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
         text:
@@ -22914,7 +22945,8 @@ components:
         destinationId:
           description: |
             The ID of the destination container.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         destinationType:
           description: >
             Type of destination container.
@@ -22937,7 +22969,8 @@ components:
       properties:
         sheetId:
           description: The Id of the destination sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     CopyOrMoveRowDirective:
       type: object
       x-tags:
@@ -22947,7 +22980,8 @@ components:
           description: The Ids of the rows to move or copy from the source sheet.
           type: array
           items:
-            type: number
+            allOf:
+              - $ref: '#/components/schemas/Int64'
         to:
           $ref: '#/components/schemas/CopyOrMoveRowDestination'
     CopyOrMoveRowResult:
@@ -22957,7 +22991,8 @@ components:
       properties:
         destinationSheetId:
           description: The Id of the destination sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         rowMappings:
           description: Array of rowMapping objects.
           type: array
@@ -22968,7 +23003,8 @@ components:
       properties:
         columnId:
           description: Column Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 293452983475
         operator:
           description: Operator used to filter column values.
@@ -23023,18 +23059,21 @@ components:
             Defines ending edge of range when specifying one or more columns. To
             specify an entire column, omit the startRowId and endRowId
             parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         endRowId:
           description: >-
             Defines ending edge of range when specifying one or more rows. To
             specify an entire row, omit the startColumnId and endColumnId
             parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         id:
           description: >-
             Cross-sheet reference Id, guaranteed unique within referencing
             sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: >-
             Friendly name of reference. Auto-generated unless specified in
@@ -23045,13 +23084,15 @@ components:
             Defines beginning edge of range when specifying one or more columns.
             To specify an entire column, omit the startRowId and endRowId
             parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         startRowId:
           description: >-
             Defines beginning edge of range when specifying one or more rows. To
             specify an entire row, omit the startColumnId and endColumnId
             parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         status:
           description: |
             Status of request:
@@ -23073,7 +23114,8 @@ components:
             - OK
         sourceSheetId:
           description: Sheet Id of source sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     Currency:
       type: object
       properties:
@@ -23094,7 +23136,8 @@ components:
           $ref: '#/components/schemas/AccessLevel'
         id:
           description: Discussion Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         comments:
           description: >-
             Array of comments in discussion. Only returned if the include query
@@ -23111,7 +23154,7 @@ components:
             $ref: '#/components/schemas/Attachment'
         commentCount:
           description: Number of comments in the discussion.
-          type: number
+          type: integer
         createdBy:
           description: >
             `User` object containing `name` and `email` of the user who created
@@ -23128,7 +23171,8 @@ components:
             - $ref: '#/components/schemas/MiniUser'
         parentId:
           description: The Id of the associated row or sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         parentType:
           description: Type of parent object.
           type: string
@@ -23152,7 +23196,7 @@ components:
       properties:
         days:
           description: The number of days for this duration.
-          type: number
+          type: integer
         elapsed:
           description: >-
             If true, indicates this duration represents elapsed time, which
@@ -23160,13 +23204,13 @@ components:
           type: boolean
         hours:
           description: The number of hours for this duration.
-          type: number
+          type: integer
         milliseconds:
           description: The number of milliseconds for this duration.
-          type: number
+          type: integer
         minutes:
           description: The number of minutes for this duration.
-          type: number
+          type: integer
         negative:
           description: >-
             When used as a predecessor's lag value, indicates whether the lag is
@@ -23180,10 +23224,10 @@ components:
             - DURATION
         seconds:
           description: The number of seconds for this duration.
-          type: number
+          type: integer
         weeks:
           description: The number of weeks for this duration.
-          type: number
+          type: integer
     Email:
       type: object
       properties:
@@ -23214,7 +23258,7 @@ components:
           description: >-
             Custom error code from Smartsheet. See the complete [Error Code
             List](/api/smartsheet/error-codes).
-          type: number
+          type: integer
         message:
           description: Descriptive error message.
           type: string
@@ -23272,7 +23316,8 @@ components:
             However, if the request is an API call with Assume-User header then
             the userId property identifies the user whose email matches the
             value in the Assume-User header.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 123457654321
         requestUserId:
           description: >-
@@ -23283,7 +23328,8 @@ components:
             the creation of the access token). On the other hand, if the request
             comes from a UI session, then requestUserId identifies the user
             logged-in to the UI.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 133445566778
         accessTokenName:
           description: >-
@@ -23332,7 +23378,8 @@ components:
           description: >-
             The Id of the favorited item. If type is template, only private
             sheet-type template Id is allowed.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           type: string
           enum:
@@ -23422,7 +23469,8 @@ components:
             The target managed plan for which to list events. Authorized if the
             caller is a licensed user on either the target managed plan or the
             main plan in EPM hierarchy.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     Filters:
       description: >-
         Smartsheet users can define and save personal column filters on sheets
@@ -23431,7 +23479,8 @@ components:
       properties:
         id:
           description: Filters Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 52739485234
         excludeSelected:
           description: >-
@@ -23455,7 +23504,8 @@ components:
       properties:
         id:
           description: Folder Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         favorite:
           description: >-
             (Deprecated) Returned only if the user has marked the folder as a
@@ -23793,7 +23843,8 @@ components:
       properties:
         id:
           description: Group Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 4583173393803140
         name:
           description: Group name.
@@ -23810,7 +23861,8 @@ components:
           example: john.doe@smartsheet.com
         ownerId:
           description: Group owner's user Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 2331373580117892
         createdAt:
           $ref: '#/components/schemas/Timestamp'
@@ -23823,7 +23875,8 @@ components:
       properties:
         id:
           description: Group member's user Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 2331373580117892
         email:
           description: Group member's email address.
@@ -23876,13 +23929,16 @@ components:
       type: object
       properties:
         reportId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: If non-null, this hyperlink is a link to the report with this Id.
         sheetId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: If non-null, this hyperlink is a link to the sheet with this Id.
         sightId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: If non-null, this hyperlink is a link to the dashboard with this Id.
         url:
           type: string
@@ -23900,13 +23956,13 @@ components:
           type: string
           description: Alternate text for the image.
         height:
-          type: number
+          type: integer
           description: Original height (in pixels) of the uploaded image.
         id:
           type: string
           description: Image Id.
         width:
-          type: number
+          type: integer
           description: Original width (in pixels) of the uploaded image.
     ImageUrl:
       type: object
@@ -23920,7 +23976,7 @@ components:
           $ref: '#/components/schemas/Error'
         height:
           description: Image height in pixels.
-          type: number
+          type: integer
         url:
           description: >-
             Temporary URL that can be used to retrieve the image. This attribute
@@ -23928,7 +23984,7 @@ components:
           type: string
         width:
           description: Image width in pixels.
-          type: number
+          type: integer
     ImageUrlMap:
       type: object
       x-tags:
@@ -23940,7 +23996,8 @@ components:
             $ref: '#/components/schemas/ImageUrl'
         urlExpiresInMillis:
           description: Milliseconds before the URLs within imageUrls expire.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     ImageWidgetContent:
       type: object
       title: Image Widget Content
@@ -23976,7 +24033,7 @@ components:
           type: string
           example: ',7,1,,,,2,2,1,3,,,,,,1,'
         height:
-          type: number
+          type: integer
         hyperlink:
           $ref: '#/components/schemas/WidgetHyperlink'
         margin:
@@ -23991,7 +24048,7 @@ components:
           type: string
         width:
           description: Original width of the image in pixels.
-          type: number
+          type: integer
     IndexResult:
       type: object
       properties:
@@ -24000,7 +24057,7 @@ components:
             The current page in the full result set that the data array
             represents. NOTE when a page number greater than totalPages is
             requested, the last page is instead returned.
-          type: number
+          type: integer
           example: 1
           readOnly: true
         pageSize:
@@ -24008,18 +24065,18 @@ components:
             The number of items in a page. Omitted if there is no limit to page
             size (and hence, all results are included). Unless otherwise
             specified, this defaults to 100 for most endpoints.
-          type: number
+          type: integer
           example: 50
           nullable: true
           readOnly: true
         totalPages:
           description: The total number of pages in the full result set.
-          type: number
+          type: integer
           example: 25
           readOnly: true
         totalCount:
           description: The total number of items in the full result set.
-          type: number
+          type: integer
           example: 136
           readOnly: true
     IndexResultUnknownPages:
@@ -24030,7 +24087,7 @@ components:
             The current page in the full result set that the data array
             represents. NOTE when a page number greater than totalPages is
             requested, the last page is instead returned.
-          type: number
+          type: integer
           example: 1
           readOnly: true
         pageSize:
@@ -24038,7 +24095,7 @@ components:
             The number of items in a page. Omitted if there is no limit to page
             size (and hence, all results are included). Unless otherwise
             specified, this defaults to 100 for most endpoints.
-          type: number
+          type: integer
           example: 50
           nullable: true
           readOnly: true
@@ -24047,7 +24104,7 @@ components:
             If the data field value is not empty, returns a static value of -1.
             When you reach the first empty page after the end of the result set,
             then all four fields are set with a static value of “0”.
-          type: number
+          type: integer
           example: -1
           readOnly: true
         totalCount:
@@ -24055,7 +24112,7 @@ components:
             If the data field value is not empty, returns a static value of -1.
             When you reach the first empty page after the end of the result set,
             then all four fields are set with a static value of “0”.
-          type: number
+          type: integer
           example: -1
           readOnly: true
     MiniUser:
@@ -24081,7 +24138,7 @@ components:
           description: The Ids of rows to be included.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
     ObjectValue:
       description: >-
         The base object for values found in the **Cell.objectValue** attribute.
@@ -24109,7 +24166,8 @@ components:
       properties:
         rowId:
           description: The Id of the predecessor row.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           description: |
             Type of the predecessor:
@@ -24138,7 +24196,7 @@ components:
           $ref: '#/components/schemas/Duration'
         rowNumber:
           description: The row number of the predecessor row. Omitted if invalid is true.
-          type: number
+          type: integer
           readOnly: true
       example:
         rowId: 1234567890123456
@@ -24170,7 +24228,7 @@ components:
       properties:
         lengthOfDay:
           description: Length of a workday for a project sheet.
-          type: number
+          type: integer
           minimum: 1
           maximum: 24
         nonWorkingDays:
@@ -24201,10 +24259,12 @@ components:
       properties:
         id:
           description: Proof Id of the proof version.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         originalId:
           description: Proof Id of the original proof version.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: >-
             Proof name. This is the same as primary column value. If the primary
@@ -24224,7 +24284,7 @@ components:
           type: string
         version:
           description: The version number of the proof.
-          type: number
+          type: integer
         lastUpdatedAt:
           $ref: '#/components/schemas/Timestamp'
         lastUpdatedBy:
@@ -24259,10 +24319,12 @@ components:
       properties:
         id:
           description: Proof request Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         proofId:
           description: Proof Id of the original proof.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sentBy:
           description: |
             `User` object containing `name` and `email` of the sender.
@@ -24373,7 +24435,8 @@ components:
         - reports
       properties:
         virtualColumnId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: >-
             This property refers to the cell's parent column in the report,
             while the columnId property refers to the cell's parent column in
@@ -24387,7 +24450,8 @@ components:
       properties:
         virtualId:
           description: The virtual Id of this report column.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetNameColumn:
           description: Returns true only for the special "Sheet Name" report column.
           type: boolean
@@ -24447,7 +24511,8 @@ components:
         - reports
       properties:
         sheetId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: The Id of the sheet from which the row originates.
     ReportWidgetContent:
       type: object
@@ -24459,7 +24524,8 @@ components:
             - GRIDGANTT
         reportId:
           description: Report Id denoting container source.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         htmlContent:
           description: HTMl snippet to render report.
           type: string
@@ -24478,7 +24544,7 @@ components:
           description: >-
             New version of the sheet. Applicable only for operations which
             update sheet data.
-          type: number
+          type: integer
           nullable: true
     RichTextWidgetContent:
       type: object
@@ -24519,13 +24585,16 @@ components:
       properties:
         id:
           description: Row Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: Parent sheet Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         siblingId:
           description: Sibling Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         attachments:
@@ -24613,13 +24682,13 @@ components:
           type: string
         rowNumber:
           description: Row number within the sheet.
-          type: number
+          type: integer
           minimum: 1
         version:
           description: >-
             Sheet version number that is incremented every time a sheet is
             modified.
-          type: number
+          type: integer
     RowEmail:
       allOf:
         - $ref: '#/components/schemas/Email'
@@ -24631,7 +24700,7 @@ components:
           description: The Id of the columns to be included.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
         includeAttachments:
           description: Indicates whether to include attachments in the email.
           type: boolean
@@ -24653,10 +24722,12 @@ components:
       properties:
         from:
           description: Row Id in the source sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         to:
           description: Row Id in the destination sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     Schedule:
       type: object
       properties:
@@ -24748,7 +24819,7 @@ components:
 
             For more details, refer to the Table of Schedule Object’s Attributes
             below.
-          type: number
+          type: integer
           minimum: 1
           maximum: 31
         dayOrdinal:
@@ -24784,7 +24855,7 @@ components:
 
             For more details, refer to the Table of Schedule Object’s Attributes
             below.
-          type: number
+          type: integer
           minimum: 1
           maximum: 99
         endAt:
@@ -24889,7 +24960,7 @@ components:
             $ref: '#/components/schemas/SearchResultItem'
         totalCount:
           description: Total number of search results.
-          type: number
+          type: integer
     SearchResultItem:
       type: object
       x-tags:
@@ -24897,10 +24968,12 @@ components:
       properties:
         objectId:
           description: Search result object Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         parentObjectId:
           description: Search result parent object Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         contextData:
           description: >-
             Additional info about the search result item. If the item has a
@@ -24932,16 +25005,20 @@ components:
       properties:
         sourceColumnId1:
           description: Defines beginning edge of range when specifying one or more columns.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sourceColumnId2:
           description: Defines ending edge of range when specifying one or more columns.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sourceRowId1:
           description: Defines beginning edge of range when specifying one or more rows.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sourceRowId2:
           description: Defines ending edge of range when specifying one or more rows.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     SentUpdateRequest:
       type: object
       x-tags:
@@ -24949,20 +25026,22 @@ components:
       properties:
         id:
           description: The Id of the sent update request.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         columnIds:
           description: The Ids of columns included in the request.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
         rowIds:
           description: The Ids of rows where an update is requested.
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
         updateRequestId:
           description: The Id of the originating update request.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         includeAttachments:
           description: Indicates whether the attachments were included in the email.
           type: boolean
@@ -25021,10 +25100,12 @@ components:
           type: string
         groupId:
           description: Group Id if the share is a group share, else null.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         userId:
           description: User Id if the share is a user share, else null.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           description: |
             The type of this share. One of the following values: GROUP or USER.
@@ -25089,16 +25170,19 @@ components:
       properties:
         id:
           description: Sheet Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         fromId:
           description: >-
             The Id of the template from which to create the sheet. This
             attribute can be specified in a request, but is never present in a
             response.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         ownerId:
           description: User Id of the sheet owner.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         attachments:
@@ -25210,14 +25294,14 @@ components:
           $ref: '#/components/schemas/SheetSummary'
         totalRowCount:
           description: The total number of rows in the sheet.
-          type: number
+          type: integer
         userPermissions:
           $ref: '#/components/schemas/SheetUserPermissions'
         userSettings:
           $ref: '#/components/schemas/SheetUserSettings'
         version:
           description: A number that is incremented every time a sheet is modified.
-          type: number
+          type: integer
         workspace:
           $ref: '#/components/schemas/WorkspaceListing'
     SheetEmail:
@@ -25416,7 +25500,7 @@ components:
           type: string
         order:
           description: The display order for the ShortcutWidgetItem object.
-          type: number
+          type: integer
     ShortcutWidgetContent:
       type: object
       title: Shortcut
@@ -25451,7 +25535,7 @@ components:
           readOnly: true
         columnCount:
           description: Number of columns that the dashboard contains.
-          type: number
+          type: integer
           readOnly: true
         source:
           $ref: '#/components/schemas/Source'
@@ -25468,7 +25552,8 @@ components:
           properties:
             id:
               description: Workspace Id.
-              type: number
+              allOf:
+                - $ref: '#/components/schemas/Int64'
             name:
               description: Workspace name.
               type: string
@@ -25519,7 +25604,7 @@ components:
       type: object
       properties:
         columnId:
-          type: number
+          $ref: '#/components/schemas/Int64'
         direction:
           description: Direction of the sort.
           type: string
@@ -25542,7 +25627,8 @@ components:
           description: >
             The Id of the dashboard, report, sheet, or template from which the
             enclosing dashboard, report, sheet, or template was created.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           description: |
             **report**, **sheet**, **sight** (aka dashboard), or **template**.
@@ -25576,7 +25662,7 @@ components:
           description: A column Id or Ids
           type: array
           items:
-            type: number
+            $ref: '#/components/schemas/Int64'
           example:
             - 7318427511613316
             - 7318427511613123
@@ -25587,7 +25673,8 @@ components:
       properties:
         id:
           description: SummaryField Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         contactOptions:
           description: >-
             Array of ContactOption objects to specify a pre-defined list of
@@ -25624,7 +25711,7 @@ components:
           $ref: '#/components/schemas/Image'
         index:
           description: Field index or position. This number is zero-based.
-          type: number
+          type: integer
         locked:
           description: Indicates whether the field is locked.
           type: boolean
@@ -25680,7 +25767,8 @@ components:
       properties:
         id:
           description: Template Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           description: Type of template. Only applicable to public templates.
           type: string
@@ -25896,7 +25984,7 @@ components:
           readOnly: true
         expires_in:
           description: Number of seconds token is valid once issued.
-          type: number
+          type: integer
           default: 604799
           readOnly: true
         refresh_token:
@@ -25921,7 +26009,8 @@ components:
           properties:
             id:
               description: Id of the update request.
-              type: number
+              allOf:
+                - $ref: '#/components/schemas/Int64'
             createdAt:
               description: >-
                 The date and time for when this request was originally created.
@@ -25989,7 +26078,8 @@ components:
       properties:
         id:
           description: User Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           readOnly: true
           example: 48569348493401200
         admin:
@@ -26061,7 +26151,7 @@ components:
             **DISCONTINUED** - The `sheetCount` attribute now holds the value
             `-1` and is included only if the retrieved user's `status` is
             `ACTIVE`.
-          type: number
+          type: integer
           readOnly: true
           example: -1
           default: -1
@@ -26084,7 +26174,8 @@ components:
       properties:
         id:
           description: Current user's Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 48569348493401200
         account:
           $ref: '#/components/schemas/Account'
@@ -26181,7 +26272,7 @@ components:
             **DISCONTINUED** - The `sheetCount` attribute now holds the value
             `-1` and is included only if the retrieved user's `status` is
             `ACTIVE`.
-          type: number
+          type: integer
           example: -1
           default: -1
           minimum: -1
@@ -26218,7 +26309,8 @@ components:
           properties:
             id:
               description: Webhook Id.
-              type: number
+              allOf:
+                - $ref: '#/components/schemas/Int64'
               readOnly: true
               example: 8444254503626628
             apiClientId:
@@ -26230,7 +26322,8 @@ components:
               readOnly: true
               example: '555555'
             scopeObjectId:
-              type: number
+              allOf:
+                - $ref: '#/components/schemas/Int64'
               description: >-
                 Id of the object that is subscribed to. Specified when a webhook
                 is created and cannot be changed.
@@ -26283,7 +26376,7 @@ components:
                   readOnly: true
                   description: When this webhook last made a callback attempt.
                 lastCallbackAttemptRetryCount:
-                  type: number
+                  type: integer
                   readOnly: true
                   description: >-
                     The number of retries the webhook had performed as of the
@@ -26321,7 +26414,8 @@ components:
       properties:
         id:
           description: Widget Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         type:
           description: Type of widget.
           type: string
@@ -26350,7 +26444,7 @@ components:
             - $ref: '#/components/schemas/WebContentWidgetContent'
         height:
           description: Number of rows that the widget occupies on the dashboard.
-          type: number
+          type: integer
         showTitle:
           description: >-
             True indicates that the client should display the widget title. This
@@ -26374,26 +26468,26 @@ components:
           $ref: '#/components/schemas/DashboardFont'
         version:
           description: Widget version number.
-          type: number
+          type: integer
         viewMode:
           description: >
             Indicates the content layout. Must use a query parameter of level=2
             to see this information.
              * 1 - centered
              * 2 - left aligned
-          type: number
+          type: integer
           enum:
             - 1
             - 2
         width:
           description: Number of columns that the widget occupies on the dashboard.
-          type: number
+          type: integer
         xPosition:
           description: X-coordinate of widget's position on the dashboard.
-          type: number
+          type: integer
         yPosition:
           description: Y-coordinate of widget's position on the dashboard.
-          type: number
+          type: integer
     WidgetHyperlink:
       type: object
       properties:
@@ -26420,22 +26514,27 @@ components:
             - WEB
         folderId:
           description: If interactionType = SMARTSHEET_ITEM this is the folder to open.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         reportId:
           description: If interactionType = SMARTSHEET_ITEM this is the report to open.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: If interactionType = SMARTSHEET_ITEM this is the sheet to open.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sightId:
           description: If interactionType = SMARTSHEET_ITEM this is the dashboard to open.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         url:
           description: If interactionType = WEB this is the URL to launch.
           type: string
         workspaceId:
           description: If interactionType = SMARTSHEET_ITEM this is the workspace to open.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     Workspace:
       description: Can contain dashboards, folders, reports, sheets, and templates.
       type: object
@@ -26444,7 +26543,8 @@ components:
       properties:
         id:
           description: Workspace Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: Workspace name.
           type: string
@@ -26477,7 +26577,7 @@ components:
       type: string
       format: date-time
     Timestamp_number:
-      type: number
+      $ref: '#/components/schemas/Int64'
     GenericResult:
       type: object
       properties:
@@ -26494,7 +26594,7 @@ components:
           description: |-
             * '0' Success
             * '3' Partial Success of Bulk Operation
-          type: number
+          type: integer
           enum:
             - 0
             - 3
@@ -26503,7 +26603,8 @@ components:
       properties:
         id:
           description: Asset Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: Asset name.
           type: string
@@ -26515,7 +26616,8 @@ components:
       properties:
         id:
           description: Asset Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: Asset name.
           type: string
@@ -26526,6 +26628,9 @@ components:
           $ref: '#/components/schemas/Timestamp'
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
+    Int64:
+      type: integer
+      format: int64
     ItemResult:
       type: object
       allOf:
@@ -26549,7 +26654,8 @@ components:
         destinationId:
           description: |
             The ID of the destination container.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         destinationType:
           description: >
             Type of destination container.
@@ -26618,7 +26724,7 @@ components:
         - TEXT_NUMBER
       description: See [Column Types](/api/smartsheet/openapi/columns)
     width:
-      type: number
+      type: integer
       description: Display width of the column in pixels.
     ColumnToCreateASheet:
       type: object
@@ -26664,7 +26770,8 @@ components:
       properties:
         fromId:
           description: Template Id from which to create the sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           $ref: '#/components/schemas/name'
     columns:
@@ -26673,7 +26780,8 @@ components:
         $ref: '#/components/schemas/Column'
     id:
       description: Sheet Id.
-      type: number
+      allOf:
+        - $ref: '#/components/schemas/Int64'
     permalink:
       description: URL that represents a direct link to the sheet in Smartsheet.
       type: string
@@ -26866,7 +26974,8 @@ components:
       properties:
         id:
           description: Workspace Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: Workspace name.
           type: string
@@ -26888,7 +26997,8 @@ components:
       properties:
         id:
           description: Dashboard Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           readOnly: true
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
@@ -27011,9 +27121,9 @@ components:
       type: object
       properties:
         x:
-          type: number
+          type: integer
         'y':
-          type: number
+          type: integer
         xFormat:
           type: string
           description: >-
@@ -27062,7 +27172,7 @@ components:
             - STEPPED
             - STRAIGHT
         holeSize:
-          type: number
+          type: integer
         isFilled:
           type: boolean
         isHalf:
@@ -27175,7 +27285,8 @@ components:
             ownerId (optional)
 
             Id of an admin user to whom the group ownership is transferred.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 94094820842
     Recipient_Individual:
       type: object
@@ -27202,11 +27313,12 @@ components:
       properties:
         groupId:
           description: The Id of a group recipient.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           example: 2258118617917316
     version:
       description: A number that is incremented every time a sheet is modified.
-      type: number
+      type: integer
     schemas-Sheet:
       type: object
       properties:
@@ -27231,7 +27343,7 @@ components:
       properties:
         version:
           description: A number that represents the current sheet version.
-          type: number
+          type: integer
     UpdateSheet:
       type: object
       properties:
@@ -27253,17 +27365,18 @@ components:
           example: SUCCESS
         resultCode:
           description: '* ''0'' Success'
-          type: number
+          type: integer
           enum:
             - 0
     GetColumn:
       type: object
       properties:
         id:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Column Id.
         index:
-          type: number
+          type: integer
           description: Column index or position. This number is zero-based.
         symbol:
           type: string
@@ -27320,7 +27433,7 @@ components:
           type: boolean
           description: Indicates whether the column is hidden.
         index:
-          type: number
+          type: integer
           description: Column index or position. This number is zero-based.
         autoNumberFormat:
           $ref: '#/components/schemas/AutoNumberFormat'
@@ -27373,7 +27486,7 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**)
         version:
-          type: number
+          type: integer
           description: >
             Read only. The level of the column type. Each element in the array
             is set to one of the following values:
@@ -27384,16 +27497,17 @@ components:
             See [Versioning and
             changes](/api/smartsheet/guides/basics/versioning-and-changes).
         width:
-          type: number
+          type: integer
           description: Display width of the column in pixels.
     AddColumns:
       type: object
       properties:
         id:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Column Id.
         index:
-          type: number
+          type: integer
           description: Column index or position. This number is zero-based.
         title:
           type: string
@@ -27424,16 +27538,17 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**).
         width:
-          type: number
+          type: integer
           description: Display width of the column in pixels.
     UpdateColumn:
       type: object
       properties:
         id:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: Column Id.
         index:
-          type: number
+          type: integer
           description: Column index or position. This number is zero-based.
         options:
           type: array
@@ -27488,7 +27603,8 @@ components:
       properties:
         sourceSheetId:
           description: Sheet Id of source sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: >-
             Friendly name of reference. Auto-generated unless specified in
@@ -27498,12 +27614,14 @@ components:
           description: >-
             Defines ending edge of range when specifying one or more columns.
             Must be used with startColumnId.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         startColumnId:
           description: >-
             Defines beginning edge of range when specifying one or more columns.
             Must be used with endColumnId.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     CrossSheetReferenceRequestWithRowIds:
       type: object
       description: >-
@@ -27512,7 +27630,8 @@ components:
       properties:
         sourceSheetId:
           description: Sheet Id of source sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: >-
             Friendly name of reference. Auto-generated unless specified in
@@ -27522,19 +27641,22 @@ components:
           description: >-
             Defines ending edge of range when specifying one or more rows. Must
             be used with startRowId.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         startRowId:
           description: >-
             Defines beginning edge of range when specifying one or more rows.
             Must be used with endRowId.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     CrossSheetReferenceRequestWithColumnAndRowIds:
       type: object
       description: CrossSheetReference object to create with specified cell range.
       properties:
         sourceSheetId:
           description: Sheet Id of source sheet.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: >-
             Friendly name of reference. Auto-generated unless specified in
@@ -27545,25 +27667,29 @@ components:
             Defines ending edge of range when specifying one or more columns.
             Must be used with startColumnId. To specify an entire column, omit
             the startRowId and endRowId parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         endRowId:
           description: >-
             Defines ending edge of range when specifying one or more rows. Must
             be used with startRowId. To specify an entire row, omit the
             startColumnId and endColumnId parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         startColumnId:
           description: >-
             Defines beginning edge of range when specifying one or more columns.
             Must be used with endColumnId. To specify an entire column, omit the
             startRowId and endRowId parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         startRowId:
           description: >-
             Defines beginning edge of range when specifying one or more rows.
             Must be used with endRowId. To specify an entire row, omit the
             startColumnId and endColumnId parameters.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     CommentRequest:
       description: Comment.
       type: object
@@ -27709,7 +27835,8 @@ components:
       type: object
       properties:
         columnId:
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           description: The Id of the column that the cell is located in.
         columnType:
           type: string
@@ -27735,17 +27862,19 @@ components:
       properties:
         id:
           description: Row Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         rowNumber:
           description: Row number within the sheet.
-          type: number
+          type: integer
           minimum: 1
         parentRowNumber:
           description: The row number of the parent.
-          type: number
+          type: integer
         parentId:
           description: The Id of the parent.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         expanded:
           description: Indicates whether the row is expanded or collapsed.
           type: boolean
@@ -27762,19 +27891,21 @@ components:
           description: >-
             Sheet version number that is incremented every time a sheet is
             modified.
-          type: number
+          type: integer
     AddRowsObject:
       type: object
       properties:
         id:
           description: Row Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: Parent sheet Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         rowNumber:
           description: Row number within the sheet.
-          type: number
+          type: integer
           minimum: 1
         expanded:
           description: Indicates whether the row is expanded or collapsed.
@@ -27792,19 +27923,21 @@ components:
           description: >-
             Sheet version number that is incremented every time a sheet is
             modified.
-          type: number
+          type: integer
     GetRowObject:
       type: object
       properties:
         id:
           description: Row Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         sheetId:
           description: Parent sheet Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         rowNumber:
           description: Row number within the sheet.
-          type: number
+          type: integer
           minimum: 1
         expanded:
           description: Indicates whether the row is expanded or collapsed.
@@ -27820,7 +27953,8 @@ components:
           $ref: '#/components/schemas/Timestamp'
     properties-id:
       description: SummaryField Id.
-      type: number
+      allOf:
+        - $ref: '#/components/schemas/Int64'
     properties-contactOptions:
       description: >-
         Array of ContactOption objects to specify a pre-defined list of values
@@ -27839,7 +27973,7 @@ components:
       type: string
     index:
       description: Field index or position. This number is zero-based.
-      type: number
+      type: integer
     locked:
       description: Indicates whether the field is locked.
       type: boolean
@@ -27940,10 +28074,11 @@ components:
       properties:
         id:
           description: SummaryField Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         index:
           description: Field index or position. This number is zero-based.
-          type: number
+          type: integer
         title:
           description: Arbitrary name, must be unique within summary.
           type: string
@@ -27982,7 +28117,7 @@ components:
           description: >-
             Sheet version number that is incremented every time a sheet is
             modified.
-          type: number
+          type: integer
     Timestamp_Writeable:
       oneOf:
         - $ref: '#/components/schemas/Timestamp_date-time'
@@ -28007,7 +28142,8 @@ components:
       properties:
         id:
           description: Sheet Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
           description: Sheet name.
           type: string
@@ -28018,7 +28154,8 @@ components:
         ownerId:
           description: Set to a static value of "0".
           example: 0
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
     UserUpdate:
       description: |
         Updates User for the following attributes:
@@ -28092,7 +28229,8 @@ components:
           $ref: '#/components/schemas/ProfileImage'
         id:
           description: User Id.
-          type: number
+          allOf:
+            - $ref: '#/components/schemas/Int64'
           readOnly: true
           example: 48569348493401200
     AddAlternateEmail:
@@ -28129,7 +28267,7 @@ components:
             webhook functionality is released. For example, a webhook with a
             version of 1 is guaranteed to always be sent callback objects that
             are compatible with the version 1 release of webhooks.
-          type: number
+          type: integer
           example: 1
           minimum: 1
           maximum: 1
@@ -28253,7 +28391,7 @@ components:
         value greater than the total number of pages, the last page of results
         is returned.
       schema:
-        type: number
+        type: integer
         default: 1
     pageSize:
       name: pageSize
@@ -28266,13 +28404,13 @@ components:
         you need larger sets of data from your report, returns a maximum of
         10,000 rows per request.
       schema:
-        type: number
+        type: integer
         default: 100
     contactId:
       name: contactId
       in: path
       schema:
-        type: number
+        type: string
       required: true
       description: contactId of the contact being accessed.
     contactInclude:
@@ -28356,14 +28494,14 @@ components:
       name: favoriteId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Favorite Id, e.g., sheet Id, report Id.
     folderId:
       name: folderId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: >-
         Folder Id where you can create sheets, sights, reports, templates, and
@@ -28495,7 +28633,7 @@ components:
       name: headerRowIndex
       in: query
       schema:
-        type: number
+        type: integer
       required: false
       description: >
         A zero-based integer indicating the row number to use for column names.
@@ -28506,7 +28644,7 @@ components:
       name: primaryColumnIndex
       in: query
       schema:
-        type: number
+        type: integer
         default: 0
       required: false
       description: |
@@ -28517,14 +28655,14 @@ components:
       in: path
       required: true
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
     userId:
       name: userId
       description: User Id
       in: path
       required: true
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
     Accept:
       name: Accept
       in: header
@@ -28543,13 +28681,13 @@ components:
         backwards-compatibility, VIEWER is the default. For example, to see
         whether a user has COMMENTER access for a sheet, use accessApiLevel=1.
       schema:
-        type: number
+        type: integer
         default: 0
     reportId:
       name: reportId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: reportID of the report being accessed.
     reportInclude:
@@ -28692,7 +28830,7 @@ components:
       name: sheetId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Sheet Id of the sheet being accessed.
     sheetInclude:
@@ -28864,14 +29002,14 @@ components:
       required: true
       description: ID of the attachment
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     automationRuleId:
       name: automationRuleId
       in: path
       required: true
       description: The Id of an Automation Rule
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     columnsLevel:
       name: level
       in: query
@@ -28892,7 +29030,7 @@ components:
       name: columnId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Column Id in the sheet being accessed.
     commentId:
@@ -28901,12 +29039,12 @@ components:
       required: true
       description: ID of the comment
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     crossSheetReferenceId:
       name: crossSheetReferenceId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Cross-sheet Reference Id
     discussionInclude:
@@ -28928,14 +29066,14 @@ components:
       required: true
       description: ID of the discussion
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     proofId:
       name: proofId
       in: path
       required: true
       description: Proof Id of the original proof
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     proofInclude:
       name: include
       in: query
@@ -29050,7 +29188,7 @@ components:
       name: rowId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Row Id in the sheet being accessed.
     rowInclude:
@@ -29178,7 +29316,7 @@ components:
       name: fieldId
       in: path
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
       required: true
       description: Summary Field Id of the sheet summary field being accessed.
     sortRows:
@@ -29196,7 +29334,7 @@ components:
       required: true
       description: SightID of the sight being accessed.
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     sightInclude:
       name: include
       in: query
@@ -29263,14 +29401,14 @@ components:
       in: path
       required: true
       schema:
-        type: number
+        $ref: '#/components/schemas/Int64'
     webhookId:
       name: webhookId
       in: path
       required: true
       description: The Id of a Webhook
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
     workspaceCreateInclude:
       name: include
       in: query
@@ -29308,7 +29446,7 @@ components:
       name: workspaceId
       in: path
       schema:
-        type: string
+        $ref: '#/components/schemas/Int64'
       required: true
       description: WorkspaceID of the worksheet being accessed.
   responses:
