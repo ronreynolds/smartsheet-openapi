@@ -4,9 +4,16 @@
 * commit messages: `<type>[(<scope>)]: <description>`
   * types: fix, feature, build, test, chore, perf, docs, style, refactor, revert, ci, logs, tools
 
-## 0.1.5 - unreleased
+## 0.2.0 - unreleased
 ### ToDo
-* continue to implement integration-tests to uncover issues in spec and generated API code
+* sync up with the latest Smartsheet OpenAPI spec as of 2025-05-21; also switch to yaml for extra "fun"
+* repair until all currently-implemented integration tests pass again
+
+## 0.1.5 - 2025-05-21
+### Added
+* many api integration tests and various improvements to the testing data to support it (in particular secrets and `ExtProperties`)
+### Changed
+* various bits of the spec to bring it more in line with the Smartsheet API request/response
 
 ## 0.1.4 - 2025-05-05
 ### Added
