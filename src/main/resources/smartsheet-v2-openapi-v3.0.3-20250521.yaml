@@ -2472,7 +2472,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         type: array
                         items:
                           $ref: '#/components/schemas/Folder'
@@ -4041,7 +4041,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         type: array
                         items:
                           $ref: '#/components/schemas/Folder'
@@ -5167,7 +5167,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
@@ -15438,7 +15438,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
@@ -16857,7 +16857,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         type: array
                         items:
                           $ref: '#/components/schemas/Share'
@@ -18609,7 +18609,7 @@ paths:
                   - $ref: '#/components/schemas/GenericResult'
                   - type: object
                     properties:
-                      data:
+                      result:
                         description: Updated User Properties
                         type: array
                         items:
@@ -20292,7 +20292,7 @@ paths:
                   - $ref: '#/components/schemas/GenericResult'
                   - type: object
                     properties:
-                      data:
+                      result:
                         oneOf:
                           - $ref: '#/components/schemas/WorkspaceListing'
         default:
@@ -21238,7 +21238,7 @@ paths:
                   - $ref: '#/components/schemas/IndexResult'
                   - type: object
                     properties:
-                      result:
+                      data:
                         $ref: '#/components/schemas/ShareArray'
         default:
           description: Generic Error Payload
