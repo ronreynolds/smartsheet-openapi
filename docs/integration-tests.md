@@ -1,16 +1,56 @@
-## Integration Tests
+# Integration Tests
 this project contains generated integration tests for all generated domain-specific `Api` classes.  the purpose of this doc is to
 track the progress of their implementations.  all such tests live in `src/test/java/.../it/` and most of them are currently disabled.
 the package also contains a `TestData` class in an attempt to consolidate constants used to query or validate the API.
 
+## Tests Summary
+### Finished Tests
+* `CellsApiTest`
+* `ContactsApiTest`
+* `EventsApiTest`
+* `FavoritesApiTest`
+* `ServerInfoApiTest`
+* `TemplatesApiTest`
+
+### Nearly Finished Tests
+* `SearchApiTest` - just need more validation logic
+* `UsersApiTest` - one method to go!
+
+### Unfinished Tests
+* `AlternateEmailAddressApiTest`
+* `AttachmentsApiTest`
+* `AutomationRulesApiTest`
+* `CellImagesApiTest`
+* `ColumnsApiTest`
+* `CommentsApiTest`
+* `CrossSheetReferencesApiTest`
+* `DashboardsApiTest`
+* `DiscussionsApiTest`
+* `FoldersApiTest`
+* `GroupMembersApiTest`
+* `GroupsApiTest`
+* `HomeApiTest`
+* `ImportApiTest`
+* `ProofsApiTest`
+* `ReportsApiTest`
+* `RowsApiTest`
+* `SharingApiTest`
+* `SheetsApiTest`
+* `SheetSummaryApiTest`
+* `TokenApiTest`
+* `UpdateRequestsApiTest`
+* `WebhooksApiTest`
+* `WorkspacesApiTest`
+
+## Individual Test Statuses
 ### AlternateEmailAddressApiTest 
 * In-Progress
-    * `addAlternateEmailTest`
-      * failed with a 500; oops!
-    * `deleteAlternateEmailTest`
-      * need to add alternate email to delete
-    * `promoteAlternateEmailTest`
-      * need to add alternate email to test with
+  * `addAlternateEmailTest`
+    * failed with a 500; oops!
+  * `deleteAlternateEmailTest`
+    * need to add alternate email to delete
+  * `promoteAlternateEmailTest`
+    * need to add alternate email to test with
 * Blocked
   * unable to create new alternate-email so makes it difficult to continue testing
     * `addAlternateEmail call failed with: 500 - { "errorCode" : 4000, "message" : "An unexpected error has occurred. Please contact the Support team at https://help.smartsheet.com/contact for assistance.", "refId" : "8ocvwq"}`
@@ -25,7 +65,6 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `attachmentsDeleteTest`
   * `attachmentsVersionUploadTest`
   * `attachmentsVersionsDeleteTest`
-  * `discussionListAttachmentsTest`
   * `rowAttachmentsAttachFileTest`
 * In-Progress
 * Blocked
@@ -36,18 +75,19 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `attachmentsListOnRowTest`
   * `attachmentsListOnSheetTest`
   * `attachmentsVersionListTest`
+  * `discussionListAttachmentsTest`
 
 ### AutomationRulesApiTest
 * To-Do
 * In-Progress
-    * `automationruleDeleteTest`
-      * need to add ID; unfortunately can't create automation-rules via API so will have to create via Web-UI
-    * `automationruleGetTest`
-      * failing with 404; not sure why (possibly replication delay?)
-    * `automationruleUpdateTest`
-      * failing with 404; also possibly replication delay
-    * `automationrulesListTest`
-      * needs more validation logic but response is parsing but is currently empty (even tho rule created via Web-UI)
+  * `automationruleDeleteTest`
+    * need to add ID; unfortunately can't create automation-rules via API so will have to create via Web-UI
+  * `automationruleGetTest`
+    * failing with 404; not sure why (possibly replication delay?)
+  * `automationruleUpdateTest`
+    * failing with 404; also possibly replication delay
+  * `automationrulesListTest`
+    * needs more validation logic but response is parsing but is currently empty (even tho rule created via Web-UI)
 * Blocked
   * possibly replication-delay of newly-created rule to be visible via API
 * Done
@@ -55,28 +95,26 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### CellImagesApiTest
 * To-Do
   * `addImageToCellTest`
-  * `listImageUrlsTest`
 * In-Progress
 * Blocked
+  * need test image to add to a cell
 * Done
+  * `listImageUrlsTest`
 
 ### CellsApiTest
-* In-Progress
-  * `cellHistoryGetTest`
-    * works; just needs more validation
-* Blocked
 * Done
+  * `cellHistoryGetTest`
 
 ### ColumnsApiTest
 * To-Do
   * `columnDeleteTest`
-  * `columnGetTest`
   * `columnUpdateColumnTest`
   * `columnsAddToSheetTest`
-  * `columnsListOnSheetTest`
 * In-Progress
 * Blocked
 * Done
+  * `columnGetTest`
+  * `columnsListOnSheetTest`
 
 ### CommentsApiTest
 * To-Do
@@ -86,15 +124,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
-    * `commentGetTest`
+  * `commentGetTest`
 
 ### ContactsApiTest
-* To-Do
+* Done
   * `getContactTest`
   * `listContactsTest`
-* In-Progress
-* Blocked
-* Done
 
 ### CrossSheetReferencesApiTest
 * To-Do
@@ -109,20 +144,21 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * To-Do
   * `copySightTest`
   * `deleteSightTest`
-  * `deleteSightShareTest`
-  * `getSightTest`
-  * `getSightPublishStatusTest`
-  * `listSightSharesTest`
-  * `listSightsTest`
   * `moveSightTest`
-  * `setSightPublishStatusTest`
-  * `shareSightTest`
-  * `shareSightGetTest`
   * `updateSightTest`
   * `updateSightShareTest`
 * In-Progress
 * Blocked
+  * `getSightTest`
+    * `Failed deserialization for WidgetContents: matching types:[RichTextWidgetContent, TitleWidgetContent], expected 1 (through reference chain: com.ronreynolds.smartsheet.model.Sight["widgets"]->java.util.ArrayList[1])`
 * Done
+  * `deleteSightShareTest`
+  * `getSightPublishStatusTest`
+  * `listSightsTest`
+  * `listSightSharesTest`
+  * `setSightPublishStatusTest`
+  * `shareSightGetTest`
+  * `shareSightTest`
 
 ### DiscussionsApiTest
 * To-Do
@@ -142,15 +178,12 @@ the package also contains a `TestData` class in an attempt to consolidate consta
     * however it fails (expectedly) because our account plan doesn't support this operation :shrug:
 
 ### FavoritesApiTest
-* To-Do
-  * `addFavoriteTest`
-  * `deleteFavoritesByTypeTest`
-  * `deleteFavoritesByTypeAndIdTest`
-  * `getFavoritesTest`
-  * `isFavoriteTest`
-* In-Progress
-* Blocked
 * Done
+    * `addFavoriteTest`
+    * `deleteFavoritesByTypeTest`
+    * `deleteFavoritesByTypeAndIdTest`
+    * `getFavoritesTest`
+    * `isFavoriteTest`
 
 ### FoldersApiTest
 * To-Do
@@ -229,10 +262,6 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 ### ReportsApiTest
 * To-Do
   * `deleteReportShareTest`
-  * `getReportTest`
-  * `getReportPublishTest`
-  * `getReportsTest`
-  * `listReportSharesTest`
   * `sendReportViaEmailTest`
   * `setReportPublishTest`
   * `shareReportTest`
@@ -241,6 +270,10 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
+  * `getReportPublishTest`
+  * `getReportTest`
+  * `getReportsTest`
+  * `listReportSharesTest`
 
 ### RowsApiTest
 * To-Do
@@ -274,18 +307,10 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `deleteSheetShareTest`
   * `deleteSightShareTest`
   * `deleteWorkspaceShareTest`
-  * `listReportSharesTest`
-  * `listSheetSharesTest`
-  * `listSightSharesTest`
-  * `listWorkspaceSharesTest`
   * `shareReportTest`
-  * `shareReportGetTest`
   * `shareSheetTest`
-  * `shareSheetGetTest`
   * `shareSightTest`
-  * `shareSightGetTest`
   * `shareWorkspaceTest`
-  * `shareWorkspaceGetTest`
   * `updateReportShareTest`
   * `updateSheetShareTest`
   * `updateSightShareTest`
@@ -293,6 +318,14 @@ the package also contains a `TestData` class in an attempt to consolidate consta
 * In-Progress
 * Blocked
 * Done
+  * `listReportSharesTest`
+  * `listSheetSharesTest`
+  * `listSightSharesTest`
+  * `listWorkspaceSharesTest`
+  * `shareReportGetTest`
+  * `shareSheetGetTest`
+  * `shareSightGetTest`
+  * `shareWorkspaceGetTest`
 
 ### SheetsApiTest
 * To-Do
@@ -302,23 +335,24 @@ the package also contains a `TestData` class in an attempt to consolidate consta
   * `createSheetInWorkspaceTest`
   * `deleteSheetTest`
   * `deleteSheetShareTest`
+  * `moveSheetTest`
+  * `setSheetPublishTest`
+  * `shareSheetTest`
+  * `updateSheetTest`
+  * `updateSheetShareTest`
+* In-Progress
+  * `getSheetTest`
+    * works; just haven't added much validation logic yet
   * `getSheetPublishTest`
+    * works; so far only asserting that response parses and contains proper values for unpublished sheet
+* Blocked
+* Done
   * `getSheetVersionTest`
   * `listOrgSheetsTest`
   * `listSheetSharesTest`
   * `listSheetsTest`
-  * `moveSheetTest`
-  * `setSheetPublishTest`
-  * `shareSheetTest`
   * `shareSheetGetTest`
   * `sheetSendTest`
-  * `updateSheetTest`
-  * `updateSheetShareTest`
-* In-Progress
-    * `getSheetTest`
-      * works; just haven't added much validation logic yet
-* Blocked
-* Done
 
 ### SheetSummaryApiTest
 * To-Do

@@ -74,4 +74,21 @@ public final class StringUtils {
                 .forEach(i -> buf.append(RANDOM_ASCII_CHARS[i]));
         return buf;
     }
+
+    public static String toUpperCase(String val) {
+        return val != null ? val.toUpperCase() : null;
+    }
+
+    public static String toLowerCase(String val) {
+        return val != null ? val.toLowerCase() : null;
+    }
+
+    public static String prune(String prefix, String valueToPrune) {
+        if (isBlank(valueToPrune) || !valueToPrune.startsWith(prefix)) return valueToPrune;
+        return valueToPrune.substring(prefix.length());
+    }
+
+    public static String appendIfMissing(String value, String suffix) {
+        return value == null || value.endsWith(suffix) ? value : value + suffix;
+    }
 }

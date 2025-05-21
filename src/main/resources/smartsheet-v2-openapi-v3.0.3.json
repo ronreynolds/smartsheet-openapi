@@ -20,6 +20,10 @@
       "description": "EU production API server"
     },
     {
+      "url": "https://api.smartsheet.au/2.0",
+      "description": "AU production API server"
+    },
+    {
       "url": "https://api.smartsheetgov.com/2.0",
       "description": "Gov-US production API server"
     }
@@ -706,6 +710,7 @@
             "description": "Maximum number of events to return as response to this call.\nMust be between 1 through 10,000 (inclusive).\nDefaults to 1,000 if not specified.",
             "schema": {
               "type": "integer",
+              "format": "int32",
               "minimum": 1,
               "maximum": 10000,
               "default": 1000
@@ -865,11 +870,6 @@
             "OAuth2": [
               "ADMIN_WORKSPACES"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -1217,9 +1217,6 @@
         "operationId": "copy-folder",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_folder_copy"
           },
           {
@@ -1338,9 +1335,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_folder_copy"
           },
           {
@@ -1413,11 +1407,6 @@
           }
         ],
         "operationId": "move-folder",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "New folder destination.",
           "required": true,
@@ -1471,9 +1460,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_sheet"
           }
         ],
@@ -1511,10 +1497,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -2188,18 +2174,13 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "Folder to create.",
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Folder"
+                "$ref": "#/components/schemas/FolderBrief"
               }
             }
           }
@@ -2218,7 +2199,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/FolderArray"
+                          "$ref": "#/components/schemas/Folder"
                         }
                       }
                     }
@@ -2234,11 +2215,6 @@
       }
     },
     "/imageurls": {
-      "parameters": [
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
-        }
-      ],
       "post": {
         "operationId": "listImageUrls",
         "summary": "List Image URLs",
@@ -2341,38 +2317,11 @@
                       "properties": {
                         "data": {
                           "description": "List of all accessible reports, referenced by their ID, name, access level, and summary report flag values.",
-                          "type": "array",
-                          "items": {
-                            "type": "object",
-                            "properties": {
-                              "id": {
-                                "allOf": [
-                                  {
-                                    "$ref": "#/components/schemas/Int64"
-                                  }
-                                ],
-                                "description": "The report's unique identifier.",
-                                "example": 987654321
-                              },
-                              "name": {
-                                "type": "string",
-                                "description": "The report's name.",
-                                "example": "Q2 Earnings"
-                              },
-                              "accessLevel": {
-                                "$ref": "#/components/schemas/AccessLevel"
-                              },
-                              "permalink": {
-                                "type": "string",
-                                "description": "URL to the report in Smartsheet.",
-                                "example": "https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21"
-                              },
-                              "isSummaryReport": {
-                                "type": "boolean",
-                                "description": "It is `true` if the report is a sheet summary; otherwise it is a row report."
-                              }
+                          "allOf": [
+                            {
+                              "$ref": "#/components/schemas/ReportBriefArray"
                             }
-                          }
+                          ]
                         }
                       }
                     }
@@ -2523,11 +2472,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -2608,11 +2552,6 @@
             "OAuth2": [
               "ADMIN_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -2780,7 +2719,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -3201,9 +3140,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_sheet"
           }
         ],
@@ -3241,10 +3177,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -3466,7 +3402,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
+                  "allOf": [
                     {
                       "$ref": "#/components/schemas/Sheet"
                     }
@@ -4087,7 +4023,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -4367,11 +4303,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4485,7 +4416,15 @@
                       "$ref": "#/components/schemas/PagedResult"
                     },
                     {
-                      "$ref": "#/components/schemas/ColumnLite"
+                      "type": "object",
+                      "properties": {
+                        "data": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/ColumnBrief"
+                          }
+                        }
+                      }
                     }
                   ]
                 }
@@ -4509,11 +4448,6 @@
             "OAuth2": [
               "ADMIN_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -4635,7 +4569,7 @@
                 "schema": {
                   "allOf": [
                     {
-                      "$ref": "#/components/schemas/ColumnLite"
+                      "$ref": "#/components/schemas/ColumnBrief"
                     }
                   ]
                 }
@@ -4820,11 +4754,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -4993,9 +4922,6 @@
           "$ref": "#/components/parameters/sheetIdInPath"
         },
         {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
-        },
-        {
           "$ref": "#/components/parameters/include_folder_copy"
         },
         {
@@ -5044,7 +4970,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SheetLite"
+                          "$ref": "#/components/schemas/SheetBrief"
                         }
                       }
                     }
@@ -5069,11 +4995,6 @@
         "summary": "Create Cross-sheet References",
         "description": "Adds a cross-sheet reference between two sheets and defines the data range for formulas. Each distinct data range requires a new cross-sheet reference.",
         "operationId": "add-crosssheet-reference",
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "tags": [
           "crossSheetReferences"
         ],
@@ -5456,7 +5377,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -5749,9 +5670,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -5799,9 +5717,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -5859,7 +5774,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SheetLite"
+                          "$ref": "#/components/schemas/SheetBrief"
                         }
                       }
                     }
@@ -6143,7 +6058,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -6285,7 +6200,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -6457,11 +6372,6 @@
             "OAuth2": [
               "WRITE_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -6738,11 +6648,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "description": "SheetPublish object.\n\nFor Read Only, if you do not specify a value for **readOnlyFullAccessibleBy**, the value defaults\nto the organization-level 'Sheet Publishing' setting (if the sheet owner belongs to an organization account)\nor to **ALL** (if the sheet owner does not belong to an organization account).\n\nFor Read Write, if you do not specify a value for **readWriteAccessibleBy**, the value defaults\nto the organization-level 'Sheet Publishing' setting (if the sheet owner belongs to an organization account)\nor to **ALL** (if the sheet owner does not belong to an organization account).\n",
           "content": {
@@ -6808,9 +6713,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/accessApiLevel"
-          },
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           },
           {
             "$ref": "#/components/parameters/allowPartialSuccess"
@@ -6882,7 +6784,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "$ref": "#/components/schemas/CellLite"
+                                  "$ref": "#/components/schemas/CellBrief"
                                 }
                               },
                               "version": {
@@ -7005,9 +6907,6 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/allowPartialSuccess"
           },
           {
@@ -7081,7 +6980,7 @@
                                 "description": "Cells objects.",
                                 "type": "array",
                                 "items": {
-                                  "$ref": "#/components/schemas/CellLite"
+                                  "$ref": "#/components/schemas/CellBrief"
                                 }
                               },
                               "version": {
@@ -7132,11 +7031,6 @@
             "OAuth2": [
               "SHARE_SHEETS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -7191,9 +7085,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "name": "include",
             "in": "query",
@@ -7263,9 +7154,6 @@
           }
         ],
         "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
           {
             "name": "include",
             "in": "query",
@@ -7395,7 +7283,7 @@
                           "description": "Cells objects.",
                           "type": "array",
                           "items": {
-                            "$ref": "#/components/schemas/CellLite"
+                            "$ref": "#/components/schemas/CellBrief"
                           }
                         },
                         "createdAt": {
@@ -7582,7 +7470,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -7832,7 +7720,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CommentLite"
+                "$ref": "#/components/schemas/CommentBrief"
               }
             },
             "multipart/form-data": {
@@ -7911,7 +7799,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           }
         ],
         "requestBody": {
@@ -8636,7 +8524,7 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+            "$ref": "#/components/parameters/contentTypeHeader_OctetStream"
           },
           {
             "$ref": "#/components/parameters/contentDispositionHeader"
@@ -8869,11 +8757,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -8971,11 +8854,15 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestUpdate"
+              }
+            }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Result object containing the modified UpdateRequest object",
@@ -9157,7 +9044,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -9321,9 +9208,6 @@
       "parameters": [
         {
           "$ref": "#/components/parameters/sheetIdInPath"
-        },
-        {
-          "$ref": "#/components/parameters/contentTypeHeader_JSON"
         }
       ],
       "post": {
@@ -9484,7 +9368,7 @@
                             "type": "object",
                             "allOf": [
                               {
-                                "$ref": "#/components/schemas/SightLite"
+                                "$ref": "#/components/schemas/SightBrief"
                               }
                             ],
                             "properties": {
@@ -9579,9 +9463,6 @@
         "parameters": [
           {
             "$ref": "#/components/parameters/numericDates"
-          },
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "tags": [
@@ -9694,9 +9575,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/sightIdInPath"
           }
         ],
@@ -9723,7 +9601,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SightLite"
+                          "$ref": "#/components/schemas/SightBrief"
                         }
                       }
                     }
@@ -9758,9 +9636,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/sightIdInPath"
           }
         ],
@@ -9787,7 +9662,7 @@
                       "type": "object",
                       "properties": {
                         "result": {
-                          "$ref": "#/components/schemas/SightLite"
+                          "$ref": "#/components/schemas/SightBrief"
                         }
                       }
                     }
@@ -9856,11 +9731,6 @@
             "OAuth2": [
               "ADMIN_SIGHTS"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -10025,7 +9895,7 @@
                     {
                       "type": "object",
                       "properties": {
-                        "result": {
+                        "data": {
                           "$ref": "#/components/schemas/ShareArray"
                         }
                       }
@@ -10527,7 +10397,7 @@
                               },
                               "customWelcomeScreenViewed": {
                                 "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/Datetime"
                                   }
@@ -10554,7 +10424,7 @@
                               },
                               "lastLogin": {
                                 "description": "Last login time of the current user.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/Datetime"
                                   }
@@ -10596,7 +10466,7 @@
                               },
                               "status": {
                                 "description": "User status, set to one of the listed enum values.",
-                                "oneOf": [
+                                "allOf": [
                                   {
                                     "$ref": "#/components/schemas/UserStatus"
                                   }
@@ -11583,11 +11453,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11728,11 +11593,6 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -11862,11 +11722,11 @@
             ]
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
+        "requestBody": {
+          "content": {
+            "application/json": {}
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "OK",
@@ -11980,9 +11840,6 @@
         ],
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_workspace"
           },
           {
@@ -11995,7 +11852,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/WorkspaceLite"
+                "$ref": "#/components/schemas/WorkspaceBrief"
               }
             }
           }
@@ -12209,9 +12066,6 @@
         "operationId": "copy-workspace",
         "parameters": [
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_workspace"
           },
           {
@@ -12348,11 +12202,6 @@
             "OAuth2": [
               "ADMIN_WORKSPACES"
             ]
-          }
-        ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
           }
         ],
         "requestBody": {
@@ -12731,9 +12580,6 @@
             "$ref": "#/components/parameters/accessApiLevel"
           },
           {
-            "$ref": "#/components/parameters/contentTypeHeader_JSON"
-          },
-          {
             "$ref": "#/components/parameters/include_sheet"
           }
         ],
@@ -12771,10 +12617,10 @@
                         "result": {
                           "oneOf": [
                             {
-                              "$ref": "#/components/schemas/SheetLite_withColumns"
+                              "$ref": "#/components/schemas/SheetBrief_withColumns"
                             },
                             {
-                              "$ref": "#/components/schemas/SheetLite"
+                              "$ref": "#/components/schemas/SheetBrief"
                             }
                           ]
                         }
@@ -12975,13 +12821,15 @@
         "schema": {
           "type": "string",
           "example": "attachment; filename=\"ProgressReport.docx\""
-        }
+        },
+        "required": true
       },
       "contactIdInPath": {
         "name": "contactId",
         "in": "path",
         "schema": {
-          "$ref": "#/components/schemas/Int64"
+          "type": "string",
+          "example": "AAAAATYU54QAD7_fNhTnhA"
         },
         "description": "contactId of the contact being accessed.",
         "required": true
@@ -13022,6 +12870,15 @@
         "schema": {
           "type": "string",
           "default": "application/json"
+        }
+      },
+      "contentTypeHeader_OctetStream": {
+        "name": "Content-Type",
+        "in": "header",
+        "description": "Required for POST and PUT requests. Defines the structure for the request body.\n",
+        "schema": {
+          "type": "string",
+          "default": "application/octet-stream"
         }
       },
       "discussionIdInPath": {
@@ -13271,7 +13128,7 @@
         "required": true,
         "description": "Proof Id of the original proof",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "renameIfConflict": {
@@ -13359,7 +13216,7 @@
         "required": true,
         "description": "SightID of the sight being accessed.",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "skipRemap_folder_copy": {
@@ -13414,7 +13271,7 @@
         "required": true,
         "description": "The Id of a Webhook",
         "schema": {
-          "type": "string"
+          "$ref": "#/components/schemas/Int64"
         }
       },
       "workspaceIdInPath": {
@@ -13610,7 +13467,7 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -13712,14 +13569,10 @@
           },
           "attachmentSubType": {
             "description": "Attachment sub type. Note--Folder type is for EGNYTE values and the rest are GOOGLE_DRIVE values.",
-            "type": "string",
-            "enum": [
-              "DOCUMENT",
-              "DRAWING",
-              "FOLDER",
-              "PDF",
-              "PRESENTATION",
-              "SPREADSHEET"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AttachmentSubType"
+              }
             ]
           },
           "mimeType": {
@@ -13778,7 +13631,7 @@
           "$ref": "#/components/schemas/Attachment"
         }
       },
-      "AttachmentType_smar": {
+      "AttachmentType": {
         "type": "string",
         "enum": [
           "BOX_COM",
@@ -14137,7 +13990,7 @@
                 },
                 "timestamp": {
                   "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
-                  "oneOf": [
+                  "allOf": [
                     {
                       "$ref": "#/components/schemas/Datetime"
                     }
@@ -14164,7 +14017,7 @@
           },
           "timestamp": {
             "description": "Time that the callback was generated.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -14192,7 +14045,7 @@
             "description": "Only present if objectType is cell. The Id of the column where the cell is located.",
             "nullable": true
           },
-          "rowid": {
+          "rowId": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
@@ -14201,7 +14054,7 @@
             "description": "Only present if objectType is cell. The Id of the row where the cell is located.",
             "nullable": true
           },
-          "userid": {
+          "userId": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
@@ -14237,7 +14090,7 @@
           },
           "timestamp": {
             "description": "Time that this event occurred. A callback may contain events with different timestamps, as multiple separate events may be aggregated into a single callback request.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -14257,7 +14110,11 @@
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
             "description": "Only returned if the include query string parameter contains **columnType**."
           },
           "conditionalFormat": {
@@ -14328,6 +14185,14 @@
               }
             ],
             "description": "A string, number, or a Boolean value -- depending on the cell type and the data in the cell. Cell values larger than 4000 characters are silently truncated. An empty cell returns no value."
+          },
+          "virtualColumnId": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ],
+            "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet. Only used in Reports."
           }
         }
       },
@@ -14522,7 +14387,7 @@
           }
         }
       },
-      "CellLite": {
+      "CellBrief": {
         "type": "object",
         "properties": {
           "columnId": {
@@ -14534,7 +14399,11 @@
             "description": "The Id of the column that the cell is located in."
           },
           "columnType": {
-            "type": "string",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
             "description": "Only returned if the include query string parameter contains **columnType**."
           },
           "value": {
@@ -15084,6 +14953,18 @@
           "width": {
             "description": "Display width of the column in pixels.",
             "type": "integer"
+          },
+          "virtualId": {
+            "description": "The virtual Id of this report column. Only used in Reports.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "sheetNameColumn": {
+            "description": "Returns true only for the special \"Sheet Name\" report column.  Only used in Reports.",
+            "type": "boolean"
           }
         }
       },
@@ -15093,48 +14974,49 @@
           "$ref": "#/components/schemas/Column"
         }
       },
-      "ColumnLite": {
+      "ColumnBrief": {
         "type": "object",
         "properties": {
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/Int64"
-                    }
-                  ],
-                  "description": "Column Id."
-                },
-                "index": {
-                  "type": "integer",
-                  "description": "Column index or position. This number is zero-based."
-                },
-                "symbol": {
-                  "type": "string",
-                  "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
-                },
-                "title": {
-                  "type": "string",
-                  "description": "Column title."
-                },
-                "type": {
-                  "allOf": [
-                    {
-                      "$ref": "#/components/schemas/ColumnType"
-                    }
-                  ],
-                  "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
-                },
-                "validation": {
-                  "type": "boolean",
-                  "description": "Indicates whether validation has been enabled for the column (value = **true**)."
-                }
+          "id": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
               }
-            }
+            ],
+            "description": "Column Id."
+          },
+          "index": {
+            "type": "integer",
+            "description": "Column index or position. This number is zero-based."
+          },
+          "symbol": {
+            "type": "string",
+            "description": "When applicable for **CHECKBOX** or **PICKLIST** column types. See [Symbol Columns](../../tag/columnsRelated#section/Column-Types/Symbol-Columns)."
+          },
+          "title": {
+            "type": "string",
+            "description": "Column title."
+          },
+          "type": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ColumnType"
+              }
+            ],
+            "description": "See [Column Types](../../tag/columnsRelated#section/Column-Types)"
+          },
+          "validation": {
+            "type": "boolean",
+            "description": "Indicates whether validation has been enabled for the column (value = **true**)."
+          },
+          "version": {
+            "type": "integer"
+          },
+          "primary": {
+            "type": "boolean"
+          },
+          "width": {
+            "type": "integer"
           }
         }
       },
@@ -15404,7 +15286,7 @@
           "$ref": "#/components/schemas/Comment"
         }
       },
-      "CommentLite": {
+      "CommentBrief": {
         "type": "object",
         "properties": {
           "comment": {
@@ -15808,7 +15690,7 @@
           },
           "value": {
             "description": "Datetime, in the **date-time** format defined by [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6)",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -16052,6 +15934,7 @@
           "email": {
             "description": "User's email address.",
             "type": "string",
+            "format": "email",
             "example": "johnathan.doe@smartsheet.com"
           }
         }
@@ -16067,27 +15950,20 @@
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "email": {
-                "description": "The email address of an individual recipient.",
-                "type": "string",
-                "format": "email"
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/EmailAddress"
               }
-            }
+            ]
           },
           {
             "type": "object",
             "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "groupId": {
-                "description": "The Id of a group recipient.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Int64"
-                  }
-                ]
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/GroupId"
               }
-            }
+            ]
           }
         ]
       },
@@ -16144,7 +16020,7 @@
           },
           "eventTimeStamp": {
             "description": "Date and time of the event. Defaults to ISO-8601 format. See dates and times for more information.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -16209,15 +16085,13 @@
             ]
           },
           "type": {
-            "type": "string",
-            "enum": [
-              "folder",
-              "report",
-              "sheet",
-              "sight",
-              "template",
-              "workspace"
-            ]
+            "$ref": "#/components/schemas/FavoriteType"
+          },
+          "directId": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
           }
         }
       },
@@ -16449,7 +16323,8 @@
           },
           "name": {
             "description": "Folder name.",
-            "type": "string"
+            "type": "string",
+            "maxLength": 50
           },
           "permalink": {
             "description": "URL that represents a direct link to the folder in Smartsheet.",
@@ -16473,6 +16348,24 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Folder"
+        }
+      },
+      "FolderBrief": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "description": "Folder Id.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          },
+          "name": {
+            "description": "Folder name.",
+            "type": "string",
+            "maxLength": 50
+          }
         }
       },
       "FolderCopyExclude": {
@@ -16745,6 +16638,19 @@
         "type": "array",
         "items": {
           "$ref": "#/components/schemas/Group"
+        }
+      },
+      "GroupId": {
+        "type": "object",
+        "properties": {
+          "groupId": {
+            "description": "The Id of a group recipient.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/Int64"
+              }
+            ]
+          }
         }
       },
       "GroupMember": {
@@ -17247,17 +17153,18 @@
         }
       },
       "PaperSize": {
+        "description": "Specifies paper size.",
         "type": "string",
         "enum": [
-          "LETTER",
-          "LEGAL",
-          "WIDE",
-          "ARCHD",
-          "A4",
-          "A3",
-          "A2",
+          "A0",
           "A1",
-          "A0"
+          "A2",
+          "A3",
+          "A4",
+          "ARCHD",
+          "LEGAL",
+          "LETTER",
+          "WIDE"
         ],
         "default": "LETTER"
       },
@@ -17582,38 +17489,6 @@
           }
         }
       },
-      "Recipient": {
-        "description": "Specifies the recipient of an email. The recipient may be either an individual or a group. To specify an individual, set the email attribute; to specify a group, set the groupId attribute. Either email and groupId may be set, but not both.\n",
-        "oneOf": [
-          {
-            "type": "object",
-            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "email": {
-                "description": "The email address of an individual recipient.",
-                "type": "string",
-                "format": "email",
-                "example": "john.doe@smartsheet.com"
-              }
-            }
-          },
-          {
-            "type": "object",
-            "description": "Specifies the recipient of an [Email]($ref: 'Email.yaml#/components/schemas/Email'). The recipient may be either an individual or a group. To specify an individual, set the **email** attribute; to specify a group, set the **groupId** attribute. Either **email** and **groupId** may be set, but not both.\n",
-            "properties": {
-              "groupId": {
-                "description": "The Id of a group recipient.",
-                "allOf": [
-                  {
-                    "$ref": "#/components/schemas/Int64"
-                  }
-                ],
-                "example": 2258118617917316
-              }
-            }
-          }
-        ]
-      },
       "Report": {
         "allOf": [
           {
@@ -17663,46 +17538,6 @@
           "$ref": "#/components/schemas/Report"
         }
       },
-      "ReportCell": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Cell"
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "virtualColumnId": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ],
-            "description": "This property refers to the cell's parent column in the report, while the columnId property refers to the cell's parent column in its originating source sheet."
-          }
-        }
-      },
-      "ReportColumn": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Column"
-          }
-        ],
-        "type": "object",
-        "properties": {
-          "virtualId": {
-            "description": "The virtual Id of this report column.",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/Int64"
-              }
-            ]
-          },
-          "sheetNameColumn": {
-            "description": "Returns true only for the special \"Sheet Name\" report column.",
-            "type": "boolean"
-          }
-        }
-      },
       "ReportInclude": {
         "type": "string",
         "enum": [
@@ -17742,22 +17577,41 @@
           }
         }
       },
-      "ReportRow": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Row"
-          }
-        ],
+      "ReportBrief": {
         "type": "object",
         "properties": {
-          "sheetId": {
+          "id": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/Int64"
               }
             ],
-            "description": "The Id of the sheet from which the row originates."
+            "description": "The report's unique identifier.",
+            "example": 987654321
+          },
+          "name": {
+            "type": "string",
+            "description": "The report's name.",
+            "example": "Q2 Earnings"
+          },
+          "accessLevel": {
+            "$ref": "#/components/schemas/AccessLevel"
+          },
+          "permalink": {
+            "type": "string",
+            "description": "URL to the report in Smartsheet.",
+            "example": "https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21"
+          },
+          "isSummaryReport": {
+            "type": "boolean",
+            "description": "It is `true` if the report is a sheet summary; otherwise it is a row report."
           }
+        }
+      },
+      "ReportBriefArray": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/ReportBrief"
         }
       },
       "ReportWidgetContent": {
@@ -17827,23 +17681,29 @@
         "type": "object",
         "properties": {
           "message": {
-            "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
-            "type": "string",
-            "enum": [
-              "PARTIAL_SUCCESS",
-              "SUCCESS"
-            ],
-            "example": "SUCCESS"
+            "$ref": "#/components/schemas/ResultPrefixMessage"
           },
           "resultCode": {
-            "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
-            "type": "integer",
-            "enum": [
-              0,
-              3
-            ]
+            "$ref": "#/components/schemas/ResultPrefixCode"
           }
         }
+      },
+      "ResultPrefixCode": {
+        "description": "* '0' Success\n* '3' Partial Success of Bulk Operation",
+        "type": "integer",
+        "enum": [
+          0,
+          3
+        ]
+      },
+      "ResultPrefixMessage": {
+        "description": "Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)",
+        "type": "string",
+        "enum": [
+          "PARTIAL_SUCCESS",
+          "SUCCESS"
+        ],
+        "example": "SUCCESS"
       },
       "RichTextWidgetContent": {
         "type": "object",
@@ -18018,6 +17878,9 @@
           },
           "outdent": {
             "type": "integer"
+          },
+          "dataModifiedAt": {
+            "$ref": "#/components/schemas/Datetime"
           }
         }
       },
@@ -18660,7 +18523,7 @@
             "description": "Array of enum strings (see [Attachment.attachmentType](../../tag/attachmentsDescription) indicating the allowable attachment options for the current user and sheet.\n",
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/AttachmentType"
             }
           },
           "favorite": {
@@ -18858,31 +18721,26 @@
         "type": "object",
         "properties": {
           "format": {
-            "description": "One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.\n",
-            "type": "string"
+            "$ref": "#/components/schemas/SheetEmailFormat"
           },
           "formatDetails": {
             "type": "object",
             "properties": {
               "paperSize": {
-                "description": "Specifies paper size.",
-                "type": "string",
-                "example": "LETTER",
-                "enum": [
-                  "A0",
-                  "A1",
-                  "A2",
-                  "A3",
-                  "A4",
-                  "ARCHID",
-                  "LEGAL",
-                  "LETTER",
-                  "WIDE"
-                ]
+                "$ref": "#/components/schemas/PaperSize"
               }
             }
           }
         }
+      },
+      "SheetEmailFormat": {
+        "description": "One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.\n",
+        "type": "string",
+        "enum": [
+          "EXCEL",
+          "PDF",
+          "PDF_GANTT"
+        ]
       },
       "SheetExclude": {
         "type": "string",
@@ -18983,7 +18841,7 @@
           }
         }
       },
-      "SheetLite": {
+      "SheetBrief": {
         "type": "object",
         "properties": {
           "accessLevel": {
@@ -19000,7 +18858,7 @@
           }
         }
       },
-      "SheetLite_withColumns": {
+      "SheetBrief_withColumns": {
         "type": "object",
         "description": "Sheet created from scratch using the specified columns.",
         "properties": {
@@ -19332,7 +19190,7 @@
         "type": "object",
         "properties": {
           "attachmentType": {
-            "$ref": "#/components/schemas/AttachmentType_smar"
+            "$ref": "#/components/schemas/AttachmentType"
           },
           "hyperlink": {
             "$ref": "#/components/schemas/Hyperlink"
@@ -19376,7 +19234,7 @@
               "type": "object",
               "properties": {
                 "attachmentType": {
-                  "$ref": "#/components/schemas/AttachmentType_smar"
+                  "$ref": "#/components/schemas/AttachmentType"
                 },
                 "hyperlink": {
                   "$ref": "#/components/schemas/Hyperlink"
@@ -19412,7 +19270,7 @@
             "type": "object",
             "allOf": [
               {
-                "$ref": "#/components/schemas/SightLite"
+                "$ref": "#/components/schemas/SightBrief"
               }
             ],
             "properties": {
@@ -19469,7 +19327,7 @@
           "$ref": "#/components/schemas/Sight"
         }
       },
-      "SightLite": {
+      "SightBrief": {
         "type": "object",
         "properties": {
           "id": {
@@ -19569,10 +19427,19 @@
             ]
           },
           "type": {
-            "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
-            "type": "string"
+            "$ref": "#/components/schemas/SourceType"
           }
         }
+      },
+      "SourceType": {
+        "description": "**report**, **sheet**, **sight** (aka dashboard), or **template**.\n",
+        "type": "string",
+        "enum": [
+          "report",
+          "sheet",
+          "sight",
+          "template"
+        ]
       },
       "StreamResult": {
         "description": "StreamResult Object",
@@ -20012,6 +19879,38 @@
           }
         ]
       },
+      "UpdateRequestUpdate": {
+        "type": "object",
+        "properties": {
+          "ccMe": {
+            "type": "boolean"
+          },
+          "columnIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Int64"
+            }
+          },
+          "includeAttachments": {
+            "type": "boolean"
+          },
+          "includeDiscussions": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/Schedule"
+          },
+          "sendTo": {
+            "$ref": "#/components/schemas/EmailOrGroupIdArray"
+          },
+          "subject": {
+            "type": "string"
+          }
+        }
+      },
       "URLAttachmentRequest": {
         "type": "object",
         "properties": {
@@ -20061,7 +19960,7 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20088,7 +19987,7 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20185,7 +20084,7 @@
           },
           "customWelcomeScreenViewed": {
             "description": "Timestamp of viewing an [Enterprise Custom Welcome Screen](https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only) by the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20219,7 +20118,7 @@
           },
           "lastLogin": {
             "description": "Last login time of the current user.",
-            "oneOf": [
+            "allOf": [
               {
                 "$ref": "#/components/schemas/Datetime"
               }
@@ -20484,7 +20383,7 @@
                 "readOnly": true,
                 "properties": {
                   "lastCallbackAttempt": {
-                    "oneOf": [
+                    "allOf": [
                       {
                         "$ref": "#/components/schemas/Datetime"
                       }
@@ -20498,7 +20397,7 @@
                     "description": "The number of retries the webhook had performed as of the last callback attempt."
                   },
                   "lastSuccessfulCallback": {
-                    "oneOf": [
+                    "allOf": [
                       {
                         "$ref": "#/components/schemas/Datetime"
                       }
@@ -20845,7 +20744,7 @@
           "shares"
         ]
       },
-      "WorkspaceLite": {
+      "WorkspaceBrief": {
         "description": "Used to create a workspace (without child containers)",
         "type": "object",
         "properties": {

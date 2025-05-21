@@ -11,6 +11,7 @@ import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.util.assertions.State;
 import lombok.NonNull;
 
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +24,50 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Cells {
+    public enum ValueType {
+        STRING {
+            @Override
+            <T> T getValue(CellValue value) {
+                return (T)value.getString();
+            }
+        },
+        NUMBER {
+            @Override
+            <T> T getValue(CellValue value) {
+                return (T)value.getBigDecimal();
+            }
+        },
+        BOOLEAN {
+            @Override
+            <T> T getValue(CellValue value) {
+                return (T)value.getBoolean();
+            }
+        },
+        NULL {
+            @Override
+            <T> T getValue(CellValue value) {
+                return null;
+            }
+        };
+
+        public static ValueType getValueType(CellValue value) {
+            Object actualValue = value.getActualInstance();
+            if (actualValue == null) {
+                return NULL;    // not sure if this is possible but good to be prepared
+            }
+            if (actualValue instanceof Boolean) {
+                return BOOLEAN;
+            }
+            if (actualValue instanceof String) {
+                return STRING;
+            }
+            if (actualValue instanceof BigDecimal) {
+                return NUMBER;
+            }
+            throw new IllegalStateException("unrecognized value type - " + actualValue);
+        }
+        abstract <T> T getValue(CellValue value);
+    }
     private Cells() {
     }
     public static CellValue makeCellValue(Object value) {
@@ -52,7 +97,7 @@ public class Cells {
                         .hyperlink(null)
                         .linkInFromCell(null));
         updatedRow.setCells(cell);
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, Collections.singletonList(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, Collections.singletonList(updatedRow));
         State.notNull(response, "null response from updateRows");
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "update FAILED - row:%d column:%d value:'%s'", rowId, columnId, value);
@@ -102,7 +147,7 @@ public class Cells {
                         .map(entry -> new Cell().columnId(entry.getKey()).value(makeCellValue(entry.getValue())).strict(true)
                                 .hyperlink(null).linkInFromCell(null))
                         .collect(Collectors.toList()));
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, List.of(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, List.of(updatedRow));
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "failed to update row");
         return result.stream().map(Converters::convert).collect(Collectors.toList());

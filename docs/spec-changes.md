@@ -208,25 +208,12 @@ some parts of the Spec don't match the server responses at all
   * `#/components/schemas/DayOfWeek`
   * `#/components/schemas/Month`
 * `#/components/schemas/UserProfile` missing field `status`
-* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
-  * `#/components/parameters/commentIdInPath` 
-  * `#/components/parameters/discussionIdInPath` 
-  * `#/components/parameters/attachmentIdInPath`
-  * `#/components/parameters/workspaceIdInPath`
 * `#/paths/templates` and `#/paths/templates/public` response 
   * moved the `TemplateArray` into a `data` field
 * `#/paths/folders/personal` response
   * added `id`, `name`, and `permalink` to response schema
 * `#/paths/users/{userId} DELETE` response
   * missing fields `sheetsRemovedFromSharing` and `workspacesRemovedFromSharing`
-* `result` response fields renamed to `data`
-  * `#/paths/folders/{folderId}/folders GET`
-  * `#/paths/home/folders GET`
-  * `#/paths/workspaces/{workspaceId}/shares GET`
-* `data` response fields renamed to `result`
-  * `#/paths/workspaces POST` (create-workspace)
-  * `#/paths/users/{userId} PUT`
-  * `#/paths/workspaces POST`
 * `#/components/schemas/Workspace` 
   * missing many fields, including:
     * `sheets` - array of minimal Sheet records
@@ -241,8 +228,91 @@ some parts of the Spec don't match the server responses at all
     * `Workspace` without child containers (which are not allowed in create-workspace request)
 * `#/components/schemas/Folder` added fields
   * `accessLevel`, `createdAt`, `modifiedAt`
+* `#/components/schemas/Column` added `virtualId` and `sheetNameColumn` fields from (unused and deleted) `ReportColumn` 
+* `#/components/schemas/Cell` added `virtualColumnId` from (unused and deleted) `ReportCell`
+* `#/components/schemas/Row` added `dataModifiedAt` (returned by server; not in latest spec)
+* `#/components/schemas/ColumnBrief.data.items` added `version`, `primary`, and `width` to match server response
+  * called `GetColumn` type in latest schemas (as of 2025-05-12) which is missing those fields also
+* `#/components/schemas/Favorite` added `directId` and `name` to match server response
+
+##### result/data response field mismatch (GET returns 'data'; PUT/POST returns 'result')
+* `result` response field renamed to `data`
+    * `#/paths/folders/{folderId}/folders GET`
+    * `#/paths/home/folders GET`
+    * `#/paths/workspaces/{workspaceId}/shares GET`
+    * `#/paths/reports/{reportId}/shares GET`
+    * `#/paths/sheets/{sheetId}/shares GET`
+    * `#/paths/sights/{sightId}/shares GET`
+* `data` response field renamed to `result`
+    * `#/paths/workspaces POST`
+    * `#/paths/users/{userId} PUT`
+    * `#/paths/workspaces POST`
+
+##### IDs are longs not strings
+* `string` fields that are actually `#/components/schemas/Int64` (i.e., `long`)
+  * `#/components/parameters/attachmentIdInPath`
+  * `#/components/parameters/commentIdInPath`
+  * `#/components/parameters/discussionIdInPath`
+  * `#/components/parameters/proofIdInPath`
+  * `#/components/parameters/sightIdInPath`
+  * `#/components/parameters/webhookIdInPath`
+  * `#/components/parameters/workspaceIdInPath`
+
+##### some IDs are strings not longs
+* `#/components/parameters/contactIdInPath` was long (number) but should be a string
 
 #### further improvements
-* added `#/components/schemas/ShareScope` to replace `string` for `#/components/schemas/Share.scope`
-* added `#/components/schemas/ShareType` to replace `string` for `#/components/schemas/Share.type`
-* changed `#/components/schemas/User.status` from `string-enum` to `#/components/schemas/UserStatus`
+* added `#/components/schemas/ShareScope` enum to replace `string` for `#/components/schemas/Share.scope`
+* added `#/components/schemas/ShareType` enum to replace `string` for `#/components/schemas/Share.type`
+* added `#/components/schemas/UserStatus` enum to replace `string-enum` for `#/components/schemas/User.status` 
+* added `#/components/schemas/GroupId`
+* changed `#/components/schemas/EmailOrGroupId` to use `#/components/schemas/EmailAddress` and `#/components/schemas/GroupId`
+* removed unused `#/components/schemas/Recipient` (also identical in structure to EmailOrGroupId)
+* added `#/components/schemas/SourceType` enum to replace `string` for `#/components/schemas/Source.type`
+* changed `#/components/schemas/SheetEmail.formatDetails.paperSize` from `string-enum` to `#/components/schemas/PaperSize` 
+* added `#/components/schemas/SheetEmailFormat`
+* changed `#/components/schemas/SheetEmail.format` from `string-enum` to `#/components/schemas/SheetEmailFormat`
+* renamed `#/components/schemas/AttachmentType_smar` to `#/components/schemas/AttachmentType` (matches Java-SDK enum)
+* changed `#/components/schemas/Sheet.effectiveAttachmentOptions` from array-string to array-AttachmentType
+* changed `#/components/schemas/Attachment.attachmentSubType` from string-enum to `AttachmentSubType` enum
+* added `#/components/schemas/ReportBrief` and `#/components/schemas/ReportBriefArray` to replace `getReports` response data
+* renamed all "*Lite" types to "*Brief"
+  * `CellLite`
+  * `ColumnLite`
+  * `CommentLite`
+  * `SheetLite`
+  * `SheetLite_withColumns`
+  * `SightLite`
+  * `WorkspaceLite`
+* removed `#/components/parameters/contentTypeHeader_JSON` from all requests that have only 1 content-type (i.e., you can't set this)
+  * TBD how it'll work with requests that can be in multiple content-types
+    * e.g., `attachments-attachToSheet`, `attachments-versionUpload`
+  * also changed content-type param of `attachments-versionUpload` to `contentTypeHeader_FORM` as it doesn't have a JSON request format
+* added `#/components/parameters/contentTypeHeader_OctetStream` for paths that ONLY send octet-stream requests
+  * e.g., `proofs-attachToProof`, `addImageToCell`, `proofs-create`
+* added `#/components/schemas/UpdateRequestUpdate` and added it as requestBody of `updaterequests-update`
+* changed `Cell.columnType` and `CellBrief.columnType` from `string` to `ColumnType`
+* fixed `columns-listOnSheet` response from `ColumnBrief` (which had too many fields) to a simpler inner response type
+* some changes noticed diffing earlier spec with latest 2025-05-12 spec
+  * added AU server endpoint
+  * added `format:int32` to `maxCount` parameter of `#/paths/events GET`
+  * changed `#/components/schemas/CallbackEvent` properties `rowid` and `userid` to `rowId` and `userId`, resp.
+* changed all single-element `oneOf` to `allOf` for consistency
+  * still doesn't fix openapi-parse warning "'oneOf' is intended to include only the additional optional OAS extension discriminator object."
+* moved `#/components/schemas/ResultPrefix` properties `message` and `resultCode` into their own type so that each type build from `ResultPrefix` won't use their own custom inner-classes
+  * added `#/components/schemas/ResultPrefixMessage` and `#/components/schemas/ResultPrefixCode`
+* changed `#/components/schemas/Favorite.type` inner-enum to `#/components/schemas/FavoriteType` top-level enum
+
+#### changes that may or may not be improvements
+* marked `#/components/parameters/contentDispositionHeader` as required; may or may not be required everywhere it's used
+  * definitely required in operation `addImageToCell`; seems unlikely that some APIs would need it and others would not
+
+#### potential issues
+* `Content-Length` is a disallowed header when using the Java-JDK `HttpClient` library
+  * the client will throw an `IllegalArgumentException` if you attempt to set it
+  * this is because the library expects (requires) that only it will set Content-Length from the actual size of the request body
+    * of course with stream-based request bodies this is, in some cases, almost entirely impossible to know in advance
+  * this makes much more sense in chunked HTTP where the chunk size isn't known in advance but chosen by the library
+  * this means we might want to drop Content-Length as a supported parameter in requests because it must ALWAYS be `null` in code
+    * note, however, this is an issue isolated to using the `java-native` library
+    * likely other libraries would allow it or ignore it and generate their own

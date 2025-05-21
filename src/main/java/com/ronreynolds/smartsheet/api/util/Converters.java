@@ -1,7 +1,7 @@
 package com.ronreynolds.smartsheet.api.util;
 
 import com.ronreynolds.smartsheet.model.Cell;
-import com.ronreynolds.smartsheet.model.CellLite;
+import com.ronreynolds.smartsheet.model.CellBrief;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.RowsAddToSheet200ResponseAllOfResultInner;
@@ -43,14 +43,14 @@ public class Converters {
     }
 
 
-    public static List<Cell> convert(List<CellLite> cellLiteList) {
+    public static List<Cell> convert(List<CellBrief> cellLiteList) {
         if (cellLiteList == null) {
             return null;
         }
         return cellLiteList.stream().map(Converters::convert).collect(Collectors.toList());
     }
 
-    public static Cell convert(CellLite cellLite) {
+    public static Cell convert(CellBrief cellLite) {
         return new Cell()
                 .columnId(cellLite.getColumnId())
                 .columnType(cellLite.getColumnType())

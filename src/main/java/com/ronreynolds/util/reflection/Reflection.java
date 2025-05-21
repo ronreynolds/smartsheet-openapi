@@ -32,6 +32,16 @@ public class Reflection {
         return method;
     }
 
+    /** return if the method with name {@code name} exists on the {@code class} with the {@code argTypes} */
+    public static boolean hasMethod(Class<?> clazz, String name, Class<?>... argTypes) {
+        try {
+            getMethod(clazz, name, argTypes);
+        } catch (NoSuchMethodException nope) {
+            return false;
+        }
+        return true;
+    }
+
     private static final Class<?>[] NO_ARG_TYPES = {};
     private static final Object[] NO_ARGS = {};
 
