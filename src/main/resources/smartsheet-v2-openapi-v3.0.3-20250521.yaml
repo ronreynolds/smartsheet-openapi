@@ -1610,11 +1610,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Favorite'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Favorite'
+              $ref: '#/components/schemas/FavoriteArray'
       responses:
         '200':
           description: >-
@@ -1628,11 +1624,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        oneOf:
-                          - $ref: '#/components/schemas/Favorite'
-                          - type: array
-                            items:
-                              $ref: '#/components/schemas/Favorite'
+                        $ref: '#/components/schemas/FavoriteArray'
         default:
           description: Generic Error Payload.
           content:
@@ -11367,11 +11359,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Row'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Row'
+              $ref: '#/components/schemas/RowArray'
       responses:
         '200':
           description: >-
@@ -11798,11 +11786,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/Row'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/Row'
+              $ref: '#/components/schemas/RowArray'
       responses:
         '200':
           description: >-
@@ -18793,11 +18777,7 @@ paths:
         content:
           application/json:
             schema:
-              oneOf:
-                - $ref: '#/components/schemas/AddAlternateEmail'
-                - type: array
-                  items:
-                    $ref: '#/components/schemas/AddAlternateEmail'
+              $ref: '#/components/schemas/AddAlternateEmailArray'
       responses:
         '200':
           description: >
@@ -23389,6 +23369,10 @@ components:
             - sight
             - template
             - workspace
+    FavoriteArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Favorite'
     FilteredEventsRequest:
       type: object
       properties:
@@ -24689,6 +24673,10 @@ components:
             Sheet version number that is incremented every time a sheet is
             modified.
           type: integer
+    RowArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/Row'
     RowEmail:
       allOf:
         - $ref: '#/components/schemas/Email'
@@ -28240,6 +28228,10 @@ components:
           description: User's alternate email address.
           type: string
           example: johnathan.doe@smartsheet.com
+    AddAlternateEmailArray:
+      type: array
+      items:
+        $ref: '#/components/schemas/AddAlternateEmail'
     Create_Webhook_Request:
       type: object
       properties:
