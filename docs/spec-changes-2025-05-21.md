@@ -24,26 +24,34 @@ hopefully not having to do all the previous changes again; i am still hopeful) ;
       * `/sights/{sightId}/shares POST` response
       * `/workspaces/{workspaceId}/shares POST` request and response
       * `/workspaces/{workspaceId}/shares GET` response
-  * `AddGroupMembersRequest`
+  * `AddGroupMembersRequest`, `RowsAddToSheetRequest`
     * added `GroupMemberArray` to replace arrays of `GroupMember`
     * replaced `oneOf(Group, GroupMemberArray)` with just `GroupMemberArray`
     * changed paths:
       * `/groups/{groupId} GET` response
       * `/groups/{groupId}/members POST` request and response
   * `UpdateRowsRequest`
-    * WIP
+    * added `RowArray` and replaced `oneOf(Row,RowArray)` with just `RowArray` 
+    * changed paths:
+      * `/sheets/{sheetId}/rows PUT` request
+      * `/sheets/{sheetId}/rows POST` request
   * `AddFavoriteRequest`
-    * WIP
+    * added `FavoriteArray` and replaced `oneOf(Favorite,FavoriteArray)` with just `FavoriteArray`
+    * changed paths:
+      * `/favorites POST` request and response
   * `AddAlternateEmailRequest`
-    * WIP
+    * added `AddAlternateEmailArray` and replaced `oneOf(AddAlternateEmail,AddAlternateEmailArray)` with `AddAlternateEmailArray` 
+    * changed paths:
+      * `/users/{userId}/alternateemails POST` request
+* openapi-generated code compiles at this point :partying_face:
 
 ### Functional
 #### ID type fixes
 * added `#/components/schemas/Int64` to simplify referencing `long` type
 * changed all numeric IDs that are actually 'long' to `$ref: '#/components/schemas/Int64'`
-  * `type:number` maps to `BigDecimal` in Java; almost nothing uses `BigDecimal` in the API except the generic Cell.value
-* used `allOf:- $ref: '#/components/schemas/Int64'` for those fields that have other properties (since `$ref` replaces ALL siblings)
-* `contactId` is `string`, not `number`
+  * `type:number` maps to `BigDecimal` in Java; almost nothing uses `BigDecimal` in the API except the generic Cell.value (AFAIK)
+* used `allOf:- $ref: '#/components/schemas/Int64'` for those fields that have other properties since `$ref` replaces ALL siblings
+* `contactId` is `string` not `number`
 * `attachmentId`, `automationRuleId`, `commentId`, `crossSheetReferenceId`, `discussionId`, `proofId`, `sightId`, 
   `updateRequestId`, `webhookId`, and `workspaceId` params `in:path` are all longs, not strings
 
@@ -63,7 +71,17 @@ hopefully not having to do all the previous changes again; i am still hopeful) ;
   * `/users/{userId} PUT`
 
 ## Changes
-### Readability (subjective)
-* added `'#/components/schemas/ShareArray'` to replace `type: array items: $ref '#/components/schemas/Share'`
-* added `'#/components/schemas/GroupMemberArray'` to replace arrays of `type: array items: $ref '#/components/schemas/GroupMember'`
-* TODO - RowsArray, FavoritesArray, AlternateEmailArray?
+### Extracting types to avoid excessive inner-classes/enums
+any type defined within request or response content or larger schema object is generated as an inner-type and thus not shared 
+across equivalent types, which makes using the generated API less pleasant.  to address that i move inner-types to top-level
+schema types to maximize reuse across equivalent sub-models.
+* TODO
+  * enums
+    * CompatibilityLevel
+    * FolderInclude
+    * PaperSize
+    * ReportInclude
+    * SheetExclude
+    * SheetInclude
+  * classes
+    * CellBrief and other *Brief types to address subset types of top-level domain models
