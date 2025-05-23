@@ -75,13 +75,97 @@ hopefully not having to do all the previous changes again; i am still hopeful) ;
 any type defined within request or response content or larger schema object is generated as an inner-type and thus not shared 
 across equivalent types, which makes using the generated API less pleasant.  to address that i move inner-types to top-level
 schema types to maximize reuse across equivalent sub-models.
-* TODO
+
+note, since OpenAPI v3.0.3 doesn't have a `const` keyword some fields use single-value `enum` to get the same approximate result.
+no point, IMHO, to migrate those enums to top-level types. OpenAPI v3.1.0 does have a `const` keyword to make this practice 
+obsolete (but we're not there yet).  
+
+* enums
+  * `AttachmentParentType`
+    * used by `schemas/Attachment.parentType`
+  * `AttachmentSubType`
+    * used by `schemas/Attachment.attachmentSubType`. `schemas/URLAttachmentRequest.attachmentSubType`
+  * `AttachmentTypeWithSmartsheet`
+    * used by `ShortcutDataItem.attachmentType`
+  * `AttachmentTypeWithTrello`
+    * used by `schemas/Attachment.attachmentType`, `schemas/URLAttachmentRequest.attachmentType`
+  * `AutomationActionFrequency`
+    * used by `schemas/AutomationAction.frequency`
+  * `AutomationActionType`
+    * used by `schemas/AutomationAction.type`
+  * `AutomationRuleDisabledReason`
+    * used by `schemas/AutomationRule.disabledReason`
+  * `CallbackEventType`
+    * used by `schemas/CallbackEvent.eventType`
+  * `CellLinkStatus`
+    * used by `schemas/CellLink.status`
+  * `CellLinkWidgetContentType`
+    * used by `schemas/CellLinkWidgetContent.type`
+  * `ColumnTag`
+    * used by `schemas/Column.tags`
+  * `ColumnType`
+    * used by `Column.type`, `SummaryField.type`, `SummaryFieldAddImage.type`, `GetRowObject.properties-type`,
+    `SummaryFieldUpdateRequest.type`, `UpdateColumn.type`, `AddColumns.type`, `ColumnObjectAttributes.type`, 
+    `ContainerDestinationForCopy.type`, `GetColumn.type`, `ChartColumnInfo.type` 
+  * `ObjectType`
+    * used by `CallbackEvent.objectType`
+  * `PaperSize`
+    * used by `FormatDetails.paperSize`, `parameters/paperSize`
+  * `QueryOperator`
+    * used by `Query.operator`
+  * `SystemColumnType` (renamed from `systemColumnType` (the type, not the fields that reference the type))
+    * used by `ColumnObjectAttributes.systemColumnType`, `ColumnToCreateAsSheet.systemColumnType`, `Column.systemColumnType`
+* still TODO
   * enums
     * CompatibilityLevel
     * FolderInclude
-    * PaperSize
     * ReportInclude
     * SheetExclude
     * SheetInclude
   * classes
-    * CellBrief and other *Brief types to address subset types of top-level domain models
+    * CellBrief and other *Brief types to address subset types of top-level domain models (possibly using Mini* prefix)
+
+### unravelling description+type "types" that add no value
+* format
+* formula
+* id
+* index
+* locked
+* name
+* options
+* permalink
+* primary
+* properties-contactOptions
+* properties-id
+* properties-options
+* properties-symbol
+* properties-title
+* property-type (is an alias for ColumnType)
+* validation
+* icalEnabled
+* readOnlyFullEnabled
+* readOnlyFullShowToolbar
+* readOnlyLiteEnabled
+* readWriteEnabled
+* readWriteShowToolbar
+* symbol
+* title
+* type (alias for ColumnType)
+* validation
+* version
+* width (but not height?)
+
+### renaming some types with leading lower-case that are actually types
+* cellObjectForRows
+* columns (should be ColumnArray)
+* components-schemas-Sheet (might be a way of grouping common properties)
+* contactOptions (ContactOptionArray)
+* readOnlyFullAccessibleBy
+* readOnlyFullDefaultValue
+* readWriteAccessibleBy
+* readWriteAccessibleBy
+* schemas-Sheet (might be a way of grouping common properties)
+
+## Potential issues to check
+* `ProfileImage.height/width` are string but value is definitely integer
+* 
