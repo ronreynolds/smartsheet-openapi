@@ -22105,44 +22105,15 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         attachmentType:
-          description: >-
-            Attachment type. Note--Dropbox, Egnyte, and Evernote are not
-            supported for Smartsheet.gov accounts.
-          type: string
-          enum:
-            - BOX_COM
-            - DROPBOX
-            - EGNYTE
-            - EVERNOTE
-            - FILE
-            - GOOGLE_DRIVE
-            - LINK
-            - ONEDRIVE
-            - TRELLO
+          $ref: '#/components/schemas/AttachmentTypeWithTrello'
         attachmentSubType:
-          description: >-
-            Attachment sub type. Note--Folder type is for EGNYTE values and the
-            rest are GOOGLE_DRIVE values.
-          type: string
-          enum:
-            - DOCUMENT
-            - DRAWING
-            - FOLDER
-            - PDF
-            - PRESENTATION
-            - SPREADSHEET
+          $ref: '#/components/schemas/AttachmentSubType'
         mimeType:
           description: Attachment MIME type.
           type: string
           example: PNG
         parentType:
-          description: The type of object the attachment belongs to.
-          type: string
-          enum:
-            - COMMENT
-            - PROOF
-            - ROW
-            - SHEET
+          $ref: '#/components/schemas/AttachmentParentType'
         createdAt:
           $ref: '#/components/schemas/Timestamp'
         createdBy:
@@ -22165,6 +22136,53 @@ components:
           description: Attachment temporary URL time to live (files only).
           allOf:
             - $ref: '#/components/schemas/Int64'
+    AttachmentParentType:
+      description: The type of object the attachment belongs to.
+      type: string
+      enum:
+        - COMMENT
+        - PROOF
+        - ROW
+        - SHEET
+    AttachmentSubType:
+      description: >-
+        Attachment sub type. Note--Folder type is for EGNYTE values and the
+        rest are GOOGLE_DRIVE values.
+      type: string
+      enum:
+        - DOCUMENT
+        - DRAWING
+        - FOLDER
+        - PDF
+        - PRESENTATION
+        - SPREADSHEET
+    AttachmentTypeWithSmartsheet:
+      type: string
+      enum:
+        - BOX_COM
+        - DROPBOX
+        - EGNYTE
+        - EVERNOTE
+        - FILE
+        - GOOGLE_DRIVE
+        - LINK
+        - ONEDRIVE
+        - SMARTSHEET
+    AttachmentTypeWithTrello:
+      description: >-
+        Attachment type. Note--Dropbox, Egnyte, and Evernote are not
+        supported for Smartsheet.gov accounts.
+      type: string
+      enum:
+        - BOX_COM
+        - DROPBOX
+        - EGNYTE
+        - EVERNOTE
+        - FILE
+        - GOOGLE_DRIVE
+        - LINK
+        - ONEDRIVE
+        - TRELLO
     AutomationAction:
       type: object
       x-tags:
@@ -22176,18 +22194,9 @@ components:
           items:
             $ref: '#/components/schemas/Int64'
         type:
-          type: string
-          enum:
-            - APPROVAL_REQUEST_ACTION
-            - NOTIFICATION_ACTION
-            - UPDATE_REQUEST_ACTION
+          $ref: '#/components/schemas/AutomationActionType'
         frequency:
-          type: string
-          enum:
-            - DAILY
-            - HOURLY
-            - IMMEDIATELY
-            - WEEKLY
+          $ref: '#/components/schemas/AutomationActionFrequency'
         includeAllColumns:
           description: If true, all columns are included in email contents.
           type: boolean
@@ -22222,6 +22231,19 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Int64'
+    AutomationActionFrequency:
+      type: string
+      enum:
+        - DAILY
+        - HOURLY
+        - IMMEDIATELY
+        - WEEKLY
+    AutomationActionType:
+      type: string
+      enum:
+        - APPROVAL_REQUEST_ACTION
+        - NOTIFICATION_ACTION
+        - UPDATE_REQUEST_ACTION
     AutomationRule:
       type: object
       x-tags:
@@ -22248,50 +22270,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/MiniUser'
         disabledReason:
-          description: >
-            Machine-readable reason a rule is disabled:
-
-            * `APPROVAL_COLUMN_MISSING` This rule's approval status column has
-            been deleted.
-
-
-            * `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a
-            dropdown column.
-
-
-            * `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated
-            actions,
-
-            you need to upgrade your organization account to a Business or
-            Enterprise plan.
-
-
-            * `COLUMN_MISSING` A column referenced by this rule has been
-            deleted.
-
-
-            * `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has
-            been changed to an incompatible column type.
-
-
-            * `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be
-            able to receive
-
-            notifications based on this sheet's permission settings or this
-            account's approved domain sharing list.
-
-
-            * `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule
-            have been deleted.
-          type: string
-          enum:
-            - APPROVAL_COLUMN_MISSING
-            - APPROVAL_COLUMN_WRONG_TYPE
-            - AUTOMATION_NOT_ENABLED_FOR_ORG
-            - COLUMN_MISSING
-            - COLUMN_TYPE_INCOMPATIBLE
-            - NO_POTENTIAL_RECIPIENTS
-            - NO_VALID_SELECTED_COLUMNS
+          $ref: '#/components/schemas/AutomationRuleDisabledReason'
         disabledReasonText:
           description: Descriptive reason a rule is disabled.
           type: string
@@ -22314,6 +22293,34 @@ components:
         userCanModify:
           description: If true, indicates that the current user can modify the rule.
           type: boolean
+    AutomationRuleDisabledReason:
+      description: >
+        Machine-readable reason a rule is disabled:
+        * `APPROVAL_COLUMN_MISSING` This rule's approval status column has
+        been deleted.
+        * `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a
+        dropdown column.
+        * `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated
+        actions, you need to upgrade your organization account to a Business or
+        Enterprise plan.
+        * `COLUMN_MISSING` A column referenced by this rule has been
+        deleted.
+        * `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has
+        been changed to an incompatible column type.
+        * `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be
+        able to receive notifications based on this sheet's permission settings or this
+        account's approved domain sharing list.
+        * `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule
+        have been deleted.
+      type: string
+      enum:
+        - APPROVAL_COLUMN_MISSING
+        - APPROVAL_COLUMN_WRONG_TYPE
+        - AUTOMATION_NOT_ENABLED_FOR_ORG
+        - COLUMN_MISSING
+        - COLUMN_TYPE_INCOMPATIBLE
+        - NO_POTENTIAL_RECIPIENTS
+        - NO_VALID_SELECTED_COLUMNS
     AutoNumberFormat:
       type: object
       description: >-
@@ -22431,16 +22438,8 @@ components:
           example: 48569348493401210
         objectType:
           description: Type of object for which event occurred.
-          type: string
-          enum:
-            - attachment
-            - cell
-            - column
-            - comment
-            - discussion
-            - row
-            - sheet
-          example: sheet
+          allOf:
+            - $ref: '#/components/schemas/ObjectType'
         changeAgent:
           type: string
           description: >-
@@ -22451,13 +22450,7 @@ components:
             in Smartsheet. For more information, see [Preventing Infinite
             Loops](/api/smartsheet/openapi/webhooks).
         eventType:
-          type: string
-          description: Type of Event that occurred.
-          enum:
-            - created
-            - deleted
-            - updated
-          example: created
+          $ref: '#/components/schemas/CallbackEventType'
         timestamp:
           type: string
           format: date-time
@@ -22465,6 +22458,14 @@ components:
             Time that this event occurred. A callback may contain events with
             different timestamps, as multiple separate events may be aggregated
             into a single callback request.
+    CallbackEventType:
+      type: string
+      description: Type of Event that occurred.
+      enum:
+        - created
+        - deleted
+        - updated
+      example: created
     Cell:
       type: object
       x-tags:
@@ -22629,46 +22630,38 @@ components:
           type: string
           description: Sheet name of the linked cell.
         status:
-          type: string
-          enum:
-            - BLOCKED
-            - BROKEN
-            - CIRCULAR
-            - DISABLED
-            - INACCESSIBLE
-            - INVALID
-            - NOT_SHARED
-            - OK
-          description: >
-            * `BLOCKED` One of several other values indicating unusual error
-            conditions.
-
-            * `BROKEN` The row or sheet linked to was deleted.
-
-            * `CIRCULAR` One of several other values indicating unusual error
-            conditions.
-
-            * `DISABLED` One of several other values indicating unusual error
-            conditions.
-
-            * `INACCESSIBLE` The sheet linked to cannot be viewed by this user.
-
-            * `INVALID` One of several other values indicating unusual error
-            conditions.
-
-            * `NOT_SHARED` One of several other values indicating unusual error
-            conditions.
-
-            * `OK` The link is in a good state.
+          $ref: '#/components/schemas/CellLinkStatus'
+    CellLinkStatus:
+      type: string
+      enum:
+        - BLOCKED
+        - BROKEN
+        - CIRCULAR
+        - DISABLED
+        - INACCESSIBLE
+        - INVALID
+        - NOT_SHARED
+        - OK
+      description: >
+        * `BLOCKED` One of several other values indicating unusual error
+        conditions.
+        * `BROKEN` The row or sheet linked to was deleted.
+        * `CIRCULAR` One of several other values indicating unusual error
+        conditions.
+        * `DISABLED` One of several other values indicating unusual error
+        conditions.
+        * `INACCESSIBLE` The sheet linked to cannot be viewed by this user.
+        * `INVALID` One of several other values indicating unusual error
+        conditions.
+        * `NOT_SHARED` One of several other values indicating unusual error
+        conditions.
+        * `OK` The link is in a good state.
     CellLinkWidgetContent:
       type: object
       title: Metric
       properties:
         type:
-          type: string
-          enum:
-            - METRIC
-            - SHEETSUMMARY
+          $ref: '#/components/schemas/CellLinkWidgetContentType'
         sheetId:
           description: Sheet Id from which the cell data originates.
           allOf:
@@ -22683,6 +22676,11 @@ components:
             $ref: '#/components/schemas/Column'
         hyperlink:
           $ref: '#/components/schemas/WidgetHyperlink'
+    CellLinkWidgetContentType:
+      type: string
+      enum:
+        - METRIC
+        - SHEETSUMMARY
     ChartWidgetContent:
       type: object
       title: Chart
@@ -22789,33 +22787,11 @@ components:
             When applicable for **CHECKBOX** or **PICKLIST** column types. See
             [Symbol Columns](/api/smartsheet/openapi/columns).
         systemColumnType:
-          type: string
-          enum:
-            - AUTO_NUMBER
-            - CREATED_BY
-            - CREATED_DATE
-            - MODIFIED_BY
-            - MODIFIED_DATE
-          description: See [System Columns](/api/smartsheet/openapi/columns).
+          $ref: '#/components/schemas/SystemColumnType'
         tags:
           type: array
           items:
-            type: string
-            enum:
-              - CALENDAR_END_DATE
-              - CALENDAR_START_DATE
-              - CARD_DONE
-              - GANTT_ALLOCATION
-              - GANTT_ASSIGNED_RESOURCE
-              - GANTT_DISPLAY_LABEL
-              - GANTT_DURATION
-              - GANTT_END_DATE
-              - GANTT_PERCENT_COMPLETE
-              - GANTT_PREDECESSOR
-              - GANTT_START_DATE
-              - BASELINE_START_DATE
-              - BASELINE_END_DATE
-              - BASELINE_VARIANCE
+            $ref: '#/components/schemas/ColumnTag'
           description: >-
             Set of tags to indicate special columns. Each element in the array
             is set to one of the listed enum values.
@@ -22823,20 +22799,7 @@ components:
           type: string
           description: Column title.
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
-          description: See [Column Types](/api/smartsheet/openapi/columns)
+          $ref: '#/components/schemas/ColumnType'
         validation:
           type: boolean
           description: >-
@@ -22857,6 +22820,38 @@ components:
           description: Display width of the column in pixels.
     ColumnObject:
       $ref: '#/components/schemas/ColumnObjectAttributes'
+    ColumnTag:
+      type: string
+      enum:
+        - CALENDAR_END_DATE
+        - CALENDAR_START_DATE
+        - CARD_DONE
+        - GANTT_ALLOCATION
+        - GANTT_ASSIGNED_RESOURCE
+        - GANTT_DISPLAY_LABEL
+        - GANTT_DURATION
+        - GANTT_END_DATE
+        - GANTT_PERCENT_COMPLETE
+        - GANTT_PREDECESSOR
+        - GANTT_START_DATE
+        - BASELINE_START_DATE
+        - BASELINE_END_DATE
+        - BASELINE_VARIANCE
+    ColumnType:
+      type: string
+      enum:
+        - ABSTRACT_DATETIME
+        - CHECKBOX
+        - CONTACT_LIST
+        - DATE
+        - DATETIME
+        - DURATION
+        - MULTI_CONTACT_LIST
+        - MULTI_PICKLIST
+        - PICKLIST
+        - PREDECESSOR
+        - TEXT_NUMBER
+      description: See [Column Types](/api/smartsheet/openapi/columns)
     Comment:
       type: object
       x-tags:
@@ -23549,19 +23544,7 @@ components:
       type: object
       properties:
         paperSize:
-          description: Specifies paper size.
-          type: string
-          example: LETTER
-          enum:
-            - A0
-            - A1
-            - A2
-            - A3
-            - A4
-            - ARCHID
-            - LEGAL
-            - LETTER
-            - WIDE
+          $ref: '#/components/schemas/PaperSize'
     FormatTables:
       description: >-
         Contains all of the lookup tables that the format descriptor indexes
@@ -24145,6 +24128,21 @@ components:
         - $ref: '#/components/schemas/MultiContactObjectValue'
         - $ref: '#/components/schemas/MultiPicklistObjectValue'
         - $ref: '#/components/schemas/PredecessorList'
+    PaperSize:
+      description: Specifies paper size.
+      type: string
+      example: LETTER
+      enum:
+        - A0
+        - A1
+        - A2
+        - A3
+        - A4
+        - ARCHID
+        - LEGAL
+        - LETTER
+        - WIDE
+      default: LETTER
     Predecessor:
       type: object
       properties:
@@ -24355,10 +24353,7 @@ components:
     Query:
       properties:
         operator:
-          type: string
-          enum:
-            - AND
-            - OR
+          $ref: '#/components/schemas/QueryOperator'
         criteria:
           description: >-
             Criteria objects specifying custom criteria against which to match
@@ -24380,6 +24375,11 @@ components:
               - In Progress
             columnId: 52793485233
         includeParent: false
+    QueryOperator:
+      type: string
+      enum:
+        - AND
+        - OR
     Recipient:
       description: >
         Specifies the recipient of an email. The recipient may be either an
@@ -25462,17 +25462,7 @@ components:
       type: object
       properties:
         attachmentType:
-          type: string
-          enum:
-            - BOX_COM
-            - DROPBOX
-            - EGNYTE
-            - EVERNOTE
-            - FILE
-            - GOOGLE_DRIVE
-            - LINK
-            - ONEDRIVE
-            - SMARTSHEET
+          $ref: '#/components/schemas/AttachmentTypeWithSmartsheet'
         hyperlink:
           $ref: '#/components/schemas/Hyperlink'
         label:
@@ -25731,19 +25721,7 @@ components:
           description: Arbitrary name, must be unique within summary.
           type: string
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
+          $ref: '#/components/schemas/ColumnType'
         validation:
           description: Indicates whether summary field values are restricted to the type.
           type: boolean
@@ -26026,32 +26004,9 @@ components:
         - attachments
       properties:
         attachmentSubType:
-          description: >-
-            Attachment sub type. Note--Folder type is for EGNYTE values and the
-            rest are GOOGLE_DRIVE values.
-          type: string
-          enum:
-            - DOCUMENT
-            - DRAWING
-            - FOLDER
-            - PDF
-            - PRESENTATION
-            - SPREADSHEET
+          $ref: '#/components/schemas/AttachmentSubType'
         attachmentType:
-          description: >-
-            Attachment type. Note--Dropbox, Egnyte, and Evernote are not
-            supported for Smartsheet.gov accounts.
-          type: string
-          enum:
-            - BOX_COM
-            - DROPBOX
-            - EGNYTE
-            - EVERNOTE
-            - FILE
-            - GOOGLE_DRIVE
-            - LINK
-            - ONEDRIVE
-            - TRELLO
+          $ref: '#/components/schemas/AttachmentTypeWithTrello'
         description:
           type: string
         name:
@@ -26684,7 +26639,7 @@ components:
       description: >-
         When applicable for **CHECKBOX** or **PICKLIST** column types. See
         [Symbol Columns](/api/smartsheet/openapi/columns).
-    systemColumnType:
+    SystemColumnType:
       type: string
       enum:
         - AUTO_NUMBER
@@ -26697,20 +26652,7 @@ components:
       type: string
       description: Column title.
     type:
-      type: string
-      enum:
-        - ABSTRACT_DATETIME
-        - CHECKBOX
-        - CONTACT_LIST
-        - DATE
-        - DATETIME
-        - DURATION
-        - MULTI_CONTACT_LIST
-        - MULTI_PICKLIST
-        - PICKLIST
-        - PREDECESSOR
-        - TEXT_NUMBER
-      description: See [Column Types](/api/smartsheet/openapi/columns)
+      $ref: '#/components/schemas/ColumnType'
     width:
       type: integer
       description: Display width of the column in pixels.
@@ -26730,7 +26672,7 @@ components:
         symbol:
           $ref: '#/components/schemas/symbol'
         systemColumnType:
-          $ref: '#/components/schemas/systemColumnType'
+          $ref: '#/components/schemas/SystemColumnType'
         title:
           $ref: '#/components/schemas/title'
         type:
@@ -26740,6 +26682,17 @@ components:
     name:
       description: Sheet name.
       type: string
+    ObjectType:
+      type: string
+      enum:
+        - attachment
+        - cell
+        - column
+        - comment
+        - discussion
+        - row
+        - sheet
+      example: sheet
     SheetToCreate:
       type: object
       x-tags:
@@ -27007,19 +26960,7 @@ components:
       type: object
       properties:
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATE_TIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATE_TIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
+          $ref: '#/components/schemas/ColumnType'
     DashboardFont:
       description: List of supported fonts in Dashboards
       type: string
@@ -27375,20 +27316,7 @@ components:
           type: string
           description: Column title.
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
-          description: See [Column Types](/api/smartsheet/openapi/columns)
+          $ref: '#/components/schemas/ColumnType'
         validation:
           type: boolean
           description: >-
@@ -27401,19 +27329,7 @@ components:
           type: string
           description: Column title.
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
+          $ref: '#/components/schemas/ColumnType'
         formula:
           type: string
           description: The formula for a column, if set, for instance **=data@row**.
@@ -27460,14 +27376,7 @@ components:
             When applicable for **CHECKBOX** or **PICKLIST** column types. See
             [Symbol Columns](/api/smartsheet/openapi/columns).
         systemColumnType:
-          type: string
-          enum:
-            - AUTO_NUMBER
-            - CREATED_BY
-            - CREATED_DATE
-            - MODIFIED_BY
-            - MODIFIED_DATE
-          description: See [System Columns](/api/smartsheet/openapi/columns)
+          $ref: '#/components/schemas/SystemColumnType'
         validation:
           type: boolean
           description: >-
@@ -27501,20 +27410,7 @@ components:
           type: string
           description: Column title.
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
-          description: See [Column Types](/api/smartsheet/openapi/columns)
+          $ref: '#/components/schemas/ColumnType'
         options:
           type: array
           items:
@@ -27547,20 +27443,7 @@ components:
           type: string
           description: Column title.
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
-          description: See [Column Types](/api/smartsheet/openapi/columns)
+          $ref: '#/components/schemas/ColumnType'
         validation:
           type: boolean
           description: >-
@@ -27979,19 +27862,7 @@ components:
       description: Arbitrary name, must be unique within summary.
       type: string
     properties-type:
-      type: string
-      enum:
-        - ABSTRACT_DATETIME
-        - CHECKBOX
-        - CONTACT_LIST
-        - DATE
-        - DATETIME
-        - DURATION
-        - MULTI_CONTACT_LIST
-        - MULTI_PICKLIST
-        - PICKLIST
-        - PREDECESSOR
-        - TEXT_NUMBER
+      $ref: '#/components/schemas/ColumnType'
     validation:
       description: Indicates whether summary field values are restricted to the type.
       type: boolean
@@ -28000,63 +27871,105 @@ components:
       description: SummaryField object to update.
       properties:
         id:
-          $ref: '#/components/schemas/properties-id'
+          description: SummaryField Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         contactOptions:
-          $ref: '#/components/schemas/properties-contactOptions'
+          description: >-
+            Array of ContactOption objects to specify a pre-defined list of values
+            for the column. Column type must be CONTACT_LIST.
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
         format:
-          $ref: '#/components/schemas/format'
+          description: >-
+            The format descriptor. Only returned if the include query string
+            parameter contains format and this column has a non-default format
+            applied to it.
+          type: string
         formula:
-          $ref: '#/components/schemas/formula'
+          description: The formula for a cell, if set.
+          type: string
         hyperlink:
           $ref: '#/components/schemas/Hyperlink'
         image:
           $ref: '#/components/schemas/Image'
         index:
-          $ref: '#/components/schemas/index'
+          description: Field index or position. This number is zero-based.
+          type: integer
         locked:
-          $ref: '#/components/schemas/locked'
+          description: Indicates whether the field is locked.
+          type: boolean
         objectValue:
           $ref: '#/components/schemas/ObjectValue'
         options:
-          $ref: '#/components/schemas/properties-options'
+          description: >-
+            When applicable for PICKLIST column type. Array of the options available
+            for the field.
+          type: array
+          items:
+            type: string
         symbol:
-          $ref: '#/components/schemas/properties-symbol'
+          description: When applicable for PICKLIST column type.
+          type: string
         title:
-          $ref: '#/components/schemas/properties-title'
+          description: Arbitrary name, must be unique within summary.
+          type: string
         type:
-          $ref: '#/components/schemas/properties-type'
+          $ref: '#/components/schemas/ColumnType'
         validation:
-          $ref: '#/components/schemas/validation'
+          description: Indicates whether summary field values are restricted to the type.
+          type: boolean
     SummaryFieldCreateRequest:
       type: object
       description: SummaryField object to create.
       properties:
         contactOptions:
-          $ref: '#/components/schemas/properties-contactOptions'
+          description: >-
+            Array of ContactOption objects to specify a pre-defined list of values
+            for the column. Column type must be CONTACT_LIST.
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
         format:
-          $ref: '#/components/schemas/format'
+          description: >-
+            The format descriptor. Only returned if the include query string
+            parameter contains format and this column has a non-default format
+            applied to it.
+          type: string
         formula:
-          $ref: '#/components/schemas/formula'
+          description: The formula for a cell, if set.
+          type: string
         hyperlink:
           $ref: '#/components/schemas/Hyperlink'
         image:
           $ref: '#/components/schemas/Image'
         index:
-          $ref: '#/components/schemas/index'
+          description: Field index or position. This number is zero-based.
+          type: integer
         locked:
-          $ref: '#/components/schemas/locked'
+          description: Indicates whether the field is locked.
+          type: boolean
         objectValue:
           $ref: '#/components/schemas/ObjectValue'
         options:
-          $ref: '#/components/schemas/properties-options'
+          description: >-
+            When applicable for PICKLIST column type. Array of the options available
+            for the field.
+          type: array
+          items:
+            type: string
         symbol:
-          $ref: '#/components/schemas/properties-symbol'
+          description: When applicable for PICKLIST column type.
+          type: string
         title:
-          $ref: '#/components/schemas/properties-title'
+          description: Arbitrary name, must be unique within summary.
+          type: string
         type:
-          $ref: '#/components/schemas/properties-type'
+          $ref: '#/components/schemas/ColumnType'
         validation:
-          $ref: '#/components/schemas/validation'
+          description: Indicates whether summary field values are restricted to the type.
+          type: boolean
     SummaryFieldAddImage:
       type: object
       properties:
@@ -28071,19 +27984,7 @@ components:
           description: Arbitrary name, must be unique within summary.
           type: string
         type:
-          type: string
-          enum:
-            - ABSTRACT_DATETIME
-            - CHECKBOX
-            - CONTACT_LIST
-            - DATE
-            - DATETIME
-            - DURATION
-            - MULTI_CONTACT_LIST
-            - MULTI_PICKLIST
-            - PICKLIST
-            - PREDECESSOR
-            - TEXT_NUMBER
+          $ref: '#/components/schemas/ColumnType'
         locked:
           description: Indicates whether the field is locked.
           type: boolean
@@ -28948,18 +28849,7 @@ components:
       required: false
       description: applies to PDF format only
       schema:
-        type: string
-        enum:
-          - LETTER
-          - LEGAL
-          - WIDE
-          - ARCHD
-          - A4
-          - A3
-          - A2
-          - A1
-          - A0
-        default: LETTER
+        $ref: '#/components/schemas/PaperSize'
     sheetRowIds:
       name: rowIds
       in: query
