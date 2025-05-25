@@ -1147,8 +1147,7 @@ paths:
             data at client startup or recovery--don't use it for fine-grained,
             date-based queries.
           schema:
-            type: string
-            format: date-time
+            $ref: '#/components/schemas/Timestamp_string'
           required: false
         - name: to
           in: query
@@ -1180,8 +1179,7 @@ paths:
             data at client startup or recovery--don't use it for fine-grained,
             date-based queries.
           schema:
-            type: string
-            format: date-time
+            $ref: '#/components/schemas/Timestamp_string'
           required: false
         - name: streamPosition
           in: query
@@ -22402,8 +22400,8 @@ components:
             - sheet
           example: sheet
         timestamp:
-          type: string
-          format: date-time
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: Time that the callback was generated.
     CallbackEvent:
       type: object
@@ -22452,8 +22450,8 @@ components:
         eventType:
           $ref: '#/components/schemas/CallbackEventType'
         timestamp:
-          type: string
-          format: date-time
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             Time that this event occurred. A callback may contain events with
             different timestamps, as multiple separate events may be aggregated
@@ -23299,11 +23297,11 @@ components:
           type: string
           example: '345678901234'
         eventTimestamp:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             Date and time of the event. Defaults to ISO-8601 format. See dates
             and times for more information.
-          type: string
-          format: date-time
         userId:
           description: >-
             User assumed as the one who initiated the event. Usually the userId
@@ -23432,6 +23430,8 @@ components:
           items:
             $ref: '#/components/schemas/Int64'
         since:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             The earliest time from which events are included in the response.
             Events before this time are excluded. This field is intended for use
@@ -23444,9 +23444,9 @@ components:
 
             You must pass in a value for either `since` or `streamPosition` and
             never both.
-          type: string
-          format: date-time
         to:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             The latest time up to which events are included in the response.
             Events after this time are excluded. The `to` field requires using
@@ -23461,8 +23461,6 @@ components:
             If `to` is a future time, the current time is used. If `to` equals
             the `since` time, an empty data value is returned. If `to` is before
             the `since` time, an error is returned.
-          type: string
-          format: date-time
         streamPosition:
           description: >-
             Indicates next set of events to return. Use value of
@@ -25957,7 +25955,7 @@ components:
         - sheet
     Timestamp:
       oneOf:
-        - $ref: '#/components/schemas/Timestamp_date-time'
+        - $ref: '#/components/schemas/Timestamp_string'
         - $ref: '#/components/schemas/Timestamp_number'
       readOnly: true
     TitleWidgetContent:
@@ -26101,14 +26099,14 @@ components:
           default: false
           example: true
         customWelcomeScreenViewed:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
+          readOnly: true
           description: >-
             Timestamp of viewing an <a
             href="https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only"
             target="_blank" rel="noopener noreferrer">Enterprise Custom Welcome
             Screen</a> by the current user.
-          type: string
-          format: date-time
-          readOnly: true
           example: '2020-08-25T12:15:47Z'
         email:
           description: User's primary email address.
@@ -26127,10 +26125,10 @@ components:
           default: false
           example: true
         lastLogin:
-          description: Last login time of the current user.
-          type: string
-          format: date-time
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           readOnly: true
+          description: Last login time of the current user.
           example: '2020-10-04T18:32:47Z'
         lastName:
           description: User's last name.
@@ -26196,13 +26194,13 @@ components:
           type: string
           example: Smartsheet
         customWelcomeScreenViewed:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             Timestamp of viewing an <a
             href="https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only"
             target="_blank" rel="noopener noreferrer">Enterprise Custom Welcome
             Screen</a> by the current user.
-          type: string
-          format: date-time
           example: '2020-08-25T12:15:47Z'
         department:
           description: User's department.
@@ -26227,9 +26225,9 @@ components:
           type: boolean
           example: true
         lastLogin:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: Last login time of the current user.
-          type: string
-          format: date-time
           example: '2020-10-31T12:15:47Z'
         lastName:
           description: Current user's last name.
@@ -26394,8 +26392,8 @@ components:
               readOnly: true
               properties:
                 lastCallbackAttempt:
-                  type: string
-                  format: date-time
+                  allOf:
+                    - $ref: '#/components/schemas/Timestamp_string'
                   readOnly: true
                   description: When this webhook last made a callback attempt.
                 lastCallbackAttemptRetryCount:
@@ -26405,8 +26403,8 @@ components:
                     The number of retries the webhook had performed as of the
                     last callback attempt.
                 lastSuccessfulCallback:
-                  type: string
-                  format: date-time
+                  allOf:
+                    - $ref: '#/components/schemas/Timestamp_string'
                   readOnly: true
                   description: When this webhook last made a successful callback.
             status:
@@ -26606,8 +26604,7 @@ components:
             $ref: '#/components/schemas/DashboardListing'
 
     ## here the alphabetical order fell apart :-/
-    # FIXME - why not Timestamp_string?
-    Timestamp_date-time:
+    Timestamp_string:
       type: string
       format: date-time
     Timestamp_number:
@@ -26700,7 +26697,6 @@ components:
           type: string
       required:
         - destinationId
-
     SystemColumnType:
       type: string
       enum:
@@ -26710,7 +26706,6 @@ components:
         - MODIFIED_BY
         - MODIFIED_DATE
       description: See [System Columns](/api/smartsheet/openapi/columns).
-
     ColumnToCreateASheet:
       type: object
       x-tags:
@@ -26748,7 +26743,6 @@ components:
         width:
           type: integer
           description: Display width of the column in pixels.
-
     ObjectType:
       type: string
       enum:
@@ -26784,18 +26778,6 @@ components:
         name:
           description: Sheet name.
           type: string
-
-    columns:
-      type: array
-      items:
-        $ref: '#/components/schemas/Column'
-    id:
-      description: Sheet Id.
-      allOf:
-        - $ref: '#/components/schemas/Int64'
-    permalink:
-      description: URL that represents a direct link to the sheet in Smartsheet.
-      type: string
     SheetCreated:
       type: object
       description: Sheet created from scratch using the specified columns.
@@ -26803,7 +26785,9 @@ components:
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         columns:
-          $ref: '#/components/schemas/columns'
+          type: array
+          items:
+            $ref: '#/components/schemas/Column'
         id:
           description: Sheet Id.
           allOf:
@@ -26812,7 +26796,8 @@ components:
           description: Sheet name.
           type: string
         permalink:
-          $ref: '#/components/schemas/permalink'
+          type: string
+          description: URL that represents a direct link to the sheet in Smartsheet.
     SheetCreatedFromTemplate:
       type: object
       description: Sheet created from template.
@@ -26827,7 +26812,8 @@ components:
           description: Sheet name.
           type: string
         permalink:
-          $ref: '#/components/schemas/permalink'
+          type: string
+          description: URL that represents a direct link to the sheet in Smartsheet.
     SheetImported:
       type: object
       description: Sheet imported from CSV / XLSX file.
@@ -26845,7 +26831,8 @@ components:
           description: Container type. Has 'sheet' value for the imported sheet.
           type: string
         permalink:
-          $ref: '#/components/schemas/permalink'
+          type: string
+          description: URL that represents a direct link to the sheet in Smartsheet.
     AbstractDatetimeObjectValue:
       description: Object representing a calculated datetime
       type: object
@@ -26856,12 +26843,12 @@ components:
           enum:
             - ABSTRACT_DATETIME
         value:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             Datetime, in the **date-time** format defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6"
             target="_blank" rel="noopener noreferrer">RFC 3339, section 5.6</a>
-          type: string
-          format: date-time
       example:
         objectType: ABSTRACT_DATETIME
         value: '2025-03-03T16:59:59'
@@ -26931,12 +26918,12 @@ components:
           enum:
             - DATETIME
         value:
+          allOf:
+            - $ref: '#/components/schemas/Timestamp_string'
           description: >-
             Datetime, in the **date-time** format defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6"
             target="_blank" rel="noopener noreferrer">RFC 3339, section 5.6</a>
-          type: string
-          format: date-time
       example:
         objectType: DATETIME
         value: '2025-03-03T16:59:59'
@@ -27123,14 +27110,14 @@ components:
             - PERCENT
             - X_SERIES_Y
             - X_Y_PERCENT
-            - 'Y'
+            - Y
             - Y_PERCENT
     SeriesData:
       type: object
       properties:
         x:
           type: integer
-        'y':
+        y:
           type: integer
         xFormat:
           type: string
@@ -27324,9 +27311,6 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
           example: 2258118617917316
-    version:
-      description: A number that is incremented every time a sheet is modified.
-      type: integer
     schemas-Sheet:
       type: object
       properties:
@@ -27344,9 +27328,11 @@ components:
           description: Sheet name.
           type: string
         permalink:
-          $ref: '#/components/schemas/permalink'
+          type: string
+          description: URL that represents a direct link to the sheet in Smartsheet.
         version:
-          $ref: '#/components/schemas/version'
+          type: integer
+          description: A number that is incremented every time a sheet is modified.
         source:
           $ref: '#/components/schemas/Source'
     SheetVersion:
@@ -27551,7 +27537,8 @@ components:
           description: Sheet name.
           type: string
         permalink:
-          $ref: '#/components/schemas/permalink'
+          type: string
+          description: URL that represents a direct link to the sheet in Smartsheet.
     CrossSheetReferenceRequestWithColumnIds:
       type: object
       description: >-
@@ -27876,50 +27863,6 @@ components:
           $ref: '#/components/schemas/Timestamp'
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
-    properties-id:
-      description: SummaryField Id.
-      allOf:
-        - $ref: '#/components/schemas/Int64'
-    properties-contactOptions:
-      description: >-
-        Array of ContactOption objects to specify a pre-defined list of values
-        for the column. Column type must be CONTACT_LIST.
-      type: array
-      items:
-        $ref: '#/components/schemas/ContactOption'
-    format:
-      description: >-
-        The format descriptor. Only returned if the include query string
-        parameter contains format and this column has a non-default format
-        applied to it.
-      type: string
-    formula:
-      description: The formula for a cell, if set.
-      type: string
-    index:
-      description: Field index or position. This number is zero-based.
-      type: integer
-    locked:
-      description: Indicates whether the field is locked.
-      type: boolean
-    properties-options:
-      description: >-
-        When applicable for PICKLIST column type. Array of the options available
-        for the field.
-      type: array
-      items:
-        type: string
-    properties-symbol:
-      description: When applicable for PICKLIST column type.
-      type: string
-    properties-title:
-      description: Arbitrary name, must be unique within summary.
-      type: string
-    properties-type:
-      $ref: '#/components/schemas/ColumnType'
-    validation:
-      description: Indicates whether summary field values are restricted to the type.
-      type: boolean
     SummaryFieldUpdateRequest:
       type: object
       description: SummaryField object to update.
@@ -28063,7 +28006,7 @@ components:
           type: integer
     Timestamp_Writeable:
       oneOf:
-        - $ref: '#/components/schemas/Timestamp_date-time'
+        - $ref: '#/components/schemas/Timestamp_string'
         - $ref: '#/components/schemas/Timestamp_number'
     ProfileImage:
       type: object
