@@ -27047,6 +27047,7 @@ components:
         location:
           description: Describes location of the axis.
           type: string
+          # FIXME - enum
           enum:
             - BOTTOM
             - LEFT
@@ -27076,6 +27077,7 @@ components:
       properties:
         location:
           type: string
+          # FIXME - enum
           enum:
             - BOTTOM
             - LEFT
@@ -27096,6 +27098,7 @@ components:
       properties:
         labelType:
           type: string
+          # FIXME - enum
           enum:
             - NONE
             - PERCENT
@@ -27105,6 +27108,7 @@ components:
       properties:
         labelType:
           type: string
+          # FIXME - enum
           enum:
             - NONE
             - PERCENT
@@ -27149,6 +27153,7 @@ components:
             [Formatting](/api/smartsheet/guides/advanced-topics/cell-formatting)).
         seriesType:
           type: string
+          # FIXME - enum
           enum:
             - AREA
             - BAR
@@ -27162,6 +27167,7 @@ components:
           $ref: '#/components/schemas/ChartTooltipStyle'
         lineType:
           type: string
+          # FIXME - enum
           enum:
             - CURVED
             - STEPPED
@@ -27192,6 +27198,7 @@ components:
           type: string
         axisLocationX:
           type: string
+          # FIXME - enum
           enum:
             - BOTTOM
             - LEFT
@@ -27200,6 +27207,7 @@ components:
             - TOP
         axisLocationY:
           type: string
+          # FIXME - enum
           enum:
             - BOTTOM
             - LEFT
@@ -27212,6 +27220,7 @@ components:
           $ref: '#/components/schemas/ChartColumnInfo'
         seriesSelectionOrder:
           type: string
+          # FIXME - enum
           enum:
             - COLUMNS
             - ROWS
@@ -27311,6 +27320,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
           example: 2258118617917316
+    # FIXME - appears to be a MiniSheet (list, move, etc); possibly SheetLocation?
     schemas-Sheet:
       type: object
       properties:
@@ -27525,6 +27535,7 @@ components:
         text:
           description: Comment body.
           type: string
+    # FIXME - this appears to be a SheetCopyMoveResponse (or SheetNewLocation, etc)
     components-schemas-Sheet:
       type: object
       properties:
