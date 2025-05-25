@@ -7896,7 +7896,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ColumnObjectAttributes'
+              $ref: '#/components/schemas/ColumnObject'
       responses:
         '200':
           description: >-
@@ -8249,7 +8249,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ColumnObjectAttributes'
+              $ref: '#/components/schemas/ColumnObject'
       responses:
         '200':
           description: >-
@@ -22385,7 +22385,7 @@ components:
           description: Id of the corresponding webhook.
           example: 8444254503626628
         events:
-          $ref: '#/components/schemas/CallbackEvents'
+          $ref: '#/components/schemas/CallbackEventArray'
         newWebhookStatus:
           type: string
           description: >-
@@ -22566,10 +22566,7 @@ components:
         cell:
           $ref: '#/components/schemas/Cell'
         dataSource:
-          type: string
-          enum:
-            - CELL
-            - SUMMARY_FIELD
+          $ref: '#/components/schemas/DataSource'
         inheritCellValue:
           description: Specifies if valueFormat is inherited from the underlying cell value
           type: boolean
@@ -22700,7 +22697,7 @@ components:
         axes:
           type: array
           items:
-            $ref: '#/components/schemas/Axes'
+            $ref: '#/components/schemas/Axis'
         hyperlink:
           $ref: '#/components/schemas/WidgetHyperlink'
         includedColumnIds:
@@ -22806,20 +22803,10 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**).
         version:
-          type: integer
-          enum:
-            - 0
-            - 1
-            - 2
-          description: |
-            * `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.
-            * `1`: MULTI_CONTACT_LIST.
-            * `2`: MULTI_PICKLIST.
+          $ref: '#/components/schemas/ColumnVersion'
         width:
           type: integer
           description: Display width of the column in pixels.
-    ColumnObject:
-      $ref: '#/components/schemas/ColumnObjectAttributes'
     ColumnTag:
       type: string
       enum:
@@ -22852,6 +22839,16 @@ components:
         - PREDECESSOR
         - TEXT_NUMBER
       description: See [Column Types](/api/smartsheet/openapi/columns)
+    ColumnVersion:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 2
+      description: |
+        * `0`: CONTACT_LIST, PICKLIST, or TEXT_NUMBER.
+        * `1`: MULTI_CONTACT_LIST.
+        * `2`: MULTI_PICKLIST.
     Comment:
       type: object
       x-tags:
@@ -22923,20 +22920,20 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         destinationType:
-          description: >
-            Type of destination container.
-
-
-            The `"home"` enum is **Deprecated** since March 25, 2025, and will
-            be removed.
-          type: string
-          nullable: true
-          enum:
-            - folder
-            - home
-            - workspace
+          $ref: '#/components/schemas/ContainerDestinationType'
       required:
         - destinationId
+    ContainerDestinationType:
+      description: >
+        Type of destination container.
+        The `"home"` enum is **Deprecated** since March 25, 2025, and will
+        be removed.
+      type: string
+      nullable: true
+      enum:
+        - folder
+        - home
+        - workspace
     CopyOrMoveRowDestination:
       type: object
       x-tags:
@@ -22973,7 +22970,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/RowMapping'
-    Criteria:
+    Criterion:
       type: object
       properties:
         columnId:
@@ -22982,38 +22979,7 @@ components:
             - $ref: '#/components/schemas/Int64'
           example: 293452983475
         operator:
-          description: Operator used to filter column values.
-          type: string
-          enum:
-            - BETWEEN
-            - CONTAINS
-            - EQUAL
-            - FUTURE
-            - GREATER_THAN
-            - HAS_ATTACHMENTS
-            - HAS_COMMENTS
-            - IS_BLANK
-            - IS_CHECKED
-            - IS_DATE
-            - IS_LOCKED
-            - IS_NUMBER
-            - IS_NOT_BLANK
-            - IS_NOT_CHECKED
-            - IS_NOT_DATE
-            - IS_NOT_NUMBER
-            - IS_ONE_OF
-            - LAST_N_DAYS
-            - LESS_THAN
-            - NEXT_N_DAYS
-            - NO_ATTACHMENTS
-            - NO_COMMENTS
-            - NOT_EQUAL
-            - NOT_LOCKED
-            - NOT_ON_CRITICAL_PATH
-            - ON_CRITICAL_PATH
-            - PAST
-            - TODAY
-          example: IS_ONE_OF
+          $ref: '#/components/schemas/CriterionOperator'
         values:
           description: >-
             Present if a custom filter criteria's operator has one or more
@@ -23024,6 +22990,39 @@ components:
           example:
             - Complete
             - In progress
+    CriterionOperator:
+      description: Operator used to filter column values.
+      type: string
+      enum:
+        - BETWEEN
+        - CONTAINS
+        - EQUAL
+        - FUTURE
+        - GREATER_THAN
+        - HAS_ATTACHMENTS
+        - HAS_COMMENTS
+        - IS_BLANK
+        - IS_CHECKED
+        - IS_DATE
+        - IS_LOCKED
+        - IS_NUMBER
+        - IS_NOT_BLANK
+        - IS_NOT_CHECKED
+        - IS_NOT_DATE
+        - IS_NOT_NUMBER
+        - IS_ONE_OF
+        - LAST_N_DAYS
+        - LESS_THAN
+        - NEXT_N_DAYS
+        - NO_ATTACHMENTS
+        - NO_COMMENTS
+        - NOT_EQUAL
+        - NOT_LOCKED
+        - NOT_ON_CRITICAL_PATH
+        - ON_CRITICAL_PATH
+        - PAST
+        - TODAY
+      example: IS_ONE_OF
     CrossSheetReference:
       type: object
       x-tags:
@@ -23069,28 +23068,30 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         status:
-          description: |
-            Status of request:
-             * 'BLOCKED' - A reference is downstream of a circular issue.
-             * 'BROKEN' - The data source location (column, row or sheet) was deleted.
-             * 'CIRCULAR' - The formula reference is self referencing and cannot be resolved.
-             * 'DISABLED' - Updating the reference is temporarily disabled due to maintenance.
-             * 'INVALID/UNKNOWN' - The reference is new and had not been validated.
-             * 'NOT_SHARED' - No common shared users.
-             * 'OK' - The reference is in a good state.
-          type: string
-          enum:
-            - BLOCKED
-            - BROKEN
-            - CIRCULAR
-            - DISABLED
-            - INVALID/UNKNOWN
-            - NOT-SHARED
-            - OK
+          $ref: '#/components/schemas/CrossSheetReferenceStatus'
         sourceSheetId:
           description: Sheet Id of source sheet.
           allOf:
             - $ref: '#/components/schemas/Int64'
+    CrossSheetReferenceStatus:
+      description: |
+        Status of request:
+         * 'BLOCKED' - A reference is downstream of a circular issue.
+         * 'BROKEN' - The data source location (column, row or sheet) was deleted.
+         * 'CIRCULAR' - The formula reference is self referencing and cannot be resolved.
+         * 'DISABLED' - Updating the reference is temporarily disabled due to maintenance.
+         * 'INVALID/UNKNOWN' - The reference is new and had not been validated.
+         * 'NOT_SHARED' - No common shared users.
+         * 'OK' - The reference is in a good state.
+      type: string
+      enum:
+        - BLOCKED
+        - BROKEN
+        - CIRCULAR
+        - DISABLED
+        - INVALID/UNKNOWN
+        - NOT-SHARED
+        - OK
     Currency:
       type: object
       properties:
@@ -23102,6 +23103,41 @@ components:
           description: The currency symbol.
           type: string
           example: €
+    DataSource:
+      type: string
+      enum:
+        - CELL
+        - SUMMARY_FIELD
+    DayDescriptor:
+      type: string
+      enum:
+        - DAY
+        - WEEKDAY
+        - WEEKEND
+        - SUNDAY
+        - MONDAY
+        - TUESDAY
+        - WEDNESDAY
+        - THURSDAY
+        - FRIDAY
+        - SATURDAY
+    DayOrdinal:
+      description: |
+        Must be one of the following values:
+          * **FIRST** or **LAST**
+          * **SECOND**, **THIRD**, or **FOURTH**
+
+        This attribute is applicable to the following schedule type:
+          * **MONTHLY**
+
+          For more details, refer to the Table of Schedule Object’s Attributes below.
+      type: string
+      enum:
+        - FIRST
+        - LAST
+        - SECOND
+        - THIRD
+        - FOURTH
     Discussion:
       type: object
       x-tags:
@@ -23149,11 +23185,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         parentType:
-          description: Type of parent object.
-          type: string
-          enum:
-            - ROW
-            - SHEET
+          $ref: '#/components/schemas/DiscussionParentType'
         readOnly:
           description: Indicates whether the user can modify the discussion.
           type: boolean
@@ -23163,6 +23195,12 @@ components:
             of top-level comment.
           type: string
           readOnly: true
+    DiscussionParentType:
+      description: Type of parent object.
+      type: string
+      enum:
+        - ROW
+        - SHEET
     Duration:
       description: >-
         In a project sheet, represents a value in a duration cell, or a lag
@@ -23249,25 +23287,7 @@ components:
           example: >-
             2.1.iI9WIpaEAhjz-0hV0eGw2lOEoKDqoRUP00NJv2RvAyKoOvyws63zsfpTBqda5tb33ylcz2JdGVC9Rfa2FRJKQg
         objectType:
-          description: >-
-            The Smartsheet resource impacted by the event, such as, SHEET or
-            WORKSPACE.
-          type: string
-          enum:
-            - ACCESS_TOKEN
-            - ACCOUNT
-            - ATTACHMENT
-            - DASHBOARD
-            - DISCUSSION
-            - FOLDER
-            - FORM
-            - GROUP
-            - REPORT
-            - SHEET
-            - UPDATE_REQUEST
-            - USER
-            - WORKSPACE
-          example: SHEET
+          $ref: '#/components/schemas/EventObjectType'
         action:
           description: >-
             The action applied to the specified object, such as CREATE or
@@ -23316,34 +23336,58 @@ components:
           type: string
           nullable: false
         source:
-          description: Identifies the client or user agent used to initiate the action.
-          type: string
-          enum:
-            - WEB_APP
-            - MOBILE_IOS
-            - MOBILE_ANDROID
-            - API_UNDEFINED_APP
-            - API_INTEGRATED_APP
-            - API_ODBC_DRIVER
-          example: WEB_APP
+          $ref: '#/components/schemas/EventSource'
         additionalDetails:
-          description: >-
-            Container object for additional event-specific properties.
-            Properties depend upon the event type, but all events include an
-            `emailaddress` property, representing the user responsible for the
-            activity. See <a
-            href="https://smartsheet-platform.github.io/event-reporting-docs/"
-            target="_blank" rel="noopener noreferrer">Event Reporting</a>
-            reference documentation for details on each event type.
-          type: object
-          properties:
-            emailAddress:
-              description: Email address of the user responsible for the activity.
-              type: string
-              example: jane.doe@smartsheet.com
-          additionalProperties: true
-          required:
-            - emailAddress
+          $ref: '#/components/schemas/EventAdditionalDetails'
+    EventAdditionalDetails:
+      description: >-
+        Container object for additional event-specific properties.
+        Properties depend upon the event type, but all events include an
+        `emailaddress` property, representing the user responsible for the
+        activity. See <a
+        href="https://smartsheet-platform.github.io/event-reporting-docs/"
+        target="_blank" rel="noopener noreferrer">Event Reporting</a>
+        reference documentation for details on each event type.
+      type: object
+      properties:
+        emailAddress:
+          description: Email address of the user responsible for the activity.
+          type: string
+          example: jane.doe@smartsheet.com
+      additionalProperties: true
+      required:
+        - emailAddress
+    EventObjectType:
+      description: >-
+        The Smartsheet resource impacted by the event, such as, SHEET or
+        WORKSPACE.
+      type: string
+      enum:
+        - ACCESS_TOKEN
+        - ACCOUNT
+        - ATTACHMENT
+        - DASHBOARD
+        - DISCUSSION
+        - FOLDER
+        - FORM
+        - GROUP
+        - REPORT
+        - SHEET
+        - UPDATE_REQUEST
+        - USER
+        - WORKSPACE
+      example: SHEET
+    EventSource:
+      description: Identifies the client or user agent used to initiate the action.
+      type: string
+      enum:
+        - WEB_APP
+        - MOBILE_IOS
+        - MOBILE_ANDROID
+        - API_UNDEFINED_APP
+        - API_INTEGRATED_APP
+        - API_ODBC_DRIVER
+      example: WEB_APP
     Favorite:
       type: object
       x-tags:
@@ -23356,18 +23400,20 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          type: string
-          enum:
-            - folder
-            - report
-            - sheet
-            - sight
-            - template
-            - workspace
+          $ref: '#/components/schemas/FavoriteType'
     FavoriteArray:
       type: array
       items:
         $ref: '#/components/schemas/Favorite'
+    FavoriteType:
+      type: string
+      enum:
+        - folder
+        - report
+        - sheet
+        - sight
+        - template
+        - workspace
     FilteredEventsRequest:
       type: object
       properties:
@@ -23384,7 +23430,7 @@ components:
             the specified workspace Ids are returned.
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/Int64'
         since:
           description: >-
             The earliest time from which events are included in the response.
@@ -23468,13 +23514,15 @@ components:
           type: boolean
           example: false
         filterType:
-          type: string
-          enum:
-            - PERSONAL
-            - SHARED
-          example: PERSONAL
+          $ref: '#/components/schemas/FilterType'
         query:
           $ref: '#/components/schemas/Query'
+    FilterType:
+      type: string
+      enum:
+        - PERSONAL
+        - SHARED
+      example: PERSONAL
     Folder:
       description: Can contain dashboards, folders, reports, sheets, or templates.
       type: object
@@ -23536,10 +23584,12 @@ components:
             - sans-serif
           type: array
           items:
-            type: string
-            enum:
-              - sans-serif
-              - serif
+            $ref: '#/components/schemas/FontFamilyTrait'
+    FontFamilyTrait:
+      type: string
+      enum:
+        - sans-serif
+        - serif
     FormatDetails:
       type: object
       properties:
@@ -23980,21 +24030,7 @@ components:
           description: Name of the image file.
           type: string
         fit:
-          description: >
-            Describes how the image occupies the available space of its widget.
-             * ACTUAL_SIZE - Uses the original image width and height dimensions.
-             * FILL - Scales the image to maintain its aspect ratio while filling its entire widget. If the image aspect 
-            ratio does not match the aspect ratio of its widget, then the image
-            will be clipped to fit.
-             * FIT - Scales the image to maintain its aspect ratio while fitting within its widget. The image will be 
-            "letterboxed" if its aspect ratio does not match the aspect ratio of
-            its widget. Default value for new  image widgets and for existing
-            image widgets where this property has not been explicitly set.
-          enum:
-            - ACTUAL_SIZE
-            - FILL
-            - FIT
-          type: string
+          $ref: '#/components/schemas/ImageWidgetContentFit'
         format:
           description: Format descriptor. Follows the pattern in FormatTables.
           type: string
@@ -24004,18 +24040,36 @@ components:
         hyperlink:
           $ref: '#/components/schemas/WidgetHyperlink'
         margin:
-          description: >
-            Indicates whether there is margin between the image and its widget
-            borders.
-             * MARGIN - Default value for existing image widgets where this property has not been explicitly set.
-             * NO_MARGIN - Default value for new image widgets.
-          enum:
-            - MARGIN
-            - NO_MARGIN
-          type: string
+          $ref: '#/components/schemas/ImageWidgetContentMargin'
         width:
           description: Original width of the image in pixels.
           type: integer
+    ImageWidgetContentFit:
+      description: >
+        Describes how the image occupies the available space of its widget.
+         * ACTUAL_SIZE - Uses the original image width and height dimensions.
+         * FILL - Scales the image to maintain its aspect ratio while filling its entire widget. If the image aspect 
+        ratio does not match the aspect ratio of its widget, then the image
+        will be clipped to fit.
+         * FIT - Scales the image to maintain its aspect ratio while fitting within its widget. The image will be 
+        "letterboxed" if its aspect ratio does not match the aspect ratio of
+        its widget. Default value for new  image widgets and for existing
+        image widgets where this property has not been explicitly set.
+      enum:
+        - ACTUAL_SIZE
+        - FILL
+        - FIT
+      type: string
+    ImageWidgetContentMargin:
+      description: >
+        Indicates whether there is margin between the image and its widget
+        borders.
+         * MARGIN - Default value for existing image widgets where this property has not been explicitly set.
+         * NO_MARGIN - Default value for new image widgets.
+      enum:
+        - MARGIN
+        - NO_MARGIN
+      type: string
     IndexResult:
       type: object
       properties:
@@ -24082,6 +24136,9 @@ components:
           type: integer
           example: -1
           readOnly: true
+    Int64:
+      type: integer
+      format: int64
     MiniUser:
       description: MiniUser Object
       type: object
@@ -24151,18 +24208,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          description: |
-            Type of the predecessor:
-             * FF (Finish-to-Finish) - finish at the same time the predecessor finishes.
-             * FS (Finish-to-Start) - start after the predecessor finishes.
-             * SF (Start-to-Finish) - finish before the predecessor starts.
-             * SS (Start-to-Start) - start at the same time the predecessor starts.
-          type: string
-          enum:
-            - FF
-            - FS
-            - SF
-            - SS
+          $ref: '#/components/schemas/PredecessorType'
         inCriticalPath:
           description: True if this predecessor is in the critical path.
           type: boolean
@@ -24201,6 +24247,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Predecessor'
+    PredecessorType:
+      description: |
+        Type of the predecessor:
+         * FF (Finish-to-Finish) - finish at the same time the predecessor finishes.
+         * FS (Finish-to-Start) - start after the predecessor finishes.
+         * SF (Start-to-Finish) - finish before the predecessor starts.
+         * SS (Start-to-Start) - start at the same time the predecessor starts.
+      type: string
+      enum:
+        - FF
+        - FS
+        - SF
+        - SS
     ProjectSettings:
       description: >-
         Represents the project settings dependencies for a specific sheet.
@@ -24222,15 +24281,7 @@ components:
         workingDays:
           type: array
           items:
-            type: string
-            enum:
-              - MONDAY
-              - TUESDAY
-              - WEDNESDAY
-              - THURSDAY
-              - FRIDAY
-              - SATURDAY
-              - SUNDAY
+            $ref: '#/components/schemas/WorkingDay'
     Proof:
       description: >-
         Object containing zero or more media items, including images, videos,
@@ -24253,14 +24304,7 @@ components:
             column value is empty, name is empty.
           type: string
         proofType:
-          description: File type for the proof version.
-          type: string
-          enum:
-            - DOCUMENT
-            - IMAGE
-            - MIXED
-            - NONE
-            - VIDEO
+          $ref: '#/components/schemas/ProofType'
         proofRequestUrl:
           description: URL to review a proofing request.
           type: string
@@ -24318,12 +24362,7 @@ components:
           description: Indicates whether the description is downloadable.
           type: boolean
         status:
-          description: Proof request status.
-          type: string
-          enum:
-            - ACTIVE
-            - EXPIRED
-            - PROOF_DELETED
+          $ref: '#/components/schemas/ProofRequestStatus'
     ProofRequestAction:
       type: object
       x-tags:
@@ -24336,12 +24375,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/MiniUser'
         actionStatus:
-          description: Proof request action status.
-          type: string
-          enum:
-            - APPROVED
-            - PENDING
-            - REJECTED
+          $ref: '#/components/schemas/ProofRequestActionStatus'
     ProofRequestBody:
       allOf:
         - $ref: '#/components/schemas/Email'
@@ -24350,17 +24384,40 @@ components:
         isDownloadable:
           description: Whether the description is downloadable.
           type: boolean
+    ProofRequestActionStatus:
+      description: Proof request action status.
+      type: string
+      enum:
+        - APPROVED
+        - PENDING
+        - REJECTED
+    ProofRequestStatus:
+      description: Proof request status.
+      type: string
+      enum:
+        - ACTIVE
+        - EXPIRED
+        - PROOF_DELETED
+    ProofType:
+      description: File type for the proof version.
+      type: string
+      enum:
+        - DOCUMENT
+        - IMAGE
+        - MIXED
+        - NONE
+        - VIDEO
     Query:
       properties:
         operator:
           $ref: '#/components/schemas/QueryOperator'
         criteria:
           description: >-
-            Criteria objects specifying custom criteria against which to match
+            Criterion objects specifying custom criteria against which to match
             cell values.
           type: array
           items:
-            $ref: '#/components/schemas/Criteria'
+            $ref: '#/components/schemas/Criterion'
         includeParent:
           description: >-
             If true, indicates that "show parent rows" is enabled for the
@@ -24519,6 +24576,13 @@ components:
           type: string
         hyperlink:
           $ref: '#/components/schemas/WidgetHyperlink'
+    ResourceManagementType:
+      description: Resource Management type. Indicates the type of RM that is enabled.
+      type: string
+      enum:
+        - NONE
+        - LEGACY_RESOURCE_MANAGEMENT
+        - RESOURCE_MANAGEMENT_BY_SMARTSHEET
     Result:
       type: object
       allOf:
@@ -24720,14 +24784,7 @@ components:
       type: object
       properties:
         type:
-          description: Type of schedule.
-          type: string
-          enum:
-            - ONCE
-            - DAILY
-            - WEEKLY
-            - MONTHLY
-            - YEARLY
+          $ref: '#/components/schemas/ScheduleType'
         dayDescriptors:
           description: >
             A string array consists of one or more of the following values:
@@ -24782,18 +24839,7 @@ components:
             below.
           type: array
           items:
-            type: string
-            enum:
-              - DAY
-              - WEEKDAY
-              - WEEKEND
-              - SUNDAY
-              - MONDAY
-              - TUESDAY
-              - WEDNESDAY
-              - THURSDAY
-              - FRIDAY
-              - SATURDAY
+            $ref: '#/components/schemas/DayDescriptor'
         dayOfMonth:
           description: >
             The day within the month.
@@ -24811,22 +24857,7 @@ components:
           minimum: 1
           maximum: 31
         dayOrdinal:
-          description: |
-            Must be one of the following values:
-              * **FIRST** or **LAST**
-              * **SECOND**, **THIRD**, or **FOURTH**
-
-            This attribute is applicable to the following schedule type:
-              * **MONTHLY**
-
-              For more details, refer to the Table of Schedule Object’s Attributes below.
-          type: string
-          enum:
-            - FIRST
-            - LAST
-            - SECOND
-            - THIRD
-            - FOURTH
+          $ref: '#/components/schemas/DayOrdinal'
         repeatEvery:
           description: >
             Frequency on which the request is delivered. The unit is a function
@@ -24920,6 +24951,15 @@ components:
                 For more details, refer to the Table of Schedule Object’s
                 Attributes below.
             - $ref: '#/components/schemas/Timestamp_Writeable'
+    ScheduleType:
+      description: Type of schedule.
+      type: string
+      enum:
+        - ONCE
+        - DAILY
+        - WEEKLY
+        - MONTHLY
+        - YEARLY
     Scope:
       type: object
       properties:
@@ -25055,12 +25095,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Recipient'
         status:
-          description: The status of the sent update request.
-          type: string
-          enum:
-            - CANCELED
-            - COMPLETE
-            - PENDING
+          $ref: '#/components/schemas/UpdateRequestStatus'
         subject:
           description: The subject of the email.
           type: string
@@ -25104,7 +25139,6 @@ components:
           description: >
             Indicates whether to send a copy of the email to the sharer of the
             sheet. You can specify this attribute
-
             in a request, but it is never present in a response.
           type: boolean
         createdAt:
@@ -25116,7 +25150,6 @@ components:
           description: >
             The message included in the body of the email that is optionally
             sent to the recipient. You can specify
-
             this attribute in a request, but it is never present in a response.
           type: string
         modifiedAt:
@@ -25127,24 +25160,28 @@ components:
             a group share, the group's name.
           type: string
         scope:
-          description: |
-            The scope of this share. One of the following values:
-              * **ITEM**: an item-level share (that is, the specific object to which the share applies is shared with
-                the user or group).
-              * **WORKSPACE**: a workspace-level share (that is, the workspace that contains the object to which the
-                share applies is shared with the user or group).
-          type: string
+          $ref: '#/components/schemas/ShareScope'
         subject:
           description: >
             The subject of the email that is optionally sent to notify the
             recipient. You can specify this attribute
-
             in a request, but it is never present in a response.
           type: string
     ShareArray:
       type: array
       items:
         $ref: '#/components/schemas/Share'
+    ShareScope:
+      type: string
+      enum:
+        - ITEM
+        - WORKSPACE
+      description: |
+        The scope of this share. One of the following values:
+          * **ITEM**: an item-level share (that is, the specific object to which the share applies is shared with
+            the user or group).
+          * **WORKSPACE**: a workspace-level share (that is, the workspace that contains the object to which the
+            share applies is shared with the user or group).
     SharedSecret:
       type: object
       properties:
@@ -25261,12 +25298,7 @@ components:
           description: Indicates that resource management is enabled.
           type: boolean
         resourceManagementType:
-          description: Resource Management type. Indicates the type of RM that is enabled.
-          type: string
-          enum:
-            - NONE
-            - LEGACY_RESOURCE_MANAGEMENT
-            - RESOURCE_MANAGEMENT_BY_SMARTSHEET
+          $ref: '#/components/schemas/ResourceManagementType'
         rows:
           type: array
           items:
@@ -25300,11 +25332,17 @@ components:
         - sendViaEmail
       properties:
         format:
-          description: |
-            One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.
-          type: string
+          $ref: '#/components/schemas/SheetEmailFormat'
         formatDetails:
           $ref: '#/components/schemas/FormatDetails'
+    SheetEmailFormat:
+      type: string
+      enum:
+        - EXCEL
+        - PDF
+        - PDF_GANTT
+      description: |
+        One of the following values: **EXCEL**, **PDF**, or **PDF_GANTT**.
     SheetPublish:
       description: Describes the sheet's publish settings.
       type: object
@@ -25325,20 +25363,14 @@ components:
               * SHARED - available only to users shared to the item.
 
             Only returned in the response if **readOnlyFullEnabled = true**.
-          type: string
-          enum:
-            - ALL
-            - ORG
-            - SHARED
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishView'
         readOnlyFullDefaultView:
           description: >
             Indicates which view the user has set for a read-only, default view
             of the published sheet. Must be one of the listed enum values.
-          type: string
-          enum:
-            - CALENDAR
-            - CARD
-            - GRID
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishView'
         readOnlyFullEnabled:
           description: >-
             If **true**, a rich version of the sheet is published with the
@@ -25378,20 +25410,14 @@ components:
               * SHARED - available only to users shared to the item.
 
             Only returned in the response if **readWriteEnabled = true**.
-          type: string
-          enum:
-            - ALL
-            - ORG
-            - SHARED
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishAccess'
         readWriteDefaultView:
           description: >
             Indicates which view the user has set for a read-write, default view
             of the published sheet. Must be one of the listed enum values.
-          type: string
-          enum:
-            - CALENDAR
-            - CARD
-            - GRID
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishView'
         readWriteEnabled:
           description: >-
             If **true**,a rich version of the sheet is published with the
@@ -25409,6 +25435,18 @@ components:
             URL for 'Edit by Anyone' view of the published sheet. Only returned
             in a response if **readWriteEnabled = true**.
           type: string
+    SheetPublishAccess:
+      type: string
+      enum:
+        - ALL
+        - ORG
+        - SHARED
+    SheetPublishView:
+      type: string
+      enum:
+        - CALENDAR
+        - CARD
+        - GRID
     SheetSummary:
       type: object
       x-tags:
@@ -25427,18 +25465,20 @@ components:
       description: Describes the current user's editing permissions for a specific sheet.
       properties:
         summaryPermissions:
-          description: |
-            One of:
-              * ADMIN: full control over fields.
-              * READ_DELETE: sheet is owned by an individual account that doesn't have summary capabilities. If a summary exists, the only possible operations are GET and DELETE fields.
-              * READ_ONLY.
-              * READ_WRITE: can edit values of existing fields, but not create or delete fields, nor modify field type.
-          type: string
-          enum:
-            - ADMIN
-            - READ_DELETE
-            - READ_ONLY
-            - READ_WRITE
+          $ref: '#/components/schemas/SheetUserPermission'
+    SheetUserPermission:
+      description: |
+        One of:
+          * ADMIN: full control over fields.
+          * READ_DELETE: sheet is owned by an individual account that doesn't have summary capabilities. If a summary exists, the only possible operations are GET and DELETE fields.
+          * READ_ONLY.
+          * READ_WRITE: can edit values of existing fields, but not create or delete fields, nor modify field type.
+      type: string
+      enum:
+        - ADMIN
+        - READ_DELETE
+        - READ_ONLY
+        - READ_WRITE
     SheetUserSettings:
       type: object
       description: >-
@@ -25484,15 +25524,17 @@ components:
       title: Shortcut
       properties:
         type:
-          type: string
-          enum:
-            - SHORTCUT
-            - SHORTCUTICON
-            - SHORTCUTLIST
+          $ref: '#/components/schemas/ShortcutWidgetContentType'
         shortcutData:
           type: array
           items:
             $ref: '#/components/schemas/ShortcutDataItem'
+    ShortcutWidgetContentType:
+      type: string
+      enum:
+        - SHORTCUT
+        - SHORTCUTICON
+        - SHORTCUTLIST
     Sight:
       type: object
       x-tags:
@@ -25523,6 +25565,7 @@ components:
           items:
             $ref: '#/components/schemas/Widget'
         workspace:
+          #FIXME - MiniWorkspace?
           description: >-
             A reference to the dashboard's workspace, if the dashboard is in a
             workspace; otherwise an empty value.
@@ -25545,26 +25588,7 @@ components:
         - dashboards
       properties:
         readOnlyFullAccessibleBy:
-          description: >
-            Indicates who can access the 'Read-Only Full' view of the published
-            dashboard. Only returned in the response if **readOnlyFullEnabled =
-            true**.
-              * **ALL** - available to anyone who has the link.
-              * **ORG** - available only to members of the dashboard owner's Smartsheet organization account.
-              * **SHARED** - available only to users shared to the item.
-
-            ---
-
-            If **readOnlyFullEnabled** is set to true in the request, but
-            **readOnlyFullAccessibleBy** is not specified, the value of
-            **readOnlyFullAccessibleBy** defaults to the organization-level
-            'Dashboard Publishing' setting (if the dashboard owner belongs to an
-            organization account) or to **ALL** (if the dashboard owner does not
-            belong to an organization account).
-          type: string
-          enum:
-            - ALL
-            - ORG
+          $ref: '#/components/schemas/SightPublishAccess'
         readOnlyFullEnabled:
           description: >-
             If true, a rich version of the dashboard is published with the
@@ -25578,18 +25602,42 @@ components:
           readOnly: true
       required:
         - readOnlyFullEnabled
+    SightPublishAccess:
+      type: string
+      enum:
+        - ALL
+        - ORG
+        - SHARED
+      description: >
+        Indicates who can access the 'Read-Only Full' view of the published
+        dashboard. Only returned in the response if **readOnlyFullEnabled =
+        true**.
+          * **ALL** - available to anyone who has the link.
+          * **ORG** - available only to members of the dashboard owner's Smartsheet organization account.
+          * **SHARED** - available only to users shared to the item.
+
+        ---
+
+        If **readOnlyFullEnabled** is set to true in the request, but
+        **readOnlyFullAccessibleBy** is not specified, the value of
+        **readOnlyFullAccessibleBy** defaults to the organization-level
+        'Dashboard Publishing' setting (if the dashboard owner belongs to an
+        organization account) or to **ALL** (if the dashboard owner does not
+        belong to an organization account).
     SortCriterion:
       type: object
       properties:
         columnId:
           $ref: '#/components/schemas/Int64'
         direction:
-          description: Direction of the sort.
-          type: string
-          enum:
-            - ASCENDING
-            - DESCENDING
-          default: ASCENDING
+          $ref: '#/components/schemas/SortDirection'
+    SortDirection:
+      description: Direction of the sort.
+      type: string
+      enum:
+        - ASCENDING
+        - DESCENDING
+      default: ASCENDING
     SortSpecifier:
       type: object
       properties:
@@ -25608,9 +25656,16 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          description: |
-            **report**, **sheet**, **sight** (aka dashboard), or **template**.
-          type: string
+          $ref: '#/components/schemas/SourceType'
+    SourceType:
+      type: string
+      enum:
+        - report
+        - sheet
+        - sight
+        - template
+      description: |
+        **report**, **sheet**, **sight** (aka dashboard), or **template**.
     StreamResult:
       description: StreamResult Object
       type: object
@@ -25736,11 +25791,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          description: Type of template. Only applicable to public templates.
-          type: string
-          enum:
-            - report
-            - sheet
+          $ref: '#/components/schemas/TemplateType'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         blank:
@@ -25759,12 +25810,7 @@ components:
           description: Template description.
           type: string
         globalTemplate:
-          description: Type of global template. Only applicable to blank public templates.
-          type: string
-          enum:
-            - BLANK_SHEET
-            - PROJECT_SHEET
-            - TASK_LIST
+          $ref: '#/components/schemas/TemplateGlobalType'
         image:
           description: >-
             URL to the small preview image for this template. Only applicable to
@@ -25776,113 +25822,7 @@ components:
             non-blank public templates.
           type: string
         locale:
-          description: Locale of the template. Only applicable to public templates.
-          type: string
-          enum:
-            - ar_AE
-            - ar_BH
-            - ar_DZ
-            - ar_EG
-            - ar_IQ
-            - ar_JO
-            - ar_KW
-            - ar_LB
-            - ar_LY
-            - ar_MA
-            - ar_OM
-            - ar_QA
-            - ar_SA
-            - ar_SD
-            - ar_SY
-            - ar_TN
-            - ar_YE
-            - be_BY
-            - bg_BG
-            - ca_ES
-            - cs_CZ
-            - da_DK
-            - de_AT
-            - de_CH
-            - de_DE
-            - de_LU
-            - el_CY
-            - el_GR
-            - en_AU
-            - en_CA
-            - en_GB
-            - en_IE
-            - en_IN
-            - en_MT
-            - en_NZ
-            - en_PH
-            - en_SG
-            - en_US
-            - en_ZA
-            - es_AR
-            - es_BO
-            - es_CL
-            - es_CO
-            - es_CR
-            - es_DO
-            - es_EC
-            - es_ES
-            - es_GT
-            - es_HN
-            - es_MX
-            - es_NI
-            - es_PA
-            - es_PE
-            - es_PR
-            - es_PY
-            - es_SV
-            - es_US
-            - es_UY
-            - es_VE
-            - et_EE
-            - fi_FI
-            - fr_BE
-            - fr_CA
-            - fr_CH
-            - fr_FR
-            - fr_LU
-            - ga_IE
-            - hi_US
-            - hr_HR
-            - hu_HU
-            - in_ID
-            - is_IS
-            - it_CH
-            - it_IT
-            - iw_IL
-            - ja_JP
-            - ko_KR
-            - lt_LT
-            - lv_LV
-            - mk_MK
-            - ms_MY
-            - mt_MT
-            - nl_BE
-            - nl_NL
-            - no_NO
-            - pl_PL
-            - pt_BR
-            - pt_PT
-            - ro_RO
-            - ru_RU
-            - sk_SK
-            - sl_SI
-            - sq_AL
-            - sr_BA
-            - sr_CS
-            - sv_SE
-            - th_US
-            - tr_TR
-            - uk_UA
-            - vi_VN
-            - zh_CN
-            - zh_HK
-            - zh_SG
-            - zh_TW
+          $ref: '#/components/schemas/TemplateLocale'
         name:
           type: string
           description: Type of global template.
@@ -25894,6 +25834,127 @@ components:
           type: array
           items:
             type: string
+    TemplateGlobalType:
+      description: Type of global template. Only applicable to blank public templates.
+      type: string
+      enum:
+        - BLANK_SHEET
+        - PROJECT_SHEET
+        - TASK_LIST
+    TemplateLocale:
+      description: Locale of the template. Only applicable to public templates.
+      type: string
+      enum:
+        - ar_AE
+        - ar_BH
+        - ar_DZ
+        - ar_EG
+        - ar_IQ
+        - ar_JO
+        - ar_KW
+        - ar_LB
+        - ar_LY
+        - ar_MA
+        - ar_OM
+        - ar_QA
+        - ar_SA
+        - ar_SD
+        - ar_SY
+        - ar_TN
+        - ar_YE
+        - be_BY
+        - bg_BG
+        - ca_ES
+        - cs_CZ
+        - da_DK
+        - de_AT
+        - de_CH
+        - de_DE
+        - de_LU
+        - el_CY
+        - el_GR
+        - en_AU
+        - en_CA
+        - en_GB
+        - en_IE
+        - en_IN
+        - en_MT
+        - en_NZ
+        - en_PH
+        - en_SG
+        - en_US
+        - en_ZA
+        - es_AR
+        - es_BO
+        - es_CL
+        - es_CO
+        - es_CR
+        - es_DO
+        - es_EC
+        - es_ES
+        - es_GT
+        - es_HN
+        - es_MX
+        - es_NI
+        - es_PA
+        - es_PE
+        - es_PR
+        - es_PY
+        - es_SV
+        - es_US
+        - es_UY
+        - es_VE
+        - et_EE
+        - fi_FI
+        - fr_BE
+        - fr_CA
+        - fr_CH
+        - fr_FR
+        - fr_LU
+        - ga_IE
+        - hi_US
+        - hr_HR
+        - hu_HU
+        - in_ID
+        - is_IS
+        - it_CH
+        - it_IT
+        - iw_IL
+        - ja_JP
+        - ko_KR
+        - lt_LT
+        - lv_LV
+        - mk_MK
+        - ms_MY
+        - mt_MT
+        - nl_BE
+        - nl_NL
+        - no_NO
+        - pl_PL
+        - pt_BR
+        - pt_PT
+        - ro_RO
+        - ru_RU
+        - sk_SK
+        - sl_SI
+        - sq_AL
+        - sr_BA
+        - sr_CS
+        - sv_SE
+        - th_US
+        - tr_TR
+        - uk_UA
+        - vi_VN
+        - zh_CN
+        - zh_HK
+        - zh_SG
+        - zh_TW
+    TemplateType:
+      description: Type of template. Only applicable to public templates.
+      type: string
+      enum:
+        - report
+        - sheet
     Timestamp:
       oneOf:
         - $ref: '#/components/schemas/Timestamp_date-time'
@@ -25998,6 +26059,13 @@ components:
                 `User` object containing `name` and `email` of the sender.
               allOf:
                 - $ref: '#/components/schemas/MiniUser'
+    UpdateRequestStatus:
+      description: The status of the sent update request.
+      type: string
+      enum:
+        - CANCELED
+        - COMPLETE
+        - PENDING
     URLAttachmentRequest:
       type: object
       x-tags:
@@ -26102,14 +26170,7 @@ components:
           maximum: -1
           deprecated: true
         status:
-          description: User status, set to one of the listed enum values.
-          type: string
-          enum:
-            - ACTIVE
-            - DECLINED
-            - PENDING
-            - DEACTIVATED
-          example: ACTIVE
+          $ref: '#/components/schemas/UserStatus'
     UserProfile:
       type: object
       x-tags:
@@ -26233,6 +26294,25 @@ components:
           description: User's work phone number.
           type: string
           example: 844-324-2360
+    UserStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - DECLINED
+        - PENDING
+        - DEACTIVATED
+      description: User status, set to one of the listed enum values.
+      example: ACTIVE
+    WorkingDay:
+      type: string
+      enum:
+        - MONDAY
+        - TUESDAY
+        - WEDNESDAY
+        - THURSDAY
+        - FRIDAY
+        - SATURDAY
+        - SUNDAY
     WebContentWidgetContent:
       type: object
       title: Web Content
@@ -26330,25 +26410,27 @@ components:
                   readOnly: true
                   description: When this webhook last made a successful callback.
             status:
-              description: >-
-                Webhook status. Read-only. See Webhook Status for list of
-                possible values.
-              type: string
-              readOnly: true
-              enum:
-                - DISABLED_ADMINISTRATIVE
-                - DISABLED_APP_REVOKED
-                - DISABLED_BY_OWNER
-                - DISABLED_CALLBACK_FAILED
-                - DISABLED_SCOPE_INACCESSIBLE
-                - DISABLED_VERIFICATION_FAILED
-                - ENABLED
-                - NEW_NOT_VERIFIED
-              example: ENABLED
+              $ref: '#/components/schemas/WebhookStatus'
             subscope:
               $ref: '#/components/schemas/Subscope'
       x-tags:
         - webhooks
+    WebhookStatus:
+      type: string
+      readOnly: true
+      enum:
+        - DISABLED_ADMINISTRATIVE
+        - DISABLED_APP_REVOKED
+        - DISABLED_BY_OWNER
+        - DISABLED_CALLBACK_FAILED
+        - DISABLED_SCOPE_INACCESSIBLE
+        - DISABLED_VERIFICATION_FAILED
+        - ENABLED
+        - NEW_NOT_VERIFIED
+      description: >-
+        Webhook status. Read-only. See Webhook Status for list of
+        possible values.
+      example: ENABLED
     Widget:
       type: object
       x-tags:
@@ -26360,20 +26442,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          description: Type of widget.
-          type: string
-          enum:
-            - CHART
-            - GRIDGANTT
-            - IMAGE
-            - METRIC
-            - RICHTEXT
-            - SHEETSUMMARY
-            - SHORTCUT
-            - SHORTCUTICON
-            - SHORTCUTLIST
-            - TITLE
-            - WEBCONTENT
+          $ref: '#/components/schemas/WidgetType'
         contents:
           description: The type of widget content depends on the value of widget.type.
           oneOf:
@@ -26413,15 +26482,7 @@ components:
           description: Widget version number.
           type: integer
         viewMode:
-          description: >
-            Indicates the content layout. Must use a query parameter of level=2
-            to see this information.
-             * 1 - centered
-             * 2 - left aligned
-          type: integer
-          enum:
-            - 1
-            - 2
+          $ref: '#/components/schemas/WidgetViewMode'
         width:
           description: Number of columns that the widget occupies on the dashboard.
           type: integer
@@ -26431,30 +26492,57 @@ components:
         yPosition:
           description: Y-coordinate of widget's position on the dashboard.
           type: integer
+    WidgetHyperlinkInteractionType:
+      type: string
+      enum:
+        - DISTI_COPY
+        - NONE
+        - SMARTSHEET_ITEM
+        - SOURCE_SHEET
+        - WEB
+      description: >
+        Specifies what happens when a user clicks the widget. The type will
+        determine what other properties are needed.
+         * DISTI_COPY - a distribution link, only available if org has distribution links enabled.
+         * NONE - do nothing, no other attribute required.
+         * SMARTSHEET_ITEM - open a Smartsheet item that is not the SOURCE_SHEET, must also have one of the following attributes:
+            * dashboardId
+            * folderId
+            * reportId
+            * sheetId
+            * workspaceId
+         * SOURCE_SHEET - open the container where the widget data comes from, no other attribute required.
+         * WEB -  launch the URL, must also have url attribute.
+    WidgetType:
+      type: string
+      enum:
+        - CHART
+        - GRIDGANTT
+        - IMAGE
+        - METRIC
+        - RICHTEXT
+        - SHEETSUMMARY
+        - SHORTCUT
+        - SHORTCUTICON
+        - SHORTCUTLIST
+        - TITLE
+        - WEBCONTENT
+      description: Type of widget.
+    WidgetViewMode:
+      type: integer
+      enum:
+        - 1
+        - 2
+      description: >
+        Indicates the content layout. Must use a query parameter of level=2
+        to see this information.
+         * 1 - centered
+         * 2 - left aligned
     WidgetHyperlink:
       type: object
       properties:
         interactionType:
-          description: >
-            Specifies what happens when a user clicks the widget. The type will
-            determine what other properties are needed.
-             * DISTI_COPY - a distribution link, only available if org has distribution links enabled.
-             * NONE - do nothing, no other attribute required.
-             * SMARTSHEET_ITEM - open a Smartsheet item that is not the SOURCE_SHEET, must also have one of the following attributes:
-                * dashboardId
-                * folderId
-                * reportId
-                * sheetId
-                * workspaceId
-             * SOURCE_SHEET - open the container where the widget data comes from, no other attribute required.
-             * WEB -  launch the URL, must also have url attribute.
-          type: string
-          enum:
-            - DISTI_COPY
-            - NONE
-            - SMARTSHEET_ITEM
-            - SOURCE_SHEET
-            - WEB
+          $ref: '#/components/schemas/WidgetHyperlinkInteractionType'
         folderId:
           description: If interactionType = SMARTSHEET_ITEM this is the folder to open.
           allOf:
@@ -26516,6 +26604,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DashboardListing'
+
+    ## here the alphabetical order fell apart :-/
+    # FIXME - why not Timestamp_string?
     Timestamp_date-time:
       type: string
       format: date-time
@@ -26525,22 +26616,26 @@ components:
       type: object
       properties:
         message:
-          description: >-
-            Message that indicates the outcome of the request. (One of SUCCESS
-            or PARTIAL_SUCCESS.)
-          type: string
-          enum:
-            - PARTIAL_SUCCESS
-            - SUCCESS
-          example: SUCCESS
+          $ref: '#/components/schemas/ResultMessage'
         resultCode:
-          description: |-
-            * '0' Success
-            * '3' Partial Success of Bulk Operation
-          type: integer
-          enum:
-            - 0
-            - 3
+          $ref: '#/components/schemas/ResultCode'
+    ResultMessage:
+      type: string
+      enum:
+        - PARTIAL_SUCCESS
+        - SUCCESS
+      description: >-
+        Message that indicates the outcome of the request. (One of SUCCESS
+        or PARTIAL_SUCCESS.)
+      example: SUCCESS
+    ResultCode:
+      type: integer
+      enum:
+        - 0
+        - 3
+      description: |-
+        * '0' Success
+        * '3' Partial Success of Bulk Operation
     GridListing:
       type: object
       properties:
@@ -26571,9 +26666,6 @@ components:
           $ref: '#/components/schemas/Timestamp'
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
-    Int64:
-      type: integer
-      format: int64
     ItemResult:
       type: object
       allOf:
@@ -26600,18 +26692,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         destinationType:
-          description: >
-            Type of destination container.
-
-
-            The `"home"` enum is **Deprecated** since March 25, 2025, and will
-            be removed.
-          type: string
-          nullable: true
-          enum:
-            - folder
-            - home
-            - workspace
+          $ref: '#/components/schemas/ContainerDestinationType'
         newName:
           description: >-
             Name of the newly created object (when copying a dashboard, folder,
@@ -26619,26 +26700,7 @@ components:
           type: string
       required:
         - destinationId
-    contactOptions:
-      type: array
-      items:
-        $ref: '#/components/schemas/ContactOption'
-      description: >-
-        Array of ContactOption objects to specify a pre-defined list of values
-        for the column. Column **type** must be **CONTACT_LIST**.
-    options:
-      type: array
-      items:
-        type: string
-      description: Array of the options available for the column.
-    primary:
-      type: boolean
-      description: Returned only if the column is the Primary Column (value = **true**).
-    symbol:
-      type: string
-      description: >-
-        When applicable for **CHECKBOX** or **PICKLIST** column types. See
-        [Symbol Columns](/api/smartsheet/openapi/columns).
+
     SystemColumnType:
       type: string
       enum:
@@ -26648,14 +26710,7 @@ components:
         - MODIFIED_BY
         - MODIFIED_DATE
       description: See [System Columns](/api/smartsheet/openapi/columns).
-    title:
-      type: string
-      description: Column title.
-    type:
-      $ref: '#/components/schemas/ColumnType'
-    width:
-      type: integer
-      description: Display width of the column in pixels.
+
     ColumnToCreateASheet:
       type: object
       x-tags:
@@ -26664,24 +26719,36 @@ components:
         autoNumberFormat:
           $ref: '#/components/schemas/AutoNumberFormat'
         contactOptions:
-          $ref: '#/components/schemas/contactOptions'
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
+          description: >-
+            Array of ContactOption objects to specify a pre-defined list of values
+            for the column. Column **type** must be **CONTACT_LIST**.
         options:
-          $ref: '#/components/schemas/options'
+          type: array
+          items:
+            type: string
+          description: Array of the options available for the column.
         primary:
-          $ref: '#/components/schemas/primary'
+          type: boolean
+          description: Returned only if the column is the Primary Column (value = **true**).
         symbol:
-          $ref: '#/components/schemas/symbol'
+          type: string
+          description: >-
+            When applicable for **CHECKBOX** or **PICKLIST** column types. See
+            [Symbol Columns](/api/smartsheet/openapi/columns).
         systemColumnType:
           $ref: '#/components/schemas/SystemColumnType'
         title:
-          $ref: '#/components/schemas/title'
+          type: string
+          description: Column title.
         type:
-          $ref: '#/components/schemas/type'
+          $ref: '#/components/schemas/ColumnType'
         width:
-          $ref: '#/components/schemas/width'
-    name:
-      description: Sheet name.
-      type: string
+          type: integer
+          description: Display width of the column in pixels.
+
     ObjectType:
       type: string
       enum:
@@ -26704,7 +26771,8 @@ components:
           items:
             $ref: '#/components/schemas/ColumnToCreateASheet'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
     SheetToCreateFromTemplate:
       type: object
       description: Sheet to create from template.
@@ -26714,7 +26782,9 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
+
     columns:
       type: array
       items:
@@ -26735,9 +26805,12 @@ components:
         columns:
           $ref: '#/components/schemas/columns'
         id:
-          $ref: '#/components/schemas/id'
+          description: Sheet Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
         permalink:
           $ref: '#/components/schemas/permalink'
     SheetCreatedFromTemplate:
@@ -26747,9 +26820,12 @@ components:
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         id:
-          $ref: '#/components/schemas/id'
+          description: Sheet Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
         permalink:
           $ref: '#/components/schemas/permalink'
     SheetImported:
@@ -26759,9 +26835,12 @@ components:
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         id:
-          $ref: '#/components/schemas/id'
+          description: Sheet Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
         type:
           description: Container type. Has 'sheet' value for the imported sheet.
           type: string
@@ -26975,7 +27054,7 @@ components:
         - Tahoma
         - Times New Roman
         - Verdana
-    Axes:
+    Axis:
       type: object
       properties:
         location:
@@ -27252,7 +27331,9 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/id'
+          description: Sheet Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         createdAt:
@@ -27260,7 +27341,8 @@ components:
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
         permalink:
           $ref: '#/components/schemas/permalink'
         version:
@@ -27322,7 +27404,7 @@ components:
           description: >-
             Indicates whether validation has been enabled for the column (value
             = **true**).
-    ColumnObjectAttributes:
+    ColumnObject:
       type: object
       properties:
         title:
@@ -27383,6 +27465,7 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**)
         version:
+          # FIXME - enum?
           type: integer
           description: >
             Read only. The level of the column type. Each element in the array
@@ -27459,11 +27542,14 @@ components:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/id'
+          description: Sheet Id.
+          allOf:
+            - $ref: '#/components/schemas/Int64'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         name:
-          $ref: '#/components/schemas/name'
+          description: Sheet name.
+          type: string
         permalink:
           $ref: '#/components/schemas/permalink'
     CrossSheetReferenceRequestWithColumnIds:
@@ -27598,82 +27684,6 @@ components:
           description: File to attach to the new comment. Only used with an attachment.
           type: string
           format: binary
-    icalEnabled:
-      description: If **true**, a webcal is available for the calendar in the sheet.
-      type: boolean
-    readOnlyFullAccessibleBy:
-      description: >
-        Indicates who can access the 'Read-Only Full' view of the published
-        sheet:
-          * ALL - available to anyone who has the link.
-          * ORG - available only to members of the sheet owner's Smartsheet organization account.
-          * SHARED - available only to users shared to the item.
-
-        Only returned in the response if **readOnlyFullEnabled = true**.
-      type: string
-      enum:
-        - ALL
-        - ORG
-        - SHARED
-    readOnlyFullDefaultView:
-      description: >
-        Indicates which view the user has set for a read-only, default view of
-        the published sheet. Must be one of the listed enum values.
-      type: string
-      enum:
-        - CALENDAR
-        - CARD
-        - GRID
-    readOnlyFullEnabled:
-      description: >-
-        If **true**, a rich version of the sheet is published with the ability
-        to download row attachments and discussions.
-      type: boolean
-    readOnlyFullShowToolbar:
-      description: >-
-        Indicates whether the left nav toolbar is displayed. The default, or
-        **true**, is to display the toolbar. If **false**, hides the toolbar.
-      type: boolean
-      deprecated: true
-    readOnlyLiteEnabled:
-      description: >-
-        If **true**, a lightweight version of the sheet is published without row
-        attachments and discussions.
-      type: boolean
-    readWriteAccessibleBy:
-      description: >
-        Indicates who can access the 'Edit by Anyone' view of the published
-        sheet:
-          * ALL - available to anyone who has the link.
-          * ORG - available only to members of the sheet owner's Smartsheet organization account.
-          * SHARED - available only to users shared to the item.
-
-        Only returned in the response if **readWriteEnabled = true**.
-      type: string
-      enum:
-        - ALL
-        - ORG
-        - SHARED
-    readWriteDefaultView:
-      description: >
-        Indicates which view the user has set for a read-write, default view of
-        the published sheet. Must be one of the listed enum values.
-      type: string
-      enum:
-        - CALENDAR
-        - CARD
-        - GRID
-    readWriteEnabled:
-      description: >-
-        If **true**,a rich version of the sheet is published with the ability to
-        edit cells and manage attachments and discussions.
-      type: boolean
-    readWriteShowToolbar:
-      description: >-
-        Indicates whether the left nav toolbar is displayed. The default, or
-        **true**, is to display the toolbar. If **false**, hides the toolbar.
-      type: boolean
-      deprecated: true
     SheetPublishRequest:
       description: >-
         Describes the sheet's publish settings. Used as a request body to set
@@ -27683,26 +27693,70 @@ components:
         - sheets
       properties:
         icalEnabled:
-          $ref: '#/components/schemas/icalEnabled'
+          type: boolean
+          description: If **true**, a webcal is available for the calendar in the sheet.
         readOnlyFullAccessibleBy:
-          $ref: '#/components/schemas/readOnlyFullAccessibleBy'
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishAccess'
+          description: >
+            Indicates who can access the 'Read-Only Full' view of the published
+            sheet:
+              * ALL - available to anyone who has the link.
+              * ORG - available only to members of the sheet owner's Smartsheet organization account.
+              * SHARED - available only to users shared to the item.
+
+            Only returned in the response if **readOnlyFullEnabled = true**.
         readOnlyFullDefaultView:
-          $ref: '#/components/schemas/readOnlyFullDefaultView'
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishView'
+          description: >
+            Indicates which view the user has set for a read-only, default view of
+            the published sheet. Must be one of the listed enum values.
         readOnlyFullEnabled:
-          $ref: '#/components/schemas/readOnlyFullEnabled'
+          type: boolean
+          description: >-
+            If **true**, a rich version of the sheet is published with the ability
+            to download row attachments and discussions.
         readOnlyFullShowToolbar:
-          $ref: '#/components/schemas/readOnlyFullShowToolbar'
+          type: boolean
+          deprecated: true
+          description: >-
+            Indicates whether the left nav toolbar is displayed. The default, or
+            **true**, is to display the toolbar. If **false**, hides the toolbar.
         readOnlyLiteEnabled:
-          $ref: '#/components/schemas/readOnlyLiteEnabled'
+          type: boolean
+          description: >-
+            If **true**, a lightweight version of the sheet is published without row
+            attachments and discussions.
         readWriteAccessibleBy:
-          $ref: '#/components/schemas/readWriteAccessibleBy'
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishAccess'
+          description: >
+            Indicates who can access the 'Edit by Anyone' view of the published
+            sheet:
+              * ALL - available to anyone who has the link.
+              * ORG - available only to members of the sheet owner's Smartsheet organization account.
+              * SHARED - available only to users shared to the item.
+
+            Only returned in the response if **readWriteEnabled = true**.
         readWriteDefaultView:
-          $ref: '#/components/schemas/readWriteDefaultView'
+          allOf:
+            - $ref: '#/components/schemas/SheetPublishView'
+          description: >
+            Indicates which view the user has set for a read-write, default view of
+            the published sheet. Must be one of the listed enum values.
         readWriteEnabled:
-          $ref: '#/components/schemas/readWriteEnabled'
+          type: boolean
+          description: >-
+            If **true**,a rich version of the sheet is published with the ability to
+            edit cells and manage attachments and discussions.
         readWriteShowToolbar:
-          $ref: '#/components/schemas/readWriteShowToolbar'
-    cellObjectForRows:
+          type: boolean
+          deprecated: true
+          description: >-
+            Indicates whether the left nav toolbar is displayed. The default, or
+            **true**, is to display the toolbar. If **false**, hides the toolbar.
+    CellObjectForRows:
       type: object
       properties:
         columnId:
@@ -27757,7 +27811,7 @@ components:
           description: Cells objects.
           type: array
           items:
-            $ref: '#/components/schemas/cellObjectForRows'
+            $ref: '#/components/schemas/CellObjectForRows'
         version:
           description: >-
             Sheet version number that is incremented every time a sheet is
@@ -27789,7 +27843,7 @@ components:
           description: Cells objects.
           type: array
           items:
-            $ref: '#/components/schemas/cellObjectForRows'
+            $ref: '#/components/schemas/CellObjectForRows'
         version:
           description: >-
             Sheet version number that is incremented every time a sheet is
@@ -27817,7 +27871,7 @@ components:
           description: Cells objects.
           type: array
           items:
-            $ref: '#/components/schemas/cellObjectForRows'
+            $ref: '#/components/schemas/CellObjectForRows'
         createdAt:
           $ref: '#/components/schemas/Timestamp'
         modifiedAt:
@@ -28187,7 +28241,7 @@ components:
         name:
           description: Folder name.
           type: string
-    CallbackEvents:
+    CallbackEventArray:
       description: Array of CallbackEvent objects
       type: array
       items:
