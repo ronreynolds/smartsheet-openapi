@@ -27410,6 +27410,7 @@ components:
         autoNumberFormat:
           $ref: '#/components/schemas/AutoNumberFormat'
         contactOptions:
+          # FIXME - pretty sure this should be an array
           $ref: '#/components/schemas/ContactOption'
         description:
           type: string

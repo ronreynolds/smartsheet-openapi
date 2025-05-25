@@ -212,7 +212,8 @@ obsolete (but we're not there yet).
 * ColumnObjectAttributes -> ColumnObject
 * Criteria -> Criterion
 * contactOptions -> ContactOptionArray
-* 
+* Timestamp_date-time -> Timestamp_string (matches Timestamp_number format)
+  * also replaced all other use of strings with `format: date-time` with `Timestamp_string` refs
 
 #### one-off types to consider renaming
 * ContainerDestinationForCopy -> ContainerDestination
@@ -256,12 +257,11 @@ where they're referenced for clarity and to avoid muddying up the schema section
 * columns (should be ColumnArray)
 * components-schemas-Sheet (might be a way of grouping common properties)
 * contactOptions (ContactOptionArray)
-* readOnlyFullAccessibleBy
-* readOnlyFullDefaultValue
-* readWriteAccessibleBy
-* readWriteAccessibleBy
 * schemas-Sheet (might be a way of grouping common properties)
 
 ## Potential issues/ideas to check
 * `ProfileImage.height/width` are string but value is definitely integer
 * `Share.scope` has a description that indicates it could be an enum
+
+## Oddities
+* unquoting `'y'` and `'Y'` (not sure why these were specifically quoted)
