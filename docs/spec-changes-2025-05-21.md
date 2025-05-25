@@ -107,25 +107,121 @@ obsolete (but we're not there yet).
     * used by `Column.type`, `SummaryField.type`, `SummaryFieldAddImage.type`, `GetRowObject.properties-type`,
     `SummaryFieldUpdateRequest.type`, `UpdateColumn.type`, `AddColumns.type`, `ColumnObjectAttributes.type`, 
     `ContainerDestinationForCopy.type`, `GetColumn.type`, `ChartColumnInfo.type` 
+  * `ColumnVersion`
+    * used by `Column.version`
+  * `ContainerDestinationType`
+    * used by `ContainerDestinationForMove.destinationType`, `ContainerDestinationForCopy.destinationType`
+  * `CriterionOperator`
+    * used by `Criteria.operator` ("Criteria" is the plural of "Criterion")
+  * `CrossSheetReferenceStatus`
+    * used by `CrossSheetReference.status`
+  * `DataSource`
+    * used by `CellDataItem.dataSource`
+  * `DayDescriptor`
+    * used by `Schedule.dayDescriptors`
+  * `DayOrdinal`
+    * used by `Schedule.dayOrdinal`
+  * `DiscussionParentType`
+    * used by `Discussion.parentType`
+  * `EventObjectType`
+    * used by `Event.objectType`
+  * `EventSource`
+    * used by `Event.source`
+  * `FavoriteType`
+    * used by `Favorite.type`
+  * `FilterType`
+    * used by `Filters.filterType`
+  * `FontFamilyTrait`
+    * used by `FontFamily.traits`
+  * `ImageWidgetContentFit`
+    * used by `ImageWidgetContent.fit`
+  * `ImageWidgetContentMargin`
+    * used by `ImageWidgetContent.margin`
   * `ObjectType`
     * used by `CallbackEvent.objectType`
   * `PaperSize`
     * used by `FormatDetails.paperSize`, `parameters/paperSize`
+  * `PredecessorType`
+    * used by `Predecessor.type`
+  * `ProofType`
+    * used by `Proof.type`
+  * `ProofRequestActionStatus`
+    * used by `ProofRequestAction.actionStatus`
+  * `ProofRequestStatus`
+    * used by `ProofRequest.status`
   * `QueryOperator`
     * used by `Query.operator`
+  * `ResourceManagementType`
+    * used by `Sheet.resourceManagementType`
+  * `ResultCode`
+    * used by `GenericResult.resultCode`
+  * `ResultMessage`
+    * used by `GenericResult.message`
+  * `ScheduleType`
+    * used by `Schedule.type`
+  * `ShareScope`
+    * used by `Share.scope`
+  * `SheetEmailFormat`
+    * used by `SheetEmail.format`
+  * `SheetPublishAccess`
+    * used by `SheetPublish.readWriteAccessibleBy`, `SheetPublish.readOnlyFullAccessibleBy`
+  * `SheetPublishView`
+    * used by `SheetPublish.readOnlyFullDefaultView`, `SheetPublish.readWriteDefaultView`
+  * `SheetUserPermission`
+    * used by `SheetUserPermissions.summaryPermissions`
+  * `ShortcutWidgetContentType`
+    * used by `ShortcutWidgetContent.type`
+  * `SightPublishAccess`
+    * used by `SightPublish.readOnlyFullAccessibleBy`
+    * added `SHARED` as value per description (not sure why it wasn't included in enum values)
+  * `SortDirection`
+    * used by `SortCriterion.direction`
+  * `SourceType`
+    * used by `Source.type`
+    * field description indicated an enumeration of values (not sure why this was an non-enum string)
   * `SystemColumnType` (renamed from `systemColumnType` (the type, not the fields that reference the type))
     * used by `ColumnObjectAttributes.systemColumnType`, `ColumnToCreateAsSheet.systemColumnType`, `Column.systemColumnType`
-* still TODO
-  * enums
-    * CompatibilityLevel
-    * FolderInclude
-    * ReportInclude
-    * SheetExclude
-    * SheetInclude
-  * classes
-    * CellBrief and other *Brief types to address subset types of top-level domain models (possibly using Mini* prefix)
+  * `TemplateGlobalType`
+    * used by `Template.globalTemplate`
+  * `TemplateLocale`
+      * used by `Template.locale`
+  * `TemplateType`
+    * used by `Template.type`
+  * `UpdateRequestStatus`
+    * used by `SendUpdateRequest.status`
+  * `UserStatus`
+    * used by `User.status`
+  * `WebhookStatus`
+    * used by `Webhook.status`
+  * `WidgetHyperlinkInteractionType`
+    * used by `WidgetHyperlink.interactionType`
+  * `WidgetType`
+    * used by `Widget.type`
+  * `WidgetViewMode`
+    * used by `Widget.viewMode`
+  * `WorkingDay`
+    * used by `ProjectSettings.workingDays`
+* objects
+  * `EventAdditionalDetails`
+    * used by `Event.additionalDetails`
 
-### unravelling description+type "types" that add no value
+### renaming some types
+* cellObjectForRows -> CellObjectForRows
+* Axes -> Axis
+* CallbackEvents -> CallbackEventArray
+* ColumnObjectAttributes -> ColumnObject
+* Criteria -> Criterion
+* contactOptions -> ContactOptionArray
+* 
+
+#### one-off types to consider renaming
+* ContainerDestinationForCopy -> ContainerDestination
+* 
+
+### unravelling description+type "types"
+there are many single-use (or narrow-use) types that are just a combo of type and description; these should be inlined back to
+where they're referenced for clarity and to avoid muddying up the schema section.
+* contactOptions
 * format
 * formula
 * id
@@ -166,6 +262,6 @@ obsolete (but we're not there yet).
 * readWriteAccessibleBy
 * schemas-Sheet (might be a way of grouping common properties)
 
-## Potential issues to check
+## Potential issues/ideas to check
 * `ProfileImage.height/width` are string but value is definitely integer
-* 
+* `Share.scope` has a description that indicates it could be an enum
