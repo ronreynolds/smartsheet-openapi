@@ -5698,7 +5698,7 @@ paths:
                       data:
                         type: array
                         items:
-                          $ref: '#/components/schemas/schemas-Sheet'
+                          $ref: '#/components/schemas/MiniSheet'
         default:
           description: Generic Error Payload
           content:
@@ -8808,7 +8808,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        $ref: '#/components/schemas/components-schemas-Sheet'
+                        $ref: '#/components/schemas/SheetReference'
         default:
           description: Generic Error Payload
           content:
@@ -10321,7 +10321,7 @@ paths:
                   - type: object
                     properties:
                       result:
-                        $ref: '#/components/schemas/components-schemas-Sheet'
+                        $ref: '#/components/schemas/SheetReference'
         default:
           description: Generic Error Payload
           content:
@@ -17994,11 +17994,7 @@ paths:
       description: >
         Gets a summarized list of all sheets owned by the members of the
         organization account.
-
-
         * **_This operation is only available to system administrators_**
-
-
         * **_You may use the query string parameter numericDates with a value of
         true to enable strict parsing of dates in numeric format. See [Dates and
         Times](/api/smartsheet/guides/basics/dates-and-times) for more
@@ -18017,14 +18013,9 @@ paths:
           description: >
             IndexResultUnknownPages object containing an array of Sheet objects,
             limited to the following attributes:
-
-
             * id
-
             * name
-
             * owner: empty string
-
             * ownerId: (static "0")
           content:
             application/json:
@@ -18037,7 +18028,7 @@ paths:
                         description: List of Sheets
                         type: array
                         items:
-                          $ref: '#/components/schemas/SheetList'
+                          $ref: '#/components/schemas/OrganizationSheet'
         default:
           description: Generic Error Payload
           content:
@@ -22906,8 +22897,6 @@ components:
         name:
           description: Can be a user's name, display name, or free text.
           type: string
-    ContainerDestination:
-      $ref: '#/components/schemas/ContainerDestinationForCopy'
     ContainerDestinationForMove:
       type: object
       title: Container destination for move
@@ -25563,22 +25552,11 @@ components:
           items:
             $ref: '#/components/schemas/Widget'
         workspace:
-          #FIXME - MiniWorkspace?
+          allOf:
+            - $ref: '#/components/schemas/WorkspaceReference'
           description: >-
             A reference to the dashboard's workspace, if the dashboard is in a
             workspace; otherwise an empty value.
-          type: object
-          properties:
-            id:
-              description: Workspace Id.
-              allOf:
-                - $ref: '#/components/schemas/Int64'
-            name:
-              description: Workspace name.
-              type: string
-          example:
-            id: 1234567890
-            name: Some Workspace
     SightPublish:
       description: Describes the dashboard's publish settings.
       type: object
@@ -26602,6 +26580,19 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DashboardListing'
+    WorkspaceReference:
+      type: object
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/Int64'
+          description: Workspace Id.
+        name:
+          type: string
+          description: Workspace name.
+      example:
+        id: 1234567890
+        name: Some Workspace
 
     ## here the alphabetical order fell apart :-/
     Timestamp_string:
@@ -27041,19 +27032,13 @@ components:
         - Tahoma
         - Times New Roman
         - Verdana
+
     Axis:
       type: object
       properties:
         location:
-          description: Describes location of the axis.
-          type: string
-          # FIXME - enum
-          enum:
-            - BOTTOM
-            - LEFT
-            - NONE
-            - RIGHT
-            - TOP
+          allOf:
+            - $ref: '#/components/schemas/Location'
         title:
           description: Axis title.
           type: string
@@ -27072,18 +27057,20 @@ components:
         includeZero:
           description: Includes 0 in the axis.
           type: boolean
+    Location:
+      type: string
+      enum:
+        - BOTTOM
+        - LEFT
+        - NONE
+        - RIGHT
+        - TOP
+      description: Describes location of the axis.
     Legend:
       type: object
       properties:
         location:
-          type: string
-          # FIXME - enum
-          enum:
-            - BOTTOM
-            - LEFT
-            - NONE
-            - RIGHT
-            - TOP
+          $ref: '#/components/schemas/Location'
         legendFormat:
           type: string
           description: >-
@@ -27097,25 +27084,27 @@ components:
       type: object
       properties:
         labelType:
-          type: string
-          # FIXME - enum
-          enum:
-            - NONE
-            - PERCENT
-            - VALUE
+          $ref: '#/components/schemas/DataLabelType'
+    DataLabelType:
+      type: string
+      enum:
+        - NONE
+        - PERCENT
+        - VALUE
     ChartTooltipStyle:
       type: object
       properties:
         labelType:
-          type: string
-          # FIXME - enum
-          enum:
-            - NONE
-            - PERCENT
-            - X_SERIES_Y
-            - X_Y_PERCENT
-            - Y
-            - Y_PERCENT
+          $ref: '#/components/schemas/TooltipLabelType'
+    TooltipLabelType:
+      type: string
+      enum:
+        - NONE
+        - PERCENT
+        - X_SERIES_Y
+        - X_Y_PERCENT
+        - Y
+        - Y_PERCENT
     SeriesData:
       type: object
       properties:
@@ -27152,26 +27141,13 @@ components:
             Series title format (see
             [Formatting](/api/smartsheet/guides/advanced-topics/cell-formatting)).
         seriesType:
-          type: string
-          # FIXME - enum
-          enum:
-            - AREA
-            - BAR
-            - COLUMN
-            - LINE
-            - PIE
-            - SCATTER
+          $ref: '#/components/schemas/SeriesType'
         dataLabels:
           $ref: '#/components/schemas/WidgetChartDataLabel'
         tooltips:
           $ref: '#/components/schemas/ChartTooltipStyle'
         lineType:
-          type: string
-          # FIXME - enum
-          enum:
-            - CURVED
-            - STEPPED
-            - STRAIGHT
+          $ref: '#/components/schemas/LineType'
         holeSize:
           type: integer
         isFilled:
@@ -27197,33 +27173,15 @@ components:
         color:
           type: string
         axisLocationX:
-          type: string
-          # FIXME - enum
-          enum:
-            - BOTTOM
-            - LEFT
-            - NONE
-            - RIGHT
-            - TOP
+          $ref: '#/components/schemas/Location'
         axisLocationY:
-          type: string
-          # FIXME - enum
-          enum:
-            - BOTTOM
-            - LEFT
-            - NONE
-            - RIGHT
-            - TOP
+          $ref: '#/components/schemas/Location'
         yColumnInfo:
           $ref: '#/components/schemas/ChartColumnInfo'
         xColumnInfo:
           $ref: '#/components/schemas/ChartColumnInfo'
         seriesSelectionOrder:
-          type: string
-          # FIXME - enum
-          enum:
-            - COLUMNS
-            - ROWS
+          $ref: '#/components/schemas/SeriesSelectionOrder'
         seriesData:
           type: array
           items:
@@ -27232,6 +27190,26 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SelectionRange'
+    SeriesType:
+      type: string
+      enum:
+        - AREA
+        - BAR
+        - COLUMN
+        - LINE
+        - PIE
+        - SCATTER
+    LineType:
+      type: string
+      enum:
+        - CURVED
+        - STEPPED
+        - STRAIGHT
+    SeriesSelectionOrder:
+      type: string
+      enum:
+        - COLUMNS
+        - ROWS
     WidgetChartGridLine:
       type: object
       properties:
@@ -27320,14 +27298,13 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
           example: 2258118617917316
-    # FIXME - appears to be a MiniSheet (list, move, etc); possibly SheetLocation?
-    schemas-Sheet:
+    MiniSheet:
       type: object
       properties:
         id:
-          description: Sheet Id.
           allOf:
             - $ref: '#/components/schemas/Int64'
+          description: Sheet Id.
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         createdAt:
@@ -27335,8 +27312,8 @@ components:
         modifiedAt:
           $ref: '#/components/schemas/Timestamp'
         name:
-          description: Sheet name.
           type: string
+          description: Sheet name.
         permalink:
           type: string
           description: URL that represents a direct link to the sheet in Smartsheet.
@@ -27420,8 +27397,9 @@ components:
         autoNumberFormat:
           $ref: '#/components/schemas/AutoNumberFormat'
         contactOptions:
-          # FIXME - pretty sure this should be an array
-          $ref: '#/components/schemas/ContactOption'
+          type: array
+          items:
+            $ref: '#/components/schemas/ContactOption'
         description:
           type: string
           description: Column description.
@@ -27462,20 +27440,26 @@ components:
             Indicates whether validation has been enabled for the column (value
             = **true**)
         version:
-          # FIXME - enum?
-          type: integer
-          description: >
-            Read only. The level of the column type. Each element in the array
-            is set to one of the following values:
-             * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST
-             * **1**: MULTI_CONTACT_LIST
-             * **2**: MULTI_PICKLIST
-
-            See [Versioning and
-            changes](/api/smartsheet/guides/basics/versioning-and-changes).
+          $ref: '#/components/schemas/ColumnObjectVersion'
         width:
           type: integer
           description: Display width of the column in pixels.
+    ColumnObjectVersion:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 2
+      readOnly: true
+      description: >
+        Read only. The level of the column type. Each element in the array
+        is set to one of the following values:
+         * **0**: TEXT_NUMBER, CONTACT_LIST, or PICKLIST
+         * **1**: MULTI_CONTACT_LIST
+         * **2**: MULTI_PICKLIST
+        
+        See [Versioning and
+        changes](/api/smartsheet/guides/basics/versioning-and-changes).
     AddColumns:
       type: object
       properties:
@@ -27535,19 +27519,18 @@ components:
         text:
           description: Comment body.
           type: string
-    # FIXME - this appears to be a SheetCopyMoveResponse (or SheetNewLocation, etc)
-    components-schemas-Sheet:
+    SheetReference:
       type: object
       properties:
         id:
-          description: Sheet Id.
           allOf:
             - $ref: '#/components/schemas/Int64'
+          description: Sheet Id.
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         name:
-          description: Sheet name.
           type: string
+          description: Sheet name.
         permalink:
           type: string
           description: URL that represents a direct link to the sheet in Smartsheet.
@@ -28029,31 +28012,31 @@ components:
           example: u!1!nAtdn5RJB_o!k6_e_3h2R3w!wmYXPek-yVD
         height:
           description: Image height.
-          type: string
-          example: '1050'
+          type: integer
+          example: 1050
         width:
           description: Image width.
-          type: string
-          example: '1050'
-    SheetList:
+          type: integer
+          example: 1050
+    OrganizationSheet:
       type: object
       properties:
         id:
-          description: Sheet Id.
           allOf:
             - $ref: '#/components/schemas/Int64'
+          description: Sheet Id.
         name:
-          description: Sheet name.
           type: string
+          description: Sheet name.
         owner:
+          type: string
           description: Empty string
           example: ''
-          type: string
         ownerId:
-          description: Set to a static value of "0".
-          example: 0
           allOf:
             - $ref: '#/components/schemas/Int64'
+          description: Set to a static value of "0".
+          example: 0
     UserUpdate:
       description: |
         Updates User for the following attributes:
