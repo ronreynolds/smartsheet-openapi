@@ -82,31 +82,33 @@ obsolete (but we're not there yet).
 
 * enums
   * `AttachmentParentType`
-    * used by `schemas/Attachment.parentType`
+    * used by `Attachment.parentType`
   * `AttachmentSubType`
-    * used by `schemas/Attachment.attachmentSubType`. `schemas/URLAttachmentRequest.attachmentSubType`
+    * used by `Attachment.attachmentSubType`. `URLAttachmentRequest.attachmentSubType`
   * `AttachmentTypeWithSmartsheet`
     * used by `ShortcutDataItem.attachmentType`
   * `AttachmentTypeWithTrello`
-    * used by `schemas/Attachment.attachmentType`, `schemas/URLAttachmentRequest.attachmentType`
+    * used by `Attachment.attachmentType`, `URLAttachmentRequest.attachmentType`
   * `AutomationActionFrequency`
-    * used by `schemas/AutomationAction.frequency`
+    * used by `AutomationAction.frequency`
   * `AutomationActionType`
-    * used by `schemas/AutomationAction.type`
+    * used by `AutomationAction.type`
   * `AutomationRuleDisabledReason`
-    * used by `schemas/AutomationRule.disabledReason`
+    * used by `AutomationRule.disabledReason`
   * `CallbackEventType`
-    * used by `schemas/CallbackEvent.eventType`
+    * used by `CallbackEvent.eventType`
   * `CellLinkStatus`
-    * used by `schemas/CellLink.status`
+    * used by `CellLink.status`
   * `CellLinkWidgetContentType`
-    * used by `schemas/CellLinkWidgetContent.type`
+    * used by `CellLinkWidgetContent.type`
   * `ColumnTag`
-    * used by `schemas/Column.tags`
+    * used by `Column.tags`
   * `ColumnType`
     * used by `Column.type`, `SummaryField.type`, `SummaryFieldAddImage.type`, `GetRowObject.properties-type`,
     `SummaryFieldUpdateRequest.type`, `UpdateColumn.type`, `AddColumns.type`, `ColumnObjectAttributes.type`, 
     `ContainerDestinationForCopy.type`, `GetColumn.type`, `ChartColumnInfo.type` 
+  * `ColumnObjectVersion`
+    * used by `ColumnObject.version`
   * `ColumnVersion`
     * used by `Column.version`
   * `ContainerDestinationType`
@@ -115,6 +117,8 @@ obsolete (but we're not there yet).
     * used by `Criteria.operator` ("Criteria" is the plural of "Criterion")
   * `CrossSheetReferenceStatus`
     * used by `CrossSheetReference.status`
+  * `DataLabelType`
+    * used by `WidgetChartDataLabel.labelType`
   * `DataSource`
     * used by `CellDataItem.dataSource`
   * `DayDescriptor`
@@ -137,6 +141,10 @@ obsolete (but we're not there yet).
     * used by `ImageWidgetContent.fit`
   * `ImageWidgetContentMargin`
     * used by `ImageWidgetContent.margin`
+  * `LineType`
+    * used by `Series.lineType`
+  * `Location`
+      * used by `Axis.location`, `Legend.location`, `Series.axisLocationX`, `Series.axisLocationY`
   * `ObjectType`
     * used by `CallbackEvent.objectType`
   * `PaperSize`
@@ -159,6 +167,10 @@ obsolete (but we're not there yet).
     * used by `GenericResult.message`
   * `ScheduleType`
     * used by `Schedule.type`
+  * `SeriesSelectionOrder`
+    * used by `Series.seriesSelectionOrder`
+  * `SeriesType`
+    * used by `Series.seriesType`
   * `ShareScope`
     * used by `Share.scope`
   * `SheetEmailFormat`
@@ -187,6 +199,8 @@ obsolete (but we're not there yet).
       * used by `Template.locale`
   * `TemplateType`
     * used by `Template.type`
+  * `TooltipLabelType`
+    * used by `ChartTooltipStyle.labelType`
   * `UpdateRequestStatus`
     * used by `SendUpdateRequest.status`
   * `UserStatus`
@@ -204,22 +218,25 @@ obsolete (but we're not there yet).
 * objects
   * `EventAdditionalDetails`
     * used by `Event.additionalDetails`
+  * `WorkspaceReference`
+    * used by `Sight.workspace`
 
 ### renaming some types
-* cellObjectForRows -> CellObjectForRows
-* Axes -> Axis
-* CallbackEvents -> CallbackEventArray
-* ColumnObjectAttributes -> ColumnObject
-* Criteria -> Criterion
-* contactOptions -> ContactOptionArray
-* Timestamp_date-time -> Timestamp_string (matches Timestamp_number format)
+* `cellObjectForRows` -> `CellObjectForRows`
+* `Axes` -> `Axis`
+* `CallbackEvents` -> `CallbackEventArray`
+* `ColumnObjectAttributes` -> `ColumnObject`
+* `Criteria` -> `Criterion`
+* `Timestamp_date-time` -> `Timestamp_string` (matches `Timestamp_number` format)
   * also replaced all other use of strings with `format: date-time` with `Timestamp_string` refs
+* `components-schemas-Sheet` -> `SheetReference`
+* `SheetList` is not a list of Sheets; it's a slightly-more-than-SheetReference object; 
+  * `SheetSummary` seems to fit (it's even in the path description) but is already taken so `OrganizationSheet` instead
+* `schemas-Sheet` doesn't make sense at all (especially since there's already a Sheet type in the schemas section)
+  * seems a good candidate for `MiniSheet`
+* `cellObjectForRows` -> `CellObjectForRows`
 
-#### one-off types to consider renaming
-* ContainerDestinationForCopy -> ContainerDestination
-* 
-
-### unravelling description+type "types"
+### inlining description+type "types"
 there are many single-use (or narrow-use) types that are just a combo of type and description; these should be inlined back to
 where they're referenced for clarity and to avoid muddying up the schema section.
 * contactOptions
@@ -252,16 +269,14 @@ where they're referenced for clarity and to avoid muddying up the schema section
 * version
 * width (but not height?)
 
-### renaming some types with leading lower-case that are actually types
-* cellObjectForRows
-* columns (should be ColumnArray)
-* components-schemas-Sheet (might be a way of grouping common properties)
-* contactOptions (ContactOptionArray)
-* schemas-Sheet (might be a way of grouping common properties)
+### fixed type
+* `ColumnObject.contactOptions`
+  * was single `ContactOption` but name and SDK code indicate this should be an array of `ContactOption`
+* `ProfileImage.height/width` 
+  * were string but value is definitely integer
 
-## Potential issues/ideas to check
-* `ProfileImage.height/width` are string but value is definitely integer
-* `Share.scope` has a description that indicates it could be an enum
+### Removed unused types
+* `ContainerDestination`
 
-## Oddities
+### Oddities
 * unquoting `'y'` and `'Y'` (not sure why these were specifically quoted)
