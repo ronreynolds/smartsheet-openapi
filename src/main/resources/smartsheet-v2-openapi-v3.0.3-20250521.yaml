@@ -28184,6 +28184,278 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/CallbackEvent'
+
+    AcceptEncoding:
+      type: string
+      enum:
+        - deflate
+        - gzip
+    FavoriteInclude:
+      type: string
+      enum:
+        - directId
+        - name
+    FolderWorkspaceInclude:
+      type: string
+      enum:
+        - source
+        - distributionLink
+        - ownerInfo
+        - sheetVersion
+    SheetCopyInclude:
+      type: string
+      enum:
+        - attachments
+        - cellLinks
+        - data
+        - discussions
+        - filters
+        - forms
+        - ruleRecipients
+        - rules
+        - shares
+    SkipRemap:
+      type: string
+      enum:
+        - cellLinks
+        - reports
+        - sheetHyperlinks
+        - sights
+    SheetTemplateInclude:
+      type: string
+      enum:
+        - attachments
+        - cellLinks
+        - data
+        - discussions
+        - filters
+        - forms
+        - ruleRecipients
+        - rules
+    ReportInclude:
+      type: string
+      enum:
+        - attachments
+        - discussions
+        - proofs
+        - format
+        - objectValue
+        - scope
+        - source
+        - sourceSheets
+      description: |
+        Optional elements to include in the response:
+          * **attachments**
+          * **discussions**
+          * **proofs**
+          * **format**
+          * **objectValue** - when used in combination with a level query parameter, includes the email addresses for multi-contact data
+          * **scope** - adds the report's scope to the response
+          * **source** - adds the Source object indicating which report the report was created from, if any
+          * **sourceSheets**
+    ReportExclude:
+      type: string
+      enum:
+        - linkInFromCellDetails
+        - linksOutToCellsDetails
+    SharingInclude:
+      type: string
+      enum:
+        - ITEM
+        - WORKSPACE
+      description: |
+        * ITEM is an item-level share (that is, the specific object to which the share applies is shared with the user or group). 
+        * WORKSPACE is a workspace-level share (that is, the workspace that contains the object to which the share applies is shared with the user or group).
+    SearchScope:
+      type: string
+      enum:
+        - attachments
+        - cellData
+        - comments
+        - folderNames
+        - reportNames
+        - sheetNames
+        - sightNames
+        - summaryFields
+        - templateNames
+        - workspaceNames
+    SourceInclude:
+      type: string
+      enum:
+        - sheetVersion
+        - source
+      description: |
+        Optional elements to include in the response:
+        * **sheetVersion** - current version number of each sheet, should not be combined with pagination
+        * **source** - the Source object for any sheet that was created from another sheet, if any
+    SheetInclude:
+      type: string
+      enum:
+        - attachments
+        - columnType
+        - crossSheetReferences
+        - discussions
+        - filters
+        - filterDefinitions
+        - format
+        - ganttConfig
+        - objectValue
+        - ownerInfo
+        - rowPermalink
+        - source
+        - writerInfo
+      description: |
+        Optional elements to include in the response:
+          * **attachments** - includes the metadata for sheet-level and row-level attachments. To include discussion attachments, both attachments and discussions must be present in the include list.
+          * **columnType** -includes columnType attribute in the row's cells indicating the type of the column the cell resides in.
+          * **crossSheetReferences** - includes the cross-sheet references
+          * **discussions** - includes sheet-level and row-level discussions. To include discussion attachments, both attachments and discussions must be present in the include list.
+          * **filters** - includes filteredOut attribute indicating if the row should be displayed or hidden according to the sheet's filters.
+          * **filterDefinitions** - includes type of filter, operators used, and criteria
+          * **format** -  includes column, row, cell, and summary fields formatting.
+          * **ganttConfig** - includes Gantt chart details.
+          * **objectValue** - when used in combination with a level query parameter, includes the email addresses for multi-contact data.
+          * **ownerInfo** - includes the owner's email address and the owner's user Id.
+          * **rowPermalink** - includes permalink attribute that represents a direct link to the row in the Smartsheet application.
+          * **source** - adds the Source object indicating which report, sheet  Sight (aka dashboard), or template the sheet was created from, if any.
+          * **writerInfo** - includes createdBy and modifiedBy attributes on the row or summary fields, indicating the row or summary field's creator, and last modifier.
+    SheetExclude:
+      type: string
+      enum:
+        - filteredOutRows
+        - linkInFromCellDetails
+        - linksOutToCellsDetails
+        - nonexistentCells
+      description: |
+        * **filteredOutRows** - excludes filtered-out rows from response payload if a sheet filter is applied; includes total number of filtered rows
+        * **linkInFromCellDetails** - excludes the following attributes from the **cell.linkInFromCell** object: `columnId`, `rowId`, `status`
+        * **linksOutToCellsDetails** - excludes the following attributes from the **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`
+        * **nonexistentCells** - excludes empty cells
+    DiscussionInclude:
+      type: string
+      enum:
+        - attachments
+        - comments
+      description: |
+        * **attachments** - effective only if comments is present, otherwise ignored
+        * **comments** - include all comments in threads
+    ProofInclude:
+      type: string
+      enum:
+        - attachments
+        - discussions
+    CopyRowsInclude:
+      type: string
+      enum:
+        - all
+        - attachments
+        - children
+        - discussions
+      description: |
+        * **all** - specify a value of **all** to include everything (attachments, children, and discussions).
+        * **attachments**
+        * **children** -  if specified, any child rows of the rows specified in the request are also copied to the destination sheet, and parent-child relationships amongst rows are preserved within the destination sheet; if not specified, only the rows specified in the request are copied.
+        * **discussions**
+    MoveRowsInclude:
+      type: string
+      enum:
+        - attachments
+        - discussions
+    RowInclude:
+      type: string
+      enum:
+        - columns
+        - filters
+      description: |
+        * columns adds a columns array that specifies all of the columns for the sheet. This enables you to have the full context of the cells in the row.
+        * filters returns a **filteredOut** attribute indicating if the row should be displayed or hidden according to the sheet's filters.
+    CellHistoryInclude:
+      type: string
+      enum:
+        - columnType
+        - objectValue
+      description: |
+        * **columnType** - includes the columnType attribute for each Cell object
+        * **objectValue** - when used in combination with a level query parameter, includes the email addresses for a multi-contact cell.
+    SheetSummaryInclude:
+      type: string
+      enum:
+        - format
+        - writerInfo
+      description: |
+        * **format**: includes format info for cells, rows, and summary fields
+        * **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields
+    SheetSummaryExclude:
+      type: string
+      enum:
+        - displayValue
+        - image
+        - imageAltText
+      description: |
+        * **displayValue**: excludes displayValue info for cells, rows, and summary fields
+        * **image**: excludes image attributes for cells and summary fields
+        * **imageAltText**: excludes alt text for cells and summary fields
+    SightInclude:
+      type: string
+      enum:
+        - objectValue
+        - source
+      description: |
+        * **objectValue** - when used in combination with a **level** query parameter, includes the email addresses for multi-contact data.
+        * **source** - the Source object for any Sight that was created from another Sight, if any
+    SightLevel:
+      type: integer
+      enum:
+        - 0
+        - 2
+        - 3
+        - 4
+      default: 0
+      description: |
+        Specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, text format 
+        * 0 = default
+        * 2 =  multi-contact data
+        * 3 = multi-picklist data
+        * 4 = Metric widget with sheet summary
+    WorkspaceCreateInclude:
+      type: string
+      enum:
+        - all
+        - attachments
+        - brand
+        - cellLinks
+        - data
+        - discussions
+        - filters
+        - forms
+        - ruleRecipients
+        - rules
+        - shares
+      description: |
+        * **all**
+        * **attachments**
+        * **brand**
+        * **cellLinks** - includes cross-sheet references
+        * **data** - includes formatting
+        * **discussions** - includes comments
+        * **filters**
+        * **forms**
+        * **ruleRecipients**
+        * **rules**
+        * **shares**
+    SheetLevel:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 2
+      default: 0
+      description: |
+        Specifies whether object data types, such as multi-contact data are returned in a backwards-compatible, text format in text/number columns. 
+        * 0 (default) text/number columns for multi-contact data and multi-picklist data.
+        * 1 multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.
+        * 2 multiple-entry contact list columns for multi-contact data and use multiple-entry picklist columns for multi-picklist data.
+
   securitySchemes:
     OAuth2:
       type: oauth2
@@ -28315,15 +28587,10 @@ components:
       description: >
         Strongly recommended to make sure payload is compressed. Must be set to
         one of the following values:
-
         * deflate
-
         * gzip
       schema:
-        type: string
-        enum:
-          - deflate
-          - gzip
+        $ref: '#/components/schemas/AcceptEncoding'
       required: false
     ActorId:
       name: x-smar-sc-actor-id
@@ -28336,14 +28603,14 @@ components:
     favoriteInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response.
       schema:
-        type: string
-        enum:
-          - directId
-          - name
+        type: array
+        items:
+          $ref: '#/components/schemas/FavoriteInclude'
     Content-Type:
       name: Content-Type
       in: header
@@ -28357,24 +28624,21 @@ components:
       name: favoriteType
       in: path
       schema:
-        type: string
-        enum:
-          - folder
-          - report
-          - sheet
-          - sight
-          - template
-          - workspace
+        oneOf:
+          - $ref: '#/components/schemas/FavoriteType'
       required: true
       description: The favorite type.
     favoriteIds:
       name: objectIds
       in: query
+      explode: false
       required: true
       description: |
         A comma-separated list of Ids of the favorited item.
       schema:
-        type: string
+        type: array
+        items:
+          $ref: '#/components/schemas/Int64'
     favoriteId:
       name: favoriteId
       in: path
@@ -28394,7 +28658,12 @@ components:
     folderWorkspaceInclude:
       name: include
       in: query
+      explode: false
       required: false
+      schema:
+        type: array
+        items:
+          $ref: '#/components/schemas/FolderWorkspaceInclude'
       description: |
         A comma-separated list of optional elements to include in the response:
           * **source** - adds the Source object indicating which object the folder was created from, if any
@@ -28402,16 +28671,10 @@ components:
           * **ownerInfo** Returns the user with owner permissions, or the user with admin permissions if there is no owner assigned. If no owner or admins are assigned, the Plan Asset Admin is returned. If no Plan Asset Admin is assigned, the System Admin is returned.
           * **sheetVersion**
           * **permalinks**
-      schema:
-        type: string
-        enum:
-          - source
-          - distributionLink
-          - ownerInfo
-          - sheetVersion
     sheetCopyInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: >
         A comma-separated list of elements to copy:
@@ -28427,17 +28690,9 @@ components:
         NOTE: Cell history is not copied, regardless of which include parameter
         values are specified.
       schema:
-        type: string
-        enum:
-          - attachments
-          - cellLinks
-          - data
-          - discussions
-          - filters
-          - forms
-          - ruleRecipients
-          - rules
-          - shares
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetCopyInclude'
     sheetCopyExclude:
       name: exclude
       in: query
@@ -28452,35 +28707,27 @@ components:
     skipRemap:
       name: skipRemap
       in: query
+      explode: false
       description: >-
         A comma-separated list of references to NOT re-map for the newly created
         folder.
       schema:
-        type: string
-        enum:
-          - cellLinks
-          - reports
-          - sheetHyperlinks
-          - sights
+        type: array
+        items:
+          $ref: '#/components/schemas/SkipRemap'
       required: false
     include:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         Additional parameter to create a sheet from template.
         A comma-separated list of elements to copy from the template.
       schema:
-        type: string
-        enum:
-          - attachments
-          - cellLinks
-          - data
-          - discussions
-          - filters
-          - forms
-          - ruleRecipients
-          - rules
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetTemplateInclude'
     Content-Disposition:
       name: Content-Disposition
       in: header
@@ -28497,9 +28744,7 @@ components:
       required: true
       description: >
         Required for POST request to import a sheet from CSV/XLSX file.
-
         * For CSV files, use: Content-Type: text/csv
-
         * For XLSX files, use: Content-Type:
         application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
       schema:
@@ -28578,6 +28823,7 @@ components:
     reportInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response:
@@ -28590,28 +28836,21 @@ components:
           * **source** - adds the Source object indicating which report the report was created from, if any
           * **sourceSheets**
       schema:
-        type: string
-        enum:
-          - attachments
-          - discussions
-          - proofs
-          - format
-          - objectValue
-          - scope
-          - source
-          - sourceSheets
+        type: array
+        items:
+          $ref: '#/components/schemas/ReportInclude'
     reportExclude:
       name: exclude
       in: query
+      explode: false
       required: false
       description: >
         A comma-separated list of optional elements to not include in the
         response
       schema:
-        type: string
-        enum:
-          - linkInFromCellDetails
-          - linksOutToCellsDetails
+        type: array
+        items:
+          $ref: '#/components/schemas/ReportExclude'
     reportLevel:
       name: level
       in: query
@@ -28628,17 +28867,15 @@ components:
       in: query
       description: >-
         When applicable for the specific object this parameter defines the scope
-        of the share. Possible values are ITEM or WORKSPACE. ITEM is an
-        item-level share (that is, the specific object to which the share
-        applies is shared with the user or group). WORKSPACE is a
-        workspace-level share (that is, the workspace that contains the object
+        of the share. 
+        Possible values are ITEM or WORKSPACE. 
+        ITEM is an item-level share (that is, the specific object to which the share
+        applies is shared with the user or group). 
+        WORKSPACE is a workspace-level share (that is, the workspace that contains the object
         to which the share applies is shared with the user or group).
       required: false
       schema:
-        type: string
-        enum:
-          - ITEM
-          - WORKSPACE
+        $ref: '#/components/schemas/SharingInclude'
     sendEmail:
       name: sendEmail
       in: query
@@ -28692,6 +28929,7 @@ components:
     scopes:
       name: scopes
       in: query
+      explode: false
       required: false
       description: >-
         If search fails, try using an array for each type of this
@@ -28699,18 +28937,7 @@ components:
       schema:
         type: array
         items:
-          type: string
-          enum:
-            - attachments
-            - cellData
-            - comments
-            - folderNames
-            - reportNames
-            - sheetNames
-            - sightNames
-            - summaryFields
-            - templateNames
-            - workspaceNames
+          $ref: '#/components/schemas/SearchScope'
     sheetId:
       name: sheetId
       in: path
@@ -28721,23 +28948,20 @@ components:
     sheetInclude:
       name: include
       in: query
+      explode: false
       required: false
-      description: >
+      description: |
         A comma-separated list of optional elements to include in the response:
-
-        * **sheetVersion** - current version number of each sheet, should not be
-        combined with pagination
-
-        * **source** - the Source object for any sheet that was created from
-        another sheet, if any
+        * **sheetVersion** - current version number of each sheet, should not be combined with pagination
+        * **source** - the Source object for any sheet that was created from another sheet, if any
       schema:
-        type: string
-        enum:
-          - sheetVersion
-          - source
+        type: array
+        items:
+          $ref: '#/components/schemas/SourceInclude'
     parameters-sheetInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response:
@@ -28755,24 +28979,13 @@ components:
           * **source** - adds the Source object indicating which report, sheet  Sight (aka dashboard), or template the sheet was created from, if any.
           * **writerInfo** - includes createdBy and modifiedBy attributes on the row or summary fields, indicating the row or summary field's creator, and last modifier.
       schema:
-        type: string
-        enum:
-          - attachments
-          - columnType
-          - crossSheetReferences
-          - discussions
-          - filters
-          - filterDefinitions
-          - format
-          - ganttConfig
-          - objectValue
-          - ownerInfo
-          - rowPermalink
-          - source
-          - writerInfo
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetInclude'
     sheetExclude:
       name: exclude
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of element types to exclude from the response:
@@ -28781,22 +28994,22 @@ components:
           * **linksOutToCellsDetails** - excludes the following attributes from the **cell.linksOutToCells** array elements: `columnId`, `rowId`, `status`
           * **nonexistentCells** - excludes empty cells
       schema:
-        type: string
-        enum:
-          - filteredOutRows
-          - linkInFromCellDetails
-          - linksOutToCellsDetails
-          - nonexistentCells
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetExclude'
     sheetColumnIds:
       name: columnIds
       in: query
+      explode: false
       required: false
       description: >
         A comma-separated list of column ids. The response contains only the
         specified columns in the "columns" array, and individual rows' "cells"
         array only contains cells in the specified columns.
       schema:
-        type: string
+        type: array
+        items:
+          $ref: '#/components/schemas/Int64'
     sheetFilterId:
       name: filterId
       in: query
@@ -28826,15 +29039,15 @@ components:
       description: >-
         Specifies whether object data types, such as multi-contact data are
         returned in a backwards-compatible, text format in text/number
-        columns.<br>  - Set `level=0` (default) to use text/number columns for
+        columns.<br>  
+        - Set `level=0` (default) to use text/number columns for
         multi-contact data and multi-picklist data.<br>  - Set `level=1` to use
         multiple-entry contact list columns for multi-contact data;
         multi-picklist data is returned in text/number columns.<br>  - Set
         `level=2` to use multiple-entry contact list columns for multi-contact
         data and use multiple-entry picklist columns for multi-picklist data.
       schema:
-        type: integer
-        default: 0
+        $ref : '#/components/schemas/SheetLevel'
     paperSize:
       name: paperSize
       in: query
@@ -28845,21 +29058,26 @@ components:
     sheetRowIds:
       name: rowIds
       in: query
+      explode: false
       required: false
       description: >
-        A comma-separated list of row Ids on which to filter the rows included
-        in the result.
+        A comma-separated list of row Ids on which to filter the rows included in the result.
       schema:
-        type: string
+        type: array
+        items:
+          $ref: '#/components/schemas/Int64'
     sheetRowNumbers:
       name: rowNumbers
       in: query
+      explode: false
       required: false
       description: >
-        A comma-separated list of row numbers on which to filter the rows
-        included in the result. Non-existent row numbers are ignored.
+        A comma-separated list of row numbers on which to filter the rows included in the result. 
+        Non-existent row numbers are ignored.
       schema:
-        type: string
+        type: array
+        items:
+          type: integer
     sheetRowsModifiedSince:
       name: rowsModifiedSince
       in: query
@@ -28924,16 +29142,16 @@ components:
     discussionInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response:
           * **attachments** - effective only if comments is present, otherwise ignored
           * **comments** - include all comments in threads
       schema:
-        type: string
-        enum:
-          - attachments
-          - comments
+        type: array
+        items:
+          $ref: '#/components/schemas/DiscussionInclude'
     discussionId:
       name: discussionId
       in: path
@@ -28951,14 +29169,14 @@ components:
     proofInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response.
       schema:
-        type: string
-        enum:
-          - attachments
-          - discussions
+        type: array
+        items:
+          $ref: '#/components/schemas/ProofInclude'
     allowPartialSuccess:
       name: allowPartialSuccess
       in: query
@@ -28986,11 +29204,14 @@ components:
     rowIds:
       name: ids
       in: query
+      explode: false
       required: true
       description: |
         A comma-separated list of row Ids.
       schema:
-        type: string
+        type: array
+        items:
+          $ref: '#/components/schemas/Int64'
     ignoreRowsNotFound:
       name: ignoreRowsNotFound
       description: >
@@ -29005,21 +29226,18 @@ components:
     copyRowsInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: >
-        A comma-separated list of row elements to copy in addition to the cell
-        data:
+        A comma-separated list of row elements to copy in addition to the cell data:
           * **all** - specify a value of **all** to include everything (attachments, children, and discussions).
           * **attachments**
           * **children** -  if specified, any child rows of the rows specified in the request are also copied to the destination sheet, and parent-child relationships amongst rows are preserved within the destination sheet; if not specified, only the rows specified in the request are copied.
           * **discussions**
       schema:
-        type: string
-        enum:
-          - all
-          - attachments
-          - children
-          - discussions
+        type: array
+        items:
+          $ref: '#/components/schemas/CopyRowsInclude'
     ignoreRowsNotFoundForCopyRows:
       name: ignoreRowsNotFound
       description: >
@@ -29036,15 +29254,14 @@ components:
     moveRowsInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: >
-        A comma-separate list of row elements to move in addition to the cell
-        data.
+        A comma-separate list of row elements to move in addition to the cell data.
       schema:
-        type: string
-        enum:
-          - attachments
-          - discussions
+        type: array
+        items:
+          $ref: '#/components/schemas/MoveRowsInclude'
     ignoreRowsNotFoundForMoveRows:
       name: ignoreRowsNotFound
       description: >
@@ -29068,27 +29285,24 @@ components:
     rowInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: >
         A comma-separated list of elements to include in the response.
 
-
         See [Row Include Flags](/api/smartsheet/openapi/rows).
-
 
         Also supports the **columns** include flag, which adds a columns array
         that specifies all of the columns for the sheet. This enables you to
         have the full context of the cells in the row.
 
-
         The **filters** include flag returns a **filteredOut** attribute
         indicating if the row should be displayed or hidden according to the
         sheet's filters.
       schema:
-        type: string
-        enum:
-          - columns
-          - filters
+        type: array
+        items:
+          $ref: '#/components/schemas/RowInclude'
     Content-Length:
       name: Content-Length
       in: header
@@ -29112,51 +29326,43 @@ components:
     cellHistoryInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of elements to copy:
           * **columnType** - includes the columnType attribute for each Cell object
           * **objectValue** - when used in combination with a level query parameter, includes the email addresses for a multi-contact cell.
       schema:
-        type: string
-        enum:
-          - columnType
-          - objectValue
+        type: array
+        items:
+          $ref: '#/components/schemas/CellHistoryInclude'
     sheetSummaryInclude:
       name: include
       in: query
+      explode: false
       required: false
-      description: >
+      description: |
         A comma-separated list of elements to include in the response.
-
         * **format**: includes format info for cells, rows, and summary fields
-
-        * **writerInfo**: includes createdBy and modifiedBy attributes for rows
-        and summary fields
+        * **writerInfo**: includes createdBy and modifiedBy attributes for rows and summary fields
       schema:
-        type: string
-        enum:
-          - format
-          - writerInfo
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetSummaryInclude'
     sheetSummaryExclude:
       name: exclude
       in: query
+      explode: false
       required: false
-      description: >
+      description: |
         A comma-separated list of elements to not include in the response.
-
-        * **displayValue**: excludes displayValue info for cells, rows, and
-        summary fields
-
+        * **displayValue**: excludes displayValue info for cells, rows, and summary fields
         * **image**: excludes image attributes for cells and summary fields
-
         * **imageAltText**: excludes alt text for cells and summary fields
       schema:
-        type: string
-        enum:
-          - displayValue
-          - image
-          - imageAltText
+        type: array
+        items:
+          $ref: '#/components/schemas/SheetSummaryExclude'
     renameIfConflict:
       name: renameIfConflict
       description: >-
@@ -29171,11 +29377,14 @@ components:
     sheetSummaryFieldIds:
       name: ids
       in: query
+      explode: false
       required: true
       description: |
         A comma-separated list of Sheet Summary Field Ids.
       schema:
-        type: string
+        type: array
+        items:
+          $ref: '#/components/schemas/Int64'
     ignoreSummaryFieldsNotFound:
       name: ignoreSummaryFieldsNotFound
       description: >-
@@ -29194,7 +29403,7 @@ components:
       required: true
       description: Summary Field Id of the sheet summary field being accessed.
     sortRows:
-      name: include&exclude
+      name: include&exclude # a & in a query-string parameter key?  questionable.  also description is very vague
       in: query
       required: false
       description: >
@@ -29212,16 +29421,16 @@ components:
     sightInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response:
           * **objectValue** - when used in combination with a **level** query parameter, includes the email addresses for multi-contact data.
           * **source** - the Source object for any Sight that was created from another Sight, if any
       schema:
-        type: string
-        enum:
-          - objectValue
-          - source
+        type: array
+        items:
+          $ref: '#/components/schemas/SightInclude'
     sightLevel:
       name: level
       in: query
@@ -29232,15 +29441,17 @@ components:
         multi-contact data (**level=2**), multi-picklist data (**level=3**), or
         Metric widget with sheet summary (**level=4**).
       schema:
-        type: integer
-        default: 0
+        $ref: '#/components/schemas/SightLevel'
     emailInclude:
       name: email
       description: Comma-separated list of email addresses on which to filter the results.
       in: query
+      explode: false
       required: false
       schema:
-        type: string
+        type: array
+        items:
+          type: string
     lastLoginInclude:
       name: include
       description: >
@@ -29249,7 +29460,6 @@ components:
         attribute for each user that indicates the Last login date/time of the
         user.
 
-
         **Note** If the number of users included in the response is > 100, you
         must paginate your query to see the lastLogin attribute. For large
         responses, the lastLogin attribute is never included.
@@ -29257,6 +29467,7 @@ components:
       required: false
       schema:
         type: string
+        # FIXME enum w/ single value of lastLogin?
     userProfileInclude:
       name: include
       description: >-
@@ -29286,6 +29497,7 @@ components:
     workspaceCreateInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: >
         A comma-separated list of elements to include:
@@ -29300,22 +29512,11 @@ components:
           * **ruleRecipients**
           * **rules**
           * **shares**
-        NOTE: Cell history is not copied, regardless of which include parameter
-        values are specified.
+        NOTE: Cell history is not copied, regardless of which include parameter values are specified.
       schema:
-        type: string
-        enum:
-          - all
-          - attachments
-          - brand
-          - cellLinks
-          - data
-          - discussions
-          - filters
-          - forms
-          - ruleRecipients
-          - rules
-          - shares
+        type: array
+        items:
+          $ref: '#/components/schemas/WorkspaceCreateInclude'
     workspaceId:
       name: workspaceId
       in: path
