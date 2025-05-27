@@ -912,8 +912,6 @@ tags:
       [Sheets](/api/smartsheet/openapi/sheets).
 paths:
   /contacts:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: list-contacts
       summary: List Contacts
@@ -1006,7 +1004,6 @@ paths:
             contacts = response.data
   /contacts/{contactId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/contactId'
     get:
       summary: Get Contact
@@ -1123,7 +1120,6 @@ paths:
             - READ_EVENTS
       parameters:
         - $ref: '#/components/parameters/Accept-Encoding'
-        - $ref: '#/components/parameters/Authorization'
         - name: since
           in: query
           description: >
@@ -1492,7 +1488,6 @@ paths:
             }
   /favorites:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/ActorId'
     get:
       summary: Get Favorites
@@ -1707,7 +1702,6 @@ paths:
   /favorites/{favoriteType}:
     parameters:
       - $ref: '#/components/parameters/favoriteType'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/ActorId'
     delete:
       summary: Delete Multiple Favorites
@@ -1788,7 +1782,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/favoriteType'
       - $ref: '#/components/parameters/favoriteId'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/ActorId'
     delete:
       summary: Delete Favorite
@@ -1939,7 +1932,6 @@ paths:
             - READ_EVENTS
       parameters:
         - $ref: '#/components/parameters/Accept-Encoding'
-        - $ref: '#/components/parameters/Authorization'
       requestBody:
         content:
           application/json:
@@ -2002,7 +1994,6 @@ paths:
                 $ref: '#/components/schemas/Error'
   /folders/{folderId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     get:
       summary: Get Folder
@@ -2258,7 +2249,6 @@ paths:
               'New name for folder')
   /folders/{folderId}/copy:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     post:
       summary: Copy Folder
@@ -2434,7 +2424,6 @@ paths:
             )
   /folders/{folderId}/folders:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     get:
       summary: List Folders
@@ -2643,7 +2632,6 @@ paths:
               'New folder')
   /folders/{folderId}/move:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     post:
       summary: Move Folder
@@ -2754,7 +2742,6 @@ paths:
             )
   /folders/{folderId}/sheets:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     post:
       summary: Create Sheet in Folder
@@ -3065,7 +3052,6 @@ paths:
                 $ref: '#/components/schemas/Error'
   /folders/{folderId}/sheets/import:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/folderId'
     post:
       summary: Import Sheet into Folder
@@ -3211,8 +3197,6 @@ paths:
               header_row_index=0
             )
   /folders/personal:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Contents
       description: >
@@ -3257,8 +3241,6 @@ paths:
             -H "Authorization: Bearer JKlMNOpQ12RStUVwxYZAbcde3F5g6hijklM789" \
             -H "Content-Type: application/json"
   /groups:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: list-groups
       summary: List Org Groups
@@ -3494,7 +3476,6 @@ paths:
             )
   /groups/{groupId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/groupId'
     get:
       operationId: get-group
@@ -3772,7 +3753,6 @@ paths:
                 6932724448552836)       # group_id
   /groups/{groupId}/members:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/groupId'
     post:
       operationId: add-group-members
@@ -3912,7 +3892,6 @@ paths:
             )
   /groups/{groupId}/members/{userId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/groupId'
       - $ref: '#/components/parameters/userId'
     delete:
@@ -3997,8 +3976,6 @@ paths:
               7917992160847748,       # group_id
               1539725208119172)       # group_member_id
   /home/folders:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Folders in Home
       description: >
@@ -4196,7 +4173,6 @@ paths:
             new_folder = smartsheet_client.Home.create_folder('New Folder')
   /imageurls:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Content-Type'
     post:
       operationId: listImageUrls
@@ -4294,8 +4270,6 @@ paths:
             response = smartsheet_client.Images.get_image_urls([imageUrl])
             url = response.image_urls[0].url
   /reports:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: getReports
       summary: List Reports
@@ -4394,7 +4368,6 @@ paths:
             reports = response.data
   /reports/{reportId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Accept'
       - $ref: '#/components/parameters/accessApiLevel'
       - $ref: '#/components/parameters/reportId'
@@ -4645,7 +4618,6 @@ paths:
             )
   /reports/{reportId}/emails:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/reportId'
     post:
       summary: Send report via email
@@ -4813,7 +4785,6 @@ paths:
                 $ref: '#/components/schemas/Error'
   /reports/{reportId}/publish:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/reportId'
     get:
       summary: Gets a Report's publish settings
@@ -4979,7 +4950,6 @@ paths:
             )
   /reports/{reportId}/shares:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/reportId'
     post:
       summary: Share Report
@@ -5227,7 +5197,6 @@ paths:
       - $ref: '#/components/parameters/reportId'
       - $ref: '#/components/parameters/shareId'
       - $ref: '#/components/parameters/accessApiLevel'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Report Share
       description: Gets the share specified in the URL.
@@ -5490,8 +5459,6 @@ paths:
               })
             )
   /search:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Search Everything
       description: >-
@@ -5578,7 +5545,6 @@ paths:
   /search/sheets/{sheetId}:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Search Sheet
       description: >-
@@ -5665,7 +5631,6 @@ paths:
   /sheets:
     parameters:
       - $ref: '#/components/parameters/accessApiLevel'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Sheets
       description: >
@@ -6072,8 +6037,6 @@ paths:
             )
             new_sheet = response.result
   /sheets/import:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Import Sheet from CSV / XLSX
       description: >
@@ -6227,7 +6190,6 @@ paths:
             )
   /sheets/{sheetId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/sheetId'
     get:
       summary: Get Sheet
@@ -6718,7 +6680,6 @@ paths:
   /sheets/{sheetId}/attachments:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Attachments
       description: >
@@ -6965,7 +6926,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/attachmentId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Attachment
       description: >
@@ -7104,7 +7064,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/attachmentId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Versions
       description: >
@@ -7401,7 +7360,6 @@ paths:
   /sheets/{sheetId}/automationrules:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: automationrules-list
       summary: List All Automation Rules
@@ -7497,7 +7455,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/automationRuleId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get an Automation Rule
       description: |
@@ -7762,7 +7719,6 @@ paths:
   /sheets/{sheetId}/columns:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Columns
       description: Gets a list of all columns belonging to the sheet specified in the URL.
@@ -8041,7 +7997,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/columnId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Column
       description: >-
@@ -8362,7 +8317,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/commentId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get a comment
       description: |
@@ -8611,44 +8565,26 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/commentId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Attach File or URL to Comment
       description: >
         Attaches a file to the comment. The URL can be any of the following:
-
-
         * Normal URL (attachmentType "LINK")
-
         * Box.com URL (attachmentType "BOX_COM")
-
         * Dropbox URL (attachmentType "DROPBOX")
-
         * Egnyte URL (attachmentType "EGNYTE")
-
         * Evernote URL (attachmentType "EVERNOTE")
-
         * Google Drive URL (attachmentType "GOOGLE_DRIVE")
-
         * OneDrive URL (attachmentType "ONEDRIVE")
 
-
-        >**Important:** Smartsheet Gov allows only the following attachment
-        types:
-
+        >**Important:** Smartsheet Gov allows only the following attachment types:
         > - BOX_COM
-
         > - FILE
-
         > - GOOGLE_DRIVE
-
         > - LINK
-
         > - ONEDRIVEß
 
-
-        This operation can be performed using a simple upload or a multipart
-        upload.
+        This operation can be performed using a simple upload or a multipart upload.
       operationId: attachments-attachToComment
       tags:
         - attachments
@@ -8775,7 +8711,6 @@ paths:
   /sheets/{sheetId}/copy:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Content-Type'
       - $ref: '#/components/parameters/sheetCopyInclude'
       - $ref: '#/components/parameters/sheetCopyExclude'
@@ -8930,7 +8865,6 @@ paths:
   /sheets/{sheetId}/crosssheetreferences:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Create Cross-sheet References
       description: >-
@@ -9191,7 +9125,6 @@ paths:
             crosssheetreferences = response.data
   /sheets/{sheetId}/crosssheetreferences/{crossSheetReferenceId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/crossSheetReferenceId'
     get:
@@ -9265,7 +9198,6 @@ paths:
   /sheets/{sheetId}/discussions:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Discussions
       description: >
@@ -9638,7 +9570,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/discussionId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Discussion
       description: |
@@ -9778,7 +9709,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/discussionId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Discussion Attachments
       description: |
@@ -9886,7 +9816,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/discussionId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Create a comment
       description: >
@@ -10112,7 +10041,6 @@ paths:
   /sheets/{sheetId}/emails:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Content-Type'
     post:
       summary: Send Sheet via Email
@@ -10287,7 +10215,6 @@ paths:
   /sheets/{sheetId}/move:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Content-Type'
     post:
       summary: Move Sheet
@@ -10403,7 +10330,6 @@ paths:
   /sheets/{sheetId}/proofs:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       parameters:
         - $ref: '#/components/parameters/page'
@@ -10444,7 +10370,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       parameters:
         - $ref: '#/components/parameters/proofInclude'
@@ -10545,7 +10470,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Proof Attachments
       description: >
@@ -10645,7 +10569,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Proof Discussions
       description: |
@@ -10770,7 +10693,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Proof Request Actions
       description: >
@@ -10815,7 +10737,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     delete:
       summary: Delete Proof Requests
       description: |
@@ -10899,7 +10820,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/proofId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Proof Versions
       description: >
@@ -11037,7 +10957,6 @@ paths:
   /sheets/{sheetId}/publish:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sheet Publish Status
       description: |
@@ -11258,7 +11177,6 @@ paths:
   /sheets/{sheetId}/rows:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Add Rows
       description: >
@@ -12015,7 +11933,6 @@ paths:
   /sheets/{sheetId}/rows/emails:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Send Rows via Email
       description: Sends one or more rows via email.
@@ -12197,7 +12114,6 @@ paths:
   /sheets/{sheetId}/rows/copy:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Copy Rows to Another Sheet
       description: >-
@@ -12353,7 +12269,6 @@ paths:
   /sheets/{sheetId}/rows/move:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Move Rows to Another Sheet
       description: >-
@@ -12515,7 +12430,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Row
       description: Gets the row specified in the URL.
@@ -12640,7 +12554,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Row Attachments
       description: >
@@ -12902,7 +12815,6 @@ paths:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
       - $ref: '#/components/parameters/columnId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Add Image to Cell
       description: Uploads an image to the specified cell within a sheet.
@@ -13039,7 +12951,6 @@ paths:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
       - $ref: '#/components/parameters/columnId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Cell History
       description: |
@@ -13169,7 +13080,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Discussions with a Row
       description: >
@@ -13562,7 +13472,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/rowId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Create Proof
       description: |
@@ -13621,7 +13530,6 @@ paths:
   /sheets/{sheetId}/sentupdaterequests:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Sent Update Requests
       description: |
@@ -13736,7 +13644,6 @@ paths:
         description: ID of the sent update request
         schema:
           $ref: '#/components/schemas/Int64'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sent Update Request
       description: |
@@ -13908,7 +13815,6 @@ paths:
   /sheets/{sheetId}/summary:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sheet Summary
       description: >-
@@ -13987,7 +13893,6 @@ paths:
   /sheets/{sheetId}/summary/fields:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Summary Fields
       description: >-
@@ -14453,7 +14358,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/summaryFieldId'
-      - $ref: '#/components/parameters/Authorization'
     post:
       summary: Add Image to Sheet Summary
       description: Adds an image to the summary field.
@@ -14560,7 +14464,6 @@ paths:
   /sheets/{sheetId}/updaterequests:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Update Requests
       description: >
@@ -14900,7 +14803,6 @@ paths:
         description: ID of the Update Request
         schema:
           $ref: '#/components/schemas/Int64'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get an Update Request
       description: >
@@ -15237,7 +15139,6 @@ paths:
             )
   /sheets/{sheetId}/shares:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/accessApiLevel'
     post:
@@ -15492,7 +15393,6 @@ paths:
       - $ref: '#/components/parameters/sheetId'
       - $ref: '#/components/parameters/shareId'
       - $ref: '#/components/parameters/accessApiLevel'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sheet Share.
       description: Gets the share specified in the URL.
@@ -15756,7 +15656,6 @@ paths:
   /sheets/{sheetId}/sort:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/Content-Type'
     post:
       summary: Sort Rows in Sheet
@@ -15878,7 +15777,6 @@ paths:
   /sheets/{sheetId}/version:
     parameters:
       - $ref: '#/components/parameters/sheetId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Sheet Version
       description: |
@@ -15950,8 +15848,6 @@ paths:
             version = smartsheet_client.Sheets.get_sheet_version(
               1531988831168388)       # sheet_id
   /sights:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: list-sights
       summary: List Dashboards
@@ -16038,7 +15934,6 @@ paths:
             sights = response.data
   /sights/{sightId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/sightId'
     get:
       summary: Get Dashboard
@@ -16283,7 +16178,6 @@ paths:
         - OAuth2:
             - CREATE_SIGHTS
       parameters:
-        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/sightId'
       requestBody:
@@ -16400,7 +16294,6 @@ paths:
         - OAuth2:
             - CREATE_SIGHTS
       parameters:
-        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/sightId'
       requestBody:
@@ -16503,7 +16396,6 @@ paths:
             )
   /sights/{sightId}/publish:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/sightId'
     get:
       summary: Get Dashboard Publish Status
@@ -16665,7 +16557,6 @@ paths:
             )
   /sights/{sightId}/shares:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/accessApiLevel'
       - $ref: '#/components/parameters/sightId'
     post:
@@ -16924,7 +16815,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/sightId'
       - $ref: '#/components/parameters/shareId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Dashboard Share
       description: >-
@@ -17183,8 +17073,6 @@ paths:
               })
             )
   /templates:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List User-Created Templates
       description: Gets a list of user-created templates that the user has access to.
@@ -17259,8 +17147,6 @@ paths:
             pages = response.total_pages
             templates = response.data
   /templates/public:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: List Public Templates
       description: Gets a list of public templates that the user has access to.
@@ -17546,7 +17432,6 @@ paths:
       tags:
         - tokens
       parameters:
-        - $ref: '#/components/parameters/Authorization'
         - name: deleteAllForApiClient
           in: query
           schema:
@@ -17600,8 +17485,6 @@ paths:
           source: |
             smartsheet_client.Token.revoke_access_token()
   /users:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: list-users
       summary: List Users
@@ -17926,7 +17809,6 @@ paths:
         - APIToken: []
         - OAuth2: []
       parameters:
-        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/userProfileInclude'
       responses:
         '200':
@@ -18006,7 +17888,6 @@ paths:
         - OAuth2:
             - ADMIN_USERS
       parameters:
-        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/modifiedSince'
       responses:
         '200':
@@ -18071,7 +17952,6 @@ paths:
             sheets = response.data
   /users/{userId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
     get:
       operationId: get-user
@@ -18666,7 +18546,6 @@ paths:
             )
   /users/{userId}/alternateemails:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
     get:
       operationId: list-alternate-emails
@@ -18889,7 +18768,6 @@ paths:
             )
   /users/{userId}/alternateemails/{alternateEmailId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
       - $ref: '#/components/parameters/alternateEmailId'
     get:
@@ -19037,7 +18915,6 @@ paths:
               123456789012345)        # alternate_email_id
   /users/{userId}/alternateemails/{alternateEmailId}/makeprimary:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
       - $ref: '#/components/parameters/alternateEmailId'
     post:
@@ -19165,7 +19042,6 @@ paths:
               123456789012345)        # alt_id
   /users/{userId}/deactivate:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
     post:
       operationId: deactivate-user
@@ -19310,7 +19186,6 @@ paths:
             -X POST
   /users/{userId}/profileimage:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
     post:
       operationId: update-user-profile-image
@@ -19430,86 +19305,46 @@ paths:
             )
   /users/{userId}/reactivate:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/userId'
     post:
       operationId: reactivate-user
       summary: Reactivate User
-      description: >
-        Reactivates the user associated with the current Smartsheet plan,
-        restoring the user's access to Smartsheet, owned items, and shared
-        items.
+      description: |
+        Reactivates the user associated with the current Smartsheet plan, restoring the user's access to Smartsheet, owned items, and shared items.
 
+        Optionally, with Enterprise Plan Manager (EPM) enabled, you can specify the ID of a user within your managed plan hierarchy.
 
-        Optionally, with Enterprise Plan Manager (EPM) enabled, you can specify
-        the ID of a user within your managed plan hierarchy.
-
-
-        **Important:** You can reactivate the user only if that user has been
-        deactivated for less than thirty (30) days.
-
+        **Important:** You can reactivate the user only if that user has been deactivated for less than thirty (30) days.
 
         > **Who can use this endpoint?**
-
         > 
-
         > - **Plans:** Business, Enterprise
-
         > - **Permissions:** System Administrator
-
         >
-
         > This operation is unavailable for Smartsheet Gov.
 
-
-        Attempting to reactivate a user that matches any of the following
-        criteria results in an error:
-
-        - The user's primary email address belongs to an ISP domain (e.g.,
-        `gmail.com`, `yahoo.com`, `outlook.com`). For example, see the common
-        ISP domains listed below.
-
-        - The user's primary email address is unassociated with the current
-        Smartsheet plan domain(s).
-
+        Attempting to reactivate a user that matches any of the following criteria results in an error:
+        - The user's primary email address belongs to an ISP domain (e.g., `gmail.com`, `yahoo.com`, `outlook.com`). For example, see the common ISP domains listed below.
+        - The user's primary email address is unassociated with the current Smartsheet plan domain(s).
         - The user is not in the plan's organization.
 
-
-        Users with primary email addresses on the following ISP domains cannot
-        be reactivated:
-
+        Users with primary email addresses on the following ISP domains cannot be reactivated:
         - `aol.com`
-
         - `charter.net`
-
         - `comcast.net`
-
         - `duck.com`
-
         - `email.com`
-
         - `gmail.com`
-
         - `hotmail.com`
-
         - `icloud.com`
-
         - `live.com`
-
         - `mail.com`
-
         - `mail.ru`
-
         - `outlook.com`
-
         - `rocketmail.com`
-
         - `usa.com`
-
         - `verizon.net`
-
         - `web.de`
-
         - `yahoo.com`
       tags:
         - users
@@ -19571,8 +19406,6 @@ paths:
             -H "Content-Type: application/json" \
             -X POST
   /webhooks:
-    parameters:
-      - $ref: '#/components/parameters/Authorization'
     get:
       operationId: list-webhooks
       summary: List Webhooks
@@ -19809,7 +19642,6 @@ paths:
                 'version': 1}))
   /webhooks/{webhookId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/webhookId'
     get:
       summary: Get Webhook
@@ -20054,7 +19886,6 @@ paths:
               401090454808452)       # webhook_id
   /webhooks/{webhookId}/resetSharedSecret:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/webhookId'
     post:
       summary: Reset Shared Secret
@@ -20135,7 +19966,6 @@ paths:
               401090454808452)       # webhook_id
   /workspaces:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/accessApiLevel'
     get:
       summary: List Workspaces
@@ -20344,7 +20174,6 @@ paths:
             )
   /workspaces/{workspaceId}:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/workspaceId'
     get:
       summary: Get Workspace
@@ -20630,7 +20459,6 @@ paths:
             )
   /workspaces/{workspaceId}/copy:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/workspaceId'
     post:
       summary: Copy Workspace
@@ -20791,7 +20619,6 @@ paths:
             )
   /workspaces/{workspaceId}/folders:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/workspaceId'
     get:
       summary: List Workspace Folders
@@ -21022,7 +20849,6 @@ paths:
               'New folder')
   /workspaces/{workspaceId}/shares:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/accessApiLevel'
       - $ref: '#/components/parameters/workspaceId'
     post:
@@ -21280,7 +21106,6 @@ paths:
     parameters:
       - $ref: '#/components/parameters/workspaceId'
       - $ref: '#/components/parameters/shareId'
-      - $ref: '#/components/parameters/Authorization'
     get:
       summary: Get Workspace Share
       description: Gets the share specified in the URL.
@@ -21575,7 +21400,6 @@ paths:
             )
   /workspaces/{workspaceId}/sheets:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/workspaceId'
     post:
       summary: Create Sheet in Workspace
@@ -21891,7 +21715,6 @@ paths:
             )
   /workspaces/{workspaceId}/sheets/import:
     parameters:
-      - $ref: '#/components/parameters/Authorization'
       - $ref: '#/components/parameters/workspaceId'
     post:
       summary: Import Sheet into Workspace
