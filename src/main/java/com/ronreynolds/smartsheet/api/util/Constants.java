@@ -3,10 +3,12 @@ package com.ronreynolds.smartsheet.api.util;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.FolderInclude;
+import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.ReportInclude;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
+import com.ronreynolds.smartsheet.model.SheetLevel;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -21,8 +23,10 @@ public class Constants {
 
     // all immutable Lists
     public static final List<AccessLevel> accessLevelsWithoutOwner =
-            Stream.of(AccessLevel.values()).filter(v -> v == AccessLevel.OWNER).collect(Collectors.toUnmodifiableList());
-    public static final List<FolderInclude> allFolderIncludes = List.of(FolderInclude.values());
+            Stream.of(AccessLevel.values())
+                    .filter(v -> v != AccessLevel.OWNER)
+                    .collect(Collectors.toUnmodifiableList());
+    public static final List<FolderWorkspaceInclude> allFolderIncludes = List.of(FolderWorkspaceInclude.values());
     public static final List<ReportInclude> allReportIncludes = List.of(ReportInclude.values());
     public static final List<SheetInclude> allSheetIncludes = List.of(SheetInclude.values());
     public static final List<SheetInclude> normalSheetIncludes = List.of(SheetInclude.OWNER_INFO, SheetInclude.COLUMN_TYPE, SheetInclude.SOURCE);
@@ -38,7 +42,7 @@ public class Constants {
     public static final Integer noPageSize = null;
     public static final OffsetDateTime noModifiedSince = null;
     public static final Integer noVersionAfter = null;
-    public static final CompatibilityLevel noCompatibilityLevel = null;
+    public static final SheetLevel noCompatibilityLevel = null;
 
     /**
      * general-purpose method to get all the values of a particular enum type as a List
@@ -46,11 +50,13 @@ public class Constants {
      * @return a immutable {@code List<Enum<T>>} that contains all the values of that type in {@code values()} order
      * @param <T> a type of Enum
      */
+    @SuppressWarnings("unchecked")
     public static <T extends Enum<T>> List<T> allOf(Class<T> enumType) {
         try {
             T[] allValues = (T[])enumType.getDeclaredMethod("values").invoke(null);
             return List.of(allValues);
         } catch (ReflectiveOperationException impossible) {
+            // all classes that extend from Enum have a public static values() method so this should be impossible
             throw new RuntimeException(impossible);
         }
     }
