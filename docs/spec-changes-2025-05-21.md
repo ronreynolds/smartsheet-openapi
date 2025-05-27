@@ -280,3 +280,115 @@ where they're referenced for clarity and to avoid muddying up the schema section
 
 ### Oddities
 * unquoting `'y'` and `'Y'` (not sure why these were specifically quoted)
+
+### Parameters
+extracting enums within parameters to top-level schema types for cleaner generated code, cleaner parameter definitions, and easier 
+detection of enums with duplicate values that can potentially be consolidated.
+
+#### new Enums
+* `AcceptEncoding`
+* `FavoriteInclude`
+* `FolderWorkspaceInclude`
+* `SheetCopyInclude`
+* `SkipRemap`
+* `SheetTemplateInclude`
+* `ReportInclude`
+* `ReportExclude`
+* `SharingInclude`
+* `SearchScope`
+* `SourceInclude`
+* `SheetInclude`
+* `SheetExclude`
+* `DiscussionInclude`
+* `ProofInclude`
+* `CopyRowsInclude`
+* `MoveRowsInclude`
+* `RowInclude`
+* `CellHistoryInclude`
+* `SheetSummaryInclude`
+* `SheetSummaryExclude`
+* `SightInclude`
+* `SightLevel`
+* `WorkspaceCreateInclude`
+* `SheetLevel`
+
+#### `explode: false` for comma-separated `in: query` parameters
+any parameter that is sent as a "comma-separated list" should (must?  couldn't find the default explode value documented) include 
+`explode:false` so it's sent `key=v1,v2,v3` rather than `key=v1&key=v2&key=v3`
+* `favoriteInclude`
+* `favoriteIds`
+* `folderWorkspaceInclude`
+* `reportExclude`
+* `scopes`
+* `sheetCopyInclude`
+* `skipRemap`
+* `include`
+* `reportInclude`
+* `reportExclude`
+* `scopes`
+* `sheetInclude`
+* `parameters-sheetInclude` (rather unfortunate name)
+* `sheetExclude`
+* `sheetColumnIds`
+* `sheetRowIds`
+* `sheetRowNumbers`
+* `discussionInclude`
+* `proofInclude`
+* `rowIds`
+* `copyRowsInclude`
+* `moveRowsInclude`
+* `rowInclude`
+* `cellHistoryInclude`
+* `sheetSummaryInclude`
+* `sheetSummaryExclude`
+* `sheetSummaryFieldIds`
+* `sightInclude`
+* `emailInclude`
+* `workspaceCreateInclude`
+
+#### `type: array` for multi-value parameters
+any parameters that are described as "list" are not of `type: array` so short of building a comma-delimited list by hand as a 
+string (worst-case solution) it's not possible to specify multiple values for these params
+* `favoriteInclude`
+* `favoriteIds`
+* `folderWorkspaceInclude`
+* `scopes`
+* `sheetCopyInclude`
+* `skipRemap`
+* `include`
+* `reportInclude`
+* `reportExclude`
+* `scopes`
+* `sheetInclude`
+* `parameters-sheetInclude`
+* `sheetExclude`
+* `sheetColumnIds`
+* `sheetRowIds`
+* `sheetRowNumbers`
+* `discussionInclude`
+* `proofInclude`
+* `rowIds`
+* `copyRowsInclude`
+* `moveRowsInclude`
+* `rowInclude`
+* `cellHistoryInclude`
+* `sheetSummaryInclude`
+* `sheetSummaryExclude`
+* `sheetSummaryFieldIds`
+* `sightInclude`
+* `emailInclude`
+* `workspaceCreateInclude`
+
+#### type changes
+some parameters are the wrong type for the data payload
+* `favoriteIds` item type changed from `string` to `Int64`
+  * matches type of `favoriteId` parameter
+* `sheetColumnIds`, `sheetRowIds`, `rowIds`, `sheetSummaryFieldIds` changed from `string` to `Int64`
+  * generally all IDs are longs except shareId (which is a stringy blob)
+* `sheetLevel` changed from `integer` to `enum` of integer values (based on description)
+* `sheetRowNumbers` changed from `string` to array of `integer` (since "numbers" are ints, being scoped to the container)
+* `sightLevel` changed from open-ended `integer` to `enum` to restrict it to expected values
+
+#### concerns/observations
+* `sortRows` query-string parameter has a name of "include&exclude" which would have to be escaped constantly since `&` is the QS key-value delimiter 
+* `lastLoginInclude` description sounds like it could be a 1-value enum
