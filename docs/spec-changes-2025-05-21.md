@@ -397,3 +397,6 @@ some parameters are the wrong type for the data payload
 * renamed `schema/Timestamp` to `schema/Datetime` because OpenAPI-codegen registers `java.sql.Timestamp` as the `Timestamp` type
   * [OpenAPI-codegen code](https://github.com/OpenAPITools/openapi-generator/blob/05e672d85672a2f7a97fe0d3601aadc26d43e572/modules/openapi-generator/src/main/java/org/openapitools/codegen/languages/AbstractJavaCodegen.java#L285)
 * removing support for `Timestamp_number` as doing so triggers another feature (this time a good one) of OpenAPI-codegen: the use of `OffsetDateTime` for timestamps rather than a custom type
+
+### renamed fields to match server response
+* `Row.permaLink` MUST be `Row.permalink` to match the exact case of the server response
