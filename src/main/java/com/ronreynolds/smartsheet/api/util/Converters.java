@@ -1,11 +1,11 @@
 package com.ronreynolds.smartsheet.api.util;
 
+import com.ronreynolds.smartsheet.model.AddRowsObject;
 import com.ronreynolds.smartsheet.model.Cell;
-import com.ronreynolds.smartsheet.model.CellBrief;
+import com.ronreynolds.smartsheet.model.CellObjectForRows;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.Row;
-import com.ronreynolds.smartsheet.model.RowsAddToSheet200ResponseAllOfResultInner;
-import com.ronreynolds.smartsheet.model.UpdateRows200ResponseAllOfResultInner;
+import com.ronreynolds.smartsheet.model.UpdateRowsObject;
 import com.ronreynolds.smartsheet.model.UserProfile;
 
 import java.util.List;
@@ -18,8 +18,8 @@ public class Converters {
     private Converters() {
     }
 
-    public static Row convert(RowsAddToSheet200ResponseAllOfResultInner result) {
-        return new Row()
+    public static Row convert(AddRowsObject result) {
+        return Row.builder()
                 .id(result.getId())
                 .sheetId(result.getSheetId())
                 .rowNumber(result.getRowNumber())
@@ -27,11 +27,12 @@ public class Converters {
                 .expanded(result.getExpanded())
                 .createdAt(result.getCreatedAt())
                 .modifiedAt(result.getModifiedAt())
-                .cells(convert(result.getCells()));
+                .cells(convert(result.getCells()))
+                .build();
     }
 
-    public static Row convert(UpdateRows200ResponseAllOfResultInner result) {
-        return new Row()
+    public static Row convert(UpdateRowsObject result) {
+        return Row.builder()
                 .id(result.getId())
 //                .sheetId(result.getSheetId()) - not available in response according to openapi spec :-?
                 .rowNumber(result.getRowNumber())
@@ -39,23 +40,23 @@ public class Converters {
                 .expanded(result.getExpanded())
                 .createdAt(result.getCreatedAt())
                 .modifiedAt(result.getModifiedAt())
-                .cells(convert(result.getCells()));
+                .cells(convert(result.getCells()))
+                .build();
     }
 
 
-    public static List<Cell> convert(List<CellBrief> cellLiteList) {
-        if (cellLiteList == null) {
-            return null;
-        }
-        return cellLiteList.stream().map(Converters::convert).collect(Collectors.toList());
+    public static List<Cell> convert(List<CellObjectForRows> cellForRowsList) {
+        return cellForRowsList == null ? null
+                : cellForRowsList.stream().map(Converters::convert).collect(Collectors.toList());
     }
 
-    public static Cell convert(CellBrief cellLite) {
-        return new Cell()
+    public static Cell convert(CellObjectForRows cellLite) {
+        return Cell.builder()
                 .columnId(cellLite.getColumnId())
                 .columnType(cellLite.getColumnType())
                 .value(cellLite.getValue())
-                .displayValue(cellLite.getDisplayValue());
+                .displayValue(cellLite.getDisplayValue())
+                .build();
     }
 
     public static UserProfile convert(GetCurrentUser200Response response) {
@@ -82,7 +83,7 @@ public class Converters {
                 .salesforceAdmin(response.getSalesforceAdmin())
                 .salesforceUser(response.getSalesforceUser())
                 .sheetCount(response.getSheetCount())
-                .status(response.getStatus())
+//                .status(response.getStatus()) status no longer returned?
                 .timeZone(response.getTimeZone())
                 .title(response.getTitle())
                 .workPhone(response.getWorkPhone())

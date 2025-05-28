@@ -5,11 +5,11 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.RowsApi;
 import com.ronreynolds.smartsheet.api.SheetsApi;
 import com.ronreynolds.smartsheet.model.Column;
+import com.ronreynolds.smartsheet.model.MiniSheet;
 import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
-import com.ronreynolds.smartsheet.model.SheetListingDataInner;
 import com.ronreynolds.util.assertions.State;
 import lombok.NonNull;
 
@@ -48,7 +48,7 @@ public class Sheets {
     @NonNull
     public static List<Row> addRows(@NonNull ApiClient client, long sheetId, @NonNull List<Row> rowData, Consumer<List<Row>> cb)
             throws ApiException {
-        var response = new RowsApi(client).rowsAddToSheet(sheetId, null, null, null, rowData);
+        var response = new RowsApi(client).rowsAddToSheet(sheetId, null, null, null, null, rowData);
         State.notNull(response, "null response from rowsAddToSheet");
         var responseResult = State.notNull(response.getResult(), "null response result");
         assertEqualRowCounts(rowData.size(), responseResult.size());
@@ -68,11 +68,11 @@ public class Sheets {
         // for this operation.
         rowData.forEach((row) -> {
             row.setRowNumber(null);
-            row.setCreatedAt(null);
-            row.setModifiedAt(null);
+//            row.setCreatedAt(null);
+//            row.setModifiedAt(null);
             row.setSheetId(null);
         });
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, rowData);
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, rowData);
         State.notNull(response, "null response from updateRows");
         var responseResult = State.notNull(response.getResult(), "null response result");
         assertEqualRowCounts(rowData.size(), responseResult.size());
@@ -100,23 +100,26 @@ public class Sheets {
     }
 
     public static Sheet getWholeSheet(@NonNull ApiClient client, long sheetId) throws ApiException {
-        return new SheetsApi(client)
+        var response = new SheetsApi(client)
                 .getSheet(sheetId, null, null, allSheetIncludes, noSheetExcludes, allColumnIds, allFilters, noVersionAfter,
                         noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize, allRowIds, allRowNumbers, noModifiedSince);
+        return response.getSheet();
     }
 
     public static Sheet getSheetNoRows(@NonNull ApiClient client, long sheetId) throws ApiException {
-        return new SheetsApi(client)
+        var response = new SheetsApi(client)
                 .getSheet(sheetId, null, null, List.of(SheetInclude.COLUMN_TYPE), List.of(SheetExclude.LINK_IN_FROM_CELL_DETAILS),
                         allColumnIds, allFilters, noVersionAfter, noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize,
                         allRowIds, allRowNumbers, noModifiedSince);
+        return response.getSheet();
     }
 
     @NonNull
-    public static List<SheetListingDataInner> findByName(@NonNull ApiClient client, @NonNull String sheetName)
+    public static List<MiniSheet> findByName(@NonNull ApiClient client, @NonNull String sheetName)
             throws ApiException {
-        return new SheetsApi(client)
-                .listSheets(null, null, true, null, false, null, null).getData().stream()
+        var response = new SheetsApi(client)
+                .listSheets(null, null, true, null, false, null, null);
+        return response.getData().stream()
                 .filter(sheet -> sheetName.equals(sheet.getName()))
                 .collect(Collectors.toList());
     }
