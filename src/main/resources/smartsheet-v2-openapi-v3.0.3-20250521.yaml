@@ -21927,7 +21927,7 @@ components:
         parentType:
           $ref: '#/components/schemas/AttachmentParentType'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         createdBy:
           description: >
             `User` object containing `name` and `email` of the user who created
@@ -22074,7 +22074,7 @@ components:
         createdAt:
           description: A timestamp of when the rule was originally added.
           allOf:
-            - $ref: '#/components/schemas/Timestamp'
+            - $ref: '#/components/schemas/Datetime'
         createdBy:
           description: >
             `User` object containing `name` and `email` of the creator of this
@@ -22092,7 +22092,7 @@ components:
         modifiedAt:
           description: The datetime for when the change was made to the rule.
           allOf:
-            - $ref: '#/components/schemas/Timestamp'
+            - $ref: '#/components/schemas/Datetime'
         modifiedBy:
           description: >
             `User` object containing the `name` and `email` of the user that
@@ -22412,7 +22412,7 @@ components:
         - $ref: '#/components/schemas/Cell'
       properties:
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedBy:
           description: >-
             User object containing the name and email of the user that made the
@@ -22672,7 +22672,7 @@ components:
           items:
             $ref: '#/components/schemas/Attachment'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         createdBy:
           description: >-
             User object containing name and email of the creator of this
@@ -22689,7 +22689,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         text:
           description: Comment body.
           type: string
@@ -22983,7 +22983,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/MiniUser'
         lastCommentedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         lastCommentedUser:
           description: >
             `User` object containing `name` and `email` of the user who last
@@ -23692,9 +23692,9 @@ components:
             - $ref: '#/components/schemas/Int64'
           example: 2331373580117892
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
     GroupMember:
       type: object
       x-tags:
@@ -24122,7 +24122,7 @@ components:
           description: The version number of the proof.
           type: integer
         lastUpdatedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         lastUpdatedBy:
           description: >
             `User` object containing `name` and `email` of the user who last
@@ -24167,7 +24167,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/MiniUser'
         sentAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         isDownloadable:
           description: Indicates whether the description is downloadable.
           type: boolean
@@ -24482,7 +24482,7 @@ components:
           type: string
           example: ',,1,1,,,,,,,,,,,,,'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         createdBy:
           description: User object containing name and email of the creator of this row.
           type: object
@@ -24524,7 +24524,7 @@ components:
           description: Indicates whether the row is locked for the requesting user.
           type: boolean
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedBy:
           description: >-
             User object containing name and email of the last person to modify
@@ -24724,13 +24724,13 @@ components:
         lastSentAt:
           allOf:
             - description: The date and time for when the last request was sent.
-            - $ref: '#/components/schemas/Timestamp'
+            - $ref: '#/components/schemas/Datetime'
         nextSendAt:
           allOf:
             - description: >-
                 The date and time for when the next request is scheduled to
                 send.
-            - $ref: '#/components/schemas/Timestamp'
+            - $ref: '#/components/schemas/Datetime'
         startAt:
           allOf:
             - description: >
@@ -24894,7 +24894,7 @@ components:
             The date and time for when the sent update request was sent to the
             recipient.
           allOf:
-            - $ref: '#/components/schemas/Timestamp'
+            - $ref: '#/components/schemas/Datetime'
         sentBy:
           description: |
             `User` object containing `name` and `email` of the sender.
@@ -24952,7 +24952,7 @@ components:
             in a request, but it is never present in a response.
           type: boolean
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         email:
           description: User's primary email address for user shares; null for group shares.
           type: string
@@ -24963,7 +24963,7 @@ components:
             this attribute in a request, but it is never present in a response.
           type: string
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         name:
           description: >-
             If a user share and user is also a contact, the user's full name. If
@@ -25039,7 +25039,7 @@ components:
           items:
             $ref: '#/components/schemas/Column'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         crossSheetReferences:
           description: >
             Array of CrossSheetReference objects.
@@ -25087,7 +25087,7 @@ components:
           description: Indicates whether multi-select is enabled.
           type: boolean
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         name:
           description: Sheet name.
           type: string
@@ -25515,7 +25515,7 @@ components:
           items:
             $ref: '#/components/schemas/ContactOption'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         createdBy:
           description: >-
             User object containing name and email of the creator of this summary
@@ -25551,7 +25551,7 @@ components:
           description: Indicates whether the field is locked for the requesting user.
           type: boolean
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedBy:
           description: >-
             User object containing name and email of the user who most recently
@@ -25754,7 +25754,7 @@ components:
       enum:
         - report
         - sheet
-    Timestamp:
+    Datetime: # was Timestamp which is a "reserved type" in Java code-gen :-/
       oneOf:
         - $ref: '#/components/schemas/Timestamp_string'
         - $ref: '#/components/schemas/Timestamp_number'
@@ -25842,13 +25842,13 @@ components:
                 The date and time for when this request was originally created.
                 Read-only.
               allOf:
-                - $ref: '#/components/schemas/Timestamp'
+                - $ref: '#/components/schemas/Datetime'
             modifiedAt:
               description: >-
                 The date and time for when the last change was made to this
                 request. Read-only.
               allOf:
-                - $ref: '#/components/schemas/Timestamp'
+                - $ref: '#/components/schemas/Datetime'
             schedule:
               description: The schedule for which update requests are sent out.
               allOf:
@@ -26161,7 +26161,7 @@ components:
             createdAt:
               readOnly: true
               allOf:
-                - $ref: '#/components/schemas/Timestamp'
+                - $ref: '#/components/schemas/Datetime'
             disabledDetails:
               description: >-
                 Details about the reason the webhook was disabled. Read-only.
@@ -26171,7 +26171,7 @@ components:
             modifiedAt:
               readOnly: true
               allOf:
-                - $ref: '#/components/schemas/Timestamp'
+                - $ref: '#/components/schemas/Datetime'
             scope:
               description: >-
                 Scope of the subscription. Currently, the only supported value
@@ -26474,9 +26474,9 @@ components:
           description: URL that represents a direct link to the asset in Smartsheet.
           type: string
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
     ItemResult:
       type: object
       allOf:
@@ -26833,9 +26833,9 @@ components:
         - $ref: '#/components/schemas/SightResult'
       properties:
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
     ChartColumnInfo:
       type: object
       properties:
@@ -27131,9 +27131,9 @@ components:
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         name:
           type: string
           description: Sheet name.
@@ -27609,9 +27609,9 @@ components:
           description: Indicates whether the row is expanded or collapsed.
           type: boolean
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         cells:
           description: Cells objects.
           type: array
@@ -27641,9 +27641,9 @@ components:
           description: Indicates whether the row is expanded or collapsed.
           type: boolean
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         cells:
           description: Cells objects.
           type: array
@@ -27678,9 +27678,9 @@ components:
           items:
             $ref: '#/components/schemas/CellObjectForRows'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
     SummaryFieldUpdateRequest:
       type: object
       description: SummaryField object to update.
@@ -27814,9 +27814,9 @@ components:
         image:
           $ref: '#/components/schemas/Image'
         createdAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         modifiedAt:
-          $ref: '#/components/schemas/Timestamp'
+          $ref: '#/components/schemas/Datetime'
         version:
           description: >-
             Sheet version number that is incremented every time a sheet is
@@ -28350,7 +28350,7 @@ components:
         you need to keep track of frequent changes, it may be more useful to use
         Get Sheet Version.
       schema:
-        $ref: '#/components/schemas/Timestamp'
+        $ref: '#/components/schemas/Datetime'
     numericDates:
       name: numericDates
       in: query
@@ -28910,7 +28910,7 @@ components:
         provided. Date should be in ISO-8601 format.
       example: '2020-01-30T13:25:32-07:00'
       schema:
-        $ref: '#/components/schemas/Timestamp'
+        $ref: '#/components/schemas/Datetime'
     attachmentId:
       name: attachmentId
       in: path
