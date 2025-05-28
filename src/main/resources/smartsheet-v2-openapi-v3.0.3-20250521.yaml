@@ -1143,7 +1143,7 @@ paths:
             data at client startup or recovery--don't use it for fine-grained,
             date-based queries.
           schema:
-            $ref: '#/components/schemas/Timestamp_string'
+            $ref: '#/components/schemas/Datetime'
           required: false
         - name: to
           in: query
@@ -1175,7 +1175,7 @@ paths:
             data at client startup or recovery--don't use it for fine-grained,
             date-based queries.
           schema:
-            $ref: '#/components/schemas/Timestamp_string'
+            $ref: '#/components/schemas/Datetime'
           required: false
         - name: streamPosition
           in: query
@@ -22215,7 +22215,7 @@ components:
           example: sheet
         timestamp:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: Time that the callback was generated.
     CallbackEvent:
       type: object
@@ -22265,7 +22265,7 @@ components:
           $ref: '#/components/schemas/CallbackEventType'
         timestamp:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             Time that this event occurred. A callback may contain events with
             different timestamps, as multiple separate events may be aggregated
@@ -23110,7 +23110,7 @@ components:
           example: '345678901234'
         eventTimestamp:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             Date and time of the event. Defaults to ISO-8601 format. See dates
             and times for more information.
@@ -23243,7 +23243,7 @@ components:
             $ref: '#/components/schemas/Int64'
         since:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             The earliest time from which events are included in the response.
             Events before this time are excluded. This field is intended for use
@@ -23258,7 +23258,7 @@ components:
             never both.
         to:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             The latest time up to which events are included in the response.
             Events after this time are excluded. The `to` field requires using
@@ -24720,7 +24720,7 @@ components:
                 This attribute is applicable to the following schedule types:
                 DAILY, WEEKLY, MONTHLY, YEARLY. For more details, refer to the
                 Table of Schedule Object’s Attributes below.
-            - $ref: '#/components/schemas/Timestamp_Writeable'
+            - $ref: '#/components/schemas/Datetime_writeable'
         lastSentAt:
           allOf:
             - description: The date and time for when the last request was sent.
@@ -24760,7 +24760,7 @@ components:
 
                 For more details, refer to the Table of Schedule Object’s
                 Attributes below.
-            - $ref: '#/components/schemas/Timestamp_Writeable'
+            - $ref: '#/components/schemas/Datetime_writeable'
     ScheduleType:
       description: Type of schedule.
       type: string
@@ -25754,11 +25754,6 @@ components:
       enum:
         - report
         - sheet
-    Datetime: # was Timestamp which is a "reserved type" in Java code-gen :-/
-      oneOf:
-        - $ref: '#/components/schemas/Timestamp_string'
-        - $ref: '#/components/schemas/Timestamp_number'
-      readOnly: true
     TitleWidgetContent:
       type: object
       title: Title
@@ -25901,7 +25896,7 @@ components:
           example: true
         customWelcomeScreenViewed:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           readOnly: true
           description: >-
             Timestamp of viewing an <a
@@ -25927,7 +25922,7 @@ components:
           example: true
         lastLogin:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           readOnly: true
           description: Last login time of the current user.
           example: '2020-10-04T18:32:47Z'
@@ -25996,7 +25991,7 @@ components:
           example: Smartsheet
         customWelcomeScreenViewed:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             Timestamp of viewing an <a
             href="https://help.smartsheet.com/articles/1392225-customizing-a-welcome-message-upgrade-screen-enterprise-only"
@@ -26027,7 +26022,7 @@ components:
           example: true
         lastLogin:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: Last login time of the current user.
           example: '2020-10-31T12:15:47Z'
         lastName:
@@ -26194,7 +26189,7 @@ components:
               properties:
                 lastCallbackAttempt:
                   allOf:
-                    - $ref: '#/components/schemas/Timestamp_string'
+                    - $ref: '#/components/schemas/Datetime'
                   readOnly: true
                   description: When this webhook last made a callback attempt.
                 lastCallbackAttemptRetryCount:
@@ -26205,7 +26200,7 @@ components:
                     last callback attempt.
                 lastSuccessfulCallback:
                   allOf:
-                    - $ref: '#/components/schemas/Timestamp_string'
+                    - $ref: '#/components/schemas/Datetime'
                   readOnly: true
                   description: When this webhook last made a successful callback.
             status:
@@ -26418,11 +26413,14 @@ components:
         name: Some Workspace
 
     ## here the alphabetical order fell apart :-/
-    Timestamp_string:
+    Datetime:
       type: string
       format: date-time
-    Timestamp_number:
-      $ref: '#/components/schemas/Int64'
+      readOnly: true
+    Datetime_writeable:
+      allOf:
+        - $ref: '#/components/schemas/Datetime'
+      readOnly: false
     GenericResult:
       type: object
       properties:
@@ -26658,7 +26656,7 @@ components:
             - ABSTRACT_DATETIME
         value:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             Datetime, in the **date-time** format defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6"
@@ -26733,7 +26731,7 @@ components:
             - DATETIME
         value:
           allOf:
-            - $ref: '#/components/schemas/Timestamp_string'
+            - $ref: '#/components/schemas/Datetime'
           description: >-
             Datetime, in the **date-time** format defined by <a
             href="https://tools.ietf.org/html/rfc3339#section-5.6"
@@ -27822,10 +27820,6 @@ components:
             Sheet version number that is incremented every time a sheet is
             modified.
           type: integer
-    Timestamp_Writeable:
-      oneOf:
-        - $ref: '#/components/schemas/Timestamp_string'
-        - $ref: '#/components/schemas/Timestamp_number'
     ProfileImage:
       type: object
       properties:
