@@ -24532,7 +24532,7 @@ components:
           type: object
           allOf:
             - $ref: '#/components/schemas/MiniUser'
-        permaLink:
+        permalink:
           description: >-
             URL that represents a direct link to the row in Smartsheet. Only
             returned if the include query string parameter contains
