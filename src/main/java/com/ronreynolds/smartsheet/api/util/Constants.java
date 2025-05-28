@@ -1,8 +1,6 @@
 package com.ronreynolds.smartsheet.api.util;
 
 import com.ronreynolds.smartsheet.model.AccessLevel;
-import com.ronreynolds.smartsheet.model.CompatibilityLevel;
-import com.ronreynolds.smartsheet.model.FolderInclude;
 import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.ReportInclude;
@@ -11,8 +9,6 @@ import com.ronreynolds.smartsheet.model.SheetInclude;
 import com.ronreynolds.smartsheet.model.SheetLevel;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -29,7 +25,8 @@ public class Constants {
     public static final List<FolderWorkspaceInclude> allFolderIncludes = List.of(FolderWorkspaceInclude.values());
     public static final List<ReportInclude> allReportIncludes = List.of(ReportInclude.values());
     public static final List<SheetInclude> allSheetIncludes = List.of(SheetInclude.values());
-    public static final List<SheetInclude> normalSheetIncludes = List.of(SheetInclude.OWNER_INFO, SheetInclude.COLUMN_TYPE, SheetInclude.SOURCE);
+    public static final List<SheetInclude> normalSheetIncludes = List.of(SheetInclude.OWNER_INFO, SheetInclude.COLUMN_TYPE,
+            SheetInclude.SOURCE);
     public static final List<SheetExclude> noSheetExcludes = List.of();
 
     public static final List<Long> allColumnIds = null;
@@ -46,14 +43,15 @@ public class Constants {
 
     /**
      * general-purpose method to get all the values of a particular enum type as a List
+     *
      * @param enumType the type of Enum for which we want a List
+     * @param <T>      a type of Enum
      * @return a immutable {@code List<Enum<T>>} that contains all the values of that type in {@code values()} order
-     * @param <T> a type of Enum
      */
     @SuppressWarnings("unchecked")
     public static <T extends Enum<T>> List<T> allOf(Class<T> enumType) {
         try {
-            T[] allValues = (T[])enumType.getDeclaredMethod("values").invoke(null);
+            T[] allValues = (T[]) enumType.getDeclaredMethod("values").invoke(null);
             return List.of(allValues);
         } catch (ReflectiveOperationException impossible) {
             // all classes that extend from Enum have a public static values() method so this should be impossible
