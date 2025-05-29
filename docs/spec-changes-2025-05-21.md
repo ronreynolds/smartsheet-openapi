@@ -404,3 +404,18 @@ some parameters are the wrong type for the data payload
 ### adding fields to match server response
 * `Row`
   * parentId, toTop, toBottom, above, indent, outdent, dateModifiedAt
+* `UserProfile`
+  * status
+
+### consolidate field-identical types
+* TBD - `ContactOption` and `MiniUser`
+  * only diff is MiniUser.name is readonly whereas ContactOption isn't (but perhaps it's just missing the flag)
+* `GroupMemberAdd` and 
+
+### more enums
+single-value enums are useful to hold the constant values to avoid hard-coding in client code.
+also missed some in previous changes
+* `GetUserInclude`
+  * used by `userProfileInclude` which is either "groups" or null
+* `GrantType`
+  * used by `/tokens POST` parameter `grant_type` (tho docs state it MUST BE "authorization_code"?)
