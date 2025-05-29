@@ -40,6 +40,10 @@ public class Constants {
     public static final OffsetDateTime noModifiedSince = null;
     public static final Integer noVersionAfter = null;
     public static final SheetLevel noCompatibilityLevel = null;
+    public static final Integer defaultAccessApiLevel = null;
+    public static final String defaultContentType = null;
+    public static final Boolean defaultAllowPartialSuccess = null;
+    public static final Boolean defaultOverrideValidation = null;
 
     /**
      * general-purpose method to get all the values of a particular enum type as a List
