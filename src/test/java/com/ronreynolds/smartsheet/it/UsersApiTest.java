@@ -2,9 +2,11 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.UsersApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.api.util.Converters;
 import com.ronreynolds.smartsheet.it.TestData.UserData;
 import com.ronreynolds.smartsheet.model.AddUser200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetUserInclude;
 import com.ronreynolds.smartsheet.model.ListUsers200Response;
@@ -17,6 +19,7 @@ import com.ronreynolds.smartsheet.model.UpdateUserRequest;
 import com.ronreynolds.smartsheet.model.User;
 import com.ronreynolds.smartsheet.model.UserProfile;
 import com.ronreynolds.smartsheet.model.UserProfileImageResponse;
+import com.ronreynolds.smartsheet.model.UserUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -103,7 +106,7 @@ public class UsersApiTest {
         // FIXME - the problem here is we're trying to deactivate NEWLY CREATED users and thus we hit edge-case issues
         for (Long userId : TestData.temporaryUserIds) {
             log.info("deactivating {}", userId);
-            ResultPrefix response = api.deactivateUser(userId);
+            GenericResult response = api.deactivateUser(userId);
             assertThat(response).satisfies(TestData::successfulResult);
             log.info("deactivate-user response:{}", response);
         }
@@ -211,7 +214,7 @@ public class UsersApiTest {
         }
         for (Long userId : TestData.temporaryUserIds) {
             log.info("reactivating {}", userId);
-            ResultPrefix response = api.reactivateUser(userId);
+            GenericResult response = api.reactivateUser(userId);
             assertThat(response).satisfies(TestData::successfulResult);
             log.info("{}", response);
         }
@@ -233,7 +236,7 @@ public class UsersApiTest {
     @Order(10)
     public void removeUserTest() throws ApiException {
         // verify the expected 404
-        ApiException thrown = assertThrows(ApiException.class, () -> api.removeUser(42L, null));
+        ApiException thrown = assertThrows(ApiException.class, () -> api.removeUser(42L, null, null, null));
         assertThat(thrown).hasMessageContaining("User not found");
 
 //        TestData.temporaryUserIds.add(3414752471869316L);
@@ -245,13 +248,8 @@ public class UsersApiTest {
             return;
         }
         for (Long userId : TestData.temporaryUserIds) {
-            RemoveUserRequest removeUserRequest = RemoveUserRequest.builder()
-//                    .removeFromSharing().transferSheets().transferTo()
-                    .build();
-            RemoveUser200Response response = api.removeUser(userId, removeUserRequest);
+            var response = api.removeUser(userId, null, null, null);
             assertThat(response).satisfies(TestData::successfulResult);
-            assertThat(response.getSheetsRemovedFromSharing()).isZero();
-            assertThat(response.getWorkspacesRemovedFromSharing()).isZero();
         }
     }
 
@@ -276,7 +274,7 @@ public class UsersApiTest {
         var user = api.getUser(userId);
         log.info("updating {}", userId);
 
-        UpdateUserRequest updateUserRequest = UpdateUserRequest.builder()
+        UserUpdate updateUserRequest = UserUpdate.builder()
                 .firstName("Fuzzy")
                 .lastName("Wuzzy")
                 .build();
@@ -286,7 +284,7 @@ public class UsersApiTest {
 
         // put their data back as we found it
         response = api.updateUser(userId,
-                UpdateUserRequest.builder().firstName(user.getFirstName()).lastName(user.getLastName()).build());
+                UserUpdate.builder().firstName(user.getFirstName()).lastName(user.getLastName()).build());
         log.info("resetting updated-user-response:{}", response);
         assertThat(response).satisfies(TestData::successfulResult);
     }

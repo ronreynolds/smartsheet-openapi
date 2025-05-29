@@ -6,7 +6,6 @@ import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.SentUpdateRequest;
 import com.ronreynolds.smartsheet.model.SentupdaterequestsList200Response;
 import com.ronreynolds.smartsheet.model.UpdateRequest;
-import com.ronreynolds.smartsheet.model.UpdateRequestUpdate;
 import com.ronreynolds.smartsheet.model.UpdaterequestsCreate200Response;
 import com.ronreynolds.smartsheet.model.UpdaterequestsList200Response;
 import lombok.extern.slf4j.Slf4j;
@@ -40,7 +39,7 @@ public class UpdateRequestsApiTest {
     @Test
     public void sentupdaterequestDeleteTest() throws ApiException {
         Long sheetId = null;
-        String sentUpdateRequestId = null;
+        Long sentUpdateRequestId = null;
         Result response = api.sentupdaterequestDelete(sheetId, sentUpdateRequestId);
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -58,7 +57,7 @@ public class UpdateRequestsApiTest {
     @Test
     public void sentupdaterequestGetTest() throws ApiException {
         Long sheetId = null;
-        String sentUpdateRequestId = null;
+        Long sentUpdateRequestId = null;
         SentUpdateRequest response = api.sentupdaterequestGet(sheetId, sentUpdateRequestId);
 
         log.info("{}", response);
@@ -106,8 +105,9 @@ public class UpdateRequestsApiTest {
     @Test
     public void updaterequestsCreateTest() throws ApiException {
         Long sheetId = null;
+        String contentType = null;
         UpdateRequest updateRequest = null;
-        UpdaterequestsCreate200Response response = api.updaterequestsCreate(sheetId, updateRequest);
+        UpdaterequestsCreate200Response response = api.updaterequestsCreate(sheetId, contentType, updateRequest);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -125,7 +125,7 @@ public class UpdateRequestsApiTest {
     @Test
     public void updaterequestsDeleteTest() throws ApiException {
         Long sheetId = null;
-        String updateRequestId = null;
+        Long updateRequestId = null;
         Result response = api.updaterequestsDelete(sheetId, updateRequestId);
 
         log.info("{}", response);
@@ -146,7 +146,7 @@ public class UpdateRequestsApiTest {
     @Test
     public void updaterequestsGetTest() throws ApiException {
         Long sheetId = null;
-        String updateRequestId = null;
+        Long updateRequestId = null;
         UpdateRequest response = api.updaterequestsGet(sheetId, updateRequestId);
 
         log.info("{}", response);
@@ -193,9 +193,9 @@ public class UpdateRequestsApiTest {
     @Test
     public void updaterequestsUpdateTest() throws ApiException {
         Long sheetId = null;
-        String updateRequestId = null;
-        UpdateRequestUpdate updateRequest = UpdateRequestUpdate.builder().build();
-        UpdaterequestsCreate200Response response = api.updaterequestsUpdate(sheetId, updateRequestId, updateRequest);
+        Long updateRequestId = null;
+        String contentType = null;
+        UpdaterequestsCreate200Response response = api.updaterequestsUpdate(sheetId, updateRequestId, contentType);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

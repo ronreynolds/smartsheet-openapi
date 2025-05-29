@@ -9,6 +9,7 @@ import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
 import com.ronreynolds.smartsheet.model.FolderCopySkipRemap;
 import com.ronreynolds.smartsheet.model.FolderInclude;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ListFolders200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.UpdateFolder200Response;
@@ -89,7 +90,7 @@ public class FoldersApiTest {
     @Disabled("need test data")
     public void deleteFolderTest() throws ApiException {
         Long folderId = null;
-        ResultPrefix response = api.deleteFolder(folderId);
+        GenericResult response = api.deleteFolder(folderId);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

@@ -21,6 +21,7 @@ import com.ronreynolds.smartsheet.model.Discussion;
 import com.ronreynolds.smartsheet.model.Favorite;
 import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.Folder;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
 import com.ronreynolds.smartsheet.model.ImageUrl;
@@ -30,6 +31,8 @@ import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.ReportBrief;
 import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
+import com.ronreynolds.smartsheet.model.ResultCode;
+import com.ronreynolds.smartsheet.model.ResultMessage;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.ResultPrefixCode;
 import com.ronreynolds.smartsheet.model.ResultPrefixMessage;
@@ -46,6 +49,7 @@ import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
 import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
+import com.ronreynolds.smartsheet.model.WorkspaceListing;
 import com.ronreynolds.util.properties.ExtProperties;
 import com.ronreynolds.util.reflection.Reflection;
 import com.ronreynolds.util.streams.ExtCollectors;
@@ -922,6 +926,14 @@ public class TestData {
             assertThat(workspace.getPermalink()).isNotBlank();
         }
 
+        static void assertEquals(WorkspaceListing workspace) {
+            assertThat(workspace).isNotNull();
+            assertThat(workspace.getId()).isEqualTo(id);
+            assertThat(workspace.getName()).isEqualTo(name);
+            assertThat(workspace.getAccessLevel()).isSameAs(level);
+            assertThat(workspace.getPermalink()).isNotBlank();
+        }
+
         static void assertShare(Share share) {
             ShareData.assertCommonShare(share, ShareScope.WORKSPACE, shareDate);
         }
@@ -965,15 +977,15 @@ public class TestData {
     static void successfulResult(Result result) {
         assertThat(result).isNotNull();
         assertThat(result.getFailedItems()).isNullOrEmpty();
-        assertThat(result.getResultCode()).isSameAs(ResultPrefixCode.NUMBER_0);
-        assertThat(result.getMessage()).isSameAs(ResultPrefixMessage.SUCCESS);
+        assertThat(result.getResultCode()).isSameAs(ResultCode.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(ResultMessage.SUCCESS);
         // what's result.version about?
     }
 
-    static void successfulResult(ResultPrefix result) {
+    static void successfulResult(GenericResult result) {
         assertThat(result).isNotNull();
-        assertThat(result.getResultCode()).isSameAs(ResultPrefixCode.NUMBER_0);
-        assertThat(result.getMessage()).isSameAs(ResultPrefixMessage.SUCCESS);
+        assertThat(result.getResultCode()).isSameAs(ResultCode.NUMBER_0);
+        assertThat(result.getMessage()).isSameAs(ResultMessage.SUCCESS);
     }
 
     /**
@@ -985,10 +997,10 @@ public class TestData {
         if (Reflection.hasMethod(result.getClass(), "getFailedItems")) {
             assertThat(Reflection.invoke(result, "getFailedItems", List.class)).as("no failed items").isNullOrEmpty();
         }
-        assertThat(Reflection.invoke(result, "getResultCode", ResultPrefixCode.class))
-                .as("success result code").isSameAs(ResultPrefixCode.NUMBER_0);
-        assertThat(Reflection.invoke(result, "getMessage", ResultPrefixMessage.class))
-                .as("success message").isSameAs(ResultPrefixMessage.SUCCESS);
+        assertThat(Reflection.invoke(result, "getResultCode", ResultCode.class))
+                .as("success result code").isSameAs(ResultCode.NUMBER_0);
+        assertThat(Reflection.invoke(result, "getMessage", ResultMessage.class))
+                .as("success message").isSameAs(ResultMessage.SUCCESS);
     }
 
     static NameAndEmail mapToNameAndEmail(Map<String, String> map) {

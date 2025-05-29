@@ -12,6 +12,7 @@ import com.ronreynolds.smartsheet.model.Attachment;
 import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
 import com.ronreynolds.smartsheet.model.AttachmentsListOnSheet200Response;
 import com.ronreynolds.smartsheet.model.AttachmentsVersionList200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -91,7 +92,7 @@ public class AttachmentsApiTest {
     @Disabled("need attachment ID to delete")
     public void attachmentsDeleteTest() throws ApiException {
         Long attachmentId = null;
-        ResultPrefix response = api.attachmentsDelete(SheetData.id, attachmentId);
+        GenericResult response = api.attachmentsDelete(SheetData.id, attachmentId);
 
         // TODO: test validations
         log.info("{}", response);
@@ -220,7 +221,7 @@ public class AttachmentsApiTest {
     @Disabled("need attachment ID")
     public void attachmentsVersionsDeleteTest() throws ApiException {
         Long attachmentId = TestData.AttachmentData.SheetAttachment.id;
-        ResultPrefix response = api.attachmentsVersionsDelete(SheetData.id, attachmentId);
+        GenericResult response = api.attachmentsVersionsDelete(SheetData.id, attachmentId);
         // TODO: test validations
         log.info("{}", response);
         assertThat(response).isNotNull();

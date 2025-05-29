@@ -7,6 +7,7 @@ import com.ronreynolds.smartsheet.model.CopyOrMoveRowDirective;
 import com.ronreynolds.smartsheet.model.CopyOrMoveRowResult;
 import com.ronreynolds.smartsheet.model.CopyRowsInclude;
 import com.ronreynolds.smartsheet.model.DeleteRows200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetRowInclude;
 import com.ronreynolds.smartsheet.model.MoveRowsInclude;
 import com.ronreynolds.smartsheet.model.MultiRowEmail;
@@ -165,7 +166,7 @@ public class RowsApiTest {
     public void rowsSendTest() throws ApiException {
         Long sheetId = null;
         MultiRowEmail multiRowEmail = null;
-        ResultPrefix response = api.rowsSend(sheetId, multiRowEmail);
+        GenericResult response = api.rowsSend(sheetId, multiRowEmail);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

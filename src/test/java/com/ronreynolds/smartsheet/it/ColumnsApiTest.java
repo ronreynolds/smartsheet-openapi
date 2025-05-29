@@ -8,6 +8,7 @@ import com.ronreynolds.smartsheet.model.ColumnUpdateColumn200Response;
 import com.ronreynolds.smartsheet.model.ColumnsAddToSheet200Response;
 import com.ronreynolds.smartsheet.model.ColumnsListOnSheet200Response;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -39,7 +40,7 @@ public class ColumnsApiTest {
     public void columnDeleteTest() throws ApiException {
         Long sheetId = null;
         Long columnId = null;
-        ResultPrefix response = api.columnDelete(sheetId, columnId);
+        GenericResult response = api.columnDelete(sheetId, columnId);
         log.info("{}", response);
         assertThat(response).isNotNull();
 

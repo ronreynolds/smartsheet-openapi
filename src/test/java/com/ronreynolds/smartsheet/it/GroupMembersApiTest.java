@@ -3,6 +3,7 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.GroupMembersApi;
 import com.ronreynolds.smartsheet.model.AddGroupMembers200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GroupMember;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
@@ -61,8 +62,7 @@ public class GroupMembersApiTest {
     public void deleteGroupMembersTest() throws ApiException {
         Long groupId = null;
         Long userId = null;
-        ResultPrefix response =
-                api.deleteGroupMembers(groupId, userId);
+        GenericResult response = api.deleteGroupMembers(groupId, userId);
 
         // TODO: test validations
     }

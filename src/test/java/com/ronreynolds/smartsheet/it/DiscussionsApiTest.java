@@ -9,6 +9,7 @@ import com.ronreynolds.smartsheet.model.DiscussionInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
 import com.ronreynolds.smartsheet.model.DiscussionsInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsList200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -44,7 +45,7 @@ public class DiscussionsApiTest {
     public void discussionDeleteTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long discussionId = null;
-        ResultPrefix response = api.discussionDelete(sheetId, discussionId);
+        GenericResult response = api.discussionDelete(sheetId, discussionId);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

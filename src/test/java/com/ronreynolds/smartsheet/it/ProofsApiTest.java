@@ -6,6 +6,7 @@ import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
 import com.ronreynolds.smartsheet.model.CommentBrief;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.Proof;
 import com.ronreynolds.smartsheet.model.ProofRequestBody;
 import com.ronreynolds.smartsheet.model.ProofsCreate200Response;
@@ -152,7 +153,7 @@ public class ProofsApiTest {
     public void proofsDeleteTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response = api.proofsDelete(sheetId, proofId);
+        GenericResult response = api.proofsDelete(sheetId, proofId);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -171,7 +172,7 @@ public class ProofsApiTest {
     public void proofsDeleteProofRequestsTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response = api.proofsDeleteProofRequests(sheetId, proofId);
+        GenericResult response = api.proofsDeleteProofRequests(sheetId, proofId);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -190,7 +191,7 @@ public class ProofsApiTest {
     public void proofsDeleteVersionTest() throws ApiException {
         Long sheetId = null;
         Long proofId = TestData.ProofData.id;
-        ResultPrefix response = api.proofsDeleteVersion(sheetId, proofId);
+        GenericResult response = api.proofsDeleteVersion(sheetId, proofId);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

@@ -6,6 +6,7 @@ import com.ronreynolds.smartsheet.model.AddFavorite200Response;
 import com.ronreynolds.smartsheet.model.Favorite;
 import com.ronreynolds.smartsheet.model.FavoriteInclude;
 import com.ronreynolds.smartsheet.model.FavoriteType;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetFavorites200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
@@ -78,7 +79,7 @@ public class FavoritesApiTest {
         FavoriteType favoriteType = FavoriteType.SIGHT;
         List<Long> objectIds = List.of(TestData.DashboardData.id);
         String xSmarScActorId = null;
-        ResultPrefix response = api.deleteFavoritesByType(favoriteType, objectIds, xSmarScActorId);
+        GenericResult response = api.deleteFavoritesByType(favoriteType, objectIds, xSmarScActorId);
         assertThat(response).satisfies(TestData::successfulResult);
     }
 
@@ -95,7 +96,7 @@ public class FavoritesApiTest {
         FavoriteType favoriteType = FavoriteType.FOLDER;
         Long favoriteId = TestData.FolderData.id;
         String xSmarScActorId = null;
-        ResultPrefix response = api.deleteFavoritesByTypeAndId(favoriteType, favoriteId, xSmarScActorId);
+        GenericResult response = api.deleteFavoritesByTypeAndId(favoriteType, favoriteId, xSmarScActorId);
         assertThat(response).satisfies(TestData::successfulResult);
     }
 

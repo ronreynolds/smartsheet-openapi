@@ -6,6 +6,7 @@ import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.CopySight200Response;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetDashboardInclude;
 import com.ronreynolds.smartsheet.model.ListSights200Response;
 import com.ronreynolds.smartsheet.model.Result;
@@ -72,7 +73,7 @@ public class DashboardsApiTest {
     @Disabled("need test data")
     public void deleteSightTest() throws ApiException {
         for (Long dashboardId : TestData.DashboardData.sightIdsToDelete) {
-            ResultPrefix response = api.deleteSight(dashboardId);
+            GenericResult response = api.deleteSight(dashboardId);
             log.info("{}", response);
             // TODO: test validations
             assertThat(response).isNotNull();

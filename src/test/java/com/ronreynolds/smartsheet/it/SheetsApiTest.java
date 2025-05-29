@@ -13,6 +13,7 @@ import com.ronreynolds.smartsheet.model.DeleteSheet200Response;
 import com.ronreynolds.smartsheet.model.EmailAddress;
 import com.ronreynolds.smartsheet.model.EmailOrGroupId;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
 import com.ronreynolds.smartsheet.model.ListSheetInclude;
 import com.ronreynolds.smartsheet.model.MoveSheetRequest;
@@ -438,7 +439,7 @@ public class SheetsApiTest {
                 .message("yo!  here's some sheet!")
                 .ccMe(true)
                 .build();
-        ResultPrefix response = api.sheetSend(sheetId, sheetEmail);
+        GenericResult response = api.sheetSend(sheetId, sheetEmail);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::successfulResult);

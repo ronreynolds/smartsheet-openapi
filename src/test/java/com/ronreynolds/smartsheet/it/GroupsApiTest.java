@@ -4,6 +4,7 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.GroupsApi;
 import com.ronreynolds.smartsheet.model.AddGroup200Response;
 import com.ronreynolds.smartsheet.model.AddGroupRequest;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetGroup200Response;
 import com.ronreynolds.smartsheet.model.ListGroups200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
@@ -57,7 +58,7 @@ public class GroupsApiTest {
     @Test
     public void deleteGroupTest() throws ApiException {
         Long groupId = null;
-        ResultPrefix response = api.deleteGroup(groupId);
+        GenericResult response = api.deleteGroup(groupId);
 
         // TODO: test validations
         System.out.println(response);

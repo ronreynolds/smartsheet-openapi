@@ -42,7 +42,8 @@ public class WebhooksApiTest {
     @Test
     public void createWebhookTest() throws ApiException {
         CreateWebhookRequest createWebhookRequest = null;
-        CreateWebhook200Response response = api.createWebhook(createWebhookRequest);
+        String contentType = null;
+        CreateWebhook200Response response = api.createWebhook(contentType, createWebhookRequest);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -118,7 +119,8 @@ public class WebhooksApiTest {
     @Test
     public void resetSharedSecretTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
-        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId);
+        String contentType = null;
+        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, contentType);
 
         // TODO: test validations
         log.info("{}", response);
@@ -138,8 +140,9 @@ public class WebhooksApiTest {
     @Test
     public void updateWebhookTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
+        String contentType = null;
         UpdateWebhookRequest updateWebhookRequest = null;
-        CreateWebhook200Response response = api.updateWebhook(webhookId, updateWebhookRequest);
+        CreateWebhook200Response response = api.updateWebhook(webhookId, contentType, updateWebhookRequest);
 
         // TODO: test validations
         log.info("{}", response);

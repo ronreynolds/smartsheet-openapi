@@ -2,6 +2,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.TokenApi;
+import com.ronreynolds.smartsheet.api.TokensApi;
 import com.ronreynolds.smartsheet.model.GrantType;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.Token;
@@ -22,8 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TokenApiTest {
 
-    private final TokenApi api = new TokenApi();
-
+    private final TokensApi api = new TokensApi();
 
     /**
      * Revoke Access Token

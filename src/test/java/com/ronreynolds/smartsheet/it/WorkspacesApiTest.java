@@ -3,24 +3,24 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.WorkspacesApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
-import com.ronreynolds.smartsheet.model.ContainerDestination;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForCopy;
 import com.ronreynolds.smartsheet.model.CreateWorkspace200Response;
-import com.ronreynolds.smartsheet.model.CreateWorkspaceFolderRequest;
-import com.ronreynolds.smartsheet.model.FolderCopySkipRemap;
-import com.ronreynolds.smartsheet.model.FolderInclude;
+import com.ronreynolds.smartsheet.model.FolderNameOnly;
+import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200Response;
 import com.ronreynolds.smartsheet.model.ListWorkspaces200Response;
 import com.ronreynolds.smartsheet.model.Result;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareReport200Response;
+import com.ronreynolds.smartsheet.model.SkipRemap;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateWorkspace200Response;
 import com.ronreynolds.smartsheet.model.UpdateWorkspaceRequest;
 import com.ronreynolds.smartsheet.model.Workspace;
-import com.ronreynolds.smartsheet.model.WorkspaceInclude;
-import com.ronreynolds.smartsheet.model.WorkspaceBrief;
+import com.ronreynolds.smartsheet.model.WorkspaceCreateInclude;
+import com.ronreynolds.smartsheet.model.WorkspaceListing;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -53,12 +53,13 @@ public class WorkspacesApiTest {
     @Disabled("need test data")
     public void copyWorkspaceTest() throws ApiException {
         Long workspaceId = TestData.WorkspaceData.id;
-        ContainerDestination containerDestination = ContainerDestination.builder()
+        ContainerDestinationForCopy containerDestination = ContainerDestinationForCopy.builder()
                 .newName("New Test Workspace")
                 .build();
-        List<WorkspaceInclude> include = null;
-        List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response = api.copyWorkspace(workspaceId, containerDestination, include, skipRemap);
+        String contentType = null;
+        List<WorkspaceCreateInclude> include = null;
+        List<SkipRemap> skipRemap = null;
+        var response = api.copyWorkspace(workspaceId, containerDestination, contentType, include, skipRemap);
         log.info("{}", response);
         assertThat(response).isNotNull();
 
@@ -75,13 +76,14 @@ public class WorkspacesApiTest {
     @Test
     @Order(1)
     public void createWorkspaceTest() throws ApiException {
-        WorkspaceBrief workspace = WorkspaceBrief.builder()
+        WorkspaceListing workspace = WorkspaceListing.builder()
                 .name("new test workspace")
                 .build();
         Integer accessApiLevel = null;
-        List<WorkspaceInclude> include = null;
-        List<FolderCopySkipRemap> skipRemap = null;
-        CreateWorkspace200Response response = api.createWorkspace(workspace, accessApiLevel, include, skipRemap);
+        String contentType = null;
+        List<WorkspaceCreateInclude> include = null;
+        List<SkipRemap> skipRemap = null;
+        CreateWorkspace200Response response = api.createWorkspace(workspace, accessApiLevel, contentType, include, skipRemap);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -101,11 +103,12 @@ public class WorkspacesApiTest {
     @Order(2)
     public void createWorkspaceFolderTest() throws ApiException {
         Long workspaceId = TestData.WorkspaceData.id;
-        CreateWorkspaceFolderRequest createWorkspaceFolderRequest = CreateWorkspaceFolderRequest.builder()
+        FolderNameOnly createWorkspaceFolderRequest = FolderNameOnly.builder()
                 // "The value for folder.name must be 50 characters in length or less"
                 .name(("new workspace folder - " + ZonedDateTime.now()).substring(0, 49))
                 .build();
-        var response = api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest);
+        String contentType = null;
+        var response = api.createWorkspaceFolder(workspaceId, createWorkspaceFolderRequest, contentType);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -128,7 +131,7 @@ public class WorkspacesApiTest {
             return; // we have nothing to delete
         }
         for (Long workspaceId : TestData.temporaryWorkspaceIds) {
-            ResultPrefix response = api.deleteWorkspace(workspaceId);
+            GenericResult response = api.deleteWorkspace(workspaceId);
             log.info("{}", response);
             assertThat(response).isNotNull();
 
@@ -172,7 +175,7 @@ public class WorkspacesApiTest {
         try (var ignore = ApiClients.logRequestContext()) {
             Long workspaceId = TestData.WorkspaceData.id;
             Integer accessApiLevel = null;
-            List<FolderInclude> include = null;
+            List<FolderWorkspaceInclude> include = null;
             Boolean loadAll = true;
             Workspace response = api.getWorkspace(workspaceId, accessApiLevel, include, loadAll);
             assertThat(response).satisfies(TestData.WorkspaceData::assertEquals);

@@ -3,12 +3,12 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.AlternateEmailAddressApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.model.AddAlternateEmail;
 import com.ronreynolds.smartsheet.model.AddAlternateEmail200Response;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
-import com.ronreynolds.smartsheet.model.EmailAddress;
+import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ListAlternateEmails200Response;
 import com.ronreynolds.smartsheet.model.PromoteAlternateEmail200Response;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
@@ -43,9 +43,9 @@ public class AlternateEmailAddressApiTest {
     public void addAlternateEmailTest() throws ApiException {
         ApiClients.setLogRequest(true);
         Long userId = TestData.UserData.id;
-        List<EmailAddress> emailAddress = List.of(
-                EmailAddress.builder().email("foo@example.com").build(),
-                EmailAddress.builder().email("bar@example.com").build());
+        List<AddAlternateEmail> emailAddress = List.of(
+                AddAlternateEmail.builder().email("foo@example.com").build(),
+                AddAlternateEmail.builder().email("bar@example.com").build());
         AddAlternateEmail200Response response = api.addAlternateEmail(userId, emailAddress);
         // FIXME - currently failing with a 500 error (unexpected server-side error)
         // TODO: more test validations
@@ -70,7 +70,7 @@ public class AlternateEmailAddressApiTest {
 
         Long userId = TestData.UserData.id;
         for (Long alternateEmailId : altEmailIdsToDelete) {
-            ResultPrefix response = api.deleteAlternateEmail(userId, alternateEmailId);
+            GenericResult response = api.deleteAlternateEmail(userId, alternateEmailId);
             // TODO: test validations
             assertThat(response).isNotNull();
             System.out.println(response);
