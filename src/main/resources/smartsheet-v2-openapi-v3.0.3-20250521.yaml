@@ -24547,6 +24547,23 @@ components:
             Sheet version number that is incremented every time a sheet is
             modified.
           type: integer
+        # missing fields
+        parentId:
+          description: 'Parent row Id.'
+          allOf:
+            - $ref: '#/components/schemas/Int64'
+        toTop:
+          type: boolean
+        toBottom:
+          type: boolean
+        above:
+          type: boolean
+        indent:
+          type: integer
+        outdent:
+          type: integer
+        dataModifiedAt:
+          $ref: '#/components/schemas/Datetime'
     RowArray:
       type: array
       items:
