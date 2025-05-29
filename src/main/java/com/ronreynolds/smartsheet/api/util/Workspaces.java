@@ -4,6 +4,7 @@ import com.ronreynolds.smartsheet.ApiClient;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.WorkspacesApi;
 import com.ronreynolds.smartsheet.model.Workspace;
+import com.ronreynolds.smartsheet.model.WorkspaceListing;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,7 +18,7 @@ public class Workspaces {
     /**
      * @return the first Workspace with the provided name; Optional.empty if no workspace has the provided name
      */
-    public static Optional<Workspace> findWorkspaceByName(@NonNull ApiClient api, @NonNull String name) throws ApiException {
+    public static Optional<WorkspaceListing> findWorkspaceByName(@NonNull ApiClient api, @NonNull String name) throws ApiException {
         try {
             return new WorkspacesApi(api)
                     .listWorkspaces(null, true, null, null)
