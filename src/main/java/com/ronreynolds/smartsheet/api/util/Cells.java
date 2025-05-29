@@ -23,24 +23,28 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * a collection of utility functions for working with Cell model objects
+ */
 public class Cells {
+    @SuppressWarnings("unchecked")
     public enum ValueType {
         STRING {
             @Override
             <T> T getValue(CellValue value) {
-                return (T)value.getString();
+                return (T) value.getString();
             }
         },
         NUMBER {
             @Override
             <T> T getValue(CellValue value) {
-                return (T)value.getBigDecimal();
+                return (T) value.getBigDecimal();
             }
         },
         BOOLEAN {
             @Override
             <T> T getValue(CellValue value) {
-                return (T)value.getBoolean();
+                return (T) value.getBoolean();
             }
         },
         NULL {
@@ -66,10 +70,13 @@ public class Cells {
             }
             throw new IllegalStateException("unrecognized value type - " + actualValue);
         }
+
         abstract <T> T getValue(CellValue value);
     }
+
     private Cells() {
     }
+
     public static CellValue makeCellValue(Object value) {
         CellValue cellValue = new CellValue();
         cellValue.setActualInstance(value);
@@ -97,7 +104,7 @@ public class Cells {
                         .hyperlink(null)
                         .linkInFromCell(null));
         updatedRow.setCells(cell);
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, Collections.singletonList(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, Collections.singletonList(updatedRow));
         State.notNull(response, "null response from updateRows");
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "update FAILED - row:%d column:%d value:'%s'", rowId, columnId, value);
@@ -147,7 +154,7 @@ public class Cells {
                         .map(entry -> new Cell().columnId(entry.getKey()).value(makeCellValue(entry.getValue())).strict(true)
                                 .hyperlink(null).linkInFromCell(null))
                         .collect(Collectors.toList()));
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, List.of(updatedRow));
+        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, List.of(updatedRow));
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "failed to update row");
         return result.stream().map(Converters::convert).collect(Collectors.toList());
