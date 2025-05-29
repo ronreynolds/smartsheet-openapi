@@ -400,3 +400,7 @@ some parameters are the wrong type for the data payload
 
 ### renamed fields to match server response
 * `Row.permaLink` MUST be `Row.permalink` to match the exact case of the server response
+
+### adding fields to match server response
+* `Row`
+  * parentId, toTop, toBottom, above, indent, outdent, dateModifiedAt
