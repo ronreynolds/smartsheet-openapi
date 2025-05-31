@@ -20,11 +20,10 @@ import java.util.stream.Collectors;
 
 import static com.ronreynolds.smartsheet.api.util.Constants.allColumnIds;
 import static com.ronreynolds.smartsheet.api.util.Constants.allFilters;
-import static com.ronreynolds.smartsheet.api.util.Constants.allPageNumbers;
+import static com.ronreynolds.smartsheet.api.util.Constants.allPages;
 import static com.ronreynolds.smartsheet.api.util.Constants.allRowIds;
 import static com.ronreynolds.smartsheet.api.util.Constants.allRowNumbers;
 import static com.ronreynolds.smartsheet.api.util.Constants.allSheetIncludes;
-import static com.ronreynolds.smartsheet.api.util.Constants.noCompatibilityLevel;
 import static com.ronreynolds.smartsheet.api.util.Constants.noModifiedSince;
 import static com.ronreynolds.smartsheet.api.util.Constants.noPageSize;
 import static com.ronreynolds.smartsheet.api.util.Constants.noPaperSize;
@@ -102,14 +101,14 @@ public class Sheets {
     public static Sheet getWholeSheet(@NonNull ApiClient client, long sheetId) throws ApiException {
         var response = new SheetsApi(client)
                 .getSheet(sheetId, null, null, allSheetIncludes, noSheetExcludes, allColumnIds, allFilters, noVersionAfter,
-                        noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize, allRowIds, allRowNumbers, noModifiedSince);
+                        Constants.defaultLevel, noPageSize, allPages, noPaperSize, allRowIds, allRowNumbers, noModifiedSince);
         return response.getSheet();
     }
 
     public static Sheet getSheetNoRows(@NonNull ApiClient client, long sheetId) throws ApiException {
         var response = new SheetsApi(client)
                 .getSheet(sheetId, null, null, List.of(SheetInclude.COLUMN_TYPE), List.of(SheetExclude.LINK_IN_FROM_CELL_DETAILS),
-                        allColumnIds, allFilters, noVersionAfter, noCompatibilityLevel, noPageSize, allPageNumbers, noPaperSize,
+                        allColumnIds, allFilters, noVersionAfter, Constants.defaultLevel, noPageSize, allPages, noPaperSize,
                         allRowIds, allRowNumbers, noModifiedSince);
         return response.getSheet();
     }

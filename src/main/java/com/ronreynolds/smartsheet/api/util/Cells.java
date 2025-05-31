@@ -104,7 +104,8 @@ public class Cells {
                         .hyperlink(null)
                         .linkInFromCell(null));
         updatedRow.setCells(cell);
-        var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, Collections.singletonList(updatedRow));
+        var response = new RowsApi(client).updateRows(
+                sheetId, null, null, null, null, Collections.singletonList(updatedRow));
         State.notNull(response, "null response from updateRows");
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "update FAILED - row:%d column:%d value:'%s'", rowId, columnId, value);
@@ -148,12 +149,18 @@ public class Cells {
      */
     public static List<Row> setCellValues(@NonNull ApiClient client, long sheetId, long rowId, Map<Long, Object> columnValueMap)
             throws ApiException {
-        Row updatedRow = new Row()
+        Row updatedRow = Row.builder()
                 .id(rowId)
                 .cells(columnValueMap.entrySet().stream()
-                        .map(entry -> new Cell().columnId(entry.getKey()).value(makeCellValue(entry.getValue())).strict(true)
-                                .hyperlink(null).linkInFromCell(null))
-                        .collect(Collectors.toList()));
+                        .map(entry -> Cell.builder()
+                                .columnId(entry.getKey())
+                                .value(makeCellValue(entry.getValue()))
+                                .strict(true)
+                                .hyperlink(null)
+                                .linkInFromCell(null)
+                                .build())
+                        .collect(Collectors.toList()))
+                .build();
         var response = new RowsApi(client).updateRows(sheetId, null, null, null, null, List.of(updatedRow));
         var result = State.notNull(response.getResult());
         State.isTrue(result.size() == 1, "failed to update row");
@@ -185,7 +192,7 @@ public class Cells {
      */
     @NonNull
     public static Map<Long, Cell> cellsByColumnId(@NonNull Row row) {
-        return row.getCells().stream().collect(Collectors.toMap(Cell::getColumnId, Function.identity()));
+        return State.notNull(row.getCells()).stream().collect(Collectors.toMap(Cell::getColumnId, Function.identity()));
     }
 
     /**
@@ -193,7 +200,7 @@ public class Cells {
      * @throws NoSuchElementException if the Cell can't be found
      */
     public static String getCellDisplayValue(Row row, Column column) {
-        return getCellForColumn(row, column.getId()).orElseThrow().getDisplayValue();
+        return getCellForColumn(row, State.notNull(column.getId())).orElseThrow().getDisplayValue();
     }
 
     /**
@@ -203,7 +210,7 @@ public class Cells {
      */
     @SuppressWarnings("unchecked")
     public static <T> T getCellValue(Row row, Column column) {
-        return (T) getCellForColumn(row, column.getId()).orElseThrow().getValue();
+        return (T) getCellForColumn(row, State.notNull(column.getId())).orElseThrow().getValue();
     }
 
     /**

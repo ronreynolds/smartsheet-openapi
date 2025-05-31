@@ -1,12 +1,12 @@
 package com.ronreynolds.smartsheet.api.util;
 
 import com.ronreynolds.smartsheet.model.AccessLevel;
+import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.ReportInclude;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
-import com.ronreynolds.smartsheet.model.SheetLevel;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -25,23 +25,23 @@ public class Constants {
     public static final List<FolderWorkspaceInclude> allFolderIncludes = List.of(FolderWorkspaceInclude.values());
     public static final List<ReportInclude> allReportIncludes = List.of(ReportInclude.values());
     public static final List<SheetInclude> allSheetIncludes = List.of(SheetInclude.values());
-    public static final List<SheetInclude> normalSheetIncludes = List.of(SheetInclude.OWNER_INFO, SheetInclude.COLUMN_TYPE,
-            SheetInclude.SOURCE);
+    public static final List<SheetInclude> normalSheetIncludes =
+            List.of(SheetInclude.OWNER_INFO, SheetInclude.COLUMN_TYPE, SheetInclude.SOURCE);
     public static final List<SheetExclude> noSheetExcludes = List.of();
-
     public static final List<Long> allColumnIds = null;
     public static final List<Long> allRowIds = null;
     public static final List<Integer> allRowNumbers = null;
 
+    // various constants for readability (rather than a soup of nulls)
     public static final String allFilters = null;
-    public static final Integer allPageNumbers = null;
-    public static final PaperSize noPaperSize = null;
+    public static final Integer allPages = null;
     public static final Integer noPageSize = null;
+    public static final PaperSize noPaperSize = null;
     public static final OffsetDateTime noModifiedSince = null;
     public static final Integer noVersionAfter = null;
-    public static final SheetLevel noCompatibilityLevel = null;
+    public static final CompatibilityLevel defaultLevel = null;
     public static final Integer defaultAccessApiLevel = null;
-    public static final String defaultContentType = null;
+    public static final String noContentType = null;
     public static final Boolean defaultAllowPartialSuccess = null;
     public static final Boolean defaultOverrideValidation = null;
 
