@@ -17160,18 +17160,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/accessApiLevel'
         - $ref: '#/components/parameters/includeAll'
-        - name: level
-          in: query
-          required: false
-          description: >-
-            Level of public template types. 0 refers to only Sheet types, 1
-            refers to all types.
-          schema:
-            type: integer
-            enum:
-              - 0
-              - 1
-            default: 0
+        - $ref: '#/components/parameters/templateLevel'
         - $ref: '#/components/parameters/page'
         - $ref: '#/components/parameters/pageSize'
       responses:
@@ -22105,22 +22094,13 @@ components:
     AutomationRuleDisabledReason:
       description: >
         Machine-readable reason a rule is disabled:
-        * `APPROVAL_COLUMN_MISSING` This rule's approval status column has
-        been deleted.
-        * `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a
-        dropdown column.
-        * `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated
-        actions, you need to upgrade your organization account to a Business or
-        Enterprise plan.
-        * `COLUMN_MISSING` A column referenced by this rule has been
-        deleted.
-        * `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has
-        been changed to an incompatible column type.
-        * `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be
-        able to receive notifications based on this sheet's permission settings or this
-        account's approved domain sharing list.
-        * `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule
-        have been deleted.
+        * `APPROVAL_COLUMN_MISSING` This rule's approval status column has been deleted.
+        * `APPROVAL_COLUMN_WRONG_TYPE` The approval column must be a dropdown column.
+        * `AUTOMATION_NOT_ENABLED_FOR_ORG` To create or edit automated actions, you need to upgrade your organization account to a Business or Enterprise plan.
+        * `COLUMN_MISSING` A column referenced by this rule has been deleted.
+        * `COLUMN_TYPE_INCOMPATIBLE` A column referenced by this rule has been changed to an incompatible column type.
+        * `NO_POTENTIAL_RECIPIENTS` This rule has no recipients that will be able to receive notifications based on this sheet's permission settings or this account's approved domain sharing list.
+        * `NO_VALID_SELECTED_COLUMNS` All selected columns for this rule have been deleted.
       type: string
       enum:
         - APPROVAL_COLUMN_MISSING
@@ -22205,11 +22185,7 @@ components:
           type: string
           description: Random value that is distinct for each callback.
         scope:
-          type: string
-          description: Scope of the webhook. Currently, the only supported value is sheet.
-          enum:
-            - sheet
-          example: sheet
+          $ref: '#/components/schemas/CallbackScope'
         timestamp:
           allOf:
             - $ref: '#/components/schemas/Datetime'
@@ -22275,6 +22251,12 @@ components:
         - deleted
         - updated
       example: created
+    CallbackScope:
+      type: string
+      description: Scope of the webhook. Currently, the only supported value is sheet.
+      enum:
+        - sheet
+      example: sheet
     Cell:
       type: object
       x-tags:
@@ -22493,7 +22475,7 @@ components:
       properties:
         type:
           type: string
-          enum:
+          enum: # pretty sure this enum is a work-around for openapi 3.0.3 not having a const keyword
             - CHART
         reportId:
           description: Report Id denoting container source, if applicable.
@@ -28044,6 +28026,10 @@ components:
         - distributionLink
         - ownerInfo
         - sheetVersion
+    SheetCopyExclude:
+      type: string
+      enum:
+        - sheetHyperlinks
     SheetCopyInclude:
       type: string
       enum:
@@ -28285,7 +28271,7 @@ components:
         * **ruleRecipients**
         * **rules**
         * **shares**
-    SheetLevel:
+    CompatibilityLevel:
       type: integer
       enum:
         - 0
@@ -28297,6 +28283,28 @@ components:
         * 0 (default) text/number columns for multi-contact data and multi-picklist data.
         * 1 multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.
         * 2 multiple-entry contact list columns for multi-contact data and use multiple-entry picklist columns for multi-picklist data.
+    ReportLevel:
+      type: integer
+      enum:
+        - 0
+        - 1
+        - 3
+      default: 0
+      description: |
+        specifies whether new functionality, such as multi-contact data is returned in a backwards-compatible, 
+        text format (level=0, default), multi-contact data (level=1), or multi-picklist data (level=3).
+    ContactInclude:
+      type: string
+      enum:
+        - profileImage
+    TemplateLevel:
+      type: integer
+      enum:
+        - 0
+        - 1
+      default: 0
+      description: |
+        Level of public template types. 0 refers to only Sheet types, 1 refers to all types.
 
   securitySchemes:
     OAuth2:
@@ -28405,6 +28413,14 @@ components:
       schema:
         type: integer
         default: 100
+    templateLevel:
+      name: level
+      in: query
+      required: false
+      description: |
+        Level of public template types. 0 refers to only Sheet types, 1 refers to all types.
+      schema:
+        $ref: '#/components/schemas/TemplateLevel'
     contactId:
       name: contactId
       in: path
@@ -28415,14 +28431,15 @@ components:
     contactInclude:
       name: include
       in: query
+      explode: false
       required: false
       description: |
         A comma-separated list of optional elements to include in the response:
           * **profileImage**
       schema:
-        type: string
-        enum:
-          - profileImage
+        type: array
+        items:
+          $ref: '#/components/schemas/ContactInclude'
     Accept-Encoding:
       name: Accept-Encoding
       in: header
@@ -28540,12 +28557,9 @@ components:
       in: query
       required: false
       description: >-
-        When specified with a value of **sheetHyperlinks**, excludes this
-        category from the response
+        When specified with a value of **sheetHyperlinks**, excludes this category from the response
       schema:
-        type: string
-        enum:
-          - sheetHyperlinks
+        $ref: '#/components/schemas/SheetCopyExclude'
     skipRemap:
       name: skipRemap
       in: query
@@ -28702,8 +28716,7 @@ components:
         returned in a backwards-compatible, text format (level=0, default),
         multi-contact data (level=1), or multi-picklist data (level=3).
       schema:
-        type: integer
-        default: 0
+        $ref: '#/components/schemas/ReportLevel'
     sharingInclude:
       name: sharingInclude
       in: query
@@ -28882,14 +28895,12 @@ components:
         Specifies whether object data types, such as multi-contact data are
         returned in a backwards-compatible, text format in text/number
         columns.<br>  
-        - Set `level=0` (default) to use text/number columns for
-        multi-contact data and multi-picklist data.<br>  - Set `level=1` to use
-        multiple-entry contact list columns for multi-contact data;
-        multi-picklist data is returned in text/number columns.<br>  - Set
-        `level=2` to use multiple-entry contact list columns for multi-contact
+        - Set `level=0` (default) to use text/number columns for multi-contact data and multi-picklist data.<br>  
+        - Set `level=1` to use multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.<br>  
+        - Set `level=2` to use multiple-entry contact list columns for multi-contact
         data and use multiple-entry picklist columns for multi-picklist data.
       schema:
-        $ref : '#/components/schemas/SheetLevel'
+        $ref : '#/components/schemas/CompatibilityLevel'
     paperSize:
       name: paperSize
       in: query
@@ -28949,17 +28960,12 @@ components:
       in: query
       required: false
       description: >-
-        Specifies whether object data types, such as multi-contact data are
-        returned in a backwards-compatible, text format in text/number
-        columns.<br>  - Set `level=0` (default) to use text/number columns for
-        multi-contact data and multi-picklist data.<br>  - Set `level=1` to use
-        multiple-entry contact list columns for multi-contact data;
-        multi-picklist data is returned in text/number columns.<br>  - Set
-        `level=2` to use multiple-entry contact list columns for multi-contact
-        data and use multiple-entry picklist columns for multi-picklist data.
+        Specifies whether object data types, such as multi-contact data are returned in a backwards-compatible, text format in text/number columns.<br>  
+        - Set `level=0` (default) to use text/number columns for multi-contact data and multi-picklist data.<br>  
+        - Set `level=1` to use multiple-entry contact list columns for multi-contact data; multi-picklist data is returned in text/number columns.<br>  
+        - Set `level=2` to use multiple-entry contact list columns for multi-contact data and use multiple-entry picklist columns for multi-picklist data.
       schema:
-        type: integer
-        default: 0
+        $ref: '#/components/schemas/CompatibilityLevel'
     columnId:
       name: columnId
       in: path
@@ -29283,6 +29289,7 @@ components:
         multi-contact data (**level=2**), multi-picklist data (**level=3**), or
         Metric widget with sheet summary (**level=4**).
       schema:
+        # this is CompatibilityLevel + level:4 (metric-widget)
         $ref: '#/components/schemas/SightLevel'
     emailInclude:
       name: email
