@@ -384,7 +384,7 @@ some parameters are the wrong type for the data payload
 * `favoriteIds` item type changed from `string` to `Int64`
   * matches type of `favoriteId` parameter
 * `sheetColumnIds`, `sheetRowIds`, `rowIds`, `sheetSummaryFieldIds` changed from `string` to `Int64`
-  * generally all IDs are longs except shareId (which is a stringy blob)
+  * generally all IDs are longs except shareId and imageId (which are stringy blobs)
 * `sheetLevel` changed from `integer` to `enum` of integer values (based on description)
 * `sheetRowNumbers` changed from `string` to array of `integer` (since "numbers" are ints, being scoped to the container)
 * `sightLevel` changed from open-ended `integer` to `enum` to restrict it to expected values
@@ -419,3 +419,21 @@ also missed some in previous changes
   * used by `userProfileInclude` which is either "groups" or null
 * `GrantType`
   * used by `/tokens POST` parameter `grant_type` (tho docs state it MUST BE "authorization_code"?)
+* `CallbackScope`
+  * used by `Callback.scope`
+* `parameters/templateLevel`
+  * used by `/templates/public GET` request parameter
+* `ContactInclude`
+  * used by `parameters/contactInclude`
+* `CompatibilityLevel` renamed from `SheetLevel` to be more accurate
+  * used by `parameters/sheetLevel` and `parameters/columnsLevel` (based on description)
+* `ReportLevel` is MUCH like `CompatiblityLevel` but allows values (0, 1, 3)
+  * used by `parameters/reportLevel`
+  * not to be confused with `SightLevel` which allows values (0, 2, 3, 4) :facepalm:
+* `TemplateLevel`
+  * used by `parameters/templateLevel`
+* `SheetCopyExclude` 
+  * used by `parameters/sheetCopyExclude`
+
+### more scalar -> array
+* `parameters/contactInclude` is TECHNICALLY a list of 1 (or none) so this change is just to keep arrays consistent
