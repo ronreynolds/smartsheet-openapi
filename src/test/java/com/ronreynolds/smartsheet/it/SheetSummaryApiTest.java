@@ -2,16 +2,12 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.SheetSummaryApi;
-import com.ronreynolds.smartsheet.model.AddImageSummaryField200Response;
-import com.ronreynolds.smartsheet.model.AddSummaryFields200Response;
-import com.ronreynolds.smartsheet.model.AddSummaryFieldsRequestInner;
-import com.ronreynolds.smartsheet.model.DeleteSummaryFields200Response;
-import com.ronreynolds.smartsheet.model.ListSummaryFieldsPaginated200Response;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.SheetSummary;
 import com.ronreynolds.smartsheet.model.SheetSummaryExclude;
 import com.ronreynolds.smartsheet.model.SheetSummaryInclude;
-import com.ronreynolds.smartsheet.model.UpdateSummaryFields200Response;
-import com.ronreynolds.smartsheet.model.UpdateSummaryFieldsRequestInner;
+import com.ronreynolds.smartsheet.model.SummaryFieldCreateRequest;
+import com.ronreynolds.smartsheet.model.SummaryFieldUpdateRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -46,15 +42,14 @@ public class SheetSummaryApiTest {
     public void addImageSummaryFieldTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long fieldId = null;
-        String contentType = null;
         String contentDisposition = null;
         Integer contentLength = null;
         String altText = null;
         Boolean overrideValidation = null;
         File body = null;
-        AddImageSummaryField200Response response =
-                api.addImageSummaryField(sheetId, fieldId, contentType, contentDisposition, contentLength, altText,
-                        overrideValidation, body);
+        var response = api.addImageSummaryField(
+                sheetId, fieldId, Constants.noContentType, contentDisposition, contentLength, altText, overrideValidation, body);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -70,10 +65,11 @@ public class SheetSummaryApiTest {
     @Test
     public void addSummaryFieldsTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        List<AddSummaryFieldsRequestInner> addSummaryFieldsRequestInner = null;
+        List<SummaryFieldCreateRequest> request = null;
         Boolean renameIfConflict = null;
-        AddSummaryFields200Response response =
-                api.addSummaryFields(sheetId, addSummaryFieldsRequestInner, renameIfConflict);
+        var response = api.addSummaryFields(sheetId, request, renameIfConflict);
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }
@@ -90,9 +86,10 @@ public class SheetSummaryApiTest {
         Long sheetId = TestData.SheetData.id;
         List<Long> ids = null;
         Boolean ignoreSummaryFieldsNotFound = null;
-        DeleteSummaryFields200Response response =
-                api.deleteSummaryFields(sheetId, ids, ignoreSummaryFieldsNotFound);
+        var response = api.deleteSummaryFields(sheetId, ids, ignoreSummaryFieldsNotFound);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -108,9 +105,10 @@ public class SheetSummaryApiTest {
         Long sheetId = TestData.SheetData.id;
         List<SheetSummaryInclude> include = null;
         List<SheetSummaryExclude> exclude = null;
-        SheetSummary response =
-                api.listSummaryFields(sheetId, include, exclude);
+        SheetSummary response = api.listSummaryFields(sheetId, include, exclude);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -129,9 +127,10 @@ public class SheetSummaryApiTest {
         Integer pageSize = null;
         List<SheetSummaryInclude> include = null;
         List<SheetSummaryExclude> exclude = null;
-        ListSummaryFieldsPaginated200Response response =
-                api.listSummaryFieldsPaginated(sheetId, includeAll, page, pageSize, include, exclude);
+        var response = api.listSummaryFieldsPaginated(sheetId, includeAll, page, pageSize, include, exclude);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -145,12 +144,12 @@ public class SheetSummaryApiTest {
     @Test
     public void updateSummaryFieldsTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        List<UpdateSummaryFieldsRequestInner> updateSummaryFieldsRequestInner = null;
+        List<SummaryFieldUpdateRequest> request = null;
         Boolean renameIfConflict = null;
-        UpdateSummaryFields200Response response =
-                api.updateSummaryFields(sheetId, updateSummaryFieldsRequestInner, renameIfConflict);
+        var response = api.updateSummaryFields(sheetId, request, renameIfConflict);
 
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
-
 }

@@ -5,7 +5,6 @@ import com.ronreynolds.smartsheet.api.GroupMembersApi;
 import com.ronreynolds.smartsheet.model.AddGroupMembers200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GroupMember;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -24,9 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class GroupMembersApiTest {
-
     private final GroupMembersApi api = new GroupMembersApi();
-
 
     /**
      * Add Group Members
@@ -44,8 +41,8 @@ public class GroupMembersApiTest {
     public void addGroupMembersTest() throws ApiException {
         Long groupId = null;
         List<GroupMember> groupMember = null;
-        AddGroupMembers200Response response =
-                api.addGroupMembers(groupId, groupMember);
+        var response = api.addGroupMembers(groupId, groupMember);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations
@@ -63,6 +60,8 @@ public class GroupMembersApiTest {
         Long groupId = null;
         Long userId = null;
         GenericResult response = api.deleteGroupMembers(groupId, userId);
+        log.info("{}", response);
+        assertThat(response).isNotNull();
 
         // TODO: test validations
     }

@@ -2,13 +2,14 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.GroupsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AddGroup200Response;
-import com.ronreynolds.smartsheet.model.AddGroupRequest;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetGroup200Response;
+import com.ronreynolds.smartsheet.model.GroupCreate;
+import com.ronreynolds.smartsheet.model.GroupMemberAdd;
+import com.ronreynolds.smartsheet.model.GroupUpdate;
 import com.ronreynolds.smartsheet.model.ListGroups200Response;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
-import com.ronreynolds.smartsheet.model.UpdateGroupRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +41,12 @@ public class GroupsApiTest {
      */
     @Test
     public void addGroupTest() throws ApiException {
-        AddGroupRequest addGroupRequest = null;
+        GroupCreate addGroupRequest = GroupCreate.builder()
+                .description("test-group")
+                .description("group for testing addGroup API")
+                .members(List.of(GroupMemberAdd.builder()
+                        .email(TestData.UserData.email)
+                        .build())).build();
         AddGroup200Response response = api.addGroup(addGroupRequest);
 
         // TODO: test validations
@@ -93,12 +100,13 @@ public class GroupsApiTest {
      */
     @Test
     public void listGroupsTest() throws ApiException {
-        Boolean includeAll = null;
+        Boolean includeAll = true;
         OffsetDateTime modifiedSince = null;
-        Boolean numericDates = null;
+        Boolean numericDates = false;
         Integer page = null;
         Integer pageSize = null;
-        ListGroups200Response response = api.listGroups(includeAll, modifiedSince, numericDates, page, pageSize);
+        ListGroups200Response response = api.listGroups(includeAll, modifiedSince, numericDates,
+                Constants.allPages, Constants.noPageSize);
 
         // TODO: test validations
         System.out.println(response);
@@ -116,7 +124,10 @@ public class GroupsApiTest {
     @Test
     public void updateGroupTest() throws ApiException {
         Long groupId = null;
-        UpdateGroupRequest updateGroupRequest = null;
+        GroupUpdate updateGroupRequest = GroupUpdate.builder()
+                .description("changing the description of test group")
+                .name("changing the name of test group")
+                .build();
         AddGroup200Response response = api.updateGroup(groupId, updateGroupRequest);
 
         // TODO: test validations

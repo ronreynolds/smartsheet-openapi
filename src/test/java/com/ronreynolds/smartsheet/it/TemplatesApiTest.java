@@ -4,6 +4,8 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.TemplatesApi;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.Template;
+import com.ronreynolds.smartsheet.model.TemplateGlobalType;
+import com.ronreynolds.smartsheet.model.TemplateLocale;
 import com.ronreynolds.smartsheet.model.TemplateType;
 import com.ronreynolds.smartsheet.model.TemplatesList200Response;
 import lombok.extern.slf4j.Slf4j;
@@ -81,24 +83,24 @@ public class TemplatesApiTest {
     // improves the quality of the test but makes it more fragile to changes in the Smartsheet API response/data
     static final Template BLANK_SHEET_TEMPLATE = Template.builder()
             .id(7881304550205316L)
-            .type(Template.TypeEnum.SHEET)
+            .type(TemplateType.SHEET)
             .accessLevel(null)
             .blank(true)
             .categories(List.of("Featured Templates"))
             .description("Create and customize a new sheet")
-            .globalTemplate(Template.GlobalTemplateEnum.BLANK_SHEET)
+            .globalTemplate(TemplateGlobalType.BLANK_SHEET)
             .image(null)
             .largeImage(null)
-            .locale(Template.LocaleEnum.EN_US)
+            .locale(TemplateLocale.EN_US)
             .name("Blank Sheet")
             .tags(List.of())
             .build();
     static final Template DEPARTMENT_FORECAST_TEMPLATE = Template.builder()
             .id(2318345887344516L)
-            .type(Template.TypeEnum.SHEET)
+            .type(TemplateType.SHEET)
             .accessLevel(AccessLevel.EDITOR)
             .categories(List.of())
-            .locale(Template.LocaleEnum.EN_US)
+            .locale(TemplateLocale.EN_US)
             .name("Department Forecast")
             .tags(List.of())
             .build();

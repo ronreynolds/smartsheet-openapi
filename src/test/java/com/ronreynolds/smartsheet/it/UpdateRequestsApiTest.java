@@ -4,10 +4,7 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.UpdateRequestsApi;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.SentUpdateRequest;
-import com.ronreynolds.smartsheet.model.SentupdaterequestsList200Response;
 import com.ronreynolds.smartsheet.model.UpdateRequest;
-import com.ronreynolds.smartsheet.model.UpdaterequestsCreate200Response;
-import com.ronreynolds.smartsheet.model.UpdaterequestsList200Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -81,7 +78,7 @@ public class UpdateRequestsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        SentupdaterequestsList200Response response = api.sentupdaterequestsList(sheetId, includeAll, page, pageSize);
+        var response = api.sentupdaterequestsList(sheetId, includeAll, page, pageSize);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -107,7 +104,7 @@ public class UpdateRequestsApiTest {
         Long sheetId = null;
         String contentType = null;
         UpdateRequest updateRequest = null;
-        UpdaterequestsCreate200Response response = api.updaterequestsCreate(sheetId, contentType, updateRequest);
+        var response = api.updaterequestsCreate(sheetId, contentType, updateRequest);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -170,7 +167,7 @@ public class UpdateRequestsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        UpdaterequestsList200Response response = api.updaterequestsList(sheetId, includeAll, page, pageSize);
+        var response = api.updaterequestsList(sheetId, includeAll, page, pageSize);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -195,7 +192,7 @@ public class UpdateRequestsApiTest {
         Long sheetId = null;
         Long updateRequestId = null;
         String contentType = null;
-        UpdaterequestsCreate200Response response = api.updaterequestsUpdate(sheetId, updateRequestId, contentType);
+        var response = api.updaterequestsUpdate(sheetId, updateRequestId, contentType);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

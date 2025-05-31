@@ -2,16 +2,22 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.FoldersApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForCopy;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForMove;
 import com.ronreynolds.smartsheet.model.CopyFolderInclude;
 import com.ronreynolds.smartsheet.model.CreateFolderFolder200Response;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.FolderCopyExclude;
 import com.ronreynolds.smartsheet.model.FolderCopySkipRemap;
 import com.ronreynolds.smartsheet.model.FolderInclude;
+import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ListFolders200Response;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
+import com.ronreynolds.smartsheet.model.SheetCopyInclude;
+import com.ronreynolds.smartsheet.model.SkipRemap;
 import com.ronreynolds.smartsheet.model.UpdateFolder200Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
@@ -44,11 +50,11 @@ public class FoldersApiTest {
     @Disabled("need test data")
     public void copyFolderTest() throws ApiException {
         Long folderId = null;
-        ContainerDestination containerDestination = null;
-        List<CopyFolderInclude> include = null;
-        FolderCopyExclude exclude = null;
-        List<FolderCopySkipRemap> skipRemap = null;
-        ContainerDestination response = api.copyFolder(folderId, containerDestination, include, exclude, skipRemap);
+        ContainerDestinationForCopy containerDestination = null;
+        List<SheetCopyInclude> include = null;
+        SheetCopyExclude exclude = null;
+        List<SkipRemap> skipRemap = null;
+        var response = api.copyFolder(folderId, containerDestination, Constants.noContentType, include, exclude, skipRemap);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -68,10 +74,10 @@ public class FoldersApiTest {
     public void createFolderFolderTest() throws ApiException {
         Long folderId = null;
         Folder folder = null;
-        List<CopyFolderInclude> include = null;
-        FolderCopyExclude exclude = null;
-        List<FolderCopySkipRemap> skipRemap = null;
-        CreateFolderFolder200Response response = api.createFolderFolder(folderId, folder, include, exclude, skipRemap);
+        List<SheetCopyInclude> include = null;
+        SheetCopyExclude exclude = null;
+        List<SkipRemap> skipRemap = null;
+        CreateFolderFolder200Response response = api.createFolderFolder(folderId, folder, Constants.noContentType, include, exclude, skipRemap);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -108,7 +114,7 @@ public class FoldersApiTest {
     @Test
     public void getFolderTest() throws ApiException {
         Long folderId = TestData.FolderData.id;
-        List<FolderInclude> include = null;
+        List<FolderWorkspaceInclude> include = null;
         Folder response = api.getFolder(folderId, include);
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData.FolderData::assertEquals);
@@ -143,8 +149,8 @@ public class FoldersApiTest {
     @Disabled("need test data")
     public void moveFolderTest() throws ApiException {
         Long folderId = TestData.FolderData.id;
-        ContainerDestination containerDestination = null;
-        ContainerDestination response = api.moveFolder(folderId, containerDestination);
+        ContainerDestinationForMove containerDestination = null;
+        var response = api.moveFolder(folderId, containerDestination, Constants.noContentType);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

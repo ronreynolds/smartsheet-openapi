@@ -2,7 +2,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CrossSheetReferencesApi;
-import com.ronreynolds.smartsheet.model.AddCrosssheetReference200Response;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AddCrosssheetReferenceRequest;
 import com.ronreynolds.smartsheet.model.CrossSheetReference;
 import com.ronreynolds.smartsheet.model.ListCrosssheetReferences200Response;
@@ -37,8 +37,11 @@ public class CrossSheetReferencesApiTest {
     @Disabled("need test data")
     public void addCrosssheetReferenceTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        AddCrosssheetReferenceRequest addCrosssheetReferenceRequest = null;
-        AddCrosssheetReference200Response response = api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest);
+        AddCrosssheetReferenceRequest addCrosssheetReferenceRequest = new AddCrosssheetReferenceRequest();
+        // CrossSheetReferenceRequestWithColumnAndRowIds
+        // CrossSheetReferenceRequestWithColumnIds
+        // CrossSheetReferenceRequestWithRowIds
+        var response = api.addCrosssheetReference(sheetId, addCrosssheetReferenceRequest, Constants.noContentType);
         assertThat(response).isNotNull();
 
         log.info("{}", response);

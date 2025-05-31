@@ -4,6 +4,7 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ServerInfoApi;
 import com.ronreynolds.smartsheet.model.Currency;
 import com.ronreynolds.smartsheet.model.FontFamily;
+import com.ronreynolds.smartsheet.model.FontFamilyTrait;
 import com.ronreynolds.smartsheet.model.FormatTables;
 import com.ronreynolds.smartsheet.model.ServerInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -55,7 +56,7 @@ public class ServerInfoApiTest {
                 .allMatch(onlyDigits);
         assertThat(formats.getDefaults()).isNotBlank();
         assertThat(formats.getFontFamily()).isNotEmpty()
-                .contains(FontFamily.builder().name("Arial").traits(List.of(FontFamily.TraitsEnum.SANS_SERIF)).build());
+                .contains(FontFamily.builder().name("Arial").traits(List.of(FontFamilyTrait.SANS_SERIF)).build());
         assertThat(formats.getFontSize()).isNotEmpty()
                 .anyMatch(onlyDigits);
         assertThat(formats.getHorizontalAlign()).isNotEmpty()

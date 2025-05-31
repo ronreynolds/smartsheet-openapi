@@ -2,19 +2,15 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CommentsApi;
-import com.ronreynolds.smartsheet.model.Comment;
-import com.ronreynolds.smartsheet.model.CommentDelete200Response;
-import com.ronreynolds.smartsheet.model.CommentEdit200Response;
-import com.ronreynolds.smartsheet.model.CommentText;
-import com.ronreynolds.smartsheet.model.CommentsCreate200Response;
+import com.ronreynolds.smartsheet.api.util.Constants;
+import com.ronreynolds.smartsheet.it.TestData.CommentData;
+import com.ronreynolds.smartsheet.it.TestData.SheetData;
+import com.ronreynolds.smartsheet.model.CommentCreationRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-
-import com.ronreynolds.smartsheet.it.TestData.CommentData;
-import com.ronreynolds.smartsheet.it.TestData.SheetData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +36,7 @@ public class CommentsApiTest {
     public void commentDeleteTest() throws ApiException {
         Long sheetId = SheetData.id;
         Long commentId = null;
-        CommentDelete200Response response = api.commentDelete(sheetId, commentId);
+        var response = api.commentDelete(sheetId, commentId);
         log.info("{}", response);
         assertThat(response).isNotNull();
 
@@ -58,8 +54,8 @@ public class CommentsApiTest {
     @Disabled
     public void commentEditTest() throws ApiException {
         Long commentId = null;
-        CommentText commentText = CommentText.builder().text("new comment").build();
-        CommentEdit200Response response = api.commentEdit(SheetData.id, commentId, commentText);
+        CommentCreationRequest commentText = CommentCreationRequest.builder().text("new comment").build();
+        var response = api.commentEdit(SheetData.id, commentId, Constants.noContentType, commentText);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -93,10 +89,10 @@ public class CommentsApiTest {
         Long sheetId = SheetData.id;
         Long discussionId = null;
         String contentType = null;
-        CommentText commentText = CommentText.builder()
+        CommentCreationRequest commentText = CommentCreationRequest.builder()
                 .text("this is a test comment")
                 .build();
-        CommentsCreate200Response response = api.commentsCreate(sheetId, discussionId, contentType, commentText);
+        var response = api.commentsCreate(sheetId, discussionId, contentType, commentText);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

@@ -4,8 +4,9 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.FoldersApi;
 import com.ronreynolds.smartsheet.api.HomeApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
-import com.ronreynolds.smartsheet.model.FolderBrief;
-import com.ronreynolds.smartsheet.model.FolderInclude;
+import com.ronreynolds.smartsheet.api.util.Constants;
+import com.ronreynolds.smartsheet.model.Folder;
+import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
@@ -31,13 +32,12 @@ public class HomeApiTest {
      *
      * @throws ApiException if the Api call fails
      */
-//    @Disabled("400 from server; 'sights' was of unexpected type; i.e., openapi-spec bug")
     @Test
     void createHomeFolderTest() throws ApiException {
         String newFolderName = "test folder " + System.currentTimeMillis();
         ApiClients.setLogRequest(true);
-        FolderBrief newFolder = FolderBrief.builder().name(newFolderName).build();
-        var response = api.createHomeFolder(newFolder);
+        Folder newFolder = Folder.builder().name(newFolderName).build();
+        var response = api.createHomeFolder(newFolder, Constants.noContentType);
         assertThat(response).satisfies(TestData::successfulResult);
 
         // the response folder is quite minimal (id, name, permalink)
@@ -58,6 +58,8 @@ public class HomeApiTest {
         });
         var deleteResult = new FoldersApi().deleteFolder(response.getResult().getId());
         log.info("{}", deleteResult);
+        assertThat(deleteResult).isNotNull();
+        // TODO more validation
     }
 
     /**
@@ -76,8 +78,8 @@ public class HomeApiTest {
         var response = api.homeListFolders(includeAll, page, pageSize);
 
         // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
     }
 
     /**
@@ -90,11 +92,11 @@ public class HomeApiTest {
      */
     @Test
     void listHomeContentsTest() throws ApiException {
-        List<FolderInclude> include = null;
+        List<FolderWorkspaceInclude> include = null;
         var response = api.listHomeContents(include);
 
         // TODO: test validations
+        log.info("{}", response);
         assertThat(response).isNotNull();
-        System.out.println(response);
     }
 }

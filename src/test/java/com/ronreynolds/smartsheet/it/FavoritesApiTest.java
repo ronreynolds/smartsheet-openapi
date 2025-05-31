@@ -2,15 +2,14 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.FavoritesApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AddFavorite200Response;
 import com.ronreynolds.smartsheet.model.Favorite;
 import com.ronreynolds.smartsheet.model.FavoriteInclude;
 import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetFavorites200Response;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -50,7 +49,7 @@ public class FavoritesApiTest {
                 Favorite.builder().objectId(TestData.FolderData.id).type(FavoriteType.FOLDER).build()
         );
         String xSmarScActorId = null;
-        AddFavorite200Response response = api.addFavorite(newFavorites, xSmarScActorId);
+        AddFavorite200Response response = api.addFavorite(newFavorites, xSmarScActorId, Constants.noContentType);
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::successfulResult);
         assertThat(response.getResult()).satisfies(result -> {

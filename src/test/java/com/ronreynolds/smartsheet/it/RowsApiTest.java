@@ -2,23 +2,22 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.RowsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.CopyOrMoveRowDirective;
 import com.ronreynolds.smartsheet.model.CopyOrMoveRowResult;
 import com.ronreynolds.smartsheet.model.CopyRowsInclude;
 import com.ronreynolds.smartsheet.model.DeleteRows200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
-import com.ronreynolds.smartsheet.model.GetRowInclude;
 import com.ronreynolds.smartsheet.model.MoveRowsInclude;
 import com.ronreynolds.smartsheet.model.MultiRowEmail;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.Row;
-import com.ronreynolds.smartsheet.model.RowGet200Response;
-import com.ronreynolds.smartsheet.model.RowsAddToSheet200Response;
-import com.ronreynolds.smartsheet.model.RowsSortRequest;
+import com.ronreynolds.smartsheet.model.RowInclude;
 import com.ronreynolds.smartsheet.model.Sheet;
 import com.ronreynolds.smartsheet.model.SheetExclude;
-import com.ronreynolds.smartsheet.model.UpdateRows200Response;
+import com.ronreynolds.smartsheet.model.SortCriterion;
+import com.ronreynolds.smartsheet.model.SortDirection;
+import com.ronreynolds.smartsheet.model.SortSpecifier;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -50,12 +49,13 @@ public class RowsApiTest {
      */
     @Test
     public void copyRowsTest() throws ApiException {
-        Long sheetId = null;
-        
+        Long sheetId = TestData.SheetData.id;
+
         List<CopyRowsInclude> include = null;
         Boolean ignoreRowsNotFound = null;
         CopyOrMoveRowDirective copyOrMoveRowDirective = null;
-        CopyOrMoveRowResult response = api.copyRows(sheetId, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        CopyOrMoveRowResult response = api.copyRows(sheetId, Constants.noContentType, include, ignoreRowsNotFound,
+                copyOrMoveRowDirective);
         log.info("{}", response);
         assertThat(response).isNotNull();
 
@@ -71,9 +71,9 @@ public class RowsApiTest {
      */
     @Test
     public void deleteRowsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         List<Long> ids = null;
-        Boolean ignoreRowsNotFound = null;
+        Boolean ignoreRowsNotFound = true;
         DeleteRows200Response response = api.deleteRows(sheetId, ids, ignoreRowsNotFound);
 
         log.info("{}", response);
@@ -92,10 +92,10 @@ public class RowsApiTest {
     @Test
     public void moveRowsTest() throws ApiException {
         Long sheetId = null;
-        MoveRowsInclude include = null;
+        List<MoveRowsInclude> include = null;
         Boolean ignoreRowsNotFound = null;
         CopyOrMoveRowDirective copyOrMoveRowDirective = null;
-        CopyOrMoveRowResult response = api.moveRows(sheetId, include, ignoreRowsNotFound, copyOrMoveRowDirective);
+        var response = api.moveRows(sheetId, Constants.noContentType, include, ignoreRowsNotFound, copyOrMoveRowDirective);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -115,10 +115,10 @@ public class RowsApiTest {
         Long sheetId = null;
         Long rowId = null;
         Integer accessApiLevel = null;
-        List<GetRowInclude> include = null;
+        List<RowInclude> include = null;
         List<SheetExclude> exclude = null;
         CompatibilityLevel level = null;
-        RowGet200Response response = api.rowGet(sheetId, rowId, accessApiLevel, include, exclude, level);
+        var response = api.rowGet(sheetId, rowId, accessApiLevel, include, exclude, level);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -143,11 +143,12 @@ public class RowsApiTest {
     public void rowsAddToSheetTest() throws ApiException {
         Long sheetId = null;
         Integer accessApiLevel = null;
-        
+
         Boolean allowPartialSuccess = null;
         Boolean overrideValidation = null;
         List<Row> row = null;
-        RowsAddToSheet200Response response = api.rowsAddToSheet(sheetId, accessApiLevel, allowPartialSuccess, overrideValidation, row);
+        var response = api.rowsAddToSheet(sheetId, accessApiLevel, Constants.noContentType, allowPartialSuccess,
+                overrideValidation, row);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -164,9 +165,11 @@ public class RowsApiTest {
      */
     @Test
     public void rowsSendTest() throws ApiException {
-        Long sheetId = null;
-        MultiRowEmail multiRowEmail = null;
-        GenericResult response = api.rowsSend(sheetId, multiRowEmail);
+        Long sheetId = TestData.SheetData.id;
+        MultiRowEmail multiRowEmail = MultiRowEmail.builder()
+                // TODO
+                .build();
+        GenericResult response = api.rowsSend(sheetId, Constants.noContentType, multiRowEmail);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -185,8 +188,12 @@ public class RowsApiTest {
     public void rowsSortTest() throws ApiException {
         Long sheetId = null;
         String includeAmpersandExclude = null;
-        RowsSortRequest rowsSortRequest = null;
-        Sheet response = api.rowsSort(sheetId, includeAmpersandExclude, rowsSortRequest);
+        SortSpecifier sortSpecifier = SortSpecifier.builder()
+                .sortCriteria(List.of(SortCriterion.builder()
+                        .direction(SortDirection.ASCENDING)
+                        // TODO
+                        .build())).build();
+        Sheet response = api.rowsSort(sheetId, Constants.noContentType, includeAmpersandExclude, sortSpecifier);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -207,13 +214,14 @@ public class RowsApiTest {
      */
     @Test
     public void updateRowsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
-        
+
         Boolean allowPartialSuccess = null;
         Boolean overrideValidation = null;
         List<Row> row = null;
-        UpdateRows200Response response = api.updateRows(sheetId, accessApiLevel, allowPartialSuccess, overrideValidation, row);
+        var response = api.updateRows(sheetId, accessApiLevel, Constants.noContentType, allowPartialSuccess, overrideValidation,
+                row);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

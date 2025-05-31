@@ -2,7 +2,6 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.UsersApi;
-import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.api.util.Converters;
 import com.ronreynolds.smartsheet.it.TestData.UserData;
 import com.ronreynolds.smartsheet.model.AddUser200Response;
@@ -10,15 +9,10 @@ import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetUserInclude;
 import com.ronreynolds.smartsheet.model.ListUsers200Response;
-import com.ronreynolds.smartsheet.model.RemoveUser200Response;
-import com.ronreynolds.smartsheet.model.RemoveUserRequest;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.UpdateUser200Response;
 import com.ronreynolds.smartsheet.model.UpdateUserProfileImage200Response;
-import com.ronreynolds.smartsheet.model.UpdateUserRequest;
 import com.ronreynolds.smartsheet.model.User;
 import com.ronreynolds.smartsheet.model.UserProfile;
-import com.ronreynolds.smartsheet.model.UserProfileImageResponse;
 import com.ronreynolds.smartsheet.model.UserUpdate;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterAll;
@@ -60,7 +54,7 @@ public class UsersApiTest {
     @Order(1)   // first test
     public void addUserTest() throws ApiException {
         Boolean sendEmail = false;
-        String email = "test-user-" + System.currentTimeMillis() +"@example.com";
+        String email = "test-user-" + System.currentTimeMillis() + "@example.com";
         User user = User.builder()
                 .admin(false)
                 .email(email)

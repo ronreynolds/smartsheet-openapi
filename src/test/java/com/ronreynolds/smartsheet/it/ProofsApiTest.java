@@ -2,23 +2,16 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ProofsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
-import com.ronreynolds.smartsheet.model.CommentBrief;
+import com.ronreynolds.smartsheet.model.CommentRequest;
+import com.ronreynolds.smartsheet.model.DiscussionCreationRequest;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
-import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.Proof;
+import com.ronreynolds.smartsheet.model.ProofInclude;
 import com.ronreynolds.smartsheet.model.ProofRequestBody;
-import com.ronreynolds.smartsheet.model.ProofsCreate200Response;
-import com.ronreynolds.smartsheet.model.ProofsCreateProofRequests200Response;
-import com.ronreynolds.smartsheet.model.ProofsCreateVersion200Response;
-import com.ronreynolds.smartsheet.model.ProofsGetAllProofs200Response;
-import com.ronreynolds.smartsheet.model.ProofsGetVersions200Response;
-import com.ronreynolds.smartsheet.model.ProofsListAttachments200Response;
-import com.ronreynolds.smartsheet.model.ProofsListDiscussions200Response;
-import com.ronreynolds.smartsheet.model.ProofsListRequestActions200Response;
-import com.ronreynolds.smartsheet.model.ProofsUpdateRequest;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
+import com.ronreynolds.smartsheet.model.UpdateProofStatusRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -48,11 +41,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsAttachToProofTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response = api.proofsAttachToProof(sheetId, proofId, contentType, body);
+        AttachmentsAttachToSheet200Response response = api.proofsAttachToProof(sheetId, proofId, Constants.noContentType, body);
         log.info("{}", response);
         assertThat(response).isNotNull();
 
@@ -68,11 +60,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsCreateTest() throws ApiException {
-        Long sheetId = null;
-        Long rowId = null;
-        String contentType = null;
+        Long sheetId = TestData.SheetData.id;
+        Long rowId = TestData.RowData.id;
         File body = null;
-        ProofsCreate200Response response = api.proofsCreate(sheetId, rowId, contentType, body);
+        var response = api.proofsCreate(sheetId, rowId, Constants.noContentType, body);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -89,11 +80,12 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsCreateDiscussionTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        String contentType = null;
-        CommentBrief commentLite = null;
-        DiscussionsCreate200Response response = api.proofsCreateDiscussion(sheetId, proofId, contentType, commentLite);
+        DiscussionCreationRequest request = DiscussionCreationRequest.builder()
+                .comment(CommentRequest.builder().text("let's creat a discussion!").build())
+                .build();
+        var response = api.proofsCreateDiscussion(sheetId, proofId, Constants.noContentType, request);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -110,10 +102,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsCreateProofRequestsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
         ProofRequestBody proofRequestBody = null;
-        ProofsCreateProofRequests200Response response = api.proofsCreateProofRequests(sheetId, proofId, proofRequestBody);
+        var response = api.proofsCreateProofRequests(sheetId, proofId, Constants.noContentType, proofRequestBody);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -130,11 +122,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsCreateVersionTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        String contentType = null;
         File body = null;
-        ProofsCreateVersion200Response response = api.proofsCreateVersion(sheetId, proofId, contentType, body);
+        var response = api.proofsCreateVersion(sheetId, proofId, Constants.noContentType, body);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -151,7 +142,7 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsDeleteTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
         GenericResult response = api.proofsDelete(sheetId, proofId);
 
@@ -170,7 +161,7 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsDeleteProofRequestsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
         GenericResult response = api.proofsDeleteProofRequests(sheetId, proofId);
 
@@ -189,7 +180,7 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsDeleteVersionTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
         GenericResult response = api.proofsDeleteVersion(sheetId, proofId);
 
@@ -209,9 +200,9 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsGetTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        List<DiscussionInclude> include = null;
+        List<ProofInclude> include = null;
         Proof response = api.proofsGet(sheetId, proofId, include);
 
         log.info("{}", response);
@@ -229,11 +220,9 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsGetAllProofsTest() throws ApiException {
-        Long sheetId = null;
-        Integer page = null;
-        Integer pageSize = null;
-        Boolean includeAll = null;
-        ProofsGetAllProofs200Response response = api.proofsGetAllProofs(sheetId, page, pageSize, includeAll);
+        Long sheetId = TestData.SheetData.id;
+        Boolean includeAll = true;
+        var response = api.proofsGetAllProofs(sheetId, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -250,12 +239,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsGetVersionsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        Integer page = null;
-        Integer pageSize = null;
-        Boolean includeAll = null;
-        ProofsGetVersions200Response response = api.proofsGetVersions(sheetId, proofId, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        var response = api.proofsGetVersions(sheetId, proofId, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -272,12 +259,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsListAttachmentsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        Integer page = null;
-        Integer pageSize = null;
-        Boolean includeAll = null;
-        ProofsListAttachments200Response response = api.proofsListAttachments(sheetId, proofId, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        var response = api.proofsListAttachments(sheetId, proofId, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -294,13 +279,11 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsListDiscussionsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
         List<DiscussionInclude> include = null;
-        Integer page = null;
-        Integer pageSize = null;
-        Boolean includeAll = null;
-        ProofsListDiscussions200Response response = api.proofsListDiscussions(sheetId, proofId, include, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        var response = api.proofsListDiscussions(sheetId, proofId, include, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -317,12 +300,10 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsListRequestActionsTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        Integer page = null;
-        Integer pageSize = null;
-        Boolean includeAll = null;
-        ProofsListRequestActions200Response response = api.proofsListRequestActions(sheetId, proofId, page, pageSize, includeAll);
+        Boolean includeAll = true;
+        var response = api.proofsListRequestActions(sheetId, proofId, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -339,9 +320,11 @@ public class ProofsApiTest {
      */
     @Test
     public void proofsUpdateTest() throws ApiException {
-        Long sheetId = null;
+        Long sheetId = TestData.SheetData.id;
         Long proofId = TestData.ProofData.id;
-        ProofsUpdateRequest proofsUpdateRequest = null;
+        UpdateProofStatusRequest proofsUpdateRequest = UpdateProofStatusRequest.builder()
+                .isCompleted(true)
+                .build();
         Proof response = api.proofsUpdate(sheetId, proofId, proofsUpdateRequest);
 
         log.info("{}", response);

@@ -2,17 +2,15 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ReportsApi;
-import com.ronreynolds.smartsheet.model.CompatibilityLevel;
-import com.ronreynolds.smartsheet.model.GetReportExclude;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.GetReports200Response;
 import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.Report;
+import com.ronreynolds.smartsheet.model.ReportExclude;
 import com.ronreynolds.smartsheet.model.ReportInclude;
 import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
-import com.ronreynolds.smartsheet.model.SetReportPublish200Response;
 import com.ronreynolds.smartsheet.model.Share;
-import com.ronreynolds.smartsheet.model.ShareReport200Response;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.SheetEmail;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
@@ -70,11 +68,11 @@ public class ReportsApiTest {
         String accept = null;
         Integer accessApiLevel = null;
         List<ReportInclude> include = null;
-        List<GetReportExclude> exclude = null;
+        List<ReportExclude> exclude = null;
         Integer pageSize = null;
         Integer page = null;
-        CompatibilityLevel level = null;
-        Report response = api.getReport(reportId, accept, accessApiLevel, include, exclude, pageSize, page, level);
+        Report response = api.getReport(reportId, accept, accessApiLevel, include, exclude, pageSize, page,
+                Constants.defaultLevel);
 
 //        log.info("{}", response);
         assertThat(response).isNotNull().satisfies(TestData.ReportData::assertDeepEquals);
@@ -148,7 +146,7 @@ public class ReportsApiTest {
     public void sendReportViaEmailTest() throws ApiException {
         Long reportId = TestData.ReportData.id;
         SheetEmail sheetEmail = SheetEmail.builder().build();
-        Result response = api.sendReportViaEmail(reportId, sheetEmail);
+        Result response = api.sendReportViaEmail(reportId, Constants.noContentType, sheetEmail);
 
         log.info("{}", response);
         // TODO: test validations
@@ -167,7 +165,7 @@ public class ReportsApiTest {
     public void setReportPublishTest() throws ApiException {
         Long reportId = TestData.ReportData.id;
         ReportPublish reportPublish = ReportPublish.builder().build();
-        SetReportPublish200Response response = api.setReportPublish(reportId, reportPublish);
+        var response = api.setReportPublish(reportId, Constants.noContentType, reportPublish);
 
         log.info("{}", response);
         // TODO: test validations
@@ -187,7 +185,7 @@ public class ReportsApiTest {
         Long reportId = TestData.ReportData.id;
         Boolean sendEmail = null;
         List<Share> share = null;
-        ShareReport200Response response = api.shareReport(reportId, sendEmail, share);
+        var response = api.shareReport(reportId, sendEmail, share);
 
         log.info("{}", response);
         // TODO: test validations
@@ -228,7 +226,8 @@ public class ReportsApiTest {
         String shareId = null;
         Integer accessApiLevel = null;
         UpdateReportShareRequest updateReportShareRequest = null;
-        UpdateReportShare200Response response = api.updateReportShare(reportId, shareId, accessApiLevel, updateReportShareRequest);
+        UpdateReportShare200Response response = api.updateReportShare(reportId, shareId, accessApiLevel,
+                updateReportShareRequest);
 
         log.info("{}", response);
         // TODO: test validations

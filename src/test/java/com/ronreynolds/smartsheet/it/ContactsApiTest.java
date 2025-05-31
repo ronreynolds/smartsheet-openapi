@@ -33,7 +33,7 @@ public class ContactsApiTest {
     @Test
     public void getContactTest() throws ApiException {
         String contactId = TestData.ContactData.contacts.iterator().next().getId();
-        List<GetContactInclude> include = null;
+        List<ContactInclude> include = null;
         Contact response = api.getContact(contactId, include);
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData.ContactData::assertFirstContact);

@@ -3,10 +3,10 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CellImagesApi;
 import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.api.util.Files;
 import com.ronreynolds.smartsheet.model.AddImageToCell200Response;
 import com.ronreynolds.smartsheet.model.ImageUrl;
-import com.ronreynolds.smartsheet.model.ListImageUrls200Response;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
 import java.io.File;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,7 +72,7 @@ public class CellImagesApiTest {
         List<ImageUrl> imageUrl = TestData.ImageData.idSet.stream()
                 .map(id -> ImageUrl.builder().imageId(id).build())
                 .collect(Collectors.toList());
-        ListImageUrls200Response response = api.listImageUrls(imageUrl);
+        var response = api.listImageUrls(Constants.noContentType, imageUrl);
 
         log.info("{}", response);
 

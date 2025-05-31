@@ -5,6 +5,8 @@ import com.ronreynolds.smartsheet.api.SheetsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.ContainerDestination;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForCopy;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForMove;
 import com.ronreynolds.smartsheet.model.CopyFolderInclude;
 import com.ronreynolds.smartsheet.model.CopySheet200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolder200Response;
@@ -18,22 +20,30 @@ import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
 import com.ronreynolds.smartsheet.model.ListSheetInclude;
 import com.ronreynolds.smartsheet.model.MoveSheetRequest;
 import com.ronreynolds.smartsheet.model.PaperSize;
+import com.ronreynolds.smartsheet.model.Recipient;
+import com.ronreynolds.smartsheet.model.RecipientIndividual;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSheetPublish200Response;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.Sheet;
+import com.ronreynolds.smartsheet.model.SheetCopyExclude;
+import com.ronreynolds.smartsheet.model.SheetCopyInclude;
 import com.ronreynolds.smartsheet.model.SheetEmail;
 import com.ronreynolds.smartsheet.model.SheetEmailFormat;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetFromTemplateInclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
 import com.ronreynolds.smartsheet.model.SheetPublish;
+import com.ronreynolds.smartsheet.model.SheetPublishRequest;
 import com.ronreynolds.smartsheet.model.SheetPublishSettings;
+import com.ronreynolds.smartsheet.model.SheetTemplateInclude;
 import com.ronreynolds.smartsheet.model.SheetVersion;
+import com.ronreynolds.smartsheet.model.SourceInclude;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
+import com.ronreynolds.smartsheet.model.UpdateSheet;
 import com.ronreynolds.smartsheet.model.UpdateSheet200Response;
 import com.ronreynolds.smartsheet.model.UpdateSheetRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -68,10 +78,10 @@ public class SheetsApiTest {
     @Test
     @Disabled("need test data")
     public void copySheetTest() throws ApiException {
-        ContainerDestination containerDestination = null;
-        List<CopyFolderInclude> include = Constants.allOf(CopyFolderInclude.class);
-        FolderCopyExclude exclude = null;
-        CopySheet200Response response = api.copySheet(TestData.SheetData.id, containerDestination, include, exclude);
+        ContainerDestinationForCopy containerDestination = null;
+        List<SheetCopyInclude> include = Constants.allOf(SheetCopyInclude.class);
+        SheetCopyExclude exclude = null;
+        var response = api.copySheet(TestData.SheetData.id, containerDestination, Constants.noContentType, include, exclude);
 
         log.info("{}", response);
         // TODO: test validations
@@ -90,8 +100,8 @@ public class SheetsApiTest {
     public void createSheetInFolderTest() throws ApiException {
         Long folderId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
-        List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response = api.createSheetInFolder(folderId, createSheetInFolderRequest, include);
+        List<SheetTemplateInclude> include = null;
+        var response = api.createSheetInFolder(folderId, createSheetInFolderRequest, Constants.noContentType, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -111,8 +121,8 @@ public class SheetsApiTest {
     public void createSheetInSheetsFolderTest() throws ApiException {
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
-        List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response = api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, include);
+        List<SheetTemplateInclude> include = null;
+        var response = api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, Constants.noContentType, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -133,8 +143,8 @@ public class SheetsApiTest {
         Long workspaceId = null;
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
-        List<SheetFromTemplateInclude> include = null;
-        CreateSheetInFolder200Response response = api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, include);
+        List<SheetTemplateInclude> include = null;
+        var response = api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, Constants.noContentType, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -155,7 +165,7 @@ public class SheetsApiTest {
         assertThat(sheet).isNotNull();
 //        sheet = api.createSheetInFolder(TestData.FolderData.id, ) - need to work out method args
         Long sheetId = sheet.getId();
-        DeleteSheet200Response response = api.deleteSheet(sheetId);
+        var response = api.deleteSheet(sheetId);
 
         log.info("{}", response);
         // TODO: test validations
@@ -205,7 +215,7 @@ public class SheetsApiTest {
         List<Long> rowIds = null;
         List<Integer> rowNumbers = null;
         OffsetDateTime rowsModifiedSince = null;
-        Sheet response =
+        var response =
                 api.getSheet(sheetId, accept, accessApiLevel, include, exclude, columnIds, filterId, ifVersionAfter, level,
                         pageSize, page, paperSize, rowIds, rowNumbers, rowsModifiedSince);
 
@@ -312,7 +322,7 @@ public class SheetsApiTest {
     @Test
     public void listSheetsTest() throws ApiException {
         Integer accessApiLevel = null;
-        List<ListSheetInclude> include = List.of(ListSheetInclude.values());
+        List<SourceInclude> include = List.of(SourceInclude.values());
         Boolean includeAll = true;
         OffsetDateTime modifiedSince = null;
         Boolean numericDates = null;
@@ -338,11 +348,12 @@ public class SheetsApiTest {
     @Disabled("need test data")
     public void moveSheetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        MoveSheetRequest moveSheetRequest = MoveSheetRequest.builder()
+        ContainerDestinationForMove moveSheetRequest = ContainerDestinationForMove.builder()
+                // TODO
 //                .destinationId()
 //                .destinationType()
                 .build();
-        CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest);
+        CopySheet200Response response = api.moveSheet(sheetId, moveSheetRequest, Constants.noContentType);
 
         log.info("{}", response);
         // TODO: test validations
@@ -360,7 +371,7 @@ public class SheetsApiTest {
     @Disabled("need test data")
     public void setSheetPublishTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        SheetPublishSettings sheetPublishSettings = SheetPublishSettings.builder()
+        SheetPublishRequest sheetPublishSettings = SheetPublishRequest.builder()
 //                .icalEnabled()
 //                .readOnlyFullAccessibleBy()
 //                .readOnlyFullDefaultView()
@@ -372,7 +383,7 @@ public class SheetsApiTest {
 //                .readWriteEnabled()
 //                .readWriteAccessibleBy()
                 .build();
-        SetSheetPublish200Response response = api.setSheetPublish(sheetId, sheetPublishSettings);
+        SetSheetPublish200Response response = api.setSheetPublish(sheetId, Constants.noContentType, sheetPublishSettings);
 
         log.info("{}", response);
         // TODO: test validations
@@ -429,17 +440,17 @@ public class SheetsApiTest {
     @Disabled("totally works - just don't want the spam :)")
     public void sheetSendTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        List<EmailOrGroupId> emailOrGroupIds = Stream.of("user@example.com")
+        List<Recipient> sendTo = Stream.of("user@example.com")
                 // EmailOrGroupId is a one-of around 2 types so we create the proper value type then wrap it in the one-of
-                .map(email -> new EmailOrGroupId(EmailAddress.builder().email(email).build()))
+                .map(email -> new Recipient(RecipientIndividual.builder().email(email).build()))
                 .collect(Collectors.toList());
         SheetEmail sheetEmail = SheetEmail.builder()
-                .sendTo(emailOrGroupIds)
+                .sendTo(sendTo)
                 .format(SheetEmailFormat.PDF)
                 .message("yo!  here's some sheet!")
                 .ccMe(true)
                 .build();
-        GenericResult response = api.sheetSend(sheetId, sheetEmail);
+        GenericResult response = api.sheetSend(sheetId, Constants.noContentType, sheetEmail);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::successfulResult);
@@ -462,8 +473,8 @@ public class SheetsApiTest {
     public void updateSheetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Integer accessApiLevel = null;
-        UpdateSheetRequest updateSheetRequest = null;
-        UpdateSheet200Response response = api.updateSheet(sheetId, accessApiLevel, updateSheetRequest);
+        UpdateSheet request = null;
+        UpdateSheet200Response response = api.updateSheet(sheetId, accessApiLevel, request);
 
         log.info("{}", response);
         // TODO: test validations

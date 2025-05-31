@@ -3,9 +3,7 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.CellsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
-import com.ronreynolds.smartsheet.model.CellHistoryGet200Response;
 import com.ronreynolds.smartsheet.model.CellHistoryInclude;
-import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,10 +29,8 @@ public class CellsApiTest {
         Long rowId = TestData.RowData.id;
         Long columnId = TestData.ColumnData.ColumnBriefData.PRIMARY.id;
         List<CellHistoryInclude> include = Constants.allOf(CellHistoryInclude.class);
-        Integer pageSize = null;
-        Integer page = null;
-        CompatibilityLevel level = null;
-        CellHistoryGet200Response response = api.cellHistoryGet(sheetId, rowId, columnId, include, pageSize, page, level);
+        var response = api.cellHistoryGet(sheetId, rowId, columnId, include,
+                Constants.noPageSize, Constants.allPages, Constants.defaultLevel);
 
         assertThat(response).satisfies(TestData::pagedResultHasData);
         assertThat(response.getData()).isNotEmpty().anySatisfy(TestData.ColumnData::assertColumnHistory);

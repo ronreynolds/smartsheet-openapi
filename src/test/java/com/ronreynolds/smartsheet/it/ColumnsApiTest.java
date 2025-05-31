@@ -2,14 +2,12 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ColumnsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnObject;
 import com.ronreynolds.smartsheet.model.ColumnUpdateColumn200Response;
 import com.ronreynolds.smartsheet.model.ColumnsAddToSheet200Response;
-import com.ronreynolds.smartsheet.model.ColumnsListOnSheet200Response;
-import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.GenericResult;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -59,8 +57,7 @@ public class ColumnsApiTest {
     public void columnGetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long columnId = TestData.ColumnData.ColumnBriefData.COLUMN6.id;
-        CompatibilityLevel level = null;
-        ColumnBrief response = api.columnGet(sheetId, columnId, level);
+        var response = api.columnGet(sheetId, columnId, Constants.defaultLevel);
 
         log.info("{}", response);
         assertThat(response).satisfies(TestData.ColumnData.ColumnBriefData.COLUMN6::assertMatches);
@@ -123,11 +120,8 @@ public class ColumnsApiTest {
     @Test
     public void columnsListOnSheetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        CompatibilityLevel level = null;
-        Integer page = null;
-        Integer pageSize = null;
         Boolean includeAll = true;
-        ColumnsListOnSheet200Response response = api.columnsListOnSheet(sheetId, level, page, pageSize, includeAll);
+        var response = api.columnsListOnSheet(sheetId, Constants.defaultLevel, Constants.allPages,  Constants.noPageSize, includeAll);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);

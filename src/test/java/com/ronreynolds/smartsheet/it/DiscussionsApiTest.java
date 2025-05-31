@@ -4,7 +4,9 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DiscussionsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CommentBrief;
+import com.ronreynolds.smartsheet.model.CommentRequest;
 import com.ronreynolds.smartsheet.model.Discussion;
+import com.ronreynolds.smartsheet.model.DiscussionCreationRequest;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
 import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
 import com.ronreynolds.smartsheet.model.DiscussionsInclude;
@@ -82,8 +84,10 @@ public class DiscussionsApiTest {
     public void discussionsCreateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         String contentType = null;
-        CommentBrief commentLite = null;
-        DiscussionsCreate200Response response = api.discussionsCreate(sheetId, contentType, commentLite);
+        DiscussionCreationRequest request = DiscussionCreationRequest.builder()
+                .comment(CommentRequest.builder().text("starting comment").build())
+                .build();
+        DiscussionsCreate200Response response = api.discussionsCreate(sheetId, Constants.noContentType, request);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -101,11 +105,9 @@ public class DiscussionsApiTest {
     @Test
     public void discussionsListTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        List<DiscussionsInclude> include = Arrays.asList(DiscussionsInclude.values());
-        Integer page = null;
-        Integer pageSize = null;
+        List<DiscussionInclude> include = Arrays.asList(DiscussionInclude.values());
         Boolean includeAll = true;
-        DiscussionsList200Response response = api.discussionsList(sheetId, include, page, pageSize, includeAll);
+        DiscussionsList200Response response = api.discussionsList(sheetId, include, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -125,9 +127,10 @@ public class DiscussionsApiTest {
     public void rowDiscussionsCreateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
-        String contentType = null;
-        CommentBrief commentLite = null;
-        DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, contentType, commentLite);
+        DiscussionCreationRequest request = DiscussionCreationRequest.builder()
+                .comment(CommentRequest.builder().text("starting row discussion").build())
+                .build();
+        DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, Constants.noContentType, request);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -147,10 +150,8 @@ public class DiscussionsApiTest {
         Long sheetId = TestData.SheetData.id;
         Long rowId = TestData.RowData.id;
         List<DiscussionInclude> include = Constants.allOf(DiscussionInclude.class);
-        Integer page = null;
-        Integer pageSize = null;
         Boolean includeAll = true;
-        DiscussionsList200Response response = api.rowDiscussionsList(sheetId, rowId, include, page, pageSize, includeAll);
+        DiscussionsList200Response response = api.rowDiscussionsList(sheetId, rowId, include, Constants.allPages, Constants.noPageSize, includeAll);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);

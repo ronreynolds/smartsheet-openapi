@@ -1,7 +1,6 @@
 package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
-import com.ronreynolds.smartsheet.api.TokenApi;
 import com.ronreynolds.smartsheet.api.TokensApi;
 import com.ronreynolds.smartsheet.model.GrantType;
 import com.ronreynolds.smartsheet.model.Result;
@@ -37,7 +36,8 @@ public class TokenApiTest {
     public void tokensDeleteTest() throws ApiException {
         Boolean deleteAllForApiClient = null;
         Result response = api.tokensDelete(deleteAllForApiClient);
-
+        log.info("{}", response);
+        assertThat(response).isNotNull();
         // TODO: test validations
     }
 
@@ -58,8 +58,9 @@ public class TokenApiTest {
         String hash = null;
         String refreshToken = null;
         String redirectUrl = null;
-        Token response =
-                api.tokensGetOrRefresh(clientId, grantType, contentType, clientSecret, code, hash, refreshToken, redirectUrl);
+        Token response = api.tokensGetOrRefresh(
+                clientId, grantType, contentType, clientSecret, code, hash, refreshToken, redirectUrl);
+        log.info("{}", response);
         assertThat(response).isNotNull();
 
         // TODO: test validations

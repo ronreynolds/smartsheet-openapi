@@ -2,20 +2,23 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DashboardsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AccessLevel;
-import com.ronreynolds.smartsheet.model.CompatibilityLevel;
-import com.ronreynolds.smartsheet.model.ContainerDestination;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForCopy;
+import com.ronreynolds.smartsheet.model.ContainerDestinationForMove;
 import com.ronreynolds.smartsheet.model.CopySight200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
-import com.ronreynolds.smartsheet.model.GetDashboardInclude;
 import com.ronreynolds.smartsheet.model.ListSights200Response;
 import com.ronreynolds.smartsheet.model.Result;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSightPublishStatus200Response;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.SharingInclude;
 import com.ronreynolds.smartsheet.model.Sight;
+import com.ronreynolds.smartsheet.model.SightInclude;
+import com.ronreynolds.smartsheet.model.SightLevel;
+import com.ronreynolds.smartsheet.model.SightName;
 import com.ronreynolds.smartsheet.model.SightPublish;
+import com.ronreynolds.smartsheet.model.SightPublishAccess;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSight200Response;
@@ -53,8 +56,8 @@ public class DashboardsApiTest {
     @Disabled("need test data")
     public void copySightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        ContainerDestination containerDestination = null;
-        CopySight200Response response = api.copySight(sightId, containerDestination);
+        ContainerDestinationForCopy containerDestination = null;
+        CopySight200Response response = api.copySight(sightId, Constants.noContentType, containerDestination);
         assertThat(response).isNotNull();
 
         log.info("{}", response);
@@ -110,8 +113,8 @@ public class DashboardsApiTest {
     public void getSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Integer accessApiLevel = null;
-        List<GetDashboardInclude> include = null;
-        CompatibilityLevel level = null;
+        List<SightInclude> include = null;
+        SightLevel level = null;
         Boolean numericDates = null;
         Sight response = api.getSight(sightId, accessApiLevel, include, level, numericDates);
 
@@ -136,7 +139,7 @@ public class DashboardsApiTest {
         assertThat(response).isNotNull();
         assertThat(response.getReadOnlyFullUrl()).isNotBlank();
         assertThat(response.getReadOnlyFullEnabled()).isTrue();
-        assertThat(response.getReadOnlyFullAccessibleBy()).isSameAs(SightPublish.ReadOnlyFullAccessibleByEnum.ALL);
+        assertThat(response.getReadOnlyFullAccessibleBy()).isSameAs(SightPublishAccess.ALL);
     }
 
     /**
@@ -197,8 +200,8 @@ public class DashboardsApiTest {
     @Disabled("need test data")
     public void moveSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
-        ContainerDestination containerDestination = null;
-        CopySight200Response response = api.moveSight(sightId, containerDestination);
+        ContainerDestinationForMove containerDestination = null;
+        CopySight200Response response = api.moveSight(sightId, Constants.noContentType, containerDestination);
 
         log.info("{}", response);
         // TODO: test validations
@@ -218,14 +221,14 @@ public class DashboardsApiTest {
         SightPublish sightPublish = SightPublish.builder()
                 .readOnlyFullEnabled(true)
                 .build();
-        SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, sightPublish);
+        SetSightPublishStatus200Response response = api.setSightPublishStatus(sightId, Constants.noContentType, sightPublish);
 
 //        log.info("{}", response);
 
         assertThat(response).satisfies(TestData::successfulResult);
         assertThat(response.getResult()).satisfies(result -> {
             assertThat(result).isNotNull();
-            assertThat(result.getReadOnlyFullAccessibleBy()).isSameAs(SightPublish.ReadOnlyFullAccessibleByEnum.ALL);
+            assertThat(result.getReadOnlyFullAccessibleBy()).isSameAs(SightPublishAccess.ALL);
             assertThat(result.getReadOnlyFullEnabled()).isTrue();
             assertThat(result.getReadOnlyFullUrl()).isNotBlank();
         });
@@ -294,8 +297,10 @@ public class DashboardsApiTest {
     public void updateSightTest() throws ApiException {
         Long sightId = TestData.DashboardData.id;
         Boolean numericDates = null;
-        UpdateSightRequest updateSightRequest = null;
-        UpdateSight200Response response = api.updateSight(sightId, numericDates, updateSightRequest);
+        SightName updateSightRequest = SightName.builder()
+                .name("new dashboard name")
+                .build();
+        UpdateSight200Response response = api.updateSight(sightId, numericDates, Constants.noContentType, updateSightRequest);
 
         log.info("{}", response);
         // TODO: test validations

@@ -1,9 +1,8 @@
 package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
-import com.ronreynolds.smartsheet.api.ImportApi;
-import com.ronreynolds.smartsheet.model.ImportSheetIntoFolder200Response;
-import com.ronreynolds.smartsheet.model.SheetContentType;
+import com.ronreynolds.smartsheet.api.ImportsApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -23,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class ImportApiTest {
 
-    private final ImportApi api = new ImportApi();
+    private final ImportsApi api = new ImportsApi();
 
 
     /**
@@ -39,15 +38,13 @@ public class ImportApiTest {
     @Test
     public void importSheetIntoFolderTest() throws ApiException {
         Long folderId = null;
-        SheetContentType contentType = null;
         String sheetName = null;
         String contentDisposition = null;
         Integer headerRowIndex = null;
         Integer primaryColumnIndex = null;
         File body = null;
-        ImportSheetIntoFolder200Response response =
-                api.importSheetIntoFolder(folderId, contentDisposition, contentType, sheetName, headerRowIndex,
-                        primaryColumnIndex, body);
+        var response = api.importSheetIntoFolder(
+                folderId, Constants.noContentType, sheetName, contentDisposition, headerRowIndex, primaryColumnIndex, body);
         assertThat(response).isNotNull();
 
         log.info("{}", response);
@@ -67,15 +64,13 @@ public class ImportApiTest {
      */
     @Test
     public void importSheetIntoSheetsFolderTest() throws ApiException {
-        SheetContentType contentType = null;
         String sheetName = null;
         String contentDisposition = null;
         Integer headerRowIndex = null;
         Integer primaryColumnIndex = null;
         File body = null;
-        ImportSheetIntoFolder200Response response =
-                api.importSheetIntoSheetsFolder(contentDisposition, contentType, sheetName, headerRowIndex, primaryColumnIndex,
-                        body);
+        var response = api.importSheetIntoSheetsFolder(
+                Constants.noContentType, sheetName, contentDisposition, headerRowIndex, primaryColumnIndex, body);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -95,15 +90,13 @@ public class ImportApiTest {
     @Test
     public void importSheetIntoWorkspaceTest() throws ApiException {
         Long workspaceId = null;
-        SheetContentType contentType = null;
         String sheetName = null;
         String contentDisposition = null;
         Integer headerRowIndex = null;
         Integer primaryColumnIndex = null;
         File body = null;
-        ImportSheetIntoFolder200Response response =
-                api.importSheetIntoWorkspace(workspaceId, contentDisposition, contentType, sheetName, headerRowIndex,
-                        primaryColumnIndex, body);
+        var response = api.importSheetIntoWorkspace(
+                workspaceId, Constants.noContentType, sheetName, contentDisposition, headerRowIndex, primaryColumnIndex, body);
         log.info("{}", response);
         assertThat(response).isNotNull();
         // TODO: test validations
