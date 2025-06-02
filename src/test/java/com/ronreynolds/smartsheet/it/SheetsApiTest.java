@@ -4,26 +4,16 @@ import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.SheetsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CompatibilityLevel;
-import com.ronreynolds.smartsheet.model.ContainerDestination;
 import com.ronreynolds.smartsheet.model.ContainerDestinationForCopy;
 import com.ronreynolds.smartsheet.model.ContainerDestinationForMove;
-import com.ronreynolds.smartsheet.model.CopyFolderInclude;
 import com.ronreynolds.smartsheet.model.CopySheet200Response;
-import com.ronreynolds.smartsheet.model.CreateSheetInFolder200Response;
 import com.ronreynolds.smartsheet.model.CreateSheetInFolderRequest;
-import com.ronreynolds.smartsheet.model.DeleteSheet200Response;
-import com.ronreynolds.smartsheet.model.EmailAddress;
-import com.ronreynolds.smartsheet.model.EmailOrGroupId;
-import com.ronreynolds.smartsheet.model.FolderCopyExclude;
 import com.ronreynolds.smartsheet.model.GenericResult;
 import com.ronreynolds.smartsheet.model.ListOrgSheets200Response;
-import com.ronreynolds.smartsheet.model.ListSheetInclude;
-import com.ronreynolds.smartsheet.model.MoveSheetRequest;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.Recipient;
 import com.ronreynolds.smartsheet.model.RecipientIndividual;
 import com.ronreynolds.smartsheet.model.Result;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import com.ronreynolds.smartsheet.model.SetSheetPublish200Response;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.SharingInclude;
@@ -33,11 +23,9 @@ import com.ronreynolds.smartsheet.model.SheetCopyInclude;
 import com.ronreynolds.smartsheet.model.SheetEmail;
 import com.ronreynolds.smartsheet.model.SheetEmailFormat;
 import com.ronreynolds.smartsheet.model.SheetExclude;
-import com.ronreynolds.smartsheet.model.SheetFromTemplateInclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
 import com.ronreynolds.smartsheet.model.SheetPublish;
 import com.ronreynolds.smartsheet.model.SheetPublishRequest;
-import com.ronreynolds.smartsheet.model.SheetPublishSettings;
 import com.ronreynolds.smartsheet.model.SheetTemplateInclude;
 import com.ronreynolds.smartsheet.model.SheetVersion;
 import com.ronreynolds.smartsheet.model.SourceInclude;
@@ -45,7 +33,6 @@ import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSheet;
 import com.ronreynolds.smartsheet.model.UpdateSheet200Response;
-import com.ronreynolds.smartsheet.model.UpdateSheetRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -122,7 +109,8 @@ public class SheetsApiTest {
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
         List<SheetTemplateInclude> include = null;
-        var response = api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, Constants.noContentType, include);
+        var response = api.createSheetInSheetsFolder(createSheetInFolderRequest, accessApiLevel, Constants.noContentType,
+                include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -144,7 +132,8 @@ public class SheetsApiTest {
         CreateSheetInFolderRequest createSheetInFolderRequest = null;
         Integer accessApiLevel = null;
         List<SheetTemplateInclude> include = null;
-        var response = api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel, Constants.noContentType, include);
+        var response = api.createSheetInWorkspace(workspaceId, createSheetInFolderRequest, accessApiLevel,
+                Constants.noContentType, include);
 
         log.info("{}", response);
         // TODO: test validations
@@ -220,7 +209,8 @@ public class SheetsApiTest {
                         pageSize, page, paperSize, rowIds, rowNumbers, rowsModifiedSince);
 
         log.info("{}", response);
-        assertThat(response).isNotNull().satisfies(TestData.SheetData::assertEquals);
+        assertThat(response).isNotNull();
+        assertThat(response.getSheet()).isNotNull().satisfies(TestData.SheetData::assertEquals);
     }
 
     /**

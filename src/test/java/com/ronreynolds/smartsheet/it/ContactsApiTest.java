@@ -3,10 +3,9 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ContactsApi;
 import com.ronreynolds.smartsheet.model.Contact;
-import com.ronreynolds.smartsheet.model.GetContactInclude;
+import com.ronreynolds.smartsheet.model.ContactInclude;
 import com.ronreynolds.smartsheet.model.ListContacts200Response;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;

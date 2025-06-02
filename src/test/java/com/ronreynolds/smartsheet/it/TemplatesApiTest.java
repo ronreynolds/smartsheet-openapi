@@ -5,6 +5,7 @@ import com.ronreynolds.smartsheet.api.TemplatesApi;
 import com.ronreynolds.smartsheet.model.AccessLevel;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.TemplateGlobalType;
+import com.ronreynolds.smartsheet.model.TemplateLevel;
 import com.ronreynolds.smartsheet.model.TemplateLocale;
 import com.ronreynolds.smartsheet.model.TemplateType;
 import com.ronreynolds.smartsheet.model.TemplatesList200Response;
@@ -57,7 +58,7 @@ public class TemplatesApiTest {
     public void templatesListPublicTest() throws ApiException {
         Integer accessApiLevel = null;
         Boolean includeAll = null;
-        TemplateType level = null;  // 0 = sheet; 1 = all
+        TemplateLevel level = null;  // 0 = sheet; 1 = all
         Integer pageSize = 100; // default page size
         TemplatesList200Response response = api.templatesListPublic(accessApiLevel, includeAll, level, 1, pageSize);
 

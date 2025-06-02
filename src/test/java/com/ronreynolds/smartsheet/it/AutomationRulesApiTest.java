@@ -2,6 +2,7 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.AutomationRulesApi;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.AutomationRule;
 import com.ronreynolds.smartsheet.model.AutomationruleUpdate200Response;
 import com.ronreynolds.smartsheet.model.AutomationrulesList200Response;
@@ -36,7 +37,7 @@ public class AutomationRulesApiTest {
     @Order(4) // last test
     public void automationruleDeleteTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String automationRuleId = TestData.WorkflowData.id;
+        Long automationRuleId = null;   // FIXME
         Result response = api.automationruleDelete(sheetId, automationRuleId);
 
         log.info("{}", response);
@@ -56,7 +57,7 @@ public class AutomationRulesApiTest {
     @Order(1)
     public void automationruleGetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String automationRuleId = TestData.WorkflowData.id;
+        Long automationRuleId = null;   // FIXME
         AutomationRule response = api.automationruleGet(sheetId, automationRuleId);
 
         log.info("{}", response);
@@ -77,12 +78,12 @@ public class AutomationRulesApiTest {
     @Order(2)
     public void automationruleUpdateTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
-        String automationRuleId = TestData.WorkflowData.id;
+        Long automationRuleId = null;   // FIXME
         AutomationRule automationRule = AutomationRule.builder()
                 .name("Test Workflow rename")
                 .enabled(false)
                 .build();
-        AutomationruleUpdate200Response response = api.automationruleUpdate(sheetId, automationRuleId, automationRule);
+        AutomationruleUpdate200Response response = api.automationruleUpdate(sheetId, automationRuleId, Constants.noContentType, automationRule);
 
         log.info("{}", response);
         assertThat(response).isNotNull();

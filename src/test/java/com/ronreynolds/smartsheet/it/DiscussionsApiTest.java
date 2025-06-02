@@ -3,16 +3,11 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.DiscussionsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
-import com.ronreynolds.smartsheet.model.CommentBrief;
 import com.ronreynolds.smartsheet.model.CommentRequest;
 import com.ronreynolds.smartsheet.model.Discussion;
 import com.ronreynolds.smartsheet.model.DiscussionCreationRequest;
 import com.ronreynolds.smartsheet.model.DiscussionInclude;
-import com.ronreynolds.smartsheet.model.DiscussionsCreate200Response;
-import com.ronreynolds.smartsheet.model.DiscussionsInclude;
-import com.ronreynolds.smartsheet.model.DiscussionsList200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -87,7 +82,7 @@ public class DiscussionsApiTest {
         DiscussionCreationRequest request = DiscussionCreationRequest.builder()
                 .comment(CommentRequest.builder().text("starting comment").build())
                 .build();
-        DiscussionsCreate200Response response = api.discussionsCreate(sheetId, Constants.noContentType, request);
+        var response = api.discussionsCreate(sheetId, Constants.noContentType, request);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -107,7 +102,7 @@ public class DiscussionsApiTest {
         Long sheetId = TestData.SheetData.id;
         List<DiscussionInclude> include = Arrays.asList(DiscussionInclude.values());
         Boolean includeAll = true;
-        DiscussionsList200Response response = api.discussionsList(sheetId, include, Constants.allPages, Constants.noPageSize, includeAll);
+        var response = api.discussionsList(sheetId, include, Constants.allPages, Constants.noPageSize, includeAll);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -130,7 +125,7 @@ public class DiscussionsApiTest {
         DiscussionCreationRequest request = DiscussionCreationRequest.builder()
                 .comment(CommentRequest.builder().text("starting row discussion").build())
                 .build();
-        DiscussionsCreate200Response response = api.rowDiscussionsCreate(sheetId, rowId, Constants.noContentType, request);
+        var response = api.rowDiscussionsCreate(sheetId, rowId, Constants.noContentType, request);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -151,7 +146,7 @@ public class DiscussionsApiTest {
         Long rowId = TestData.RowData.id;
         List<DiscussionInclude> include = Constants.allOf(DiscussionInclude.class);
         Boolean includeAll = true;
-        DiscussionsList200Response response = api.rowDiscussionsList(sheetId, rowId, include, Constants.allPages, Constants.noPageSize, includeAll);
+        var response = api.rowDiscussionsList(sheetId, rowId, include, Constants.allPages, Constants.noPageSize, includeAll);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);

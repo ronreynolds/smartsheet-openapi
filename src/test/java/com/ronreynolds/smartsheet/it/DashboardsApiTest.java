@@ -22,7 +22,6 @@ import com.ronreynolds.smartsheet.model.SightPublishAccess;
 import com.ronreynolds.smartsheet.model.UpdateReportShare200Response;
 import com.ronreynolds.smartsheet.model.UpdateReportShareRequest;
 import com.ronreynolds.smartsheet.model.UpdateSight200Response;
-import com.ronreynolds.smartsheet.model.UpdateSightRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;

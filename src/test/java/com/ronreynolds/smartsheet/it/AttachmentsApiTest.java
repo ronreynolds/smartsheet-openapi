@@ -9,11 +9,7 @@ import com.ronreynolds.smartsheet.it.TestData.CommentData;
 import com.ronreynolds.smartsheet.it.TestData.RowData;
 import com.ronreynolds.smartsheet.it.TestData.SheetData;
 import com.ronreynolds.smartsheet.model.Attachment;
-import com.ronreynolds.smartsheet.model.AttachmentsAttachToSheet200Response;
-import com.ronreynolds.smartsheet.model.AttachmentsListOnSheet200Response;
-import com.ronreynolds.smartsheet.model.AttachmentsVersionList200Response;
 import com.ronreynolds.smartsheet.model.GenericResult;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
@@ -74,7 +70,7 @@ public class AttachmentsApiTest {
     public void attachmentsAttachToSheetTest() throws ApiException {
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response = api.attachmentsAttachToSheet(SheetData.id, contentType, body);
+        var response = api.attachmentsAttachToSheet(SheetData.id, contentType, body);
 
         // TODO: test validations
         log.info("{}", response);
@@ -128,7 +124,7 @@ public class AttachmentsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = true;
-        AttachmentsVersionList200Response response = api.attachmentsListOnRow(sheetId, rowId, page, pageSize, includeAll);
+        var response = api.attachmentsListOnRow(sheetId, rowId, page, pageSize, includeAll);
         assertThat(response).isNotNull();
 
         Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
@@ -153,7 +149,7 @@ public class AttachmentsApiTest {
         Integer page = null;
         Integer pageSize = null;
         Boolean includeAll = true;
-        AttachmentsListOnSheet200Response response = api.attachmentsListOnSheet(sheetId, page, pageSize, includeAll);
+        var response = api.attachmentsListOnSheet(sheetId, page, pageSize, includeAll);
         assertThat(response).isNotNull();
 
         Map<Long, Attachment> attachmentMap = attachmentListToMap(response.getData());
@@ -203,7 +199,7 @@ public class AttachmentsApiTest {
         Long attachmentId = TestData.AttachmentData.SheetAttachment.id;
         String contentType = null;
         File body = null;
-        AttachmentsAttachToSheet200Response response = api.attachmentsVersionUpload(sheetId, attachmentId, contentType, body);
+        var response = api.attachmentsVersionUpload(sheetId, attachmentId, contentType, body);
         // TODO: test validations
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -266,7 +262,7 @@ public class AttachmentsApiTest {
         String contentType = null;
         File body = null;
 
-        AttachmentsAttachToSheet200Response response = api.rowAttachmentsAttachFile(sheetId, rowId, contentType, body);
+        var response = api.rowAttachmentsAttachFile(sheetId, rowId, contentType, body);
         // TODO: test validations
         log.info("{}", response);
         assertThat(response).isNotNull();

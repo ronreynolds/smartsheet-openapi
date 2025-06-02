@@ -72,7 +72,7 @@ public class ReportsApiTest {
         Integer pageSize = null;
         Integer page = null;
         Report response = api.getReport(reportId, accept, accessApiLevel, include, exclude, pageSize, page,
-                Constants.defaultLevel);
+                Constants.defaultReportLevel);
 
 //        log.info("{}", response);
         assertThat(response).isNotNull().satisfies(TestData.ReportData::assertDeepEquals);
@@ -103,7 +103,7 @@ public class ReportsApiTest {
     @Test
     public void getReportsTest() throws ApiException {
         OffsetDateTime modifiedSince = null;
-        GetReports200Response response = api.getReports(modifiedSince);
+        var response = api.getReports(modifiedSince);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasData);
@@ -125,7 +125,7 @@ public class ReportsApiTest {
         Boolean includeAll = null;
         Integer page = null;
         Integer pageSize = null;
-        ListReportShares200Response response = api.listReportShares(reportId, sharingInclude, includeAll, page, pageSize);
+        var response = api.listReportShares(reportId, sharingInclude, includeAll, page, pageSize);
 
         log.info("{}", response);
         // TODO: test validations

@@ -3,7 +3,6 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ColumnsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
-import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnObject;
 import com.ronreynolds.smartsheet.model.ColumnUpdateColumn200Response;
 import com.ronreynolds.smartsheet.model.ColumnsAddToSheet200Response;
@@ -102,7 +101,7 @@ public class ColumnsApiTest {
     public void columnsAddToSheetTest() throws ApiException {
         Long sheetId = null;
         ColumnObject columnObject = null;
-        ColumnsAddToSheet200Response response = api.columnsAddToSheet(sheetId, columnObject);
+        ColumnsAddToSheet200Response response = api.columnsAddToSheet(sheetId, Constants.noContentType, columnObject);
 
         log.info("{}", response);
         assertThat(response).isNotNull();
@@ -121,7 +120,8 @@ public class ColumnsApiTest {
     public void columnsListOnSheetTest() throws ApiException {
         Long sheetId = TestData.SheetData.id;
         Boolean includeAll = true;
-        var response = api.columnsListOnSheet(sheetId, Constants.defaultLevel, Constants.allPages,  Constants.noPageSize, includeAll);
+        var response = api.columnsListOnSheet(sheetId, Constants.defaultLevel, Constants.allPages, Constants.noPageSize,
+                includeAll);
 
 //        log.info("{}", response);
         assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);

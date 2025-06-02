@@ -3,51 +3,52 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.api.util.Cells;
 import com.ronreynolds.smartsheet.api.util.DateTimes;
 import com.ronreynolds.smartsheet.model.AccessLevel;
+import com.ronreynolds.smartsheet.model.Account;
 import com.ronreynolds.smartsheet.model.AlternateEmail;
 import com.ronreynolds.smartsheet.model.Attachment;
+import com.ronreynolds.smartsheet.model.AttachmentParentType;
 import com.ronreynolds.smartsheet.model.AttachmentSubType;
-import com.ronreynolds.smartsheet.model.AttachmentType;
-import com.ronreynolds.smartsheet.model.AttachmentTypeTrello;
+import com.ronreynolds.smartsheet.model.AttachmentTypeWithSmartsheet;
+import com.ronreynolds.smartsheet.model.AttachmentTypeWithTrello;
 import com.ronreynolds.smartsheet.model.Cell;
-import com.ronreynolds.smartsheet.model.CellHistoryGet200ResponseAllOfDataInner;
-import com.ronreynolds.smartsheet.model.CellObjectValue;
+import com.ronreynolds.smartsheet.model.CellHistory;
 import com.ronreynolds.smartsheet.model.CellValue;
 import com.ronreynolds.smartsheet.model.Column;
-import com.ronreynolds.smartsheet.model.ColumnBrief;
 import com.ronreynolds.smartsheet.model.ColumnType;
+import com.ronreynolds.smartsheet.model.ColumnVersion;
 import com.ronreynolds.smartsheet.model.Comment;
 import com.ronreynolds.smartsheet.model.Contact;
 import com.ronreynolds.smartsheet.model.Discussion;
+import com.ronreynolds.smartsheet.model.DiscussionParentType;
 import com.ronreynolds.smartsheet.model.Favorite;
 import com.ronreynolds.smartsheet.model.FavoriteType;
 import com.ronreynolds.smartsheet.model.Folder;
 import com.ronreynolds.smartsheet.model.GenericResult;
+import com.ronreynolds.smartsheet.model.GetColumn;
 import com.ronreynolds.smartsheet.model.GetCurrentUser200Response;
 import com.ronreynolds.smartsheet.model.GetWorkspaceFolders200ResponseAllOfDataInner;
+import com.ronreynolds.smartsheet.model.GridListing;
 import com.ronreynolds.smartsheet.model.ImageUrl;
-import com.ronreynolds.smartsheet.model.ListSights200ResponseAllOfDataInner;
-import com.ronreynolds.smartsheet.model.NameAndEmail;
+import com.ronreynolds.smartsheet.model.MiniReport;
+import com.ronreynolds.smartsheet.model.MiniSheet;
+import com.ronreynolds.smartsheet.model.MiniUser;
+import com.ronreynolds.smartsheet.model.ObjectValue;
 import com.ronreynolds.smartsheet.model.Report;
-import com.ronreynolds.smartsheet.model.ReportBrief;
 import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.ResultCode;
 import com.ronreynolds.smartsheet.model.ResultMessage;
-import com.ronreynolds.smartsheet.model.ResultPrefix;
-import com.ronreynolds.smartsheet.model.ResultPrefixCode;
-import com.ronreynolds.smartsheet.model.ResultPrefixMessage;
 import com.ronreynolds.smartsheet.model.Row;
 import com.ronreynolds.smartsheet.model.Share;
 import com.ronreynolds.smartsheet.model.ShareScope;
 import com.ronreynolds.smartsheet.model.ShareType;
 import com.ronreynolds.smartsheet.model.Sheet;
-import com.ronreynolds.smartsheet.model.SheetListingDataInner;
 import com.ronreynolds.smartsheet.model.SheetPublish;
 import com.ronreynolds.smartsheet.model.Sight;
+import com.ronreynolds.smartsheet.model.SightListItem;
 import com.ronreynolds.smartsheet.model.SourceType;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
-import com.ronreynolds.smartsheet.model.UserProfileAccount;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.smartsheet.model.WorkspaceListing;
 import com.ronreynolds.util.properties.ExtProperties;
@@ -92,8 +93,8 @@ public class TestData {
         interface CommentAttachment {
             long id = CommentData.attachmentId;
             long parentId = CommentData.id;
-            Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.COMMENT;
-            AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
+            AttachmentParentType parentType = AttachmentParentType.COMMENT;
+            AttachmentTypeWithTrello attachmentType = AttachmentTypeWithTrello.FILE;
             String mimeType = "image/gif";
             OffsetDateTime createdDate = secrets.getDate("AttachmentData.CommentAttachment.createdDate");
             String name = secrets.get("AttachmentData.CommentAttachment.name");
@@ -119,8 +120,8 @@ public class TestData {
         interface RowAttachment {
             long id = RowData.attachmentId;
             long parentId = RowData.id;
-            Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.ROW;
-            AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
+            AttachmentParentType parentType = AttachmentParentType.ROW;
+            AttachmentTypeWithTrello attachmentType = AttachmentTypeWithTrello.FILE;
             String mimeType = "image/jpeg";
             OffsetDateTime createdDate = secrets.getDate("AttachmentData.RowAttachment.createdDate");
             String name = secrets.get("AttachmentData.RowAttachment.name");
@@ -142,8 +143,8 @@ public class TestData {
         interface SheetAttachment {
             long id = secrets.getLong("AttachmentData.SheetAttachment.id");
             long parentId = SheetData.id;
-            Attachment.ParentTypeEnum parentType = Attachment.ParentTypeEnum.SHEET;
-            AttachmentTypeTrello attachmentType = AttachmentTypeTrello.FILE;
+            AttachmentParentType parentType = AttachmentParentType.SHEET;
+            AttachmentTypeWithTrello attachmentType = AttachmentTypeWithTrello.FILE;
             String mimeType = "image/jpeg";
             OffsetDateTime createdDate = secrets.getDate("AttachmentData.SheetAttachment.createdDate");
             String name = secrets.get("AttachmentData.SheetAttachment.name");
@@ -191,7 +192,7 @@ public class TestData {
                 type = ColumnType.valueOf(secrets.get("ColumnData.ColumnBriefData." + index + ".type"));
             }
 
-            void assertMatches(ColumnBrief column) {
+            void assertMatches(GetColumn column) {
                 assertThat(column).isNotNull();
                 assertThat(column.getIndex()).isEqualTo(ordinal());
                 assertThat(column.getId()).isEqualTo(id);
@@ -218,13 +219,13 @@ public class TestData {
         ColumnBriefData[] columnBriefData = ColumnBriefData.values();
         OffsetDateTime modifiedDate = secrets.getDate("ColumnData.modifiedDate");
 
-        static void assertColumnBriefs(ColumnBrief column) {
+        static void assertColumnBriefs(GetColumn column) {
             assertThat(column).isNotNull();
             int index = assertThat(column.getIndex()).isNotNull().isBetween(0, columnBriefData.length - 1).actual();
             assertThat(column).satisfies(columnBriefData[index]::assertMatches);
         }
 
-        static void assertColumnHistory(CellHistoryGet200ResponseAllOfDataInner history) {
+        static void assertColumnHistory(CellHistory history) {
             assertThat(history).isNotNull();
             assertThat(history.getModifiedAt()).isAfterOrEqualTo(modifiedDate);
             assertThat(history.getModifiedBy()).isEqualTo(UserData.nameAndEmail);
@@ -238,7 +239,7 @@ public class TestData {
             assertThat(history.getImage()).isNull();
             assertThat(history.getLinkInFromCell()).isNull();
             assertThat(history.getLinksOutToCells()).isEmpty();
-            assertThat(history.getObjectValue()).isEqualTo(new CellObjectValue(BigDecimal.valueOf(42.0)));
+            assertThat(history.getObjectValue()).isEqualTo(new ObjectValue(BigDecimal.valueOf(42.0)));
             assertThat(history.getOverrideValidation()).isNull();
             assertThat(history.getStrict()).isNull();
             assertThat(history.getValue()).isEqualTo(new CellValue(BigDecimal.valueOf(42.0)));
@@ -290,11 +291,11 @@ public class TestData {
         List<Comment> comments = null; // FIXME
         List<Attachment> commentAttachments = List.of(); // FIXME
         int commentCount = secrets.getInt("DiscussionData.commentCount");
-        NameAndEmail createdBy = secrets.getObject("DiscussionData.createdBy", TestData::mapToNameAndEmail);
+        MiniUser createdBy = secrets.getObject("DiscussionData.createdBy", TestData::mapToNameAndEmail);
         OffsetDateTime lastCommentedAt = secrets.getDate("DiscussionData.lastCommentedAt");
-        NameAndEmail lastCommentedUser = secrets.getObject("DiscussionData.lastCommentedUser", TestData::mapToNameAndEmail);
+        MiniUser lastCommentedUser = secrets.getObject("DiscussionData.lastCommentedUser", TestData::mapToNameAndEmail);
         Long parentId = secrets.getLong("DiscussionData.parentId");
-        Discussion.ParentTypeEnum parentType = secrets.getUC("DiscussionData.parentType", Discussion.ParentTypeEnum::valueOf);
+        DiscussionParentType parentType = secrets.getUC("DiscussionData.parentType", DiscussionParentType::valueOf);
         Boolean readOnly = secrets.getBool("DiscussionData.readOnly", null);
         String title = secrets.get("DiscussionData.title");
 
@@ -334,12 +335,12 @@ public class TestData {
             assertThat(attachment.getId()).isEqualTo(secrets.getLong(PREFIX + "id"));
             assertThat(attachment.getParentId()).isEqualTo(secrets.getLong(PREFIX + "parentId"));
             assertThat(attachment.getAttachmentType())
-                    .isEqualTo(secrets.getUC(PREFIX + "attachmentType", AttachmentTypeTrello::valueOf));
+                    .isEqualTo(secrets.getUC(PREFIX + "attachmentType", AttachmentTypeWithTrello::valueOf));
             assertThat(attachment.getAttachmentSubType())
                     .isEqualTo(secrets.getUC(PREFIX + "attachmentSubType", AttachmentSubType::valueOf));
             assertThat(attachment.getMimeType()).isEqualTo(secrets.get(PREFIX + "mimeType"));
             assertThat(attachment.getParentType())
-                    .isEqualTo(secrets.getUC(PREFIX + "parentType", Attachment.ParentTypeEnum::valueOf));
+                    .isEqualTo(secrets.getUC(PREFIX + "parentType", AttachmentParentType::valueOf));
             assertThat(attachment.getCreatedAt()).isEqualTo(secrets.getDate(PREFIX + "createdAt"));
             assertThat(attachment.getCreatedBy()).isEqualTo(secrets.getObject(PREFIX + "createdBy", TestData::mapToNameAndEmail));
             assertThat(attachment.getName()).isEqualTo(secrets.get(PREFIX + "name"));
@@ -407,7 +408,7 @@ public class TestData {
             assertThat(share.getCreatedAt()).isEqualTo(shareDate);
             assertThat(share.getModifiedAt()).isAfterOrEqualTo(shareDate);
         }
-        static void assertContains(List<? extends ListSights200ResponseAllOfDataInner> dashboardList) {
+        static void assertContains(List<? extends SightListItem> dashboardList) {
             log.info("{}", dashboardList);
             assertThat(dashboardList).isNotEmpty()
                     .allSatisfy(val -> {
@@ -515,11 +516,11 @@ public class TestData {
         OffsetDateTime modifiedDate = secrets.getDate("ReportData.modifiedDate");
         OffsetDateTime rowCreateDate = secrets.getDate("ReportData.rowCreateDate");
 
-        static void assertContains(List<? extends Report> reports) {
+        static void assertContains(List<? extends GridListing> reports) {
             assertThat(reports).isNotEmpty().anySatisfy(ReportData::assertEquals);
         }
 
-        static void assertEquals(Report report) {
+        static void assertEquals(GridListing report) {
             assertThat(report).isNotNull();
             assertThat(report.getId()).isEqualTo(id);
             assertThat(report.getName()).isEqualTo(name);
@@ -589,7 +590,7 @@ public class TestData {
             assertThat(reportColumn.getTitle()).matches(Set.of("Sheet Name", "Primary")::contains);
             assertThat(reportColumn.getType()).isSameAs(ColumnType.TEXT_NUMBER);
             assertThat(reportColumn.getValidation()).isFalse();
-            assertThat(reportColumn.getVersion()).isSameAs(Column.VersionEnum.NUMBER_0);
+            assertThat(reportColumn.getVersion()).isSameAs(ColumnVersion.NUMBER_0);
             assertThat(reportColumn.getWidth()).isEqualTo(150);
             assertThat(reportColumn.getVirtualId()).matches(virtualColumnIds::contains);
             assertThat(reportColumn.getSheetNameColumn()).matches(ReportData::isNullOrTrue);
@@ -667,7 +668,7 @@ public class TestData {
             assertThat(reportCell.getVirtualColumnId()).matches(virtualColumnIds::contains);
         }
 
-        static void assertReportWorkspace(Workspace reportWorkspace) {
+        static void assertReportWorkspace(WorkspaceListing reportWorkspace) {
             assertThat(reportWorkspace).isNotNull();
             assertThat(reportWorkspace.getId()).isEqualTo(WorkspaceData.id);
             assertThat(reportWorkspace.getName()).isEqualTo(WorkspaceData.name);
@@ -691,7 +692,7 @@ public class TestData {
             assertThat(publish.getReadOnlyFullUrl()).isNull();
         }
 
-        static void assertBrief(ReportBrief brief) {
+        static void assertBrief(MiniReport brief) {
             assertThat(brief).isNotNull();
             assertThat(brief.getId()).isEqualTo(id);
             assertThat(brief.getName()).isEqualTo(name);
@@ -735,9 +736,11 @@ public class TestData {
 
         OffsetDateTime createdDate = secrets.getDate("SheetData.createdDate");
         OffsetDateTime shareDate = secrets.getDate("SheetData.shareDate");
-        Set<AttachmentType> effectiveAttachmentOptions = Set.of(
-                AttachmentType.BOX_COM, AttachmentType.DROPBOX, AttachmentType.EGNYTE, AttachmentType.EVERNOTE,
-                AttachmentType.FILE, AttachmentType.GOOGLE_DRIVE, AttachmentType.LINK, AttachmentType.ONEDRIVE);
+        Set<AttachmentTypeWithSmartsheet> effectiveAttachmentOptions = Set.of(
+                AttachmentTypeWithSmartsheet.BOX_COM, AttachmentTypeWithSmartsheet.DROPBOX, AttachmentTypeWithSmartsheet.EGNYTE,
+                AttachmentTypeWithSmartsheet.EVERNOTE, AttachmentTypeWithSmartsheet.FILE,
+                AttachmentTypeWithSmartsheet.GOOGLE_DRIVE,
+                AttachmentTypeWithSmartsheet.LINK, AttachmentTypeWithSmartsheet.ONEDRIVE);
 
 
         static void assertEquals(Sheet sheet) {
@@ -771,7 +774,7 @@ public class TestData {
             ShareData.assertCommonShare(share, ShareScope.ITEM, shareDate);
         }
 
-        static void assertListingEquals(SheetListingDataInner listing) {
+        static void assertListingEquals(MiniSheet listing) {
             assertThat(listing).isNotNull();
             assertThat(listing.getAccessLevel()).isSameAs(AccessLevel.OWNER);
             assertThat(listing.getCreatedAt()).isEqualTo(createdDate);
@@ -861,7 +864,7 @@ public class TestData {
         boolean isAdmin = true;
         boolean isLicensedSheetCreator = true;
         boolean isGroupAdmin = true;
-        NameAndEmail nameAndEmail = NameAndEmail.builder().email(email).name(name).build();
+        MiniUser nameAndEmail = MiniUser.builder().email(email).name(name).build();
 
         interface AlternateEmailData {
             long id = secrets.getLong("UserData.AlternateEmailData.id");
@@ -872,7 +875,7 @@ public class TestData {
 
         static void assertEquals(GetCurrentUser200Response user) {
             assertThat(user).isNotNull();
-            UserProfileAccount account = assertThat(user.getAccount()).as("account").isNotNull().actual();
+            Account account = assertThat(user.getAccount()).as("account").isNotNull().actual();
             assertThat(account.getId()).as("account-id").isEqualTo(accountId);
             assertThat(account.getName()).as("account-name").isEqualTo(accountName);
             assertThat(user.getEmail()).as("email").isEqualTo(email);
@@ -1003,11 +1006,11 @@ public class TestData {
                 .as("success message").isSameAs(ResultMessage.SUCCESS);
     }
 
-    static NameAndEmail mapToNameAndEmail(Map<String, String> map) {
-        return NameAndEmail.builder()
+    static MiniUser mapToNameAndEmail(Map<String, String> map) {
+        return MiniUser.builder()
                 .email(map.get("email"))
                 .name(map.get("name"))
-                .systemUserType(map.get("systemUserType"))
+//                .systemUserType(map.get("systemUserType"))
                 .build();
     }
 }
