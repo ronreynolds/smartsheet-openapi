@@ -4300,29 +4300,7 @@ paths:
                           values.
                         type: array
                         items:
-                          type: object
-                          properties:
-                            id:
-                              allOf:
-                                - $ref: '#/components/schemas/Int64'
-                              description: The report's unique identifier.
-                              example: 987654321
-                            name:
-                              type: string
-                              description: The report's name.
-                              example: Q2 Earnings
-                            accessLevel:
-                              $ref: '#/components/schemas/AccessLevel'
-                            permalink:
-                              type: string
-                              description: URL to the report in Smartsheet.
-                              example: >-
-                                https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21
-                            isSummaryReport:
-                              type: boolean
-                              description: >-
-                                It is `true` if the report is a sheet summary;
-                                otherwise it is a row report.
+                          $ref: '#/components/schemas/MiniReport'
         default:
           description: Generic Error Payload
           content:
@@ -22267,7 +22245,8 @@ components:
             - $ref: '#/components/schemas/Int64'
           description: The Id of the column that the cell is located in.
         columnType:
-          type: string
+          allOf:
+            - $ref: '#/components/schemas/ColumnType'
           description: >-
             Only returned if the include query string parameter contains
             **columnType**.
@@ -24244,6 +24223,30 @@ components:
       oneOf:
         - $ref: '#/components/schemas/Recipient_Individual'
         - $ref: '#/components/schemas/Recipient_Group'
+    MiniReport:
+      type: object
+      properties:
+        id:
+          allOf:
+            - $ref: '#/components/schemas/Int64'
+          description: The report's unique identifier.
+          example: 987654321
+        name:
+          type: string
+          description: The report's name.
+          example: Q2 Earnings
+        accessLevel:
+          $ref: '#/components/schemas/AccessLevel'
+        permalink:
+          type: string
+          description: URL to the report in Smartsheet.
+          example: >-
+            https://app.smartsheet.com/reports/c8gJxw87cXpRCvCC5PPw6jFhFRrf5r8PxCrxvW21
+        isSummaryReport:
+          type: boolean
+          description: >-
+            It is `true` if the report is a sheet summary;
+            otherwise it is a row report.
     Report:
       allOf:
         - $ref: '#/components/schemas/Sheet'
@@ -24945,9 +24948,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/Int64'
         type:
-          description: |
-            The type of this share. One of the following values: GROUP or USER.
-          type: string
+          $ref: '#/components/schemas/ShareType'
         accessLevel:
           $ref: '#/components/schemas/AccessLevel'
         ccMe:
@@ -24997,6 +24998,13 @@ components:
             the user or group).
           * **WORKSPACE**: a workspace-level share (that is, the workspace that contains the object to which the
             share applies is shared with the user or group).
+    ShareType:
+      type: string
+      enum:
+        - GROUP
+        - USER
+      description: |
+        The type of this share. One of the following values: GROUP or USER.
     SharedSecret:
       type: object
       properties:
@@ -25076,7 +25084,7 @@ components:
             sheet.
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/AttachmentTypeWithSmartsheet'
         favorite:
           description: >-
             (Deprecated) Returned only if the user has marked this sheet as a
@@ -25989,7 +25997,9 @@ components:
           type: boolean
           example: true
         alternateEmails:
-          $ref: '#/components/schemas/AlternateEmail'
+          type: array
+          items:
+            $ref: '#/components/schemas/AlternateEmail'
         company:
           description: User's company.
           type: string
@@ -27574,7 +27584,8 @@ components:
             - $ref: '#/components/schemas/Int64'
           description: The Id of the column that the cell is located in.
         columnType:
-          type: string
+          allOf:
+            - $ref: '#/components/schemas/ColumnType'
           description: >-
             Only returned if the include query string parameter contains
             **columnType**.
