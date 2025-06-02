@@ -5,6 +5,7 @@ import com.ronreynolds.smartsheet.model.CompatibilityLevel;
 import com.ronreynolds.smartsheet.model.FolderWorkspaceInclude;
 import com.ronreynolds.smartsheet.model.PaperSize;
 import com.ronreynolds.smartsheet.model.ReportInclude;
+import com.ronreynolds.smartsheet.model.ReportLevel;
 import com.ronreynolds.smartsheet.model.SheetExclude;
 import com.ronreynolds.smartsheet.model.SheetInclude;
 
@@ -40,6 +41,7 @@ public class Constants {
     public static final OffsetDateTime noModifiedSince = null;
     public static final Integer noVersionAfter = null;
     public static final CompatibilityLevel defaultLevel = null;
+    public static final ReportLevel defaultReportLevel = null;
     public static final Integer defaultAccessApiLevel = null;
     public static final String noContentType = null;
     public static final Boolean defaultAllowPartialSuccess = null;
