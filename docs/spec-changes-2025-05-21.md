@@ -311,6 +311,8 @@ detection of enums with duplicate values that can potentially be consolidated.
 * `SightLevel`
 * `WorkspaceCreateInclude`
 * `SheetLevel`
+* `ShareType`
+  * used by `Share.type`
 
 #### `explode: false` for comma-separated `in: query` parameters
 any parameter that is sent as a "comma-separated list" should (must?  couldn't find the default explode value documented) include 
@@ -388,6 +390,9 @@ some parameters are the wrong type for the data payload
 * `sheetLevel` changed from `integer` to `enum` of integer values (based on description)
 * `sheetRowNumbers` changed from `string` to array of `integer` (since "numbers" are ints, being scoped to the container)
 * `sightLevel` changed from open-ended `integer` to `enum` to restrict it to expected values
+* `Sheet.effectiveAttachmentOptions` changed from array of `string` to array of `AttachmentTypeWithSmartsheet` based on Java-SDK code
+* `UserProfile.alternateEmails` changed from single `AlternateEmail` to an array of `AlternateEmail` items
+* `Cell.columnType` and `CellObjectForRows.columnType` changed from `string` to `ColumnType`
 
 #### concerns/observations
 * `sortRows` query-string parameter has a name of "include&exclude" which would have to be escaped constantly since `&` is the QS key-value delimiter 
@@ -437,3 +442,7 @@ also missed some in previous changes
 
 ### more scalar -> array
 * `parameters/contactInclude` is TECHNICALLY a list of 1 (or none) so this change is just to keep arrays consistent
+
+### new types to avoid class names like `GetReports200ResponseAllOfDataInner`
+* `MiniReport`
+  * used by `/reports GET` response
