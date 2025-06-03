@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("maven-publish")
     id("org.openapi.generator").version("7.13.0") // latest as of 2025-04-28
+    id("jacoco")
 }
 
 group               = "com.ronreynolds"
@@ -118,5 +119,23 @@ publishing {
         create<MavenPublication>("maven") {
             from(components["java"])
         }
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.13"
+    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
+}
+
+tasks.test {
+    finalizedBy(tasks.jacocoTestReport) // report is always generated after tests run
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // tests are required to run before generating the report
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
