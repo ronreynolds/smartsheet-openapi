@@ -32,7 +32,6 @@ import com.ronreynolds.smartsheet.model.ImageUrl;
 import com.ronreynolds.smartsheet.model.MiniReport;
 import com.ronreynolds.smartsheet.model.MiniSheet;
 import com.ronreynolds.smartsheet.model.MiniUser;
-import com.ronreynolds.smartsheet.model.ObjectValue;
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.ReportPublish;
 import com.ronreynolds.smartsheet.model.Result;
@@ -242,7 +241,7 @@ public class TestData {
             assertThat(history.getOverrideValidation()).isNull();
             assertThat(history.getStrict()).isNull();
             assertThat(history.getValue()).isEqualTo(new CellValue(BigDecimal.valueOf(42.0)));
-//FIXME            assertThat(history.getVirtualColumnId()).isNull();
+            assertThat(history.getVirtualColumnId()).isNull();
         }
     }
 
@@ -544,8 +543,8 @@ public class TestData {
             assertThat(report.getDiscussions()).isNullOrEmpty();
             assertThat(report.getEffectiveAttachmentOptions()).allMatch(SheetData.effectiveAttachmentOptions::contains);
             assertThat(report.getFavorite()).isNull();
-//FIXME            assertThat(report.getFilters()).isEmpty();
-//FIXME            assertThat(report.getGanttConfig()).isNull();
+            assertThat(report.getFilters()).isEmpty();
+            assertThat(report.getGanttConfig()).isNull();
             assertThat(report.getGanttEnabled()).isFalse();
             assertThat(report.getHasSummaryFields()).isNull();
             assertThat(report.getIsMultiPicklistEnabled()).isNull();
