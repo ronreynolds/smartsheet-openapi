@@ -3,8 +3,6 @@ package com.ronreynolds.smartsheet.it;
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.ReportsApi;
 import com.ronreynolds.smartsheet.api.util.Constants;
-import com.ronreynolds.smartsheet.model.GetReports200Response;
-import com.ronreynolds.smartsheet.model.ListReportShares200Response;
 import com.ronreynolds.smartsheet.model.Report;
 import com.ronreynolds.smartsheet.model.ReportExclude;
 import com.ronreynolds.smartsheet.model.ReportInclude;
