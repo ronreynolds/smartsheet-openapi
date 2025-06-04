@@ -532,16 +532,16 @@ public class TestData {
             assertThat(report.getName()).isEqualTo(name);
             assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
             assertThat(report.getScope()).isNull();
-            assertThat(report.getSourceSheets()).isNull();
+            assertThat(report.getSourceSheets()).isNullOrEmpty();
             assertThat(report.getIsSummaryReport()).isFalse();
             assertThat(report.getSource()).isNull();
             assertThat(report.getFromId()).isNull();
-            assertThat(report.getAttachments()).isNull();
+            assertThat(report.getAttachments()).isNullOrEmpty();
             assertThat(report.getCellImageUploadEnabled()).isTrue();
             assertThat(report.getCreatedAt()).isEqualTo(createdDate);
-            assertThat(report.getCrossSheetReferences()).isNull();
+            assertThat(report.getCrossSheetReferences()).isNullOrEmpty();
             assertThat(report.getDependenciesEnabled()).isNull();
-            assertThat(report.getDiscussions()).isNull();
+            assertThat(report.getDiscussions()).isNullOrEmpty();
             assertThat(report.getEffectiveAttachmentOptions()).allMatch(SheetData.effectiveAttachmentOptions::contains);
             assertThat(report.getFavorite()).isNull();
 //FIXME            assertThat(report.getFilters()).isEmpty();
@@ -572,7 +572,7 @@ public class TestData {
         static void assertReportColumn(Column reportColumn) {
             assertThat(reportColumn).isNotNull();
             assertThat(reportColumn.getAutoNumberFormat()).isNull();
-            assertThat(reportColumn.getContactOptions()).isNull();
+            assertThat(reportColumn.getContactOptions()).isNullOrEmpty();
             assertThat(reportColumn.getDescription()).isNull();
             assertThat(reportColumn.getFormat()).isNull();
             assertThat(reportColumn.getFormula()).isNull();
@@ -591,8 +591,8 @@ public class TestData {
             assertThat(reportColumn.getValidation()).isFalse();
             assertThat(reportColumn.getVersion()).isSameAs(ColumnVersion.NUMBER_0);
             assertThat(reportColumn.getWidth()).isEqualTo(150);
-//FIXME            assertThat(reportColumn.getVirtualId()).matches(virtualColumnIds::contains);
-//FIXME            assertThat(reportColumn.getSheetNameColumn()).matches(ReportData::isNullOrTrue);
+            assertThat(reportColumn.getVirtualId()).matches(virtualColumnIds::contains);
+            assertThat(reportColumn.getSheetNameColumn()).matches(ReportData::isNullOrTrue);
         }
 
         static boolean isNullOrTrue(Boolean val) {
@@ -601,11 +601,11 @@ public class TestData {
 
         static void assertReportRow(Row reportRow) {
             assertThat(reportRow).isNotNull();
-            assertThat(reportRow.getColumns()).isNull();
+            assertThat(reportRow.getColumns()).isNullOrEmpty();
             assertThat(reportRow.getConditionalFormat()).isNull();
             assertThat(reportRow.getCreatedAt()).isEqualTo(rowCreateDate);
             assertThat(reportRow.getCreatedBy()).isNull();
-            assertThat(reportRow.getDiscussions()).isNull();
+            assertThat(reportRow.getDiscussions()).isNullOrEmpty();
             assertThat(reportRow.getProof()).isNull();
             assertThat(reportRow.getExpanded()).matches(ReportData::isNullOrTrue);
             assertThat(reportRow.getFilteredOut()).isNull();
@@ -629,7 +629,7 @@ public class TestData {
             assertThat(reportRow.getSheetId()).isEqualTo(SheetData.id);
             assertThat(reportRow.getSiblingId()).isNull();
             assertThat(reportRow.getAccessLevel()).isSameAs(AccessLevel.OWNER);
-            assertThat(reportRow.getAttachments()).isNull();
+            assertThat(reportRow.getAttachments()).isNullOrEmpty();
             assertThat(reportRow.getCells()).isNotEmpty().allSatisfy(ReportData::assertReportCell);
         }
 
@@ -664,7 +664,7 @@ public class TestData {
                                 break;
                         }
                     });
-//FIXME            assertThat(reportCell.getVirtualColumnId()).matches(virtualColumnIds::contains);
+            assertThat(reportCell.getVirtualColumnId()).matches(virtualColumnIds::contains);
         }
 
         static void assertReportWorkspace(WorkspaceListing reportWorkspace) {
