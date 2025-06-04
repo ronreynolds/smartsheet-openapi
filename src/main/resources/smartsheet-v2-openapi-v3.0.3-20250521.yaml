@@ -22286,7 +22286,11 @@ components:
           items:
             $ref: '#/components/schemas/CellLink'
         objectValue:
-          $ref: '#/components/schemas/ObjectValue'
+          oneOf:
+            - type: string
+            - type: number
+            - type: boolean
+            - $ref: '#/components/schemas/ObjectValue'
         overrideValidation:
           type: boolean
           description: >-
@@ -25105,6 +25109,13 @@ components:
             (Deprecated) Returned only if the user has marked this sheet as a
             favorite in their Home tab (value = **true**).
           type: boolean
+          deprecated: true
+        filters:
+          type: array
+          items:
+            $ref: '#/components/schemas/Filter'
+        ganttConfig:
+          $ref: '#/components/schemas/GanttConfig'
         ganttEnabled:
           description: Indicates whether "Gantt View" is enabled.
           type: boolean
@@ -25162,6 +25173,62 @@ components:
           type: integer
         workspace:
           $ref: '#/components/schemas/WorkspaceListing'
+    # FIXME - much like Filters but includes a name; perhaps change to NamedFilter?
+    Filter:
+      type: object
+      properties:
+        name:
+          type: string
+        id:
+          $ref: '#/components/schemas/Int64'
+        filterType:
+          $ref: '#/components/schemas/FilterType'
+        query:
+          $ref: '#/components/schemas/Query'
+    GanttConfig:
+      type: object
+      properties:
+        workingDays:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkingDay'
+        holidays:
+          type: array
+          items:
+            type: string
+        hoursInWorkingDay:
+          type: number
+          format: float
+        primaryHeading:
+          $ref: '#/components/schemas/GanttConfigHeading'
+        secondaryHeading:
+          $ref: '#/components/schemas/GanttConfigHeading'
+        firstDayOfWeek:
+          $ref: '#/components/schemas/WorkingDay'
+        fiscalYearBegins:
+          $ref: '#/components/schemas/Month'
+    Month:
+      type: string
+      enum:
+        - JANUARY
+        - FEBRUARY
+        - MARCH
+        - APRIL
+        - MAY
+        - JUNE
+        - JULY
+        - AUGUST
+        - SEPTEMBER
+        - OCTOBER
+        - NOVEMBER
+        - DECEMBER
+    GanttConfigHeading:
+      type: object
+      properties:
+        scale:
+          type: string
+        format:
+          type: string
     SheetEmail:
       allOf:
         - $ref: '#/components/schemas/Email'
