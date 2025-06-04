@@ -19,10 +19,9 @@
     </appender>
 
     <logger name="com.ronreynolds.smartsheet" level="info"/>
-<!-- very handy when debugging the API
-    <logger name="com.ronreynolds.smartsheet.api" level="trace"/>
-    <logger name="com.ronreynolds.smartsheet.model" level="trace"/>
--->
+    <!-- very handy when debugging the API -->
+<!--    <logger name="com.ronreynolds.smartsheet.api" level="trace"/>-->
+<!--    <logger name="com.ronreynolds.smartsheet.model" level="debug"/>-->
 
     <root level="info">
         <appender-ref ref="stdout" />
