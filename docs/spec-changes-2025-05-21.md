@@ -415,11 +415,13 @@ some parameters are the wrong type for the data payload
   * virtualId, sheetNameColumn
 * `Cell`
   * virtualColumnId
+* `Sheet`
+  * filters, ganttConfig
 
 ### consolidate field-identical types
 * TBD - `ContactOption` and `MiniUser`
   * only diff is MiniUser.name is readonly whereas ContactOption isn't (but perhaps it's just missing the flag)
-* `GroupMemberAdd` and 
+* `GroupMemberAdd` and ...?
 
 ### more enums
 single-value enums are useful to hold the constant values to avoid hard-coding in client code.
@@ -450,3 +452,25 @@ also missed some in previous changes
 ### new types to avoid class names like `GetReports200ResponseAllOfDataInner`
 * `MiniReport`
   * used by `/reports GET` response
+* `GanttConfig`
+  * used by `Sheet.ganttConfig`
+* `GanttConfigHeading`
+  * used by `GanttConfig.primaryHeading`, `GanttConfig.secondaryHeading`
+* `Month`
+  * used by `GanttConfig.fiscalYearBegins`
+* `Filter`
+  * used by `Sheet.filters`
+
+### `Cell.objectValue` is missing scalar types
+this was important enough to have its own section IMHO.  `Cell.objectValue` was defined as `ObjectValue` but it must actually also
+support raw string, number (double), and boolean values.  so `$ref: '#/components/schemas/ObjectValue'` MUST be changed to 
+```yaml
+oneOf:
+  - type: string
+  - type: number
+  - type: boolean
+  - $ref: '#/components/schemas/ObjectValue'
+```
+
+### added `deprecated:true` to deprecated fields
+* `Sheet.favorite`
