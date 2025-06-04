@@ -22310,6 +22310,12 @@ components:
             A string, number, or a Boolean value -- depending on the cell type
             and the data in the cell. Cell values larger than 4000 characters
             are silently truncated. An empty cell returns no value.
+        virtualColumnId:
+          allOf:
+            - $ref: '#/components/schemas/Int64'
+          description: |
+            This property refers to the cell's parent column in the report, while the columnId property refers to the cell's 
+            parent column in its originating source sheet. Only used in Reports.
     CellDataItem:
       type: object
       properties:
@@ -22548,6 +22554,10 @@ components:
           description: >-
             Returned only if the column is the Primary Column (value =
             **true**).
+        sheetNameColumn:
+          type: boolean
+          description: |
+            Returns true only for the special "Sheet Name" report column.  Only used in Reports.
         symbol:
           type: string
           description: >-
@@ -22574,6 +22584,11 @@ components:
             = **true**).
         version:
           $ref: '#/components/schemas/ColumnVersion'
+        virtualId:
+          allOf:
+            - $ref: '#/components/schemas/Int64'
+          description: |
+            The virtual Id of this report column. Only used in Reports.
         width:
           type: integer
           description: Display width of the column in pixels.
