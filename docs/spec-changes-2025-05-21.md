@@ -411,6 +411,10 @@ some parameters are the wrong type for the data payload
   * parentId, toTop, toBottom, above, indent, outdent, dateModifiedAt
 * `UserProfile`
   * status
+* `Column`
+  * virtualId, sheetNameColumn
+* `Cell`
+  * virtualColumnId
 
 ### consolidate field-identical types
 * TBD - `ContactOption` and `MiniUser`
