@@ -417,6 +417,11 @@ some parameters are the wrong type for the data payload
   * virtualColumnId
 * `Sheet`
   * filters, ganttConfig
+* `GridListing`
+  * accessLevel, createdAt, modifiedAt, ... (original JSON spec used different types where this type is used for Sheet, Report, etc)
+* `FolderSimpleResponse`
+  * id, permalink
+* ...
 
 ### consolidate field-identical types
 * TBD - `ContactOption` and `MiniUser`
@@ -474,3 +479,7 @@ oneOf:
 
 ### added `deprecated:true` to deprecated fields
 * `Sheet.favorite`
+
+### altered fields to fix models in request
+* `User.sheetCount`
+  * `User` is used in addUser but `sheetCount` is forbidden so need to remove default so it will be null in request
