@@ -418,7 +418,7 @@ some parameters are the wrong type for the data payload
 * `Sheet`
   * filters, ganttConfig
 * `GridListing`
-  * accessLevel, createdAt, modifiedAt, ... (original JSON spec used different types where this type is used for Sheet, Report, etc)
+  * accessLevel, createdAt, modifiedAt
 * `FolderSimpleResponse`
   * id, permalink
 * ...
