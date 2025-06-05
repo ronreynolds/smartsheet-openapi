@@ -26054,7 +26054,6 @@ components:
           type: integer
           readOnly: true
           example: -1
-          default: -1
           minimum: -1
           maximum: -1
           deprecated: true
@@ -26557,6 +26556,12 @@ components:
         permalink:
           description: URL that represents a direct link to the asset in Smartsheet.
           type: string
+        accessLevel:
+          $ref: '#/components/schemas/AccessLevel'
+        createdAt:
+          $ref: '#/components/schemas/Datetime'
+        modifiedAt:
+          $ref: '#/components/schemas/Datetime'
     DashboardListing:
       type: object
       properties:
@@ -28096,6 +28101,11 @@ components:
         name:
           description: Folder name.
           type: string
+        id:
+          $ref: '#/components/schemas/Int64'
+        permalink:
+          type: string
+
     CallbackEventArray:
       description: Array of CallbackEvent objects
       type: array
