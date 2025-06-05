@@ -18161,7 +18161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GenericResult'
+                $ref: '#/components/schemas/RemoveUserResult'
         '400':
           description: >
             This can be caused by the following situations:
@@ -23188,6 +23188,10 @@ components:
             - $ref: '#/components/schemas/Int64'
         type:
           $ref: '#/components/schemas/FavoriteType'
+        directId:
+          type: string
+        name:
+          type: string
     FavoriteArray:
       type: array
       items:
@@ -23356,6 +23360,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GridListing'
+        accessLevel:
+          $ref: '#/components/schemas/AccessLevel'
+        createdAt:
+          $ref: '#/components/schemas/Datetime'
+        modifiedAt:
+          $ref: '#/components/schemas/Datetime'
+
     FontFamily:
       type: object
       properties:
@@ -23718,6 +23729,12 @@ components:
         reports, sheets, and templates.
       type: object
       properties:
+        id:
+          $ref: '#/components/schemas/Int64'
+        name:
+          type: string
+        permalink:
+          type: string
         folders:
           type: array
           items:
@@ -24948,6 +24965,39 @@ components:
           type: array
           items:
             type: string
+        featureInfo:
+          type: object
+          properties:
+            symbolsVersion:
+              type: integer
+        appleAuthInfos:
+          type: array
+          items:
+            type: object
+            properties:
+              clientId:
+                type: integer
+              signInAllowed:
+                type: boolean
+              signUpAllowed:
+                type: boolean
+              level:
+                type: integer
+        azureAuthInfo:
+          type: object
+          properties:
+            clientId:
+              type: string
+              description: GUID
+            resource:
+              type: string
+              description: GUID
+            authority:
+              type: string
+              description: url
+        serverVersion:
+          type: string
+
     Share:
       type: object
       x-tags:
@@ -26526,14 +26576,22 @@ components:
           $ref: '#/components/schemas/ResultMessage'
         resultCode:
           $ref: '#/components/schemas/ResultCode'
+    RemoveUserResult:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/GenericResult'
+      properties:
+        sheetsRemovedFromSharing:
+          type: integer
+        workspacesRemovedFromSharing:
+          type: integer
     ResultMessage:
       type: string
       enum:
         - PARTIAL_SUCCESS
         - SUCCESS
       description: >-
-        Message that indicates the outcome of the request. (One of SUCCESS
-        or PARTIAL_SUCCESS.)
+        Message that indicates the outcome of the request. (One of SUCCESS or PARTIAL_SUCCESS.)
       example: SUCCESS
     ResultCode:
       type: integer
@@ -27300,8 +27358,13 @@ components:
         validation:
           type: boolean
           description: >-
-            Indicates whether validation has been enabled for the column (value
-            = **true**).
+            Indicates whether validation has been enabled for the column (value = **true**).
+        version:
+          $ref: '#/components/schemas/ColumnObjectVersion'
+        primary:
+          type: boolean
+        width:
+          type: integer
     ColumnObject:
       type: object
       properties:
