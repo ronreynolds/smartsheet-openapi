@@ -421,7 +421,16 @@ some parameters are the wrong type for the data payload
   * accessLevel, createdAt, modifiedAt
 * `FolderSimpleResponse`
   * id, permalink
-* ...
+* `GetColumn`
+  * version, primary, width
+* `Favorite`
+  * directId, name
+* `Folder`
+  * accessLevel, createdAt, modifiedAt
+* `Home`
+  * id, name, permalink
+* `ServerInfo`
+  * featureInfo, appleAuthInfos, azureAuthInfo, serverVersion
 
 ### consolidate field-identical types
 * TBD - `ContactOption` and `MiniUser`
@@ -465,6 +474,8 @@ also missed some in previous changes
   * used by `GanttConfig.fiscalYearBegins`
 * `Filter`
   * used by `Sheet.filters`
+* `RemoveUserResult`
+  * operation `remove-user` returns more fields than just a `GenericResult`
 
 ### `Cell.objectValue` is missing scalar types
 this was important enough to have its own section IMHO.  `Cell.objectValue` was defined as `ObjectValue` but it must actually also
