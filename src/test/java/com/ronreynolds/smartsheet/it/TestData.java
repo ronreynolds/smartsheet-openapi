@@ -14,6 +14,7 @@ import com.ronreynolds.smartsheet.model.Cell;
 import com.ronreynolds.smartsheet.model.CellHistory;
 import com.ronreynolds.smartsheet.model.CellValue;
 import com.ronreynolds.smartsheet.model.Column;
+import com.ronreynolds.smartsheet.model.ColumnObjectVersion;
 import com.ronreynolds.smartsheet.model.ColumnType;
 import com.ronreynolds.smartsheet.model.ColumnVersion;
 import com.ronreynolds.smartsheet.model.Comment;
@@ -198,13 +199,13 @@ public class TestData {
                 assertThat(column.getTitle()).isEqualTo(name);
                 assertThat(column.getType()).isSameAs(type);
                 assertThat(column.getSymbol()).isNull();
-//FIXME                assertThat(column.getVersion()).isZero();
-//FIXME                assertThat(column.getWidth()).isEqualTo(150);
+                assertThat(column.getVersion()).isSameAs(ColumnObjectVersion.NUMBER_0);
+                assertThat(column.getWidth()).isEqualTo(150);
 
                 if (ordinal() == 0) {
-//FIXME                    assertThat(column.getPrimary()).isTrue();
+                    assertThat(column.getPrimary()).isTrue();
                 } else {
-//FIXME                    assertThat(column.getPrimary()).isNull();   // weird; wouldn't false make more sense?
+                    assertThat(column.getPrimary()).isNull();   // weird; wouldn't false make more sense?
                 }
 
                 if (type == ColumnType.DATE) {
@@ -342,9 +343,9 @@ public class TestData {
             assertThat(attachment.getCreatedAt()).isEqualTo(secrets.getDate(PREFIX + "createdAt"));
             assertThat(attachment.getCreatedBy()).isEqualTo(secrets.getObject(PREFIX + "createdBy", TestData::mapToNameAndEmail));
             assertThat(attachment.getName()).isEqualTo(secrets.get(PREFIX + "name"));
-            assertThat(attachment.getSizeInKb()).isEqualTo(secrets.getInt(PREFIX + "sizeInKb"));
+            assertThat(attachment.getSizeInKb()).isEqualTo(secrets.getLong(PREFIX + "sizeInKb"));
             assertThat(attachment.getUrl()).isEqualTo(secrets.get(PREFIX + "url"));
-            assertThat(attachment.getUrlExpiresInMillis()).isEqualTo(secrets.getInt(PREFIX + "urlExpiresInMillis"));
+            assertThat(attachment.getUrlExpiresInMillis()).isEqualTo(secrets.getLong(PREFIX + "urlExpiresInMillis"));
         }
         static void assertContains(List<? extends Discussion> discussionList) {
             assertThat(discussionList).isNotEmpty().anySatisfy(DiscussionData::assertEquals);
@@ -360,8 +361,8 @@ public class TestData {
                 map -> Favorite.builder()
                         .objectId(Long.parseLong(map.get("id")))
                         .type(FavoriteType.valueOf(map.get("type").toUpperCase()))
-//FIXME                        .name(map.get("name"))
-//FIXME                        .directId(map.get("directId"))
+                        .name(map.get("name"))
+                        .directId(map.get("directId"))
                         .build()
         );
         static void assertContains(List<? extends Favorite> favoriteList) {
@@ -372,12 +373,12 @@ public class TestData {
                     assertThat(fav.getObjectId()).isEqualTo(favorite.getObjectId());
                     assertThat(fav.getType()).isSameAs(favorite.getType());
                     // not all of Favorite lists have all 4 fields populated :-/
-//FIXME                    if (fav.getName() != null) {
-//FIXME                        assertThat(fav.getName()).isEqualTo(favorite.getName());
-//FIXME                    }
-//FIXME                    if (fav.getDirectId() != null) {
-//FIXME                        assertThat(fav.getDirectId()).isEqualTo(favorite.getDirectId());
-//FIXME                    }
+                    if (fav.getName() != null) {
+                        assertThat(fav.getName()).isEqualTo(favorite.getName());
+                    }
+                    if (fav.getDirectId() != null) {
+                        assertThat(fav.getDirectId()).isEqualTo(favorite.getDirectId());
+                    }
                 });
             }
         }
@@ -433,7 +434,7 @@ public class TestData {
             assertThat(folder).isNotNull();
             assertThat(folder.getId()).isEqualTo(id);
             assertThat(folder.getName()).isEqualTo(name);
-//FIXME            assertThat(folder.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(folder.getAccessLevel()).isSameAs(AccessLevel.OWNER);
             log.info("folder:{}", folder);
             assertThat(folder.getFolders()).satisfies(FolderData::assertChildFolders);
             assertThat(folder.getReports()).satisfies(ReportData::assertContains);
@@ -522,7 +523,7 @@ public class TestData {
             assertThat(report).isNotNull();
             assertThat(report.getId()).isEqualTo(id);
             assertThat(report.getName()).isEqualTo(name);
-//FIXME            assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
+            assertThat(report.getAccessLevel()).isSameAs(AccessLevel.OWNER);
         }
 
         static void assertDeepEquals(Report report) {
