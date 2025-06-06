@@ -49,6 +49,8 @@ import com.ronreynolds.smartsheet.model.SightListItem;
 import com.ronreynolds.smartsheet.model.SourceType;
 import com.ronreynolds.smartsheet.model.Template;
 import com.ronreynolds.smartsheet.model.UserProfile;
+import com.ronreynolds.smartsheet.model.Webhook;
+import com.ronreynolds.smartsheet.model.WebhookStatus;
 import com.ronreynolds.smartsheet.model.Workspace;
 import com.ronreynolds.smartsheet.model.WorkspaceListing;
 import com.ronreynolds.util.properties.ExtProperties;
@@ -70,6 +72,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -218,6 +222,7 @@ public class TestData {
 
         ColumnBriefData[] columnBriefData = ColumnBriefData.values();
         OffsetDateTime modifiedDate = secrets.getDate("ColumnData.modifiedDate");
+        List<Long> allColumnIds = Stream.of(ColumnBriefData.values()).map(v -> v.id).collect(Collectors.toList());
 
         static void assertColumnBriefs(GetColumn column) {
             assertThat(column).isNotNull();
@@ -906,6 +911,46 @@ public class TestData {
 
     interface WebhookData {
         long id = secrets.getLong("WebhookData.id");
+        String url = secrets.get("WebhookData.url");
+        String name = secrets.get("WebhookData.name");
+        List<String> events = List.of("*.*");   // only API supported value
+        int version = 1;    // only API supported value
+        String secret = secrets.get("WebhookData.secret");
+
+        static void assertCreated(Webhook webhook) {
+            assertEquals(webhook);
+            assertThat(webhook.getEnabled()).isFalse();
+            assertThat(webhook.getStats()).isNull();
+            assertThat(webhook.getDisabledDetails()).isNull();
+            assertThat(webhook.getStatus()).isSameAs(WebhookStatus.NEW_NOT_VERIFIED);
+        }
+
+        static void assertEquals(Webhook webhook) {
+            assertThat(webhook).isNotNull();
+            assertThat(webhook.getCallbackUrl()).isEqualTo(url);
+            assertThat(webhook.getEvents()).isEqualTo(events);
+            assertThat(webhook.getName()).isEqualTo(name);
+            assertThat(webhook.getVersion()).isEqualTo(version);
+            assertThat(webhook.getSharedSecret()).isEqualTo(secret);
+            assertThat(webhook.getScope()).isEqualTo("sheet");
+            assertThat(webhook.getScopeObjectId()).isEqualTo(SheetData.id);
+            assertThat(assertThat(webhook.getSubscope()).isNotNull().actual().getColumnIds()).isEqualTo(ColumnData.allColumnIds);
+            assertThat(webhook.getApiClientId()).isNull();
+            assertThat(webhook.getApiClientName()).isNull();
+        }
+
+        static void assertContains(List<? extends Webhook> webhooks) {
+            assertThat(webhooks).isNotNull().isNotEmpty();
+            assertThat(webhooks).anySatisfy(WebhookData::assertEquals);
+        }
+
+        static void assertEnabled(Webhook webhook) {
+            assertEquals(webhook);
+            assertThat(webhook.getEnabled()).isTrue();
+            assertThat(webhook.getStats()).isNull();
+            assertThat(webhook.getDisabledDetails()).isNull();
+            assertThat(webhook.getStatus()).isSameAs(WebhookStatus.ENABLED);
+        }
     }
 
     interface WorkflowData {
