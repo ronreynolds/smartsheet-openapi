@@ -28141,6 +28141,21 @@ components:
           example: 1
           minimum: 1
           maximum: 1
+        scope:
+          type: string
+          enum:
+            - sheet
+          description: must be 'sheet'
+        scopeObjectId:
+          $ref: '#/components/schemas/Int64'
+        subscope:
+          type: object
+          properties:
+            columnIds:
+              type: array
+              items:
+                $ref: '#/components/schemas/Int64'
+          description: column-ids within sheet identified by scopeObjectId
     Update_Webhook_Request:
       allOf:
         - $ref: '#/components/schemas/Create_Webhook_Request'
