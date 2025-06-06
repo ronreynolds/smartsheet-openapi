@@ -494,3 +494,6 @@ oneOf:
 ### altered fields to fix models in request
 * `User.sheetCount`
   * `User` is used in addUser but `sheetCount` is forbidden so need to remove default so it will be null in request
+
+### `Create_Webhook_Request` missing many fields
+* `scope`, `scopeObjectId`, `subscope`
