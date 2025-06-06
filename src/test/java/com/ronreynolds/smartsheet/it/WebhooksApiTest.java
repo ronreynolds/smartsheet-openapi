@@ -2,16 +2,19 @@ package com.ronreynolds.smartsheet.it;
 
 import com.ronreynolds.smartsheet.ApiException;
 import com.ronreynolds.smartsheet.api.WebhooksApi;
+import com.ronreynolds.smartsheet.api.util.ApiClients;
+import com.ronreynolds.smartsheet.api.util.Constants;
 import com.ronreynolds.smartsheet.model.CreateWebhook200Response;
 import com.ronreynolds.smartsheet.model.CreateWebhookRequest;
+import com.ronreynolds.smartsheet.model.CreateWebhookRequestSubscope;
 import com.ronreynolds.smartsheet.model.ListWebhooks200Response;
 import com.ronreynolds.smartsheet.model.ResetSharedSecret200Response;
 import com.ronreynolds.smartsheet.model.Result;
 import com.ronreynolds.smartsheet.model.UpdateWebhookRequest;
 import com.ronreynolds.smartsheet.model.Webhook;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
@@ -21,11 +24,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 /**
  * API tests for WebhooksApi
  */
-@Disabled("WebhooksApiTest not yet implemented")
 @Slf4j
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class WebhooksApiTest {
-
     private final WebhooksApi api = new WebhooksApi();
 
 
@@ -40,15 +41,22 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(1)
     public void createWebhookTest() throws ApiException {
-        CreateWebhookRequest createWebhookRequest = null;
-        String contentType = null;
-        CreateWebhook200Response response = api.createWebhook(contentType, createWebhookRequest);
-        assertThat(response).isNotNull();
+        CreateWebhookRequest createWebhookRequest = CreateWebhookRequest.builder()
+                .scope(CreateWebhookRequest.ScopeEnum.SHEET)
+                .scopeObjectId(TestData.SheetData.id)
+                .subscope(CreateWebhookRequestSubscope.builder().columnIds(TestData.ColumnData.allColumnIds).build())
+                .callbackUrl(TestData.WebhookData.url)
+                .name(TestData.WebhookData.name)
+                .events(TestData.WebhookData.events)
+                .version(TestData.WebhookData.version)
+                .build();
+        CreateWebhook200Response response = api.createWebhook(Constants.noContentType, createWebhookRequest);
 
-        // TODO: test validations
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::successfulResult);
+        assertThat(response.getResult()).satisfies(TestData.WebhookData::assertCreated);
     }
 
     /**
@@ -60,13 +68,12 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(10)
     public void deleteWebhookTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
         Result response = api.deleteWebhook(webhookId);
-
-        // TODO: test validations
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::successfulResult);
     }
 
     /**
@@ -77,13 +84,12 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(4)
     public void getWebhookTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
         Webhook response = api.getWebhook(webhookId);
-
-        // TODO: test validations
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData.WebhookData::assertEquals);
     }
 
     /**
@@ -96,15 +102,14 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(4)
     public void listWebhooksTest() throws ApiException {
-        Boolean includeAll = null;
-        Integer page = null;
-        Integer pageSize = null;
-        ListWebhooks200Response response = api.listWebhooks(includeAll, page, pageSize);
+        Boolean includeAll = true;
+        ListWebhooks200Response response = api.listWebhooks(includeAll, Constants.allPages, Constants.noPageSize);
 
-        // TODO: test validations
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::pagedResultHasDataNullPageSize);
+        assertThat(response.getData()).satisfies(TestData.WebhookData::assertContains);
     }
 
     /**
@@ -117,14 +122,17 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(5)
     public void resetSharedSecretTest() throws ApiException {
-        Long webhookId = TestData.WebhookData.id;
-        String contentType = null;
-        ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, contentType);
+        try (var ignore = ApiClients.logRequestContext()) {
+            Long webhookId = TestData.WebhookData.id;
+            // 400 - {"errorCode":1008,"message":"Unable to parse request. The following error occurred: EOF.","refId":"bIs21s"}
+            ResetSharedSecret200Response response = api.resetSharedSecret(webhookId, Constants.noContentType);
 
-        // TODO: test validations
-        log.info("{}", response);
-        assertThat(response).isNotNull();
+            // TODO: test validations
+            log.info("{}", response);
+            assertThat(response).isNotNull();
+        }
     }
 
     /**
@@ -138,15 +146,19 @@ public class WebhooksApiTest {
      * @throws ApiException if the Api call fails
      */
     @Test
+    @Order(6)
     public void updateWebhookTest() throws ApiException {
         Long webhookId = TestData.WebhookData.id;
-        String contentType = null;
-        UpdateWebhookRequest updateWebhookRequest = null;
-        CreateWebhook200Response response = api.updateWebhook(webhookId, contentType, updateWebhookRequest);
-
-        // TODO: test validations
+        UpdateWebhookRequest updateWebhookRequest = UpdateWebhookRequest.builder()
+                .callbackUrl(TestData.WebhookData.url)
+                .enabled(true)
+                .events(TestData.WebhookData.events)
+                .name(TestData.WebhookData.name)
+                .version(TestData.WebhookData.version)
+                .build();
+        CreateWebhook200Response response = api.updateWebhook(webhookId, Constants.noContentType, updateWebhookRequest);
         log.info("{}", response);
-        assertThat(response).isNotNull();
+        assertThat(response).satisfies(TestData::successfulResult);
+        assertThat(response.getResult()).satisfies(TestData.WebhookData::assertEnabled);
     }
-
 }
