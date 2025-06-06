@@ -19377,7 +19377,7 @@ paths:
         Gets the list of all *webhooks* that the user owns (if a user-generated
         token was used to make the request) or the list of all webhooks
         associated with the third-party app (if a third-party app made the
-        request). Items in the response are ordered by API cient name > webhook
+        request). Items in the response are ordered by API client name > webhook
         name > creation date.
       tags:
         - webhooks
