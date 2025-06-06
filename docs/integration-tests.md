@@ -413,16 +413,17 @@ the package also contains a `TestData` class in an attempt to consolidate consta
     * unable to verify write-then-read changes, probably due to replication delays of user data across servers
 
 ### WebhooksApiTest
-* To-Do
+* In-Progress
+  * `updateWebhookTest`
+    * need to work out the challenge request/response to enable webhook
+* Blocked
+  * `resetSharedSecretTest`
+    * fails; not clear why
+* Done
   * `createWebhookTest`
   * `deleteWebhookTest`
   * `getWebhookTest`
   * `listWebhooksTest`
-  * `resetSharedSecretTest`
-  * `updateWebhookTest`
-* In-Progress
-* Blocked
-* Done
 
 ### WorkspacesApiTest
 * To-Do
